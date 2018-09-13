@@ -16,6 +16,11 @@ module.exports = express()
   .use(notFound)
   .listen(options.port, () => console.log(chalk.green(`Server listening on port ${options.port}...`)))
 
+function index(req, res) {
+  res.render('index', {
+    page: 'Home'
+  })
+}
 
 function notFound(req, res) {
   res.status(404).render('error', {

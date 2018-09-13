@@ -1,0 +1,23 @@
+body {
+  font-family: sans-serif;
+  margin: 1em;
+}
+
+fieldset {
+  border: none;
+  display: flex;
+  padding: 0;
+
+  label {
+    margin: 6px 0;
+    font-size: 1.2em;
+  }
+
+  select, input, textarea {
+    margin-bottom: 32px;
+    font-size: 1em;
+    &:focus {
+      outline: none;
+    }
+  }
+}

@@ -1,0 +1,18 @@
+body {
+  font-family: sans-serif;
+  margin: 1em; }
+
+fieldset {
+  border: none;
+  display: flex;
+  padding: 0; }
+  fieldset label {
+    margin: 6px 0;
+    font-size: 1.2em; }
+  fieldset select, fieldset input, fieldset textarea {
+    margin-bottom: 32px;
+    font-size: 1em; }
+    fieldset select:focus, fieldset input:focus, fieldset textarea:focus {
+      outline: none; }
+
+/*# sourceMappingURL=style.css.map */
