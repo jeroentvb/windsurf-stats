@@ -14,5 +14,7 @@ fieldset {
     font-size: 1em; }
     fieldset select:focus, fieldset input:focus, fieldset textarea:focus {
       outline: none; }
+  fieldset input[type=submit] {
+    padding: 6px 12px; }
 
 /*# sourceMappingURL=style.css.map */

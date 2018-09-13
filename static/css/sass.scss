@@ -20,4 +20,8 @@ fieldset {
       outline: none;
     }
   }
+
+  input[type=submit] {
+    padding: 6px 12px;
+  }
 }
