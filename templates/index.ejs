@@ -5,9 +5,9 @@
 <form action="/submit-data" method="post">
   <fieldset>
     <label for="today">Today</label>
-    <input id="today" type="radio" name="date" value="today" checked>
+    <input id="today" type="radio" name="dateToday" value="today" checked>
     <label for="other-day">Other</label>
-    <input id="other-day" type="radio" name="date" value="other" disabled>
+    <input id="other-day" type="radio" name="dateOther" value="other" disabled>
 
     <label for="spot">Spot</label>
     <select id="spot" name="spot">
@@ -21,7 +21,7 @@
 
   <fieldset>
     <label for="windsurf-sail-size">Sail size</label>
-    <select id="windsurf-sail-size" name="windsurf-sail-size">
+    <select id="windsurf-sail-size" name="sailSize">
       <option value="3,5">3,5</option>
       <option value="4,2">4,2</option>
       <option value="4,7">4,7</option>
@@ -31,7 +31,7 @@
     </select>
 
     <label for="windsurf-board">Board</label>
-    <select id="windsurf-board" name="windsurf-board">
+    <select id="windsurf-board" name="windsurfBoard">
       <option value="F2 Stoke" selected="selected">F2 Stoke</option>
       <option value="F2 Axxis">F2 Axxis</option>
       <option value="Fanatic Lite Boa">Fanatic Lite Boa</option>

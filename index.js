@@ -2,6 +2,7 @@ const express = require('express')
 const request = require('request')
 const cheerio = require('cheerio')
 const chalk = require('chalk')
+const bodyParser = require('body-parser')
 const fs = require('fs')
 
 var options = {
@@ -12,7 +13,9 @@ module.exports = express()
   .set('view engine', 'ejs')
   .set('views', 'templates')
   .use(express.static('static'))
+  .use(bodyParser.urlencoded({extended: true}))
   .get('/', index)
+  .post('/submit-data', submitData)
   .use(notFound)
   .listen(options.port, () => console.log(chalk.green(`Server listening on port ${options.port}...`)))
 
@@ -20,6 +23,18 @@ function index(req, res) {
   res.render('index', {
     page: 'Home'
   })
+}
+
+function submitData(req, res, next) {
+  var dateToday = req.body.dateToday
+  var dateOther = req.body.dateOther
+  var spot = req.body.spot
+  var sailSize = req.body.sailSize
+  var board = req.body.windsurfBoard
+  var rating = req.body.rating
+  var note = req.body.note
+
+  console.log(spot, sailSize, board, rating, note)
 }
 
 function gatherData(req, res) {
