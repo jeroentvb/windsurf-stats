@@ -34,18 +34,31 @@ function submitData(req, res, next) {
   var rating = req.body.rating
   var note = req.body.note
 
-  console.log(spot, sailSize, board, rating, note)
-}
-
-function gatherData(req, res) {
-  var windfinder = {
-    spot: '',
-    windspeed: new Array,
-    windgust: new Array,
-    winddirection: new Array
+  var spotUrls = {
+    schellinkhout: 'https://www.windfinder.com/weatherforecast/markermeer_schellinkhout',
+    hondehemeltje: 'https://www.windfinder.com/weatherforecast/broekerhaven',
+    andijk: 'https://www.windfinder.com/weatherforecast/jachthaven-stichting-andijk',
   }
 
-  request(options.windfinderUrl, function(error, response, html) {
+  var windfinder = {
+    time: new Array,
+    windspeed: new Array,
+    windgust: new Array,
+    winddirection: new Array,
+    highestWindspeed: Number,
+  }
+
+  var responses = {
+    spot: '',
+    time: '',
+    windspeed: Number,
+    windgust: Number,
+    winddirection: '',
+    highestWindspeed: Number,
+    index: Number
+  }
+
+  request(spotUrls[spot], function(error, response, html) {
     if(error) {
       res.render('error', {
         page: 'error',
@@ -57,12 +70,7 @@ function gatherData(req, res) {
 
       // Get the spots name
       $('#spotheader-spotname').filter(function() {
-        windfinder.spot = $(this).text()
-      })
-
-      // Get the dates
-      $('.weathertable__header').find($('h4')).filter(function(i) {
-        windfinder.date[i] = $(this).text()
+        responses.spot = $(this).text()
       })
 
       // Get the time
@@ -86,23 +94,47 @@ function gatherData(req, res) {
 
       // Get the wind direction; do some converting
       $('.data-direction-arrow').find($('.directionarrow')).filter(function(i) {
-        var data = parseInt($(this).attr('title').replace('°', ' ')) - 180
+        var data = parseInt($(this).attr('title').replace('°', ' '))// - 180
         // This can be used to calculate the wind direction in wind direction instead of angles
-        // var val = Math.floor((data / 22.5) + 0.5)
-        // var windDirections = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
-        // windDirection[i] = windDirections[(val % 16)]
-        windfinder.winddirection[i] = data
+        var val = Math.floor((data / 22.5) + 0.5)
+        var windDirections = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+        windfinder.winddirection[i] = windDirections[(val % 16)]
+        // windfinder.winddirection[i] = data
       })
       spliceToFirstDay(windfinder.winddirection)
+
+      // Gather all the data that's going to be used
+      responses.windspeed =  Math.max(...windfinder.windspeed)
+      responses.index = windfinder.windspeed.findIndex(function(el) {
+        return el == responses.windspeed
+      })
+      responses.time = windfinder.time[responses.index]
+      responses.windgust = windfinder.windgust[responses.index]
+      responses.winddirection = windfinder.winddirection[responses.index]
+
+      // exportData('windfinder', windfinder)
+      // exportData('responses', responses)
     }
   })
 }
 
+// For debugging
+function exportData(name, jsonObject) {
+  fs.writeFile(name + '-offline-data.json', JSON.stringify(jsonObject, null, 4), function(err) {
+    if (err) {
+      throw err
+    } else {
+      console.log(chalk.yellow('File written'))
+    }
+  })
+  return
+}
+
 function spliceToFirstDay(array) {
   // Remove the first 7 hours
-  array.splice(0, 7)
+  array.splice(0, 9)
   // Remove other days
-  array.splice(16, 50)
+  array.splice(12, 60)
 }
 
 function spliceToDayHours(array) {
