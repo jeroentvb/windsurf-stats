@@ -4,6 +4,7 @@ const cheerio = require('cheerio')
 const chalk = require('chalk')
 const bodyParser = require('body-parser')
 const fs = require('fs')
+const excel = require('excel4node')
 
 var options = {
   port: 25561
@@ -26,6 +27,8 @@ function index(req, res) {
 }
 
 function submitData(req, res, next) {
+  console.log(chalk.yellow('Recieved data submission'))
+  
   var dateToday = req.body.dateToday
   var dateOther = req.body.dateOther
   var spot = req.body.spot
