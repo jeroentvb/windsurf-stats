@@ -17,4 +17,7 @@ fieldset {
   fieldset input[type=submit] {
     padding: 6px 12px; }
 
+.hidden {
+  display: none; }
+
 /*# sourceMappingURL=style.css.map */
