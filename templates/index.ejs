@@ -1,65 +1,67 @@
 <%- include('head', {page: page}) %>
 
-<h1>Input windsurf data</h1>
+<section>
+  <h1>Input windsurf data</h1>
 
-<form action="/submit-data" method="post">
-  <fieldset>
-    <label for="today">Today</label>
-    <input id="today" type="radio" name="date" value="today" checked>
-    <label for="other-day">Other</label>
-    <input id="other-day" type="radio" name="date" value="other" disabled>
+  <form action="/submit-data" method="post">
+    <fieldset>
+      <label for="today">Today</label>
+      <input id="today" type="radio" name="date" value="today" checked>
+      <label for="other-day">Other</label>
+      <input id="other-day" type="radio" name="date" value="other" disabled>
 
-    <label for="spot">Spot</label>
-    <select id="spot" name="spot">
-      <option value="schellinkhout" selected="selected">Schellinhout</option>
-      <option value="hondehemeltje">Hondehemeltje</option>
-      <option value="andijk">Andijk</option>
-      <option value="onderijk" disabled>Onderdijk</option>
-      <option value="other" disabled>Other</option>
-    </select>
-  </fieldset>
+      <label for="spot">Spot</label>
+      <select id="spot" name="spot">
+        <option value="schellinkhout" selected="selected">Schellinhout</option>
+        <option value="hondehemeltje">Hondehemeltje</option>
+        <option value="andijk">Andijk</option>
+        <option value="onderijk" disabled>Onderdijk</option>
+        <option value="other" disabled>Other</option>
+      </select>
+    </fieldset>
 
-  <fieldset id="additional-stats" class="hidden">
-    <label for="average-windspeed">Average windspeed</label>
-    <input id="average-windspeed" type="number" name="averageWindspeed">
-    <label for="windgust">Windgust</label>
-    <input id="windgust" type="number" name="windgust">
-    <label for="">Wind direction</label>
-    <input id="wind-direction" type="text" name="windDirection" maxlength="3">
-  </fieldset>
+    <fieldset id="additional-stats" class="hidden">
+      <label for="average-windspeed">Average windspeed</label>
+      <input id="average-windspeed" type="number" name="averageWindspeed">
+      <label for="windgust">Windgust</label>
+      <input id="windgust" type="number" name="windgust">
+      <label for="">Wind direction</label>
+      <input id="wind-direction" type="text" name="windDirection" maxlength="3">
+    </fieldset>
 
-  <fieldset>
-    <label for="windsurf-sail-size">Sail size</label>
-    <select id="windsurf-sail-size" name="sailSize">
-      <option value="3,5">3,5</option>
-      <option value="4,2">4,2</option>
-      <option value="4,7">4,7</option>
-      <option value="5" selected="selected">5</option>
-      <option value="6">6</option>
-      <option value="other" disabled>Other</option>
-    </select>
+    <fieldset>
+      <label for="windsurf-sail-size">Sail size</label>
+      <select id="windsurf-sail-size" name="sailSize">
+        <option value="3,5">3,5</option>
+        <option value="4,2">4,2</option>
+        <option value="4,7">4,7</option>
+        <option value="5" selected="selected">5</option>
+        <option value="6">6</option>
+        <option value="other" disabled>Other</option>
+      </select>
 
-    <label for="windsurf-board">Board</label>
-    <select id="windsurf-board" name="windsurfBoard">
-      <option value="F2 Stoke" selected="selected">F2 Stoke</option>
-      <option value="Thommen Wave x74">Thommen Wave x74</option>
-      <option value="F2 Axxis">F2 Axxis</option>
-      <option value="Fanatic Lite Boa">Fanatic Lite Boa</option>
-      <option value="other" disabled>Other</option>
-    </select>
-  </fieldset>
+      <label for="windsurf-board">Board</label>
+      <select id="windsurf-board" name="windsurfBoard">
+        <option value="F2 Stoke" selected="selected">F2 Stoke</option>
+        <option value="Thommen Wave x74">Thommen Wave x74</option>
+        <option value="F2 Axxis">F2 Axxis</option>
+        <option value="Fanatic Lite Boa">Fanatic Lite Boa</option>
+        <option value="other" disabled>Other</option>
+      </select>
+    </fieldset>
 
-  <fieldset>
-    <label for="rating">Rating</label>
-    <input id="rating" type="number" name="rating" min="1" max="10" step="0.5">
+    <fieldset>
+      <label for="rating">Rating</label>
+      <input id="rating" type="number" name="rating" min="1" max="10" step="0.5">
 
-    <label for="note">Note</label>
-    <textarea id="note" name="note" rows="8" cols="80"></textarea>
-  </fieldset>
+      <label for="note">Note</label>
+      <textarea id="note" name="note" rows="8" cols="80"></textarea>
+    </fieldset>
 
-  <fieldset>
-    <input type="submit" name="submit" id="submit-form">
-  </fieldset>
-</form>
+    <fieldset>
+      <input type="submit" name="submit" id="submit-form">
+    </fieldset>
+  </form>
+</section>
 
 <% include tail %>

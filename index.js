@@ -2,19 +2,38 @@ const express = require('express')
 const session = require('express-session')
 const FileStore = require('session-file-store')(session);
 const request = require('request')
+const mysql = require('mysql')
 const cheerio = require('cheerio')
 const chalk = require('chalk')
 const bodyParser = require('body-parser')
 const fs = require('fs')
-const excel = require('excel4node')
 
 require('dotenv').config()
+
+// create mysql connection
+var db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+});
+// connect to db
+db.connect(function(err) {
+  if (err) {
+    throw err;
+  } else {
+    console.log(chalk.green('[MySql] connection established..'))
+  }
+})
 
 var options = {
   port: 25561
 }
 
 module.exports = express()
+  // .get('/createdb', createDb)
+  // .get('/addtable', addTable)
+
   .set('view engine', 'ejs')
   .set('views', 'templates')
   .use(express.static('static'))
@@ -27,8 +46,9 @@ module.exports = express()
   }))
   .get('/', index)
   .post('/submit-data', submitData)
+  .post('/confirm-submit', confirmedData)
   .use(notFound)
-  .listen(options.port, () => console.log(chalk.green(`Server listening on port ${options.port}...`)))
+  .listen(options.port, () => console.log(chalk.green(`[Server] listening on port ${options.port}...`)))
 
 function index(req, res) {
   res.render('index', {
@@ -36,7 +56,7 @@ function index(req, res) {
   })
 }
 
-function submitData(req, res, next) {
+function submitData(req, res) {
   console.log(chalk.yellow('Recieved data submission'))
 
   var dateToday = req.body.dateToday
@@ -131,12 +151,18 @@ function submitData(req, res, next) {
 
       var allData = {...submittedData, ...responses}
 
+      req.session.data = allData
+
       res.render('confirm-data', {
         page: 'Confirm submission',
         data: allData
       })
     }
   })
+}
+
+function confirmedData(req, res) {
+
 }
 
 // For debugging
@@ -175,3 +201,29 @@ function notFound(req, res) {
     error: 'The page was not found'
   })
 }
+
+// // create database
+// function createDb(req, res) {
+//   var sql = 'CREATE DATABASE windsurf_statistics'
+//   db.query(sql, function(err, result) {
+//     if(err){
+//       throw err
+//     } else {
+//       console.log(chalk.yellow(result))
+//       res.send('Database created')
+//     }
+//   })
+// }
+
+// // create statistics table in db
+// function addTable(req, res) {
+//   var sql = 'CREATE TABLE IF NOT EXISTS windsurf_statistics.statistics(id int NOT NULL AUTO_INCREMENT, date DATE, spot VARCHAR(100), windspeed INT, windgust INT, wind_direction VARCHAR(30), sail_size FLOAT, board VARCHAR(30), rating FLOAT, note VARCHAR(255), PRIMARY KEY (id))'
+//   db.query(sql, function(err, result) {
+//     if(err) {
+//       throw err
+//     } else {
+//       console.log(chalk.yellow(result))
+//       res.send('Table created')
+//     }
+//   })
+// }
