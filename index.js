@@ -1,10 +1,14 @@
 const express = require('express')
+const session = require('express-session')
+const FileStore = require('session-file-store')(session);
 const request = require('request')
 const cheerio = require('cheerio')
 const chalk = require('chalk')
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const excel = require('excel4node')
+
+require('dotenv').config()
 
 var options = {
   port: 25561
@@ -15,6 +19,12 @@ module.exports = express()
   .set('views', 'templates')
   .use(express.static('static'))
   .use(bodyParser.urlencoded({extended: true}))
+  .use(session({
+    store: new FileStore(options),
+    resave: false,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET
+  }))
   .get('/', index)
   .post('/submit-data', submitData)
   .use(notFound)
@@ -28,14 +38,17 @@ function index(req, res) {
 
 function submitData(req, res, next) {
   console.log(chalk.yellow('Recieved data submission'))
-  
+
   var dateToday = req.body.dateToday
   var dateOther = req.body.dateOther
   var spot = req.body.spot
-  var sailSize = req.body.sailSize
-  var board = req.body.windsurfBoard
-  var rating = req.body.rating
-  var note = req.body.note
+
+  var submittedData = {
+    sail: req.body.sailSize,
+    board: req.body.windsurfBoard,
+    rating: req.body.rating,
+    note: req.body.note
+  }
 
   var spotUrls = {
     schellinkhout: 'https://www.windfinder.com/weatherforecast/markermeer_schellinkhout',
@@ -47,8 +60,7 @@ function submitData(req, res, next) {
     time: new Array,
     windspeed: new Array,
     windgust: new Array,
-    winddirection: new Array,
-    highestWindspeed: Number,
+    winddirection: new Array
   }
 
   var responses = {
@@ -57,7 +69,6 @@ function submitData(req, res, next) {
     windspeed: Number,
     windgust: Number,
     winddirection: '',
-    highestWindspeed: Number,
     index: Number
   }
 
@@ -117,6 +128,13 @@ function submitData(req, res, next) {
 
       // exportData('windfinder', windfinder)
       // exportData('responses', responses)
+
+      var allData = {...submittedData, ...responses}
+
+      res.render('confirm-data', {
+        page: 'Confirm submission',
+        data: allData
+      })
     }
   })
 }

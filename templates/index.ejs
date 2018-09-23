@@ -5,16 +5,16 @@
 <form action="/submit-data" method="post">
   <fieldset>
     <label for="today">Today</label>
-    <input id="today" type="radio" name="dateToday" value="today" checked>
+    <input id="today" type="radio" name="date" value="today" checked>
     <label for="other-day">Other</label>
-    <input id="other-day" type="radio" name="dateOther" value="other" disabled>
+    <input id="other-day" type="radio" name="date" value="other" disabled>
 
     <label for="spot">Spot</label>
     <select id="spot" name="spot">
       <option value="schellinkhout" selected="selected">Schellinhout</option>
       <option value="hondehemeltje">Hondehemeltje</option>
       <option value="andijk">Andijk</option>
-      <option value="onderijk">Onderdijk</option>
+      <option value="onderijk" disabled>Onderdijk</option>
       <option value="other" disabled>Other</option>
     </select>
   </fieldset>
@@ -42,6 +42,7 @@
     <label for="windsurf-board">Board</label>
     <select id="windsurf-board" name="windsurfBoard">
       <option value="F2 Stoke" selected="selected">F2 Stoke</option>
+      <option value="Thommen Wave x74">Thommen Wave x74</option>
       <option value="F2 Axxis">F2 Axxis</option>
       <option value="Fanatic Lite Boa">Fanatic Lite Boa</option>
       <option value="other" disabled>Other</option>
@@ -57,7 +58,7 @@
   </fieldset>
 
   <fieldset>
-    <input type="submit" name="submit" value="submit" id="submit-form">
+    <input type="submit" name="submit" id="submit-form">
   </fieldset>
 </form>
 

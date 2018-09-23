@@ -1,0 +1,50 @@
+<%- include('head', {page: page}) %>
+
+<h1>Submitted data</h1>
+<h3>Confirm the submitted data is correct.</h3>
+
+<article>
+  <h4>Spot</h4>
+  <p><%= data.spot %></p>
+
+  <h4>Hour of most wind</h4>
+  <p><%= data.time %></p>
+
+  <h4>Windspeed</h4>
+  <p><%= data.windspeed %> kts</p>
+
+  <h4>Windgust</h4>
+  <p><%= data.windgust %> kts</p>
+
+  <h4>Winddirection</h4>
+  <p><%= data.winddirection %></p>
+</article>
+
+<article>
+  <h4>Sailsize</h4>
+  <p><%= data.sail %></p>
+
+  <h4>Board</h4>
+  <p><%= data.board %></p>
+
+  <h4>Rating</h4>
+  <p><%= data.rating %></p>
+
+  <h4>Note</h4>
+  <p><%= data.test %></p>
+</article>
+
+<h2>The data is:</h2>
+<form action="/confirm-submit" method="post">
+  <fieldset>
+    <label for="correct">Correct</label>
+    <input id="correct" type="radio" name="confirm-data" value="correct" checked>
+    <label for="incorrect">Incorrect</label>
+    <input id="incorrect" type="radio" name="confirm-data" value="incorrect">
+
+    <input type="submit" name="confirm-submit">
+  </fieldset>
+
+</form>
+
+<% include tail %>
