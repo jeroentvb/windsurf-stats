@@ -59,8 +59,7 @@ function index(req, res) {
 function submitData(req, res) {
   console.log(chalk.yellow('Recieved data submission'))
 
-  var dateToday = req.body.dateToday
-  var dateOther = req.body.dateOther
+  var date = req.body.date
   var spot = req.body.spot
 
   var submittedData = {
@@ -162,8 +161,14 @@ function submitData(req, res) {
 }
 
 function confirmedData(req, res) {
-  // destroy the session when done
+  var checkCorrect = req.body.confirmData
 
+  if (checkCorrect == 'incorrect') {
+    req.session.data = {}
+    res.redirect('/')
+  } else {
+    // create a query to store data in the db
+  }
 }
 
 // For debugging
