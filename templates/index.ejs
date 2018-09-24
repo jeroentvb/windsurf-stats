@@ -1,14 +1,17 @@
 <%- include('head', {page: page}) %>
 
-<section>
+<main id="main-form">
   <h1>Input windsurf data</h1>
 
   <form action="/submit-data" method="post">
     <fieldset>
-      <label for="today">Today</label>
-      <input id="today" type="radio" name="date" value="today" checked>
-      <label for="other-day">Other</label>
-      <input id="other-day" type="radio" name="date" value="other" disabled>
+      <div id="date-radio">
+        <label for="today">Today</label>
+        <input id="today" type="radio" name="date" value="today" checked>
+        <label for="other-day">Other</label>
+        <input id="other-day" type="radio" name="date" value="other" disabled>
+      </div>
+
 
       <label for="spot">Spot</label>
       <select id="spot" name="spot">
@@ -25,7 +28,7 @@
       <input id="average-windspeed" type="number" name="averageWindspeed">
       <label for="windgust">Windgust</label>
       <input id="windgust" type="number" name="windgust">
-      <label for="">Wind direction</label>
+      <label for="wind-direction">Wind direction</label>
       <input id="wind-direction" type="text" name="windDirection" maxlength="3">
     </fieldset>
 
@@ -55,13 +58,13 @@
       <input id="rating" type="number" name="rating" min="1" max="10" step="0.5">
 
       <label for="note">Note</label>
-      <textarea id="note" name="note" rows="8" cols="80"></textarea>
+      <textarea id="note" name="note" rows="5" cols="80"></textarea>
     </fieldset>
 
     <fieldset>
       <input type="submit" name="submit" id="submit-form">
     </fieldset>
   </form>
-</section>
+</main>
 
 <% include tail %>

@@ -1,6 +1,6 @@
 <%- include('head', {page: page}) %>
 
-<section>
+<main id="confirm-data" class="col-2">
   <h1>Submitted data</h1>
   <h3>Confirm the submitted data is correct.</h3>
 
@@ -38,15 +38,17 @@
   <h2>The data is:</h2>
   <form action="/confirm-submit" method="post">
     <fieldset>
-      <label for="correct">Correct</label>
-      <input id="correct" type="radio" name="confirm-data" value="correct" checked>
-      <label for="incorrect">Incorrect</label>
-      <input id="incorrect" type="radio" name="confirm-data" value="incorrect">
+      <div id="confirm-radio">
+        <label for="correct">Correct</label>
+        <input id="correct" type="radio" name="confirm-data" value="correct" checked>
+        <label for="incorrect">Incorrect</label>
+        <input id="incorrect" type="radio" name="confirm-data" value="incorrect">
+      </div>
 
       <input type="submit" name="confirm-submit">
     </fieldset>
 
   </form>
-</section>
+</main>
 
 <% include tail %>

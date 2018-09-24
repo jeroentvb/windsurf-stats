@@ -1,6 +1,32 @@
+@import 'normalize';
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+$color-primary: #405FFF;
+$color-primary-light: #5975FF;
+$color-primary-dark: #1B34B2;
+$color-secondary: #FFD040;
+$color-secondary-dark: #B28909;
+
 body {
   font-family: sans-serif;
-  margin: 1em;
+  width: 100%;
+
+  main {
+    padding: 1em;
+  }
+}
+
+form {
+  width: 100%;
 }
 
 fieldset {
@@ -10,7 +36,14 @@ fieldset {
 
   label {
     margin: 6px 0;
-    font-size: 1.2em;
+    font-size: 1em;
+    font-weight: 600;
+  }
+
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
 
   select, input, textarea {
@@ -21,11 +54,52 @@ fieldset {
     }
   }
 
+  input[type=radio] {
+    margin-left: 8px;
+  }
+
   input[type=submit] {
-    padding: 6px 12px;
+    padding: 16px 24px;
+    border-radius: 4px;
+    background-color: none;
+    color: #ffffff;
+    background-color: $color-primary;
+    width: 100%;
+
+    &:hover {
+      background-color: $color-primary-dark;
+      color: white;
+      cursor: pointer;
+      transition: .2s;
+    }
+  }
+
+  input[type=number], input[type=text], textarea, select {
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 6px !important;
+    width: 100%;
+  }
+
+  textarea {
+    resize: none;
   }
 }
 
 .hidden {
   display: none;
 }
+
+#main-form {
+  h1 {
+    margin-top: 0;
+  }
+}
+
+#date-radio, #confirm-radio {
+  label:nth-of-type(2) {
+    margin-left: 32px;
+  }
+}
+
+@import 'breakpoints';

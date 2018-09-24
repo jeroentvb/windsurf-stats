@@ -162,7 +162,7 @@ function submitData(req, res) {
 }
 
 function confirmedData(req, res) {
-
+  // destroy the session when done
 }
 
 // For debugging
