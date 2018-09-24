@@ -303,7 +303,9 @@ input::-webkit-inner-spin-button {
   margin: 0; }
 
 * {
-  box-sizing: border-box; }
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
 
 body {
   font-family: sans-serif;
@@ -336,22 +338,26 @@ fieldset {
   fieldset input[type=submit] {
     padding: 16px 24px;
     border-radius: 4px;
-    background-color: none;
     color: #ffffff;
     background-color: #405FFF;
-    width: 100%; }
+    width: 100%;
+    transition: .3s; }
     fieldset input[type=submit]:hover {
       background-color: #1B34B2;
-      color: white;
-      cursor: pointer;
-      transition: .2s; }
+      cursor: pointer; }
   fieldset input[type=number], fieldset input[type=text], fieldset textarea, fieldset select {
-    border: 1px solid black;
-    border-radius: 4px;
+    border: none;
+    border-bottom: 1px solid black;
+    background-color: transparent;
+    border-radius: 0;
     padding: 6px !important;
     width: 100%; }
   fieldset textarea {
-    resize: none; }
+    resize: none;
+    border-radius: 4px;
+    border: 1px solid black; }
+  fieldset select:hover, fieldset option:hover, fieldset input[type=radio] {
+    cursor: pointer; }
 
 .hidden {
   display: none; }
@@ -365,14 +371,16 @@ fieldset {
 @media (min-width: 800px) {
   main {
     display: grid;
-    grid-template-columns: 1fr 50% 1fr; }
+    grid-template-columns: 1fr 50% 1fr;
+    grid-column-gap: 32px; }
     main h1, main h3 {
       grid-column: 2 / 2; }
     main form {
       grid-column: 2 / 2; }
 
   .col-2 {
-    grid-template-columns: 1fr 25% 25% 1fr; }
+    grid-template-columns: 1fr 25% 25% 1fr;
+    grid-column-gap: 32px; }
     .col-2 h1, .col-2 h2, .col-2 h3 {
       grid-column: 2 / 4; }
     .col-2 article:nth-of-type(1) {
