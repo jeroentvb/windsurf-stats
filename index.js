@@ -229,7 +229,16 @@ function notFound(req, res) {
 //       throw err
 //     } else {
 //       console.log(chalk.yellow(result))
-//       res.send('Table created')
+//
+//       var sql2 = 'CREATE TABLE IF NOT EXISTS windsurf_statistics.users(id int NOT NULL AUTO_INCREMENT, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255), PRIMARY KEY(id))'
+//       db.query(sql2, function(err, result) {
+//         if(err) {
+//           throw err
+//         } else {
+//           console.log(chalk.yellow(result))
+//           res.send('Statistics & users table created created')
+//         }
+//       })
 //     }
 //   })
 // }

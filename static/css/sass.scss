@@ -98,6 +98,10 @@ fieldset {
   display: none;
 }
 
+.error {
+  border-color: red !important;
+}
+
 #main-form {
   h1 {
     margin-top: 0;

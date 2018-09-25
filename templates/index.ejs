@@ -33,7 +33,7 @@
     </fieldset>
 
     <fieldset>
-      <label for="windsurf-sail-size">Sail size</label>
+      <label  for="windsurf-sail-size-other">Sail size</label>
       <select id="windsurf-sail-size" name="sailSize">
         <option value="3,5">3,5</option>
         <option value="4,2">4,2</option>
@@ -42,6 +42,7 @@
         <option value="6">6</option>
         <option value="other" disabled>Other</option>
       </select>
+      <input id="windsurf-sail-size-other" type="number" name="sailSizeOther" class="hidden" placeholder="Insert custom sail size" max="10" min="1">
 
       <label for="windsurf-board">Board</label>
       <select id="windsurf-board" name="windsurfBoard">
@@ -60,6 +61,8 @@
       <label for="note">Note</label>
       <textarea id="note" name="note" rows="5" cols="80"></textarea>
     </fieldset>
+
+    <p id="error-message"></p>
 
     <fieldset>
       <input type="submit" name="submit" id="submit-form">
