@@ -336,12 +336,14 @@ fieldset {
   fieldset input[type=radio] {
     margin-left: 8px; }
   fieldset input[type=submit] {
+    border: none;
     padding: 16px 24px;
     border-radius: 4px;
     color: #ffffff;
     background-color: #405FFF;
     width: 100%;
-    transition: .3s; }
+    transition: .3s;
+    box-shadow: none; }
     fieldset input[type=submit]:hover {
       background-color: #1B34B2;
       cursor: pointer; }
