@@ -61,12 +61,14 @@ fieldset {
   }
 
   input[type=submit] {
+    border: none;
     padding: 16px 24px;
     border-radius: 4px;
     color: #ffffff;
     background-color: $color-primary;
     width: 100%;
     transition: .3s;
+    box-shadow: none;
 
     &:hover {
       background-color: $color-primary-dark;
