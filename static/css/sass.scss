@@ -49,6 +49,7 @@ body {
   }
 }
 
+// Header
 header {
   padding: 1px 16px;
   background-color: $white;
@@ -99,6 +100,7 @@ header {
   }
 }
 
+// Form
 form {
   width: 100%;
 }
@@ -161,34 +163,6 @@ fieldset {
     width: 70%;
   }
 
-  .field {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-bottom: 1px solid $grey-line;
-    background-color: $white;
-    &.first {
-      border-top: 1px solid $grey-line;
-      margin: 0 -18px;
-      padding: 0 18px;
-      border-bottom: none;
-    }
-    &.second {
-      border-top: 1px solid $grey-line;
-    }
-    &.last {
-      margin: 0 -18px;
-      padding: 0 18px;
-    }
-    &.was-hidden {
-      // border: none;
-    }
-  }
-
-  input[type=text].custom-field {
-    // padding-left: 0 !important;
-  }
-
   textarea {
     resize: none;
     border-radius: 4px;
@@ -202,6 +176,31 @@ fieldset {
   }
 }
 
+.field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid $grey-line;
+  background-color: $white;
+  &.first {
+    border-top: 1px solid $grey-line;
+    margin: 0 -18px;
+    padding: 0 18px;
+    border-bottom: none;
+  }
+  &.second {
+    border-top: 1px solid $grey-line;
+  }
+  &.last {
+    margin: 0 -18px;
+    padding: 0 18px;
+  }
+  &.after-title {
+    border: none;
+  }
+}
+
+// Classes
 .seperate {
   margin-bottom: 32px;
 }
@@ -230,7 +229,20 @@ fieldset {
   }
 }
 
+#confirm-radio {
+  margin-bottom: 32px;
+}
+
+// Radio button styling
 .radio-buttons {
+  p.field {
+    padding-top: 12px;
+  }
+
+  p {
+    margin-bottom: 4px;
+  }
+
   #date-radio {
     padding-top: 10px;
   }
@@ -269,4 +281,5 @@ fieldset {
   }
 }
 
+@import 'confirm-submission';
 @import 'breakpoints';

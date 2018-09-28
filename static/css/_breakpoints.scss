@@ -42,6 +42,61 @@
       grid-column: 2 / 4;
     }
   }
+
+  fieldset {
+    background-color: inherit;
+
+    label {
+      width: 20%;
+    }
+
+    select, input[type=text], input[type=number] {
+      background-color: $white;
+      border: 1px solid $grey-line;
+      padding: 4px !important;
+      width: 80%;
+      border-radius: 4px;
+      &:focus {
+        outline: 1px solid $normal-blue;
+      }
+    }
+    textarea:focus {
+      outline: 1px solid $normal-blue;
+    }
+    input[type=radio] + label {
+      background-color: $white;
+    }
+  }
+
+  .field {
+      border: none;
+      background-color: inherit;
+      margin-bottom: 8px !important;
+      &.first {
+        border: none;
+      }
+      &.second {
+        border: none;
+      }
+
+      p {
+        background-color: $white;
+        border: 1px solid $grey-line;
+        border-radius: 4px;
+        padding: 4px !important;
+      }
+  }
+  p.first {
+    margin-bottom: 0 !important;
+  }
+
+  #confirm-radio {
+    margin-bottom: 32px !important;
+  }
+
+  article.seperate {
+    background-color: inherit;
+  }
 }
 
 @media (min-width: 1600px) {

@@ -386,22 +386,6 @@ fieldset {
     border-radius: 0;
     padding: 16px 18px !important;
     width: 70%; }
-  fieldset .field {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    border-bottom: 1px solid #bebebe;
-    background-color: white; }
-    fieldset .field.first {
-      border-top: 1px solid #bebebe;
-      margin: 0 -18px;
-      padding: 0 18px;
-      border-bottom: none; }
-    fieldset .field.second {
-      border-top: 1px solid #bebebe; }
-    fieldset .field.last {
-      margin: 0 -18px;
-      padding: 0 18px; }
   fieldset textarea {
     resize: none;
     border-radius: 4px;
@@ -410,6 +394,25 @@ fieldset {
     width: 100%; }
   fieldset select:hover, fieldset option:hover, fieldset input[type=radio] {
     cursor: pointer; }
+
+.field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid #bebebe;
+  background-color: white; }
+  .field.first {
+    border-top: 1px solid #bebebe;
+    margin: 0 -18px;
+    padding: 0 18px;
+    border-bottom: none; }
+  .field.second {
+    border-top: 1px solid #bebebe; }
+  .field.last {
+    margin: 0 -18px;
+    padding: 0 18px; }
+  .field.after-title {
+    border: none; }
 
 .seperate {
   margin-bottom: 32px; }
@@ -429,6 +432,13 @@ fieldset {
 #date-radio label:nth-of-type(2), #confirm-radio label:nth-of-type(2), #before-after-time-radio label:nth-of-type(2) {
   margin-left: 32px; }
 
+#confirm-radio {
+  margin-bottom: 32px; }
+
+.radio-buttons p.field {
+  padding-top: 12px; }
+.radio-buttons p {
+  margin-bottom: 4px; }
 .radio-buttons #date-radio {
   padding-top: 10px; }
 .radio-buttons #before-after-time-radio {
@@ -452,6 +462,23 @@ fieldset {
   color: white; }
 .radio-buttons input[type=radio]:disabled + label {
   color: #a2a2a7; }
+
+article.seperate {
+  background-color: white;
+  margin: 0 -18px;
+  padding: 0 18px;
+  margin-bottom: 32px; }
+
+.field h4 {
+  width: 30%;
+  margin-right: 16px; }
+.field p {
+  width: 70%; }
+
+.not-white .field {
+  background-color: inherit; }
+  .not-white .field input[type=radio]:not(:checked) + label {
+    background-color: white; }
 
 @media (min-width: 800px) {
   header {
@@ -478,7 +505,47 @@ fieldset {
     .col-2 article:nth-of-type(2) {
       grid-column: 3 / 3; }
     .col-2 form, .col-2 input[type=submit] {
-      grid-column: 2 / 4; } }
+      grid-column: 2 / 4; }
+
+  fieldset {
+    background-color: inherit; }
+    fieldset label {
+      width: 20%; }
+    fieldset select, fieldset input[type=text], fieldset input[type=number] {
+      background-color: white;
+      border: 1px solid #bebebe;
+      padding: 4px !important;
+      width: 80%;
+      border-radius: 4px; }
+      fieldset select:focus, fieldset input[type=text]:focus, fieldset input[type=number]:focus {
+        outline: 1px solid #007aff; }
+    fieldset textarea:focus {
+      outline: 1px solid #007aff; }
+    fieldset input[type=radio] + label {
+      background-color: white; }
+
+  .field {
+    border: none;
+    background-color: inherit;
+    margin-bottom: 8px !important; }
+    .field.first {
+      border: none; }
+    .field.second {
+      border: none; }
+    .field p {
+      background-color: white;
+      border: 1px solid #bebebe;
+      border-radius: 4px;
+      padding: 4px !important; }
+
+  p.first {
+    margin-bottom: 0 !important; }
+
+  #confirm-radio {
+    margin-bottom: 32px !important; }
+
+  article.seperate {
+    background-color: inherit; } }
 @media (min-width: 1600px) {
   main, .center-content, header {
     grid-template-columns: 1fr 40% 1fr; } }

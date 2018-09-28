@@ -61,8 +61,8 @@ if (document.getElementById('submit-form') != undefined) {
   }
 
   // Check input fields that are NOT visible by default
-  function checkOtherInputError(otherInput, e) {
-    if (otherInput.classList.contains('hidden') == false && otherInput.value == '') {
+  function checkOtherInputError(otherInput, otherWrap, e) {
+    if (otherWrap.classList.contains('hidden') == false && otherInput.value == '') {
       e.preventDefault()
       otherInput.classList.add('error')
     } else {
@@ -73,8 +73,8 @@ if (document.getElementById('submit-form') != undefined) {
   submitForm.addEventListener('click', function(e) {
     checkInputError(ratingInput, e)
     checkInputError(noteInput, e)
-    checkOtherInputError(otherSpot, e)
-    checkOtherInputError(otherSailSize, e)
-    checkOtherInputError(otherWindsurfBoard, e)
+    checkOtherInputError(otherSpot, otherSpotWrap, e)
+    checkOtherInputError(otherSailSize, otherSailSizeWrap, e)
+    checkOtherInputError(otherWindsurfBoard, otherWindsurfBoardWrap, e)
   })
 }

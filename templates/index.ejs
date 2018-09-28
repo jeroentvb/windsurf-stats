@@ -5,28 +5,38 @@
 
   <form action="/submit-data" method="post">
     <fieldset class="seperate radio-buttons">
-      <div id="date-radio" class="field first">
+      <p class="field first">Was the session today or a another day?</p>
+      <div id="date-radio" class="field after-title">
         <input id="today" type="radio" name="date" value="today" checked>
         <label for="today" class="radio">Today</label>
         <input id="other-day" type="radio" name="date" value="other" disabled>
         <label for="other-day" class="radio">Other</label>
       </div>
 
+      <p>Was the session before or after 18:00h?</p>
       <div id="before-after-time-radio" class="field last">
         <input id="before" type="radio" name="time" value="before" checked>
         <label for="before" class="radio">Before 18:00h</label>
-        <input id="after" type="radio" name="time" value="after">
+        <input id="after" type="radio" name="time" value="after" disabled>
         <label for="after" class="radio">After 18:00h</label>
       </div>
     </fieldset>
 
-    <fieldset id="additional-stats" class="hidden">
-      <label for="average-windspeed">Average windspeed</label>
-      <input id="average-windspeed" type="number" name="averageWindspeed">
-      <label for="windgust">Windgust</label>
-      <input id="windgust" type="number" name="windgust">
-      <label for="wind-direction">Wind direction</label>
-      <input id="wind-direction" type="text" name="windDirection" maxlength="3">
+    <fieldset id="additional-stats" class="seperate hidden">
+      <div class="field first">
+        <label for="average-windspeed">Average windspeed (in kts)</label>
+        <input id="average-windspeed" type="number" name="averageWindspeed" placeholder="15">
+      </div>
+
+      <div class="field second">
+        <label for="windgust">Windgust (in kts)</label>
+        <input id="windgust" type="number" name="windgust" placeholder="15">
+      </div>
+
+      <div class="field last">
+        <label for="wind-direction">Wind direction</label>
+        <input id="wind-direction" type="text" name="windDirection" maxlength="3" placeholder="WSW">
+      </div>
     </fieldset>
 
     <fieldset>
@@ -37,10 +47,10 @@
           <option value="hondehemeltje">Hondehemeltje</option>
           <option value="andijk">Andijk</option>
           <option value="onderijk" disabled>Onderdijk</option>
-          <option value="other" >Other</option>
+          <option value="other" disabled>Other</option>
         </select>
       </div>
-      <div id="spot-other-wrapper" class="field was-hidden hidden">
+      <div id="spot-other-wrapper" class="field hidden">
         <label></label>
         <input id="spot-other" type="text" name="spot-other" class="custom-field" placeholder="Insert custom spot">
       </div>
@@ -55,11 +65,11 @@
           <option value="4,7">4,7</option>
           <option value="5" selected="selected">5</option>
           <option value="6">6</option>
-          <option value="other">Other</option>
+          <option value="other" disabled>Other</option>
         </select>
       </div>
 
-      <div id="windsurf-sail-size-other-wrapper" class="field was-hidden hidden">
+      <div id="windsurf-sail-size-other-wrapper" class="field hidden">
         <label></label>
         <input id="windsurf-sail-size-other" type="number" name="sailSizeOther" class="custom-field" placeholder="Insert custom sail size" max="10" min="1">
       </div>
@@ -71,11 +81,11 @@
           <option value="Thommen Wave x74">Thommen Wave x74</option>
           <option value="F2 Axxis">F2 Axxis</option>
           <option value="Fanatic Lite Boa">Fanatic Lite Boa</option>
-          <option value="other">Other</option>
+          <option value="other" disabled>Other</option>
         </select>
       </div>
 
-      <div id="windsurf-board-other-wrapper" class="field was-hidden hidden">
+      <div id="windsurf-board-other-wrapper" class="field hidden">
         <label></label>
         <input id="windsurf-board-other" type="text" name="windsurf-board-other" class="custom-field" placeholder="Insert custom board">
       </div>
