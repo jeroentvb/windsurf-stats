@@ -12,18 +12,90 @@ input::-webkit-inner-spin-button {
   -moz-osx-font-smoothing: grayscale;
 }
 
-$color-primary: #405FFF;
+%shadow {
+  // border-radius: 2px;
+  // display: inline-block;
+  // height: 300px;
+  // margin: 1rem;
+  // position: relative;
+  // width: 300px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  padding: 16px;
+}
+
+$color-primary: #0076FF;//#405FFF;
 $color-primary-light: #5975FF;
 $color-primary-dark: #1B34B2;
 $color-secondary: #FFD040;
 $color-secondary-dark: #B28909;
 
+$white: rgb(255, 255, 255);
+
+$normal-blue: rgb(0, 122, 255);
+$normal-green: rgb(40, 205, 65);
+$normal-orange: rgb(255, 149, 0);
+$grey: rgb(242, 241, 245);
+$dark-grey: rgb(208, 207, 211);
+$grey-line: rgb(190, 190, 190);
+$text-disabled: rgb(162, 162, 167);
+
 body {
   font-family: sans-serif;
   width: 100%;
+  background-color: $grey; //#C7C7CD;
 
   main {
     padding: 1em;
+  }
+}
+
+header {
+  padding: 1px 16px;
+  background-color: $white;
+  // color: $white;
+  // margin-bottom: 16px;
+  border-bottom: 1px solid $grey-line;
+
+  nav {
+    ul {
+      padding: 0;
+      display: flex;
+      flex-direction: row;
+      list-style-type: none;
+
+      li {
+        font-size: 1.2em;
+        font-weight: 500;
+        align-self: center;
+        &:hover {
+          cursor: default;
+        }
+
+        &:first-child {
+          font-size: 1.5em;
+          font-weight: 600;
+          flex-grow: 1;
+        }
+
+        &:nth-child(-n+2) {
+          margin-right: 32px;
+        }
+
+        &:last-child {
+          margin-left: auto;
+        }
+
+        a {
+          color: rgb(0, 0, 0);
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -35,11 +107,15 @@ fieldset {
   border: none;
   display: flex;
   padding: 0;
+  background-color: $white;
+  margin: 0 -18px;
+  padding: 0 18px;
 
   label {
     margin: 6px 0;
     font-size: 1em;
-    font-weight: 600;
+    // font-weight: 600;
+    width: 30%;
   }
 
   select {
@@ -49,7 +125,7 @@ fieldset {
   }
 
   select, input, textarea {
-    margin-bottom: 32px;
+    // margin-bottom: 32px;
     font-size: 1em;
     &:focus {
       outline: none;
@@ -78,17 +154,47 @@ fieldset {
 
   input[type=number], input[type=text], textarea, select {
     border: none;
-    border-bottom: 1px solid black;
+    // border-bottom: 1px solid $grey-line;
     background-color: transparent;
     border-radius: 0;
-    padding: 6px !important;
-    width: 100%;
+    padding: 16px 18px !important;
+    width: 70%;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid $grey-line;
+    background-color: $white;
+    &.first {
+      border-top: 1px solid $grey-line;
+      margin: 0 -18px;
+      padding: 0 18px;
+      border-bottom: none;
+    }
+    &.second {
+      border-top: 1px solid $grey-line;
+    }
+    &.last {
+      margin: 0 -18px;
+      padding: 0 18px;
+    }
+    &.was-hidden {
+      // border: none;
+    }
+  }
+
+  input[type=text].custom-field {
+    // padding-left: 0 !important;
   }
 
   textarea {
     resize: none;
     border-radius: 4px;
-    border: 1px solid black;
+    border: 1px solid $grey-line;
+    background-color: $white;
+    width: 100%;
   }
 
   select:hover, option:hover, input[type=radio] {
@@ -96,8 +202,16 @@ fieldset {
   }
 }
 
+.seperate {
+  margin-bottom: 32px;
+}
+
+.not-white {
+  background-color: inherit;
+}
+
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 .error {
@@ -113,6 +227,45 @@ fieldset {
 #date-radio, #confirm-radio, #before-after-time-radio {
   label:nth-of-type(2) {
     margin-left: 32px;
+  }
+}
+
+.radio-buttons {
+  #date-radio {
+    padding-top: 10px;
+  }
+
+  #before-after-time-radio {
+    padding-bottom: 10px;
+  }
+
+  input[type=radio] {
+    display: none;
+  }
+
+  label {
+    width: 50%;
+    text-align: center;
+    padding: 6px;
+    margin-left: 0 !important;
+    color: $normal-blue;
+    border: 1px solid $normal-blue;
+    transition: .2s;
+    &:nth-of-type(1) {
+      border-radius: 4px 0 0 4px;
+    }
+    &:nth-of-type(2) {
+      border-radius: 0 4px 4px 0;
+    }
+  }
+
+  input[type=radio]:checked + label {
+    background-color: $normal-blue;
+    color: $white;
+  }
+
+  input[type=radio]:disabled + label {
+    color: $text-disabled;
   }
 }
 

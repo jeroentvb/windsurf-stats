@@ -1,14 +1,21 @@
 @media (min-width: 800px) {
-  main {
+  header {
+    padding: 16px;
+    margin-bottom: 32px;
+  }
+
+  main, .center-content, header {
     display: grid;
     grid-template-columns: 1fr 50% 1fr;
     grid-column-gap: 32px;
 
-    h1, h3 {
+    h1, h3, form, nav {
       grid-column: 2 / 2;
     }
+  }
 
-    form {
+  .center-content {
+    * {
       grid-column: 2 / 2;
     }
   }
@@ -38,7 +45,7 @@
 }
 
 @media (min-width: 1600px) {
-  main {
+  main, .center-content, header {
     grid-template-columns: 1fr 40% 1fr;
   }
 }

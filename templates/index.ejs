@@ -1,33 +1,23 @@
-<%- include('head', {page: page}) %>
+<%- include('head', {page: page, loginStatus: loginStatus}) %>
 
 <main id="main-form">
   <h1>Input windsurf data</h1>
 
   <form action="/submit-data" method="post">
-    <fieldset>
-      <div id="date-radio">
-        <label for="today">Today</label>
+    <fieldset class="seperate radio-buttons">
+      <div id="date-radio" class="field first">
         <input id="today" type="radio" name="date" value="today" checked>
-        <label for="other-day">Other</label>
+        <label for="today" class="radio">Today</label>
         <input id="other-day" type="radio" name="date" value="other" disabled>
+        <label for="other-day" class="radio">Other</label>
       </div>
 
-      <div id="before-after-time-radio">
-        <label for="before">Before 18:00h</label>
+      <div id="before-after-time-radio" class="field last">
         <input id="before" type="radio" name="time" value="before" checked>
-        <label for="after">After 18:00h</label>
+        <label for="before" class="radio">Before 18:00h</label>
         <input id="after" type="radio" name="time" value="after">
+        <label for="after" class="radio">After 18:00h</label>
       </div>
-
-      <label for="spot-other">Spot</label>
-      <select id="spot" name="spot">
-        <option value="schellinkhout" selected="selected">Schellinhout</option>
-        <option value="hondehemeltje">Hondehemeltje</option>
-        <option value="andijk">Andijk</option>
-        <option value="onderijk" disabled>Onderdijk</option>
-        <option value="other" disabled>Other</option>
-      </select>
-      <input id="spot-other" type="text" name="spot-other" class="hidden" placeholder="Insert custom spot">
     </fieldset>
 
     <fieldset id="additional-stats" class="hidden">
@@ -40,39 +30,72 @@
     </fieldset>
 
     <fieldset>
-      <label  for="windsurf-sail-size-other">Sail size</label>
-      <select id="windsurf-sail-size" name="sailSize">
-        <option value="3,5">3,5</option>
-        <option value="4,2">4,2</option>
-        <option value="4,7">4,7</option>
-        <option value="5" selected="selected">5</option>
-        <option value="6">6</option>
-        <option value="other" disabled>Other</option>
-      </select>
-      <input id="windsurf-sail-size-other" type="number" name="sailSizeOther" class="hidden" placeholder="Insert custom sail size" max="10" min="1">
-
-      <label for="windsurf-board-other">Board</label>
-      <select id="windsurf-board" name="windsurfBoard">
-        <option value="F2 Stoke" selected="selected">F2 Stoke</option>
-        <option value="Thommen Wave x74">Thommen Wave x74</option>
-        <option value="F2 Axxis">F2 Axxis</option>
-        <option value="Fanatic Lite Boa">Fanatic Lite Boa</option>
-        <option value="other" disabled>Other</option>
-      </select>
-      <input id="windsurf-board-other" type="text" name="windsurf-board-other" class="hidden" placeholder="Insert custom board">
+      <div class="field first">
+        <label for="spot-other">Spot</label>
+        <select id="spot" name="spot">
+          <option value="schellinkhout" selected="selected">Schellinhout</option>
+          <option value="hondehemeltje">Hondehemeltje</option>
+          <option value="andijk">Andijk</option>
+          <option value="onderijk" disabled>Onderdijk</option>
+          <option value="other" >Other</option>
+        </select>
+      </div>
+      <div id="spot-other-wrapper" class="field was-hidden hidden">
+        <label></label>
+        <input id="spot-other" type="text" name="spot-other" class="custom-field" placeholder="Insert custom spot">
+      </div>
     </fieldset>
 
     <fieldset>
-      <label for="rating">Rating</label>
-      <input id="rating" type="number" name="rating" min="1" max="10" step="0.5">
+      <div class="field second">
+        <label  for="windsurf-sail-size-other">Sail size</label>
+        <select id="windsurf-sail-size" name="sailSize">
+          <option value="3,5">3,5</option>
+          <option value="4,2">4,2</option>
+          <option value="4,7">4,7</option>
+          <option value="5" selected="selected">5</option>
+          <option value="6">6</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
 
+      <div id="windsurf-sail-size-other-wrapper" class="field was-hidden hidden">
+        <label></label>
+        <input id="windsurf-sail-size-other" type="number" name="sailSizeOther" class="custom-field" placeholder="Insert custom sail size" max="10" min="1">
+      </div>
+
+      <div class="field">
+        <label for="windsurf-board-other">Board</label>
+        <select id="windsurf-board" name="windsurfBoard">
+          <option value="F2 Stoke" selected="selected">F2 Stoke</option>
+          <option value="Thommen Wave x74">Thommen Wave x74</option>
+          <option value="F2 Axxis">F2 Axxis</option>
+          <option value="Fanatic Lite Boa">Fanatic Lite Boa</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div id="windsurf-board-other-wrapper" class="field was-hidden hidden">
+        <label></label>
+        <input id="windsurf-board-other" type="text" name="windsurf-board-other" class="custom-field" placeholder="Insert custom board">
+      </div>
+    </fieldset>
+
+    <fieldset class="seperate">
+      <div class="field last">
+        <label for="rating">Rating</label>
+        <input id="rating" type="number" name="rating" min="1" max="10" step="0.5" placeholder="6.5">
+      </div>
+    </fieldset>
+
+    <fieldset class="seperate not-white">
       <label for="note">Note</label>
       <textarea id="note" name="note" rows="5" cols="80"></textarea>
     </fieldset>
 
     <p id="error-message"></p>
 
-    <fieldset>
+    <fieldset class="seperate not-white">
       <input type="submit" name="submit" id="submit-form">
     </fieldset>
   </form>

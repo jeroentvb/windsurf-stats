@@ -13,12 +13,12 @@ if (document.getElementById('submit-form') != undefined) {
   })
 
   // Function for showing other options
-  function hideShowOther(select, otherInput) {
+  function hideShowOther(select, otherInput, wrap) {
     select.addEventListener('change', function() {
       if (select.value == 'other') {
-        otherInput.classList.remove('hidden')
+        wrap.classList.remove('hidden')
       } else {
-        otherInput.classList.add('hidden')
+        wrap.classList.add('hidden')
       }
     })
   }
@@ -26,20 +26,24 @@ if (document.getElementById('submit-form') != undefined) {
   // Choosing other spot
   var spot = document.getElementById('spot')
   var otherSpot = document.getElementById('spot-other')
+  var otherSpotWrap = document.getElementById('spot-other-wrapper')
 
-  hideShowOther(spot, otherSpot)
+
+  hideShowOther(spot, otherSpot, otherSpotWrap)
 
   // Choosing other sail size
   var sailSize = document.getElementById('windsurf-sail-size')
   var otherSailSize = document.getElementById('windsurf-sail-size-other')
+  var otherSailSizeWrap = document.getElementById('windsurf-sail-size-other-wrapper')
 
-  hideShowOther(sailSize, otherSailSize)
+  hideShowOther(sailSize, otherSailSize, otherSailSizeWrap)
 
   // Choosing other board
   var windsurfBoard = document.getElementById('windsurf-board')
-  var otherWindsurfBoard= document.getElementById('windsurf-board-other')
+  var otherWindsurfBoard = document.getElementById('windsurf-board-other')
+  var otherWindsurfBoardWrap = document.getElementById('windsurf-board-other-wrapper')
 
-  hideShowOther(windsurfBoard, otherWindsurfBoard)
+  hideShowOther(windsurfBoard, otherWindsurfBoard, otherWindsurfBoardWrap)
 
   // Check form before submitting
   var ratingInput = document.getElementById('rating')
