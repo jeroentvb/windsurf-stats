@@ -50,7 +50,7 @@
       width: 20%;
     }
 
-    select, input[type=text], input[type=number] {
+    select, input[type=text], input[type=number], input[type=email], input[type=password] {
       background-color: $white;
       border: 1px solid $grey-line;
       padding: 4px !important;

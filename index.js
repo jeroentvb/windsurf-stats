@@ -44,15 +44,19 @@ module.exports = express()
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET
   }))
-  .get('/', index)
+  .get('/', render)
+  .get('/:id', render)
   .post('/submit-data', submitData)
   .post('/confirm-submit', confirmedData)
   .use(notFound)
   .listen(options.port, () => console.log(chalk.green(`[Server] listening on port ${options.port}...`)))
 
-function index(req, res) {
-  res.render('index', {
-    page: 'Home'
+function render(req, res) {
+  var id = req.params.id
+
+  res.render(id, {
+    page: id,
+    loginStatus: 'logged-in'
   })
 }
 
@@ -60,6 +64,7 @@ function submitData(req, res) {
   console.log(chalk.yellow('Recieved data submission'))
 
   var date = req.body.date
+  var time = req.body.time
   var spot = req.body.spot
 
   var submittedData = {
@@ -149,12 +154,14 @@ function submitData(req, res) {
       // exportData('responses', responses)
 
       var allData = {...submittedData, ...responses}
+      // exportData('all', allData)
 
       req.session.data = allData
 
       res.render('confirm-data', {
         page: 'Confirm submission',
-        data: allData
+        data: allData,
+        loginStatus: 'logged-in'
       })
     }
   })
@@ -201,6 +208,10 @@ function spliceToDayHours(array) {
   array.splice(48, 10)
 }
 
+function register(req, res) {
+
+}
+
 function notFound(req, res) {
   res.status(404).render('error', {
     page: 'Error 404',
@@ -222,7 +233,7 @@ function notFound(req, res) {
 // }
 
 // // create statistics table in db
-// function addTable(req, res) {
+function addTable(req, res) {
 //   var sql = 'CREATE TABLE IF NOT EXISTS windsurf_statistics.statistics(id int NOT NULL AUTO_INCREMENT, date DATE, spot VARCHAR(100), windspeed INT, windgust INT, wind_direction VARCHAR(30), sail_size FLOAT, board VARCHAR(30), rating FLOAT, note VARCHAR(255), PRIMARY KEY (id))'
 //   db.query(sql, function(err, result) {
 //     if(err) {
@@ -236,9 +247,18 @@ function notFound(req, res) {
 //           throw err
 //         } else {
 //           console.log(chalk.yellow(result))
-//           res.send('Statistics & users table created created')
+
+            var sql3 = ''
+            db.query(sql3, function(err, results) {
+              if(err) {
+                throw err
+              } else {
+                console.log(chalk.yellow(result))
+                res.send('Statistics & users table created & joined')
+              }
+            })
 //         }
 //       })
 //     }
 //   })
-// }
+}

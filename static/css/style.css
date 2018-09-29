@@ -380,7 +380,7 @@ fieldset {
     fieldset input[type=submit]:hover {
       background-color: #1B34B2;
       cursor: pointer; }
-  fieldset input[type=number], fieldset input[type=text], fieldset textarea, fieldset select {
+  fieldset input[type=number], fieldset input[type=text], fieldset input[type=email], fieldset input[type=password], fieldset textarea, fieldset select {
     border: none;
     background-color: transparent;
     border-radius: 0;
@@ -511,13 +511,13 @@ article.seperate {
     background-color: inherit; }
     fieldset label {
       width: 20%; }
-    fieldset select, fieldset input[type=text], fieldset input[type=number] {
+    fieldset select, fieldset input[type=text], fieldset input[type=number], fieldset input[type=email], fieldset input[type=password] {
       background-color: white;
       border: 1px solid #bebebe;
       padding: 4px !important;
       width: 80%;
       border-radius: 4px; }
-      fieldset select:focus, fieldset input[type=text]:focus, fieldset input[type=number]:focus {
+      fieldset select:focus, fieldset input[type=text]:focus, fieldset input[type=number]:focus, fieldset input[type=email]:focus, fieldset input[type=password]:focus {
         outline: 1px solid #007aff; }
     fieldset textarea:focus {
       outline: 1px solid #007aff; }

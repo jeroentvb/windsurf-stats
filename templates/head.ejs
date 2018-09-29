@@ -11,3 +11,18 @@
   </head>
 
   <body>
+    <% if (page != 'Error 404') { %>
+      <header>
+        <nav>
+          <ul>
+            <li><%= page %></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <% if (loginStatus == 'logged-in') { %>
+              <li><a href="/login">Log in</a></li>
+            <% } else { %>
+              <li><a href="/logout">Log out</a></li>
+            <% } %>
+          </ul>
+        </nav>
+      </header>
+    <% } %>

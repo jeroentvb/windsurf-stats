@@ -23,7 +23,7 @@ input::-webkit-inner-spin-button {
   padding: 16px;
 }
 
-$color-primary: #0076FF;//#405FFF;
+$color-primary: #0076FF; //#405FFF;
 $color-primary-light: #5975FF;
 $color-primary-dark: #1B34B2;
 $color-secondary: #FFD040;
@@ -154,7 +154,7 @@ fieldset {
     }
   }
 
-  input[type=number], input[type=text], textarea, select {
+  input[type=number], input[type=text], input[type=email], input[type=password], textarea, select {
     border: none;
     // border-bottom: 1px solid $grey-line;
     background-color: transparent;
