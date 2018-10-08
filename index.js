@@ -35,7 +35,7 @@ module.exports = express()
   .use(express.static('static'))
   .use(bodyParser.urlencoded({extended: true}))
   .use(session({
-    store: new FileStore(options),
+    store: new FileStore,
     resave: false,
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET
@@ -45,7 +45,7 @@ module.exports = express()
   .post('/submit-data', submitData)
   .post('/confirm-submit', confirmedData)
   .use(notFound)
-  .listen(process.env.PORT, () => console.log(chalk.green(`[Server] listening on port ${options.port}...`)))
+  .listen(process.env.PORT, () => console.log(chalk.green(`[Server] listening on port ${process.env.PORT}...`)))
 
 function render(req, res) {
   var id = req.params.id
