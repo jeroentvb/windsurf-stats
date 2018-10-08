@@ -3,7 +3,7 @@
 <main>
   <h1>Register</h1>
 
-  <form action="/sign-up" method="post">
+  <form action="/sign-up" method="post" id="register-form">
     <fieldset class="seperate">
       <div class="field first">
         <label for="username">Username</label>
@@ -15,18 +15,25 @@
         <input id="email" type="email" name="email" placeholder="john@example.com" required>
       </div>
 
-      <div class="field last">
+      <div class="field">
         <label for="password">Password</label>
         <input id="password" type="password" name="password" placeholder="" min="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+      </div>
+
+      <div class="field last">
+        <label for="password">Repeat password</label>
+        <input id="repeat-password" type="password" name="repeat-password" placeholder="" min="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
       </div>
     </fieldset>
 
     <p class="seperate">Password needs to be at least 8 characters, contain 1 uppercase letter and 1 number</p>
 
     <fieldset class="seperate not-white">
-      <input type="submit" name="submit">
+      <input type="submit" name="submit" id="submit">
     </fieldset>
   </form>
 </main>
+
+<script src="js/register.js"></script>
 
 <% include tail %>

@@ -6,6 +6,7 @@ const mysql = require('mysql')
 const cheerio = require('cheerio')
 const chalk = require('chalk')
 const bodyParser = require('body-parser')
+const bcrypt = require('bcrypt')
 const fs = require('fs')
 
 require('dotenv').config()
@@ -26,6 +27,11 @@ db.connect(function(err) {
   }
 })
 
+var options = {
+  port: 25561,
+  saltRounds: 10
+}
+
 module.exports = express()
   // .get('/createdb', createDb)
   // .get('/addtable', addTable)
@@ -41,14 +47,25 @@ module.exports = express()
     secret: process.env.SESSION_SECRET
   }))
   .get('/', index)
+  .get('/register', render)
+  .post('/sign-up', register)
   .post('/submit-data', submitData)
   .post('/confirm-submit', confirmedData)
   .use(notFound)
-  .listen(process.env.PORT, () => console.log(chalk.green(`[Server] listening on port ${process.env.PORT}...`)))
+  .listen(options.port, () => console.log(chalk.green(`[Server] listening on port ${options.port}...`)))
 
 function index(req, res) {
   res.render('submit-stats', {
     page: 'Home',
+    loginStatus: 'logged-in'
+  })
+}
+
+function render(req, res) {
+  var id = req.originalUrl.replace('/', '')
+
+  res.render(id, {
+    page: id,
     loginStatus: 'logged-in'
   })
 }
@@ -177,6 +194,39 @@ function confirmedData(req, res) {
   }
 }
 
+function register(req, res, next) {
+  var username = req.body.username
+  var email = req.body.email
+  var password = req.body.password
+
+  if (!username || !email || !password) {
+    res.status(400).send('Name, e-mail or password are missing!')
+  }
+
+  bcrypt.hash(password, options.saltRounds, function (err, hash) {
+    if (err) {
+      throw err
+    } else {
+      db.query('INSERT INTO windsurf_statistics.users SET ?', {
+        username: username,
+        email: email,
+        password: hash
+      }, function (err, data) {
+        if (err) {
+          next(err)
+        } else {
+          req.session.user = {
+            name: username,
+            email: email
+          }
+
+          res.redirect('/')
+        }
+      })
+    }
+  })
+}
+
 // For debugging
 function exportData(name, jsonObject) {
   fs.writeFile(name + '-offline-data.json', JSON.stringify(jsonObject, null, 4), function(err) {
@@ -221,10 +271,6 @@ function spliceToDayHours(array) {
   array.splice(32, 8)
   // Remove last hour of day 3 (23h)
   array.splice(48, 10)
-}
-
-function register(req, res) {
-
 }
 
 function notFound(req, res) {
