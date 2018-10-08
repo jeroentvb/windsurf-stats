@@ -40,18 +40,15 @@ module.exports = express()
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET
   }))
-  .get('/', render)
-  .get('/:id', render)
+  .get('/', index)
   .post('/submit-data', submitData)
   .post('/confirm-submit', confirmedData)
   .use(notFound)
   .listen(process.env.PORT, () => console.log(chalk.green(`[Server] listening on port ${process.env.PORT}...`)))
 
-function render(req, res) {
-  var id = req.params.id
-
-  res.render(id, {
-    page: id,
+function index(req, res) {
+  res.render('submit-stats', {
+    page: 'Home',
     loginStatus: 'logged-in'
   })
 }
@@ -70,97 +67,103 @@ function submitData(req, res) {
     note: req.body.note
   }
 
-  var spotUrls = {
-    schellinkhout: 'https://www.windfinder.com/weatherforecast/markermeer_schellinkhout',
-    hondehemeltje: 'https://www.windfinder.com/weatherforecast/broekerhaven',
-    andijk: 'https://www.windfinder.com/weatherforecast/jachthaven-stichting-andijk',
-  }
+  if (date == 'today') {
+    submittedData.date = getToday()
 
-  var windfinder = {
-    time: new Array,
-    windspeed: new Array,
-    windgust: new Array,
-    winddirection: new Array
-  }
-
-  var responses = {
-    spot: '',
-    time: '',
-    windspeed: Number,
-    windgust: Number,
-    winddirection: '',
-    index: Number
-  }
-
-  request(spotUrls[spot], function(error, response, html) {
-    if(error) {
-      res.render('error', {
-        page: 'error',
-        error: error
-      })
-      throw error
-    } else {
-      var $ = cheerio.load(html)
-
-      // Get the spots name
-      $('#spotheader-spotname').filter(function() {
-        responses.spot = $(this).text()
-      })
-
-      // Get the time
-      $('.data-time').find($('.value')).filter(function(i) {
-        // console.log($(this).text())
-        windfinder.time[i] = $(this).text()
-      })
-      spliceToFirstDay(windfinder.time)
-
-      // Get the average wind speed
-      $('.data--major').find($('.units-ws')).filter(function(i) {
-        windfinder.windspeed[i] = $(this).text()
-      })
-      spliceToFirstDay(windfinder.windspeed)
-
-      // Get the wind gusts
-      $('.data-gusts').find($('.units-ws')).filter(function(i) {
-        windfinder.windgust[i] = $(this).text()
-      })
-      spliceToFirstDay(windfinder.windgust)
-
-      // Get the wind direction; do some converting
-      $('.data-direction-arrow').find($('.directionarrow')).filter(function(i) {
-        var data = parseInt($(this).attr('title').replace('°', ' '))// - 180
-        // This can be used to calculate the wind direction in wind direction instead of angles
-        var val = Math.floor((data / 22.5) + 0.5)
-        var windDirections = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
-        windfinder.winddirection[i] = windDirections[(val % 16)]
-        // windfinder.winddirection[i] = data
-      })
-      spliceToFirstDay(windfinder.winddirection)
-
-      // Gather all the data that's going to be used
-      responses.windspeed =  Math.max(...windfinder.windspeed)
-      responses.index = windfinder.windspeed.findIndex(function(el) {
-        return el == responses.windspeed
-      })
-      responses.time = windfinder.time[responses.index]
-      responses.windgust = windfinder.windgust[responses.index]
-      responses.winddirection = windfinder.winddirection[responses.index]
-
-      // exportData('windfinder', windfinder)
-      // exportData('responses', responses)
-
-      var allData = {...submittedData, ...responses}
-      // exportData('all', allData)
-
-      req.session.data = allData
-
-      res.render('confirm-data', {
-        page: 'Confirm submission',
-        data: allData,
-        loginStatus: 'logged-in'
-      })
+    var spotUrls = {
+      schellinkhout: 'https://www.windfinder.com/weatherforecast/markermeer_schellinkhout',
+      hondehemeltje: 'https://www.windfinder.com/weatherforecast/broekerhaven',
+      andijk: 'https://www.windfinder.com/weatherforecast/jachthaven-stichting-andijk',
     }
-  })
+
+    var windfinder = {
+      time: new Array,
+      windspeed: new Array,
+      windgust: new Array,
+      winddirection: new Array
+    }
+
+    var responses = {
+      spot: '',
+      time: '',
+      windspeed: Number,
+      windgust: Number,
+      winddirection: '',
+      index: Number
+    }
+
+    request(spotUrls[spot], function(error, response, html) {
+      if(error) {
+        res.render('error', {
+          page: 'error',
+          error: error
+        })
+        throw error
+      } else {
+        var $ = cheerio.load(html)
+
+        // Get the spots name
+        $('#spotheader-spotname').filter(function() {
+          responses.spot = $(this).text()
+        })
+
+        // Get the time
+        $('.data-time').find($('.value')).filter(function(i) {
+          // console.log($(this).text())
+          windfinder.time[i] = $(this).text()
+        })
+        spliceToFirstDay(windfinder.time)
+
+        // Get the average wind speed
+        $('.data--major').find($('.units-ws')).filter(function(i) {
+          windfinder.windspeed[i] = $(this).text()
+        })
+        spliceToFirstDay(windfinder.windspeed)
+
+        // Get the wind gusts
+        $('.data-gusts').find($('.units-ws')).filter(function(i) {
+          windfinder.windgust[i] = $(this).text()
+        })
+        spliceToFirstDay(windfinder.windgust)
+
+        // Get the wind direction; do some converting
+        $('.data-direction-arrow').find($('.directionarrow')).filter(function(i) {
+          var data = parseInt($(this).attr('title').replace('°', ' '))// - 180
+          // This can be used to calculate the wind direction in wind direction instead of angles
+          var val = Math.floor((data / 22.5) + 0.5)
+          var windDirections = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+          windfinder.winddirection[i] = windDirections[(val % 16)]
+          // windfinder.winddirection[i] = data
+        })
+        spliceToFirstDay(windfinder.winddirection)
+
+        // Gather all the data that's going to be used
+        responses.windspeed =  Math.max(...windfinder.windspeed)
+        responses.index = windfinder.windspeed.findIndex(function(el) {
+          return el == responses.windspeed
+        })
+        responses.time = windfinder.time[responses.index]
+        responses.windgust = windfinder.windgust[responses.index]
+        responses.winddirection = windfinder.winddirection[responses.index]
+
+        // exportData('windfinder', windfinder)
+        // exportData('responses', responses)
+
+        var allData = {...submittedData, ...responses}
+        // exportData('all', allData)
+
+        req.session.data = allData
+
+        res.render('confirm-data', {
+          page: 'Confirm submission',
+          data: allData,
+          loginStatus: 'logged-in'
+        })
+      }
+    })
+  } else {
+    // Do stuff with the date & data that was submitted manually
+  }
 }
 
 function confirmedData(req, res) {
@@ -184,6 +187,22 @@ function exportData(name, jsonObject) {
     }
   })
   return
+}
+
+function getToday() {
+  var today = new Date()
+  var dd = today.getDate()
+  var mm = today.getMonth() + 1
+  var yyyy = today.getFullYear()
+
+  if (dd < 10) {
+    dd = `0${dd}`
+  }
+  if (mm < 10) {
+    mm = `0${mm}`
+  }
+
+  return `${dd}-${mm}-${yyyy}`
 }
 
 function spliceToFirstDay(array) {
