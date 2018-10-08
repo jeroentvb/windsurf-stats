@@ -26,10 +26,6 @@ db.connect(function(err) {
   }
 })
 
-var options = {
-  port: 25561
-}
-
 module.exports = express()
   // .get('/createdb', createDb)
   // .get('/addtable', addTable)
@@ -49,7 +45,7 @@ module.exports = express()
   .post('/submit-data', submitData)
   .post('/confirm-submit', confirmedData)
   .use(notFound)
-  .listen(options.port, () => console.log(chalk.green(`[Server] listening on port ${options.port}...`)))
+  .listen(process.env.PORT, () => console.log(chalk.green(`[Server] listening on port ${options.port}...`)))
 
 function render(req, res) {
   var id = req.params.id
