@@ -1,0 +1,25 @@
+<%- include('head', {page: page}) %>
+
+<main>
+  <h1>Log in</h1>
+
+  <form id="login" action="/sign-in" method="post">
+    <fieldset class="seperate">
+      <div class="field first">
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username">
+      </div>
+
+      <div class="field second last">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+      </div>
+    </fieldset>
+
+    <fieldset class="seperate not-white">
+      <input type="submit" name="submit" id="submit">
+    </fieldset>
+  </form>
+</main>
+
+<% include tail %>
