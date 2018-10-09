@@ -279,6 +279,10 @@ fieldset {
   input[type=radio]:disabled + label {
     color: $text-disabled;
   }
+
+  input[type=radio] + label:hover {
+    cursor: pointer;
+  }
 }
 
 @import 'confirm-submission';

@@ -462,6 +462,8 @@ fieldset {
   color: white; }
 .radio-buttons input[type=radio]:disabled + label {
   color: #a2a2a7; }
+.radio-buttons input[type=radio] + label:hover {
+  cursor: pointer; }
 
 article.seperate {
   background-color: white;
