@@ -48,7 +48,9 @@ module.exports = express()
   }))
   .get('/', index)
   .get('/register', render)
+  .get('/login', render)
   .post('/sign-up', register)
+  .post('/sign-in', login)
   .post('/submit-data', submitData)
   .post('/confirm-submit', confirmedData)
   .use(notFound)
@@ -56,8 +58,7 @@ module.exports = express()
 
 function index(req, res) {
   res.render('submit-stats', {
-    page: 'Home',
-    loginStatus: 'logged-in'
+    page: 'Home'
   })
 }
 
@@ -65,8 +66,7 @@ function render(req, res) {
   var id = req.originalUrl.replace('/', '')
 
   res.render(id, {
-    page: id,
-    loginStatus: 'logged-in'
+    page: id
   })
 }
 
@@ -173,8 +173,7 @@ function submitData(req, res) {
 
         res.render('confirm-data', {
           page: 'Confirm submission',
-          data: allData,
-          loginStatus: 'logged-in'
+          data: allData
         })
       }
     })
@@ -227,16 +226,8 @@ function register(req, res, next) {
   })
 }
 
-// For debugging
-function exportData(name, jsonObject) {
-  fs.writeFile(name + '-offline-data.json', JSON.stringify(jsonObject, null, 4), function(err) {
-    if (err) {
-      throw err
-    } else {
-      console.log(chalk.yellow('File written'))
-    }
-  })
-  return
+function login(req, res, next) {
+
 }
 
 function getToday() {
@@ -254,6 +245,19 @@ function getToday() {
 
   return `${dd}-${mm}-${yyyy}`
 }
+
+// For debugging
+function exportData(name, jsonObject) {
+  fs.writeFile(name + '-offline-data.json', JSON.stringify(jsonObject, null, 4), function(err) {
+    if (err) {
+      throw err
+    } else {
+      console.log(chalk.yellow('File written'))
+    }
+  })
+  return
+}
+
 
 function spliceToFirstDay(array) {
   // Remove the first 7 hours
