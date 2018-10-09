@@ -51,6 +51,7 @@ module.exports = express()
   .get('/login', render)
   .post('/sign-up', register)
   .post('/sign-in', login)
+  .get('/sign-out', logout)
   .post('/submit-data', submitData)
   .post('/confirm-submit', confirmedData)
   .use(notFound)
@@ -58,15 +59,19 @@ module.exports = express()
 
 function index(req, res) {
   res.render('submit-stats', {
-    page: 'Home'
+    page: 'Home',
+    loginStatus: req.session.user
   })
 }
 
 function render(req, res) {
   var id = req.originalUrl.replace('/', '')
 
+  console.log(req.session.user)
+
   res.render(id, {
-    page: id
+    page: id,
+    loginStatus: req.session.user
   })
 }
 
@@ -173,7 +178,8 @@ function submitData(req, res) {
 
         res.render('confirm-data', {
           page: 'Confirm submission',
-          data: allData
+          data: allData,
+          loginStatus: req.session.user
         })
       }
     })
@@ -227,7 +233,60 @@ function register(req, res, next) {
 }
 
 function login(req, res, next) {
+  var email = req.body.email
+  var password = req.body.password
 
+  if (!email || !password) {
+    res.status(400).send('Username or password is missing!')
+  }
+
+  db.query('SELECT * FROM windsurf_statistics.users WHERE email = ?', email, function(err, data) {
+    var user = data && data[0]
+
+    if (err) {
+      next(err)
+    } else if (user) {
+      bcrypt.compare(password, user.password).then(onverify, next)
+    } else {
+      res.status(401).render('error', {
+        page: 'Error',
+        error: 'E-mail does not exist.'
+      })
+    }
+
+    function onverify(match) {
+      if (match) {
+        req.session.user = {
+          name: user.username,
+          email:email
+        }
+
+        res.redirect('/')
+      } else {
+        res.status(401).render('error', {
+          page: 'Error',
+          error: 'Incorrect password.'
+        })
+      }
+    }
+  })
+}
+
+function logout(req, res, next) {
+  req.session.destroy(function(err) {
+    if (err) {
+      next(err)
+    } else {
+      res.redirect('/')
+    }
+  })
+}
+
+function spliceToFirstDay(array) {
+  // Remove the first 7 hours
+  array.splice(0, 9)
+  // Remove other days
+  array.splice(12, 60)
 }
 
 function getToday() {
@@ -244,26 +303,6 @@ function getToday() {
   }
 
   return `${dd}-${mm}-${yyyy}`
-}
-
-// For debugging
-function exportData(name, jsonObject) {
-  fs.writeFile(name + '-offline-data.json', JSON.stringify(jsonObject, null, 4), function(err) {
-    if (err) {
-      throw err
-    } else {
-      console.log(chalk.yellow('File written'))
-    }
-  })
-  return
-}
-
-
-function spliceToFirstDay(array) {
-  // Remove the first 7 hours
-  array.splice(0, 9)
-  // Remove other days
-  array.splice(12, 60)
 }
 
 function spliceToDayHours(array) {

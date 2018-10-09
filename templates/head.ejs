@@ -17,6 +17,11 @@
           <ul>
             <li><%= page %></li>
             <li><a href="/dashboard">Dashboard</a></li>
+            <% if (!loginStatus) { %>
+              <li><a href="/login">Log in</a></li>
+            <% } else { %>
+              <li><a href="/sign-out">Log out</a></li>
+            <% } %>
           </ul>
         </nav>
       </header>
