@@ -1,13 +1,13 @@
 {
   "name": "windsurf-stats",
   "version": "1.0.0",
-  "description": "",
+  "description": "A web interface to keep track of windsurf session statistics",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "jeroentvb",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.1",
@@ -19,8 +19,10 @@
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "mysql": "^2.16.0",
-    "nodemon": "^1.18.4",
     "request": "^2.88.0",
     "session-file-store": "^1.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4"
   }
 }
