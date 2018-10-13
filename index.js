@@ -34,7 +34,7 @@ var options = {
 
 module.exports = express()
   // .get('/createdb', createDb)
-  // .get('/addtable', addTable)
+  .get('/addtable', addTable)
 
   .set('view engine', 'ejs')
   .set('views', 'templates')
@@ -70,7 +70,7 @@ function render(req, res) {
   console.log(req.session.user)
 
   res.render(id, {
-    page: id,
+    page: id.charAt(0).toUpperCase() + id.substr(1),
     loginStatus: req.session.user
   })
 }
@@ -102,7 +102,7 @@ function submitData(req, res) {
       time: new Array,
       windspeed: new Array,
       windgust: new Array,
-      winddirection: new Array
+      windDirection: new Array
     }
 
     var responses = {
@@ -110,7 +110,7 @@ function submitData(req, res) {
       time: '',
       windspeed: Number,
       windgust: Number,
-      winddirection: '',
+      windDirection: '',
       index: Number
     }
 
@@ -154,10 +154,10 @@ function submitData(req, res) {
           // This can be used to calculate the wind direction in wind direction instead of angles
           var val = Math.floor((data / 22.5) + 0.5)
           var windDirections = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
-          windfinder.winddirection[i] = windDirections[(val % 16)]
-          // windfinder.winddirection[i] = data
+          windfinder.windDirection[i] = windDirections[(val % 16)]
+          // windfinder.windDirection[i] = data
         })
-        spliceToFirstDay(windfinder.winddirection)
+        spliceToFirstDay(windfinder.windDirection)
 
         // Gather all the data that's going to be used
         responses.windspeed =  Math.max(...windfinder.windspeed)
@@ -166,7 +166,7 @@ function submitData(req, res) {
         })
         responses.time = windfinder.time[responses.index]
         responses.windgust = windfinder.windgust[responses.index]
-        responses.winddirection = windfinder.winddirection[responses.index]
+        responses.windDirection = windfinder.windDirection[responses.index]
 
         // exportData('windfinder', windfinder)
         // exportData('responses', responses)
@@ -174,7 +174,7 @@ function submitData(req, res) {
         var allData = {...submittedData, ...responses}
         // exportData('all', allData)
 
-        req.session.data = allData
+        req.session.user.data = allData
 
         res.render('confirm-data', {
           page: 'Confirm submission',
@@ -188,14 +188,52 @@ function submitData(req, res) {
   }
 }
 
-function confirmedData(req, res) {
+function confirmedData(req, res, next) {
   var checkCorrect = req.body.confirmData
 
   if (checkCorrect == 'incorrect') {
-    req.session.data = {}
+    req.session.user.data = {}
     res.redirect('/')
   } else {
     // create a query to store data in the db
+    console.log(req.session.user.data)
+    db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', req.session.user.email, function (err, result) {
+      if (err) {
+        next(err)
+      } else {
+        console.log(req.session.user.sail)
+        var userId = result[0].id
+        if (req.session.user.data.board != null) {
+          db.query('INSERT INTO windsurfStatistics.statistics SET ?', {
+            userId: userId,
+            date: req.session.user.data.date,
+            spot: req.session.user.data.spot,
+            windspeed: req.session.user.data.windspeed,
+            windgust: req.session.user.data.windgust,
+            windDirection: req.session.user.data.windDirection,
+            sailSize: req.session.user.data.sail,
+            board: req.session.user.data.board,
+            rating: req.session.user.data.rating,
+            note: req.session.user.data.note
+          }, function (err, result) {
+            if (err) {
+              next(err)
+            } else {
+              req.session.user.data = {}
+              console.log(req.session.user.data)
+
+              res.redirect('/')
+            }
+          })
+        } else {
+          req.session.user
+          res.render('submit-stats', {
+            page: 'Submit stats',
+            loginStatus: req.session.user
+          })
+        }
+      }
+    })
   }
 }
 
@@ -212,7 +250,7 @@ function register(req, res, next) {
     if (err) {
       throw err
     } else {
-      db.query('INSERT INTO windsurf_statistics.users SET ?', {
+      db.query('INSERT INTO windsurfStatistics.users SET ?', {
         username: username,
         email: email,
         password: hash
@@ -240,7 +278,7 @@ function login(req, res, next) {
     res.status(400).send('Username or password is missing!')
   }
 
-  db.query('SELECT * FROM windsurf_statistics.users WHERE email = ?', email, function(err, data) {
+  db.query('SELECT * FROM windsurfStatistics.users WHERE email = ?', email, function(err, data) {
     var user = data && data[0]
 
     if (err) {
@@ -325,7 +363,7 @@ function notFound(req, res) {
 
 // // create database
 // function createDb(req, res) {
-//   var sql = 'CREATE DATABASE windsurf_statistics'
+//   var sql = 'CREATE DATABASE windsurfStatistics'
 //   db.query(sql, function(err, result) {
 //     if(err){
 //       throw err
@@ -338,31 +376,23 @@ function notFound(req, res) {
 
 // // create statistics table in db
 function addTable(req, res) {
-//   var sql = 'CREATE TABLE IF NOT EXISTS windsurf_statistics.statistics(id int NOT NULL AUTO_INCREMENT, date DATE, spot VARCHAR(100), windspeed INT, windgust INT, wind_direction VARCHAR(30), sail_size FLOAT, board VARCHAR(30), rating FLOAT, note VARCHAR(255), PRIMARY KEY (id))'
-//   db.query(sql, function(err, result) {
-//     if(err) {
-//       throw err
-//     } else {
-//       console.log(chalk.yellow(result))
-//
-//       var sql2 = 'CREATE TABLE IF NOT EXISTS windsurf_statistics.users(id int NOT NULL AUTO_INCREMENT, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255), PRIMARY KEY(id))'
-//       db.query(sql2, function(err, result) {
-//         if(err) {
-//           throw err
-//         } else {
-//           console.log(chalk.yellow(result))
+  var sql = 'CREATE TABLE IF NOT EXISTS windsurfStatistics.statistics(statisticId int NOT NULL AUTO_INCREMENT, userID INT, date VARCHAR(10), spot VARCHAR(100), windspeed INT, windgust INT, windDirection VARCHAR(30), sailSize FLOAT, board VARCHAR(30), rating FLOAT, note VARCHAR(255), PRIMARY KEY (statisticId))'
+  db.query(sql, function(err, result) {
+    if(err) {
+      throw err
+    } else {
+      console.log(chalk.yellow(result))
 
-            var sql3 = ''
-            db.query(sql3, function(err, results) {
-              if(err) {
-                throw err
-              } else {
-                console.log(chalk.yellow(result))
-                res.send('Statistics & users table created & joined')
-              }
-            })
-//         }
-//       })
-//     }
-//   })
+      var sql2 = 'CREATE TABLE IF NOT EXISTS windsurfStatistics.users(id int NOT NULL AUTO_INCREMENT, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255), PRIMARY KEY(id))'
+      db.query(sql2, function(err, result) {
+        if(err) {
+          throw err
+        } else {
+          console.log(chalk.yellow(result))
+
+          res.send('Tables created succesfully')
+        }
+      })
+    }
+  })
 }
