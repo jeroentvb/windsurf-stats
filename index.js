@@ -8,6 +8,7 @@ const chalk = require('chalk')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
 const fs = require('fs')
+const tools = require('./modules/tools')
 
 require('dotenv').config()
 
@@ -33,8 +34,7 @@ var options = {
 }
 
 module.exports = express()
-  // .get('/createdb', createDb)
-  .get('/addtable', addTable)
+  // .get('/createdb', setupDb)
 
   .set('view engine', 'ejs')
   .set('views', 'templates')
@@ -90,7 +90,7 @@ function submitData(req, res) {
   }
 
   if (date == 'today') {
-    submittedData.date = getToday()
+    submittedData.date = tools.getToday()
 
     var spotUrls = {
       schellinkhout: 'https://www.windfinder.com/weatherforecast/markermeer_schellinkhout',
@@ -134,19 +134,19 @@ function submitData(req, res) {
           // console.log($(this).text())
           windfinder.time[i] = $(this).text()
         })
-        spliceToFirstDay(windfinder.time)
+        tools.spliceToFirstDay(windfinder.time)
 
         // Get the average wind speed
         $('.data--major').find($('.units-ws')).filter(function(i) {
           windfinder.windspeed[i] = $(this).text()
         })
-        spliceToFirstDay(windfinder.windspeed)
+        tools.spliceToFirstDay(windfinder.windspeed)
 
         // Get the wind gusts
         $('.data-gusts').find($('.units-ws')).filter(function(i) {
           windfinder.windgust[i] = $(this).text()
         })
-        spliceToFirstDay(windfinder.windgust)
+        tools.spliceToFirstDay(windfinder.windgust)
 
         // Get the wind direction; do some converting
         $('.data-direction-arrow').find($('.directionarrow')).filter(function(i) {
@@ -157,7 +157,7 @@ function submitData(req, res) {
           windfinder.windDirection[i] = windDirections[(val % 16)]
           // windfinder.windDirection[i] = data
         })
-        spliceToFirstDay(windfinder.windDirection)
+        tools.spliceToFirstDay(windfinder.windDirection)
 
         // Gather all the data that's going to be used
         responses.windspeed =  Math.max(...windfinder.windspeed)
@@ -320,40 +320,6 @@ function logout(req, res, next) {
   })
 }
 
-function spliceToFirstDay(array) {
-  // Remove the first 7 hours
-  array.splice(0, 9)
-  // Remove other days
-  array.splice(12, 60)
-}
-
-function getToday() {
-  var today = new Date()
-  var dd = today.getDate()
-  var mm = today.getMonth() + 1
-  var yyyy = today.getFullYear()
-
-  if (dd < 10) {
-    dd = `0${dd}`
-  }
-  if (mm < 10) {
-    mm = `0${mm}`
-  }
-
-  return `${dd}-${mm}-${yyyy}`
-}
-
-function spliceToDayHours(array) {
-  // Remove the first 7 hours
-  array.splice(0, 7)
-  // Remove the night between day 1 and 2
-  array.splice(16, 8)
-  // Remove the night between day 2 and 3
-  array.splice(32, 8)
-  // Remove last hour of day 3 (23h)
-  array.splice(48, 10)
-}
-
 function notFound(req, res) {
   res.status(404).render('error', {
     page: 'Error 404',
@@ -361,38 +327,33 @@ function notFound(req, res) {
   })
 }
 
-// // create database
-// function createDb(req, res) {
-//   var sql = 'CREATE DATABASE windsurfStatistics'
-//   db.query(sql, function(err, result) {
+// Set up the database
+// function setupDb (req, res) {
+//   db.query('CREATE DATABASE IF NOT EXISTS windsurfStatistics', function(err, result) {
 //     if(err){
 //       throw err
 //     } else {
-//       console.log(chalk.yellow(result))
-//       res.send('Database created')
+//       console.log(chalk.yellow('[MySql] Database created'))
+//
+//       db.query('CREATE TABLE IF NOT EXISTS windsurfStatistics.statistics(statisticId int NOT NULL AUTO_INCREMENT, userID INT, date VARCHAR(10), spot VARCHAR(100), windspeed INT, windgust INT, windDirection VARCHAR(30), sailSize FLOAT, board VARCHAR(30), rating FLOAT, note VARCHAR(255), PRIMARY KEY (statisticId))', function(err, result) {
+//         if(err) {
+//           throw err
+//         } else {
+//           console.log(chalk.yellow('[MySql] Statistics table created'))
+//
+//           db.query('CREATE TABLE IF NOT EXISTS windsurfStatistics.users(id int NOT NULL AUTO_INCREMENT, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255), PRIMARY KEY(id))', function(err, result) {
+//             if(err) {
+//               throw err
+//             } else {
+//               console.log(chalk.yellow('[MySql] Users table created'))
+//
+//               console.log(chalk.green('[MySql] Database set up succesfully'))
+//
+//               res.send('Tables created succesfully')
+//             }
+//           })
+//         }
+//       })
 //     }
 //   })
 // }
-
-// // create statistics table in db
-function addTable(req, res) {
-  var sql = 'CREATE TABLE IF NOT EXISTS windsurfStatistics.statistics(statisticId int NOT NULL AUTO_INCREMENT, userID INT, date VARCHAR(10), spot VARCHAR(100), windspeed INT, windgust INT, windDirection VARCHAR(30), sailSize FLOAT, board VARCHAR(30), rating FLOAT, note VARCHAR(255), PRIMARY KEY (statisticId))'
-  db.query(sql, function(err, result) {
-    if(err) {
-      throw err
-    } else {
-      console.log(chalk.yellow(result))
-
-      var sql2 = 'CREATE TABLE IF NOT EXISTS windsurfStatistics.users(id int NOT NULL AUTO_INCREMENT, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255), PRIMARY KEY(id))'
-      db.query(sql2, function(err, result) {
-        if(err) {
-          throw err
-        } else {
-          console.log(chalk.yellow(result))
-
-          res.send('Tables created succesfully')
-        }
-      })
-    }
-  })
-}
