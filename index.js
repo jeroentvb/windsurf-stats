@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
 const fs = require('fs')
 const tools = require('./modules/tools')
+const options = require('./modules/options')
 
 require('dotenv').config()
 
@@ -27,11 +28,6 @@ db.connect(function(err) {
     console.log(chalk.green('[MySql] connection established..'))
   }
 })
-
-var options = {
-  port: 25561,
-  saltRounds: 10
-}
 
 module.exports = express()
   // .get('/createdb', setupDb)
@@ -66,8 +62,6 @@ function index(req, res) {
 
 function render(req, res) {
   var id = req.originalUrl.replace('/', '')
-
-  console.log(req.session.user)
 
   res.render(id, {
     page: id.charAt(0).toUpperCase() + id.substr(1),
