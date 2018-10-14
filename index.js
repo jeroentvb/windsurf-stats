@@ -86,12 +86,6 @@ function submitData(req, res) {
   if (date == 'today') {
     submittedData.date = tools.getToday()
 
-    var spotUrls = {
-      schellinkhout: 'https://www.windfinder.com/weatherforecast/markermeer_schellinkhout',
-      hondehemeltje: 'https://www.windfinder.com/weatherforecast/broekerhaven',
-      andijk: 'https://www.windfinder.com/weatherforecast/jachthaven-stichting-andijk',
-    }
-
     var windfinder = {
       time: new Array,
       windspeed: new Array,
@@ -108,7 +102,7 @@ function submitData(req, res) {
       index: Number
     }
 
-    request(spotUrls[spot], function(error, response, html) {
+    request(options.spotUrls[spot], function(error, response, html) {
       if(error) {
         res.render('error', {
           page: 'error',
