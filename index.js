@@ -42,8 +42,9 @@ module.exports = express()
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET
   }))
-  .get('/', index)
+  .get('/', showStatistics)
   .get('/statistics', showStatistics)
+  .get('/add-session', render)
   .get('/register', render)
   .get('/login', render)
   .post('/sign-up', register)
@@ -54,18 +55,12 @@ module.exports = express()
   .use(notFound)
   .listen(options.port, () => console.log(chalk.green(`[Server] listening on port ${options.port}...`)))
 
-function index(req, res) {
-  res.render('submit-stats', {
-    page: 'Home',
-    loginStatus: req.session.user
-  })
-}
 
 function render(req, res) {
   var id = req.originalUrl.replace('/', '')
 
   res.render(id, {
-    page: id.charAt(0).toUpperCase() + id.substr(1),
+    page: (id.charAt(0).toUpperCase() + id.substr(1)).replace('-', ' '),
     loginStatus: req.session.user
   })
 }
@@ -225,7 +220,7 @@ function confirmedData(req, res, next) {
 
 function showStatistics(req, res, next) {
   if (!req.session.user) {
-    needLogin(req, res)
+    res.redirect('/login')
   } else {
     db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', req.session.user.email, function (err, result) {
       if (err) {

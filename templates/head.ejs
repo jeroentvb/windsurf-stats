@@ -30,13 +30,32 @@
         </nav>
       </header>
         <% break
+      case 'Login': %>
+      <header>
+        <nav>
+          <ul>
+            <li><%= page %></li>
+          </ul>
+        </nav>
+      </header>
+        <% break
+        case 'Register': %>
+        <header>
+          <nav>
+            <ul>
+              <li><%= page %></li>
+            </ul>
+          </nav>
+        </header>
+          <% break
       default: %>
       <header>
         <nav>
           <ul>
             <li><%= page %></li>
-            <li><a href="/dashboard">Dashboard</a></li>
             <% if (typeof loginStatus != 'undefined') { %>
+              <li><a href="/statistics">Statistics</a></li>
+              <li><a href="/add-session">Add session</a></li>
               <li>Hello <%= loginStatus.name %></li>
               <li><a href="/sign-out">Log out</a></li>
             <% } else { %>
