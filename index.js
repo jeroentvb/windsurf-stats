@@ -44,7 +44,7 @@ module.exports = express()
   }))
   .get('/', showStatistics)
   .get('/statistics', showStatistics)
-  .get('/add-session', render)
+  .get('/add-session', renderIfLoggedIn)
   .get('/register', render)
   .get('/login', render)
   .post('/sign-up', register)
@@ -56,13 +56,26 @@ module.exports = express()
   .listen(options.port, () => console.log(chalk.green(`[Server] listening on port ${options.port}...`)))
 
 
-function render(req, res) {
+function render(req, res, needLogin) {
   var id = req.originalUrl.replace('/', '')
 
   res.render(id, {
-    page: (id.charAt(0).toUpperCase() + id.substr(1)).replace('-', ' '),
+    page: id.charAt(0).toUpperCase() + id.substr(1),
     loginStatus: req.session.user
   })
+}
+
+function renderIfLoggedIn(req, res) {
+  if (req.session.user == undefined) {
+    needLogin(req, res)
+  } else {
+    var id = req.originalUrl.replace('/', '')
+
+    res.render(id, {
+      page: id.charAt(0).toUpperCase() + id.substr(1),
+      loginStatus: req.session.user
+    })
+  }
 }
 
 function submitData(req, res) {
