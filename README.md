@@ -14,6 +14,7 @@ Using the spot name, it also scrapes highest average windspeed and gust from win
 
 ## Things for the future
 - [x] Add users
+- [ ] Rewrite this readme
 - [ ] Fix the missing options (e.g. add a session that is not today)
 - [ ] Visualize the data
 - [ ] Add preferences (spots, gear e.t.c.)
