@@ -46,7 +46,8 @@ module.exports = express()
   .get('/statistics', showStatistics)
   .get('/add-session', renderIfLoggedIn)
   .get('/register', render)
-  .get('/preferences', render)
+  .get('/preferences', renderIfLoggedIn)
+  .post('/update-prefs', updatePreferences)
   .get('/login', render)
   .post('/sign-up', register)
   .post('/sign-in', login)
@@ -256,6 +257,47 @@ function showStatistics(req, res, next) {
       }
     })
   }
+}
+
+function updatePreferences(req, res, next) {
+  var prefData = {
+    boards: [
+      req.body.board0.trim(),
+      req.body.board1.trim(),
+      req.body.board2.trim(),
+      req.body.board3.trim(),
+      req.body.board4.trim()
+    ],
+    sails: [
+      req.body.sail0,
+      req.body.sail1,
+      req.body.sail2,
+      req.body.sail3,
+      req.body.sail4,
+      req.body.sail5,
+      req.body.sail6,
+      req.body.sail7,
+      req.body.sail8,
+      req.body.sail9
+    ],
+    spots: [
+      req.body.spot0,
+      req.body.spot1,
+      req.body.spot2,
+      req.body.spot3,
+      req.body.spot4
+      // Spot names?
+    ]
+  }
+
+  db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', req.session.user.email, function (err, result) {
+    if (err) {
+      throw err
+    } else {
+      // Query to store preferences in the database
+    }
+  })
+
 }
 
 function register(req, res, next) {
