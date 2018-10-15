@@ -23,6 +23,10 @@ function getToday() {
   return `${dd}-${mm}-${yyyy}`
 }
 
+function objToStr(obj) {
+  return JSON.stringify(obj, null, 4)
+}
+
 // Only get daylight hours of 3 days
 function spliceToDayHours(array) {
   // Remove the first 7 hours
@@ -37,5 +41,6 @@ function spliceToDayHours(array) {
 
 module.exports = {
   spliceToFirstDay,
-  getToday
+  getToday,
+  objToStr
 }
