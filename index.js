@@ -43,6 +43,7 @@ module.exports = express()
     secret: process.env.SESSION_SECRET
   }))
   .get('/', index)
+  .get('/statistics', showStatistics)
   .get('/register', render)
   .get('/login', render)
   .post('/sign-up', register)
@@ -184,12 +185,10 @@ function confirmedData(req, res, next) {
     res.redirect('/')
   } else {
     // create a query to store data in the db
-    console.log(req.session.user.data)
     db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', req.session.user.email, function (err, result) {
       if (err) {
         next(err)
       } else {
-        console.log(req.session.user.sail)
         var userId = result[0].id
         if (req.session.user.data.board != null) {
           db.query('INSERT INTO windsurfStatistics.statistics SET ?', {
@@ -208,9 +207,8 @@ function confirmedData(req, res, next) {
               next(err)
             } else {
               req.session.user.data = {}
-              console.log(req.session.user.data)
 
-              res.redirect('/')
+              res.redirect('statistics')
             }
           })
         } else {
@@ -220,6 +218,32 @@ function confirmedData(req, res, next) {
             loginStatus: req.session.user
           })
         }
+      }
+    })
+  }
+}
+
+function showStatistics(req, res, next) {
+  if (!req.session.user) {
+    needLogin(req, res)
+  } else {
+    db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', req.session.user.email, function (err, result) {
+      if (err) {
+        next(err)
+      } else {
+        var userId = result[0].id
+
+        db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', userId, function (err, result) {
+          if (err) {
+            throw err
+          } else {
+            res.render('statistics', {
+              page: 'Statistics',
+              loginStatus: req.session.user,
+              statistics: tools.objToStr(result)
+            })
+          }
+        })
       }
     })
   }
@@ -305,6 +329,13 @@ function logout(req, res, next) {
     } else {
       res.redirect('/')
     }
+  })
+}
+
+function needLogin(req, res) {
+  res.status(401).render('error', {
+    page: 'Error 401',
+    error: 'You need to log in to view this page.'
   })
 }
 
