@@ -308,7 +308,7 @@ input::-webkit-inner-spin-button {
   -moz-osx-font-smoothing: grayscale; }
 
 body {
-  font-family: sans-serif;
+  font-family: system-ui, sans-serif;
   width: 100%;
   background-color: #f2f1f5; }
   body main {
@@ -333,7 +333,7 @@ header {
         font-size: 1.5em;
         font-weight: 600;
         flex-grow: 1; }
-      header nav ul li:nth-child(-n+2) {
+      header nav ul li:nth-child(-n+3) {
         margin-right: 32px; }
       header nav ul li:last-child {
         margin-left: auto; }

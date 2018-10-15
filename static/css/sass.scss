@@ -40,7 +40,7 @@ $grey-line: rgb(190, 190, 190);
 $text-disabled: rgb(162, 162, 167);
 
 body {
-  font-family: sans-serif;
+  font-family: system-ui, sans-serif;
   width: 100%;
   background-color: $grey; //#C7C7CD;
 
@@ -78,7 +78,7 @@ header {
           flex-grow: 1;
         }
 
-        &:nth-child(-n+2) {
+        &:nth-child(-n+3) {
           margin-right: 32px;
         }
 
