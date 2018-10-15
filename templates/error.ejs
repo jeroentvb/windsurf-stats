@@ -1,8 +1,11 @@
-<%- include('head', {page: page}) %>
+<% include head %>
 
 <main class="center-content">
   <h1>Error!</h1>
   <p><%= error %></p>
+  <% if (page == 'Error 401') { %>
+    <p><a href="/login">Log in</a></p>
+  <% } %>
   <a href="#" onclick="event.preventDefault(); window.history.back();">Go back</a>
 </main>
 

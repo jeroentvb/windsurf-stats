@@ -11,16 +11,36 @@
   </head>
 
   <body>
-    <% if (page != 'Error 404') { %>
+    <% switch (page) {
+      case 'Error 404': %>
+      <header>
+        <nav>
+          <ul>
+            <li><%= page %></li>
+          </ul>
+        </nav>
+      </header>
+        <% break
+      case 'Error 401': %>
+      <header>
+        <nav>
+          <ul>
+            <li><%= page %></li>
+          </ul>
+        </nav>
+      </header>
+        <% break
+      default: %>
       <header>
         <nav>
           <ul>
             <li><%= page %></li>
             <li><a href="/dashboard">Dashboard</a></li>
-            <% if (!loginStatus) { %>
-              <li><a href="/login">Log in</a></li>
-            <% } else { %>
+            <% if (typeof loginStatus != undefined) { %>
+              <li>Hello <%= loginStatus.name %></li>
               <li><a href="/sign-out">Log out</a></li>
+            <% } else { %>
+              <li><a href="/login">Log in</a></li>
             <% } %>
           </ul>
         </nav>
