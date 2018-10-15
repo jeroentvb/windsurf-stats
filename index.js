@@ -30,7 +30,7 @@ db.connect(function(err) {
 })
 
 module.exports = express()
-  // .get('/createdb', setupDb)
+  // .get('/setupDb', setupDb)
 
   .set('view engine', 'ejs')
   .set('views', 'templates')
@@ -356,27 +356,44 @@ function notFound(req, res) {
 
 // Set up the database
 // function setupDb (req, res) {
-//   db.query('CREATE DATABASE IF NOT EXISTS windsurfStatistics', function(err, result) {
+//   db.query('CREATE DATABASE IF NOT EXISTS windsurfStatistics', function (err, result) {
 //     if(err){
 //       throw err
 //     } else {
 //       console.log(chalk.yellow('[MySql] Database created'))
 //
-//       db.query('CREATE TABLE IF NOT EXISTS windsurfStatistics.statistics(statisticId int NOT NULL AUTO_INCREMENT, userID INT, date VARCHAR(10), spot VARCHAR(100), windspeed INT, windgust INT, windDirection VARCHAR(30), sailSize FLOAT, board VARCHAR(30), rating FLOAT, note VARCHAR(255), PRIMARY KEY (statisticId))', function(err, result) {
+//       db.query(`CREATE TABLE IF NOT EXISTS windsurfStatistics.statistics(statisticId int NOT NULL AUTO_INCREMENT,
+//         userId INT, date VARCHAR(10), spot VARCHAR(100), windspeed INT, windgust INT, windDirection VARCHAR(30),
+//         sailSize FLOAT, board VARCHAR(30), rating FLOAT, note VARCHAR(255), PRIMARY KEY (statisticId))`, function(err, result) {
 //         if(err) {
 //           throw err
 //         } else {
 //           console.log(chalk.yellow('[MySql] Statistics table created'))
 //
-//           db.query('CREATE TABLE IF NOT EXISTS windsurfStatistics.users(id int NOT NULL AUTO_INCREMENT, username VARCHAR(255), email VARCHAR(255), password VARCHAR(255), PRIMARY KEY(id))', function(err, result) {
+//           db.query(`CREATE TABLE IF NOT EXISTS windsurfStatistics.users(id int NOT NULL AUTO_INCREMENT,
+//             username VARCHAR(255), email VARCHAR(255), password VARCHAR(255), PRIMARY KEY(id)) `, function(err, result) {
 //             if(err) {
 //               throw err
 //             } else {
 //               console.log(chalk.yellow('[MySql] Users table created'))
 //
-//               console.log(chalk.green('[MySql] Database set up succesfully'))
+//               db.query(`CREATE TABLE IF NOT EXISTS windsurfStatistics.preferences(id int NOT NULL AUTO_INCREMENT, userId INT,
+//                 board0 VARCHAR(255), board1 VARCHAR(255), board2 VARCHAR(255), board3 VARCHAR(255), board4 VARCHAR(255),
+//                 sail0 VARCHAR(255), sail1 VARCHAR(255), sail2 VARCHAR(255), sail3 VARCHAR(255), sail4 VARCHAR(255),
+//                 sail5 VARCHAR(255), sail6 VARCHAR(255), sail7 VARCHAR(255), sail8 VARCHAR(255), sail9 VARCHAR(255),
+//                 spot0 VARCHAR(255), spot1 VARCHAR(255), spot2 VARCHAR(255), spot3 VARCHAR(255), spot4 VARCHAR(255),
+//                 PRIMARY KEY(id))`, function (err, result) {
+//                 if (err) {
+//                   throw err
+//                 } else {
 //
-//               res.send('Tables created succesfully')
+//                   console.log(chalk.yellow('[MySql] Preferences table created'))
+//
+//                   console.log(chalk.green('[MySql] Database set up succesfully'))
+//
+//                   res.send('Tables created succesfully')
+//                 }
+//               })
 //             }
 //           })
 //         }
