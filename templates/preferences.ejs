@@ -1,0 +1,93 @@
+<% include head %>
+
+<main id="preferences">
+  <h3>Only the first entry of every category is required</h3>
+  <form id="preferences-form" action="/update-prefs" method="post">
+    <h4>Boards</h4>
+    <fieldset class="seperate" id="boards">
+      <div class="field first">
+        <label for="board0">Board 1</label>
+        <input id="board0" type="text" name="board0" placeholder="Fanatic Gecko 120" required>
+      </div>
+
+      <div class="field second last">
+        <label for="board1">Board 2</label>
+        <input id="board1" type="text" name="board1">
+      </div>
+
+      <div class="field">
+        <label for="board2">Board 3</label>
+        <input id="board2" type="text" name="board2">
+      </div>
+
+      <div class="field">
+        <label for="board3">Board 4</label>
+        <input id="board3" type="text" name="board3">
+      </div>
+
+      <div class="field last">
+        <label for="board4">Board 5</label>
+        <input id="board4" type="text" name="board4">
+      </div>
+    </fieldset>
+
+    <h4>Sail sizes</h4>
+    <fieldset class="seperate">
+      <div class="field first">
+        <label for="sail0">Sail size 1</label>
+        <input id="sail0" type="text" name="sail0" placeholder="3.5" required>
+      </div>
+
+      <div class="field second">
+        <label for="sail1">Sail size 2</label>
+        <input id="sail1" type="text" name="sail1">
+      </div>
+
+      <% for (var i = 2; i < 9; i++) { %>
+        <div class="field">
+          <label for="sail<%= i %>">Sail size <%= i + 1 %></label>
+          <input id="sail<%= i %>" type="text" name="sail<%= i %>">
+        </div>
+      <% } %>
+
+      <div class="field last">
+        <label for="sail9">Sail size 10</label>
+        <input id="sail9" type="text" name="sail9">
+      </div>
+    </fieldset>
+
+    <h4>Spots</h4>
+    <fieldset class="seperate">
+      <div class="field first">
+        <label for="spot0">Spot url 1</label>
+        <input id="spot0" type="url" name="spot0" placeholder="https://www.windfinder.com/weatherforecast/markermeer_schellinkhout" required>
+      </div>
+
+      <div class="field second">
+        <label for="spot1">Spot url 2</label>
+        <input id="spot1" type="url" name="spot1">
+      </div>
+
+      <div class="field">
+        <label for="spot2">Spot url 3</label>
+        <input id="spot2" type="url" name="spot2">
+      </div>
+
+      <div class="field">
+        <label for="spot3">Spot url 4</label>
+        <input id="spot3" type="url" name="spot3">
+      </div>
+
+      <div class="field last">
+        <label for="spot4">Spot url 5</label>
+        <input id="spot4" type="url" name="spot4">
+      </div>
+    </fieldset>
+
+    <fieldset class="seperate not-white">
+      <input type="submit" name="submit" id="submit">
+    </fieldset>
+  </form>
+</main>
+
+<% include tail %>
