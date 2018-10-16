@@ -1,22 +1,94 @@
 # Windsurf statistics tracking
-An easy way to track windsurf statistics.  
 This project is a web interface to easily save windsurf session data.
-It currently works best for my own use case (gear and spots), but I'm plannig to make it accessible for windsurfers from everywhere.
+It currently works best for my own use case (gear and spots), but I'm plannig to make it accessible for windsurfers from all around the world.
 
-It currently stores the following values:
-1. Spot
-2. Sailsize
-3. Board
-4. Rating
-5. Note
+I started this project because I used to save my windsurf session data in an excel file, but I figured it would be easier to use a web interface and visualize the statistics in a nice way. And so this project was born.
 
-Using the spot name, it also scrapes highest average windspeed and gust from windfinder (only works if input is on same day as the windsurf session).
+## Table of contents
+* [What it does](#what-it-does)
+* [Usage](#usage)
+* [Things for the future](#things-for-the-future)
+
+## What it does
+It currently stores the following values in a databse on a per user basis:
+1. Date of the session
+2. Spot you sailed on
+3. Highest windspeed
+4. Highest gust
+5. Wind direction
+6. Sail size
+7. Board
+8. Rating of the session
+9. A (small) note
+
+Using the spot name, it also scrapes the windspeed, gust and wind direction from winfinder (only works if input is on same day as the windsurf session).
+
+## Usage
+All the things you need to run this app.
+
+### Prerequisites
+* [node.js & npm](https://nodejs.org/en/)
+* MySql server
+
+Optional
+* [Sass](https://sass-lang.com/)
+
+### Setup
+Download or clone this repository using:
+```
+git clone https://github.com/jeroentvb/windsurf-stats.git
+```
+`cd` into the folder.
+Install the required node.js packages using
+```
+npm install
+```
+
+Create a `.env` file and add the following:
+```
+DB_HOST=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=windsurfStatistics
+SESSION_SECRET=
+```
+Fill in the blanks after the = with your database host and credentials. Also fill in the SESSION_SECRET, this can be anything you like.
+
+Uncomment the following line and function from [index.js](index.js)
+```js
+// .get('/setupDb', setupDb)
+
+// function setupDb (req, res) { ... }
+```
+Comment the following line out otherwise the server will crash
+```js
+database: process.env.DB_NAME
+```
+Launch the application using `npm start` or `nodemon`.
+The application can be reached from [127.0.0.1:25561](127.0.0.1:25561), your local ip or your external ip. Including the specified port. If you want to run it on a different port you can specify that in `/modules/options.js`.
+
+Visit the application at [127.0.0.1:25561/setupDb](127.0.0.1:25561/setupDb), this will create the database and three tables. A users table, a statistics table and a preferences table.
+
+If the application returns `Tables created succesfully` the database has succesfully been set up. If you get an error you have done something wrong and may need to troubleshoot the issue.
+You can now comment the following again
+```js
+.get('/setupDb', setupDb)
+
+function setupDb (req, res) { ... }
+```
+and uncomment
+```js
+// database: process.env.DB_NAME
+```
+Restart the application (if you are using nodemon, this is done when saving the file).
+
+Everything is now set up succesfully and ready for use! 🎉
+
+The only thing left to do is go out and shred! 🤙
 
 ## Things for the future
 - [x] Add users
-- [ ] Rewrite this readme
+- [x] Rewrite this readme
 - [ ] Fix the missing options (e.g. add a session that is not today)
 - [ ] Visualize the data
 - [ ] Add preferences (spots, gear e.t.c.)
-
-<!-- create a `.env` file with `SESSION_SECRET=` and a secret word after the = -->
