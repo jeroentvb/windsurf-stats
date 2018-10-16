@@ -81,7 +81,7 @@ function renderIfLoggedIn(req, res) {
 }
 
 function submitData(req, res) {
-  console.log(chalk.yellow('Recieved data submission'))
+  console.log(chalk.yellow(`Recieved data submission from user ${req.session.user.name}`))
 
   var date = req.body.date
   var time = req.body.time
@@ -171,7 +171,7 @@ function submitData(req, res) {
         // exportData('responses', responses)
 
         var allData = {...submittedData, ...responses}
-        // exportData('all', allData)
+        // tools.exportObj('all', allData)
 
         req.session.user.data = allData
 
