@@ -43,6 +43,11 @@ Install the required node.js packages using
 ```
 npm install
 ```
+If you are using windows you may have to execute the following commands first
+```
+npm install -g node-gyp
+npm install --g --production windows-build-tools
+```
 
 Create a `.env` file and add the following:
 ```
