@@ -65,9 +65,9 @@ Comment the following line out otherwise the server will crash
 database: process.env.DB_NAME
 ```
 Launch the application using `npm start` or `nodemon`.
-The application can be reached from [127.0.0.1:25561](127.0.0.1:25561), your local ip or your external ip. Including the specified port. If you want to run it on a different port you can specify that in `/modules/options.js`.
+The application can be reached from [127.0.0.1:25561](http://127.0.0.1:25561), your local ip or your external ip. Including the specified port. If you want to run it on a different port you can specify that in `/modules/options.js`.
 
-Visit the application at [127.0.0.1:25561/setupDb](127.0.0.1:25561/setupDb), this will create the database and three tables. A users table, a statistics table and a preferences table.
+Visit the application at [127.0.0.1:25561/setupDb](http://127.0.0.1:25561/setupDb), this will create the database and three tables. A users table, a statistics table and a preferences table.
 
 If the application returns `Tables created succesfully` the database has succesfully been set up. If you get an error you have done something wrong and may need to troubleshoot the issue.
 You can now comment the following again
