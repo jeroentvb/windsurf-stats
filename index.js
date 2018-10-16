@@ -74,7 +74,7 @@ function renderIfLoggedIn(req, res) {
     var id = req.originalUrl.replace('/', '')
 
     res.render(id, {
-      page: id.charAt(0).toUpperCase() + id.substr(1),
+      page: (id.charAt(0).toUpperCase() + id.substr(1)).replace('-', ' '),
       loginStatus: req.session.user
     })
   }
@@ -250,7 +250,7 @@ function showStatistics(req, res, next) {
             res.render('statistics', {
               page: 'Statistics',
               loginStatus: req.session.user,
-              statistics: tools.objToStr(result)
+              statistics: result
             })
           }
         })

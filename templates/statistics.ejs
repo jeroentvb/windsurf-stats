@@ -2,7 +2,35 @@
 
 <main id="statistics">
   <h1>Statistics</h1>
-  <p><%= statistics %></p>
+  <table>
+    <tr>
+      <th>Date</th>
+      <th>Spot</th>
+      <th>Windspeed</th>
+      <th>Windgust</th>
+      <th>Wind direction</th>
+      <th>Sail size</th>
+      <th>Board</th>
+      <th>Rating</th>
+      <th>Note</th>
+    </tr>
+
+    <%
+    var stats = statistics
+    for (var i = 0; i < stats.length; i++) { %>
+      <tr>
+        <td><%= stats[i].date %></td>
+        <td><%= stats[i].spot %></td>
+        <td><%= stats[i].windspeed %></td>
+        <td><%= stats[i].windDirection %></td>
+        <td><%= stats[i].sailSize %></td>
+        <td><%= stats[i].board %></td>
+        <td><%= stats[i].rating %></td>
+        <td><%= stats[i].note %></td>
+      </tr>
+    <% } %>
+
+  </table>
 </main>
 
 <% include tail %>
