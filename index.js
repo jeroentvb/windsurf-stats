@@ -47,6 +47,17 @@ module.exports = express()
   .get('/add-session', renderIfLoggedIn)
   .get('/register', render)
   .get('/preferences', renderIfLoggedIn)
+  .get('/first-time-preferences', (req, res)  => {
+    if (req.session.user == undefined) {
+      needLogin(req, res)
+    } else {
+      res.render('setPrefs', {
+        page: 'Preferences',
+        loginStatus: req.session.user
+      })
+    }
+  })
+  .post('/set-prefs', setPreferences)
   .post('/update-prefs', updatePreferences)
   .get('/login', render)
   .post('/sign-up', register)
@@ -294,7 +305,108 @@ function updatePreferences(req, res, next) {
     if (err) {
       throw err
     } else {
-      // Query to store preferences in the database
+      console.log(prefData.sails)
+      var userId = result[0].id
+
+      db.query(`UPDATE windsurfStatistics.preferences SET ? WHERE userId = ${userId}`, {
+        board0: prefData.boards[0],
+        board1: prefData.boards[1],
+        board2: prefData.boards[2],
+        board3: prefData.boards[3],
+        board4: prefData.boards[4],
+        sail0: prefData.sails[0],
+        sail1: prefData.sails[1],
+        sail2: prefData.sails[2],
+        sail3: prefData.sails[3],
+        sail4: prefData.sails[4],
+        sail5: prefData.sails[5],
+        sail6: prefData.sails[6],
+        sail7: prefData.sails[7],
+        sail8: prefData.sails[8],
+        sail9: prefData.sails[9],
+        spot0: prefData.spots[0],
+        spot1: prefData.spots[1],
+        spot2: prefData.spots[2],
+        spot3: prefData.spots[3],
+        spot4: prefData.spots[4]
+      }, function (err, result) {
+        if (err) {
+          throw err
+        } else {
+          res.redirect('/statistics')
+        }
+      })
+    }
+  })
+}
+
+function setPreferences(req, res, next) {
+  var prefData = {
+    boards: [
+      req.body.board0.trim(),
+      req.body.board1.trim(),
+      req.body.board2.trim(),
+      req.body.board3.trim(),
+      req.body.board4.trim()
+    ],
+    sails: [
+      req.body.sail0,
+      req.body.sail1,
+      req.body.sail2,
+      req.body.sail3,
+      req.body.sail4,
+      req.body.sail5,
+      req.body.sail6,
+      req.body.sail7,
+      req.body.sail8,
+      req.body.sail9
+    ],
+    spots: [
+      req.body.spot0,
+      req.body.spot1,
+      req.body.spot2,
+      req.body.spot3,
+      req.body.spot4
+      // Spot names?
+    ]
+  }
+
+  db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', req.session.user.email, function (err, result) {
+    if (err) {
+      throw err
+    } else {
+      console.log(prefData.sails)
+      var userId = result[0].id
+
+      db.query(`INSERT INTO windsurfStatistics.preferences SET ? `, {
+        userId: userId,
+        board0: prefData.boards[0],
+        board1: prefData.boards[1],
+        board2: prefData.boards[2],
+        board3: prefData.boards[3],
+        board4: prefData.boards[4],
+        sail0: prefData.sails[0],
+        sail1: prefData.sails[1],
+        sail2: prefData.sails[2],
+        sail3: prefData.sails[3],
+        sail4: prefData.sails[4],
+        sail5: prefData.sails[5],
+        sail6: prefData.sails[6],
+        sail7: prefData.sails[7],
+        sail8: prefData.sails[8],
+        sail9: prefData.sails[9],
+        spot0: prefData.spots[0],
+        spot1: prefData.spots[1],
+        spot2: prefData.spots[2],
+        spot3: prefData.spots[3],
+        spot4: prefData.spots[4]
+      }, function (err, result) {
+        if (err) {
+          throw err
+        } else {
+          res.redirect('/statistics')
+        }
+      })
     }
   })
 
@@ -326,7 +438,7 @@ function register(req, res, next) {
             email: email
           }
 
-          res.redirect('/')
+          res.redirect('/first-time-preferences')
         }
       })
     }
