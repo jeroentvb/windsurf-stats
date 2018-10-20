@@ -285,5 +285,14 @@ fieldset {
   }
 }
 
+table {
+  border-collapse: collapse;
+  width: 100%;
+  th, td {
+    border: 1px solid $color-primary;
+    padding: 4px;
+  }
+}
+
 @import 'confirm-submission';
 @import 'breakpoints';

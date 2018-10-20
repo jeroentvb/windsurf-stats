@@ -46,7 +46,7 @@ module.exports = express()
   .get('/statistics', showStatistics)
   .get('/add-session', addSession)
   .get('/register', render)
-  .get('/preferences', renderIfLoggedIn)
+  .get('/preferences', renderPreferences)
   .post('/set-prefs', setPreferences)
   .post('/update-prefs', updatePreferences)
   .get('/login', render)
@@ -286,6 +286,50 @@ function showStatistics(req, res, next) {
       }
     })
   }
+}
+
+function renderPreferences(req, res, next) {
+  db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id, function (err, result) {
+    var prefs = result[0]
+    var formattedPrefs = {
+      boards: [
+        prefs.board0,
+        prefs.board1,
+        prefs.board2,
+        prefs.board3,
+        prefs.board4,
+      ],
+      sails: [
+        prefs.sail0,
+        prefs.sail1,
+        prefs.sail2,
+        prefs.sail3,
+        prefs.sail4,
+        prefs.sail5,
+        prefs.sail6,
+        prefs.sail7,
+        prefs.sail8,
+        prefs.sail9
+      ],
+      spots: [
+        prefs.spot0,
+        prefs.spot1,
+        prefs.spot2,
+        prefs.spot3,
+        prefs.spot4,
+      ]
+    }
+
+    if (err) {
+      throw err
+    } else {
+      res.render('preferences', {
+        page: 'Preferences',
+        loginStatus: req.session.user,
+        prefs: formattedPrefs
+      })
+    }
+  })
 }
 
 function updatePreferences(req, res, next) {

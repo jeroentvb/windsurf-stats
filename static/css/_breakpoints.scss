@@ -9,7 +9,7 @@
     grid-template-columns: 1fr 50% 1fr;
     grid-column-gap: 32px;
 
-    h1, h3, form, nav {
+    h1, h2, h3, form, nav, table {
       grid-column: 2 / 2;
     }
   }
