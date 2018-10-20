@@ -60,11 +60,12 @@
       <div class="field second">
         <label  for="windsurf-sail-size-other">Sail size</label>
         <select id="windsurf-sail-size" name="sailSize">
-          <option value="3.5">3.5</option>
-          <option value="4.2">4.2</option>
-          <option value="4.7">4.7</option>
-          <option value="5" selected="selected">5</option>
-          <option value="6">6</option>
+          <option value="selecteer" selected disabled>Selecteer</option>
+          <% for (let i = 0; i < prefs.sails.length; i++) {
+            if (prefs.sails[i] != '') { %>
+              <option value="<%= prefs.sails[i] %>"><%= prefs.sails[i] %></option>
+            <% }
+          } %>
           <option value="other" disabled>Other</option>
         </select>
       </div>
@@ -77,10 +78,12 @@
       <div class="field">
         <label for="windsurf-board-other">Board</label>
         <select id="windsurf-board" name="windsurfBoard">
-          <option value="F2 Stoke" selected="selected">F2 Stoke</option>
-          <option value="Thommen Wave x74">Thommen Wave x74</option>
-          <option value="F2 Axxis">F2 Axxis</option>
-          <option value="Fanatic Lite Boa">Fanatic Lite Boa</option>
+          <option value="selecteer" selected disabled>Selecteer</option>
+          <% for (let i = 0; i < prefs.boards.length; i++) {
+            if (prefs.boards[i] != '') { %>
+              <option value="<%= prefs.boards[i] %>"><%= prefs.boards[i] %></option>
+            <% }
+          } %>
           <option value="other" disabled>Other</option>
         </select>
       </div>

@@ -29,14 +29,24 @@ function objToStr(obj) {
 
 function exportObj(obj, name) {
   var fs = require('fs')
-  fs.writeFile(name + 'offline-data.json', JSON.stringify(obj, null, 4), function(err) {
+  fs.writeFile(name + '-export.json', objToStr(obj), function(err) {
     if (err) {
       throw err
     } else {
-      console.log(`${name}-offline.data.json written`)
+      console.log(`${name}-export.json written`)
     }
   })
   return
+}
+
+function cleanObj(obj) {
+  for (let key in obj) {
+    if (obj[key] === '' || obj[key] === null) {
+      console.log(obj[key])
+      console.log(typeof obj[key])
+      delete obj[key]
+    }
+  }
 }
 
 // Only get daylight hours of 3 days
@@ -55,5 +65,6 @@ module.exports = {
   spliceToFirstDay,
   getToday,
   objToStr,
-  exportObj
+  exportObj,
+  cleanObj
 }
