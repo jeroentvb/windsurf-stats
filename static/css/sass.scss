@@ -108,6 +108,7 @@ form {
 fieldset {
   border: none;
   display: flex;
+  flex-direction: column;
   padding: 0;
   background-color: $white;
   margin: 0 -18px;
