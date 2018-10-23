@@ -39,8 +39,12 @@ module.exports = express()
   .use(session({
     store: new FileStore,
     resave: false,
-    saveUninitialized: true,
-    secret: process.env.SESSION_SECRET
+    saveUninitialized: false,
+    rolling: true,
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+      maxAge: 2592000000
+    }
   }))
   .get('/', showStatistics)
   .get('/statistics', showStatistics)
