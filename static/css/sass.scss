@@ -114,6 +114,10 @@ fieldset {
   margin: 0 -18px;
   padding: 0 18px;
 
+  &.radio-buttons {
+    border-bottom: 1px solid $grey-line;
+  }
+
   label {
     margin: 6px 0;
     font-size: 1em;
@@ -246,6 +250,7 @@ fieldset {
 
   #date-radio {
     padding-top: 10px;
+    margin-bottom: 10px;
   }
 
   #before-after-time-radio {

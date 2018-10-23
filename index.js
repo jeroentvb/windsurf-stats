@@ -133,7 +133,6 @@ function submitData(req, res) {
   console.log(chalk.yellow(`Recieved data submission from user ${req.session.user.name}`))
 
   var date = req.body.date
-  var time = req.body.time
   var spot = req.body.spot
 
   var submittedData = {
