@@ -46,6 +46,10 @@
   fieldset {
     background-color: inherit;
 
+    &.radio-buttons {
+      border-bottom: none;
+    }
+
     label {
       width: 20%;
     }
