@@ -94,10 +94,6 @@ The only thing left to do is go out and shred! 🤙
 ## To do
 - [x] Add users
 - [x] Rewrite this readme
-- [ ] Use a proper session store method instead of `session-file-store`
-- [ ] Add preferences (spots, gear e.t.c.)
-- [ ] Fix the missing options (e.g. add a session that is not today)
+- [ ] Add preferences for spots
+- [ ] Fix the missing options (use a board/sail/spot that is not in your preferences)
 - [ ] Visualize the data
-
-[Project todo's](https://github.com/jeroentvb/windsurf-stats/projects/1)
-
