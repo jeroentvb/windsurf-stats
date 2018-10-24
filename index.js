@@ -7,7 +7,6 @@ const cheerio = require('cheerio')
 const chalk = require('chalk')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
-const fs = require('fs')
 const tools = require('./modules/tools')
 const options = require('./modules/options')
 
@@ -62,7 +61,6 @@ module.exports = express()
   .use(notFound)
   .listen(options.port, () => console.log(chalk.green(`[Server] listening on port ${options.port}...`)))
 
-
 function render(req, res, needLogin) {
   var id = req.originalUrl.replace('/', '')
 
@@ -114,7 +112,8 @@ function addSession(req, res, next) {
         prefs.spot2,
         prefs.spot3,
         prefs.spot4,
-      ]
+      ],
+      date: tools.getYesterday()
     }
 
     if (err) {
@@ -139,7 +138,12 @@ function submitData(req, res) {
     sail: req.body.sailSize,
     board: req.body.windsurfBoard,
     rating: req.body.rating,
-    note: req.body.note
+    note: req.body.note,
+    date: req.body.dateInput,
+    spot: req.body.spot,
+    windspeed: req.body.windspeed,
+    windgust: req.body.windgust,
+    windDirection: req.body.windDirection
   }
 
   if (date == 'today') {
@@ -173,7 +177,8 @@ function submitData(req, res) {
 
         // Get the spots name
         $('#spotheader-spotname').filter(function() {
-          responses.spot = $(this).text()
+          var spotName =  $(this).text().split(' ')
+          responses.spot = spotName[spotName.length - 1]
         })
 
         // Get the time
@@ -219,9 +224,7 @@ function submitData(req, res) {
         // exportData('responses', responses)
 
         var allData = {...submittedData, ...responses}
-        // tools.exportObj('all', allData)
-
-        // req.session.user.data = allData
+        tools.exportObj('all', allData)
 
         res.render('confirm-data', {
           page: 'Confirm submission',
@@ -231,7 +234,11 @@ function submitData(req, res) {
       }
     })
   } else {
-    // Do stuff with the date & data that was submitted manually
+    res.render('confirm-data', {
+      page: 'Confirm submission',
+      data: submittedData,
+      loginStatus: req.session.user
+    })
   }
 }
 

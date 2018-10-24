@@ -13,12 +13,7 @@
 
       <div class="field second">
         <label for="spot">Spot</label>
-        <input id="spot" type="text" name="spot" value="<%= data.spot %>" placeholder="<%= data.spot %>" required>
-      </div>
-
-      <div class="field">
-        <label for="hour-most-wind">Hour of most wind</label>
-        <input id="hour-most-wind" type="number" name="hour-most-wind" value="<%= data.time %>" placeholder="<%= data.time %>" required>
+        <input id="spot" type="text" name="spot" value="<%= data.spot.charAt(0).toUpperCase() + data.spot.substr(1) %>" placeholder="<%= data.spot %>" required>
       </div>
 
       <div class="field">

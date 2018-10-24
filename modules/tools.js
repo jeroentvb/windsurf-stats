@@ -23,11 +23,31 @@ function getToday() {
   return `${dd}-${mm}-${yyyy}`
 }
 
+function getYesterday() {
+  var today = new Date()
+  var dd = today.getDate()
+  var mm = today.getMonth() + 1
+  var yyyy = today.getFullYear()
+
+  if (dd < 10) {
+    dd = `0${dd}`
+  }
+  if (mm < 10) {
+    mm = `0${mm}`
+  }
+
+  if (dd - 1 == 0)  {
+    return `${30}-${mm - 1}-${yyyy}`
+  } else {
+    return `${dd - 1}-${mm}-${yyyy}`
+  }
+}
+
 function objToStr(obj) {
   return JSON.stringify(obj, null, 4)
 }
 
-function exportObj(obj, name) {
+function exportObj(name, obj) {
   var fs = require('fs')
   fs.writeFile(name + '-export.json', objToStr(obj), function(err) {
     if (err) {
@@ -64,6 +84,7 @@ function spliceToDayHours(array) {
 module.exports = {
   spliceToFirstDay,
   getToday,
+  getYesterday,
   objToStr,
   exportObj,
   cleanObj
