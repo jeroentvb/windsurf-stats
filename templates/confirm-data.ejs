@@ -1,60 +1,65 @@
 <% include head %>
 
-<main id="confirm-data" class="col-2">
+<main id="confirm-data">
   <h1>Submitted data</h1>
   <h3>Confirm the submitted data is correct.</h3>
 
-  <article class="seperate">
-    <div class="field first">
-      <h4>Spot</h4>
-      <p><%= data.spot %></p>
-    </div>
-
-    <div class="field second">
-      <h4>Hour of most wind</h4>
-      <p><%= data.time %></p>
-    </div>
-
-    <div class="field">
-      <h4>Windspeed</h4>
-      <p><%= data.windspeed %> kts</p>
-    </div>
-
-    <div class="field">
-      <h4>Windgust</h4>
-      <p><%= data.windgust %> kts</p>
-    </div>
-
-    <div class="field last">
-      <h4>Winddirection</h4>
-      <p><%= data.windDirection %></p>
-    </div>
-  </article>
-
-  <article class="seperate">
-    <div class="field first">
-      <h4>Sailsize</h4>
-      <p><%= data.sail %></p>
-    </div>
-
-    <div class="field second">
-      <h4>Board</h4>
-      <p><%= data.board %></p>
-    </div>
-
-    <div class="field">
-      <h4>Rating</h4>
-      <p><%= data.rating %></p>
-    </div>
-
-    <div class="field last">
-      <h4>Note</h4>
-      <p><%= data.note %></p>
-    </div>
-  </article>
-
-  <h2>The data is:</h2>
   <form action="/confirm-submit" method="post">
+    <fieldset class="seperate">
+      <div class="field first">
+        <label for="date">Date</label>
+        <input id="date" type="text" name="date" value="<%= data.date %>" placeholder="dd-mm-yyyy" maxlength="10" required>
+      </div>
+
+      <div class="field second">
+        <label for="spot">Spot</label>
+        <input id="spot" type="text" name="spot" value="<%= data.spot %>" placeholder="<%= data.spot %>" required>
+      </div>
+
+      <div class="field">
+        <label for="hour-most-wind">Hour of most wind</label>
+        <input id="hour-most-wind" type="number" name="hour-most-wind" value="<%= data.time %>" placeholder="<%= data.time %>" required>
+      </div>
+
+      <div class="field">
+        <label for="windspeed">Windspeed</label>
+        <input id="windspeed" type="number" name="windspeed" value="<%= data.windspeed %>" placeholder="<%= data.windspeed %>" required>
+      </div>
+
+      <div class="field">
+        <label for="windgust">Windspeed</label>
+        <input id="windgust" type="number" name="windgust" value="<%= data.windgust %>" placeholder="<%= data.windgust %> kts" required>
+      </div>
+
+      <div class="field last">
+        <label for="wind-direction">Wind direction</label>
+        <input id="wind-direction" type="text" name="windDirection" value="<%= data.windDirection %>" placeholder="<%= data.windDirection %> kts" maxlength="3" required>
+      </div>
+    </fieldset>
+
+    <fieldset class="seperate">
+      <div class="field first">
+        <label for="sail">Sail size</label>
+        <input id="sail" type="number" name="sail" value="<%= data.sail %>" placeholder="<%= data.sail %>" required>
+      </div>
+
+      <div class="field second">
+        <label for="board">Board</label>
+        <input id="board" type="text" name="board" value="<%= data.board %>" placeholder="<%= data.board %>" required>
+      </div>
+
+      <div class="field last">
+        <label for="rating">Rating</label>
+        <input id="rating" type="number" name="rating" value="<%= data.rating %>" placeholder="<%= data.rating %>" maxlength="3" required>
+      </div>
+    </fieldset>
+
+    <fieldset class="seperate not-white">
+      <label for="note">Note</label>
+      <textarea id="note" name="note" rows="5" cols="80" placeholder="<%= data.note %>" required><%= data.note %></textarea>
+    </fieldset>
+
+    <h2>The data is:</h2>
     <fieldset class="seperate radio-buttons not-white">
       <div id="confirm-radio" class="field after-title">
         <input id="correct" type="radio" name="confirmData" value="correct" checked>
@@ -65,8 +70,8 @@
 
       <input type="submit" name="confirm-submit" id="confirm-submit">
     </fieldset>
-
   </form>
+
 </main>
 
 <% include tail %>

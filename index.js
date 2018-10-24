@@ -221,7 +221,7 @@ function submitData(req, res) {
         var allData = {...submittedData, ...responses}
         // tools.exportObj('all', allData)
 
-        req.session.user.data = allData
+        // req.session.user.data = allData
 
         res.render('confirm-data', {
           page: 'Confirm submission',
@@ -238,38 +238,32 @@ function submitData(req, res) {
 function confirmedData(req, res, next) {
   var checkCorrect = req.body.confirmData
 
+  var submittedData = {
+    userId: req.session.user.id,
+    date: req.body.date,
+    spot: req.body.spot,
+    windspeed: req.body.windspeed,
+    windgust: req.body.windgust,
+    windDirection: req.body.windDirection,
+    sailSize: req.body.sail,
+    board: req.body.board,
+    rating: req.body.rating,
+    note: req.body.note
+  }
+
   if (checkCorrect == 'incorrect') {
-    req.session.user.data = {}
+    // req.session.user.data = {}
     res.redirect('/')
   } else {
-    if (req.session.user.data.board != null) {
-      db.query('INSERT INTO windsurfStatistics.statistics SET ?', {
-        userId: req.session.user.id,
-        date: req.session.user.data.date,
-        spot: req.session.user.data.spot,
-        windspeed: req.session.user.data.windspeed,
-        windgust: req.session.user.data.windgust,
-        windDirection: req.session.user.data.windDirection,
-        sailSize: req.session.user.data.sail,
-        board: req.session.user.data.board,
-        rating: req.session.user.data.rating,
-        note: req.session.user.data.note
-      }, function (err, result) {
-        if (err) {
-          next(err)
-        } else {
-          req.session.user.data = {}
+    db.query('INSERT INTO windsurfStatistics.statistics SET ?', submittedData, function (err, result) {
+      if (err) {
+        next(err)
+      } else {
+        // req.session.user.data = {}
 
-          res.redirect('statistics')
-        }
-      })
-    } else {
-      req.session.user
-      res.render('submit-stats', {
-        page: 'Submit stats',
-        loginStatus: req.session.user
-      })
-    }
+        res.redirect('statistics')
+      }
+    })
   }
 }
 
