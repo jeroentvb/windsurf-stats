@@ -97,3 +97,4 @@ The only thing left to do is go out and shred! 🤙
 - [ ] Add preferences for spots
 - [ ] Fix the missing options (use a board/sail/spot that is not in your preferences)
 - [ ] Visualize the data
+- [ ] Despaghettify the code (use more modern (es6) features & make code more modular)
