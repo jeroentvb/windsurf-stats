@@ -4,6 +4,8 @@ It currently works best for my own use case (gear and spots), but I'm plannig to
 
 I started this project because I used to save my windsurf session data in an excel file, but I figured it would be easier to use a web interface and visualize the statistics in a nice way. And so this project was born.
 
+The application is functional but misses some features/options I would like to build/include. It also has a few bugs.
+
 ## Table of contents
 * [What it does](#what-it-does)
 * [Usage](#usage)
@@ -31,7 +33,7 @@ All the things you need to run this app.
 * MySql server
 
 Optional
-* [Sass](https://sass-lang.com/)
+* [Sass](https://sass-lang.com/) (if you want to customize the css)
 
 ### Setup
 Download or clone this repository using:
@@ -47,6 +49,10 @@ If you are using windows you may have to execute the following commands first
 ```
 npm install -g node-gyp
 npm install --g --production windows-build-tools
+```
+On mac you may need to install the xcode command line tools using
+```
+xcode-select --install
 ```
 
 Create a `.env` file and add the following:
@@ -69,7 +75,7 @@ Comment the following line out otherwise the server will crash
 ```js
 database: process.env.DB_NAME
 ```
-Launch the application using `npm start` or `nodemon`.
+Launch the application using `npm start`, `node index.js` or `nodemon`.
 The application can be reached from [127.0.0.1:25561](http://127.0.0.1:25561), your local ip or your external ip. Including the specified port. If you want to run it on a different port you can specify that in `/modules/options.js`.
 
 Visit the application at [127.0.0.1:25561/setupDb](http://127.0.0.1:25561/setupDb), this will create the database and three tables. A users table, a statistics table and a preferences table.
@@ -94,10 +100,7 @@ The only thing left to do is go out and shred! 🤙
 ## To do
 - [x] Add users
 - [x] Rewrite this readme
-- [ ] Use a proper session store method instead of `session-file-store`
-- [ ] Add preferences (spots, gear e.t.c.)
-- [ ] Fix the missing options (e.g. add a session that is not today)
+- [ ] Add preferences for spots
+- [ ] Fix the missing options (use a board/sail/spot that is not in your preferences)
 - [ ] Visualize the data
-
-[Project todo's](https://github.com/jeroentvb/windsurf-stats/projects/1)
-
+- [ ] Despaghettify the code (use more modern (es6) features & make code more modular)
