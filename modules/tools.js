@@ -1,5 +1,5 @@
 // Splice windfinder data to the first day instead of the three days from the superforecast
-function spliceToFirstDay(array) {
+function spliceToFirstDay (array) {
   // Remove the first 7 hours
   array.splice(0, 9)
   // Remove other days
@@ -7,7 +7,7 @@ function spliceToFirstDay(array) {
 }
 
 // Get the date in dd-mm-yyyy format
-function getToday() {
+function getToday () {
   var today = new Date()
   var dd = today.getDate()
   var mm = today.getMonth() + 1
@@ -23,7 +23,7 @@ function getToday() {
   return `${dd}-${mm}-${yyyy}`
 }
 
-function getYesterday() {
+function getYesterday () {
   var today = new Date()
   var dd = today.getDate()
   var mm = today.getMonth() + 1
@@ -36,30 +36,29 @@ function getYesterday() {
     mm = `0${mm}`
   }
 
-  if (dd - 1 == 0)  {
+  if (dd - 1 === 0) {
     return `${30}-${mm - 1}-${yyyy}`
   } else {
     return `${dd - 1}-${mm}-${yyyy}`
   }
 }
 
-function objToStr(obj) {
+function objToStr (obj) {
   return JSON.stringify(obj, null, 4)
 }
 
-function exportObj(name, obj) {
+function exportObj (name, obj) {
   var fs = require('fs')
-  fs.writeFile(name + '-export.json', objToStr(obj), function(err) {
+  fs.writeFile(name + '-export.json', objToStr(obj), err => {
     if (err) {
       throw err
     } else {
       console.log(`${name}-export.json written`)
     }
   })
-  return
 }
 
-function cleanObj(obj) {
+function cleanObj (obj) {
   for (let key in obj) {
     if (obj[key] === '' || obj[key] === null) {
       console.log(obj[key])
@@ -70,7 +69,7 @@ function cleanObj(obj) {
 }
 
 // Only get daylight hours of 3 days
-function spliceToDayHours(array) {
+function spliceToDayHours (array) {
   // Remove the first 7 hours
   array.splice(0, 7)
   // Remove the night between day 1 and 2
