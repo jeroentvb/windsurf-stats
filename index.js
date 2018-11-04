@@ -13,17 +13,34 @@ const options = require('./modules/options')
 require('dotenv').config()
 
 // create mysql connection
-var db = mysql.createConnection({
+var dbConfig = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME
-})
-// connect to db
-db.connect(err => {
-  if (err) throw err
-  console.log(chalk.green('[MySql] connection established..'))
-})
+}
+var db
+function handleDisconnect () {
+  db = mysql.createConnection(dbConfig)
+  // connect to db
+  db.connect(err => {
+    if (err) {
+      console.error('[MySql] error while connecting to the db:', err)
+      setTimeout(handleDisconnect, 10000)
+    }
+    console.log(chalk.green('[MySql] connection established..'))
+  })
+  // Handle db errors
+  db.on('error', err => {
+    console.error('[MySql] db error:', err)
+    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+      handleDisconnect()
+    } else {
+      throw err
+    }
+  })
+}
+handleDisconnect()
 
 // Wrap a database query in a promise to use throughout the application
 function query (query, params) {
