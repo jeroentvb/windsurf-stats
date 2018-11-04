@@ -591,6 +591,10 @@ function notFound (req, res) {
 //       res.send('Tables created succesfully')
 //     })
 //     .catch(err => {
+//       res.status(404).render('error', {
+//         page: 'Error',
+//         error: err
+//       })
 //       console.error(err)
 //       db.query('DROP DATABASE windsurfStatistics', (error, result) => {
 //         if (error) {
@@ -598,7 +602,10 @@ function notFound (req, res) {
 //           throw error
 //         } else {
 //           console.log(chalk.yellow('Database was reset'))
-//           res.send(`The database could not be set up because of the following error: \n ${err}`)
+//           res.status(404).render('error', {
+//             page: 'Error',
+//             error: `The database could not be set up because of the following error: \n ${err}`
+//           })
 //         }
 //       })
 //     })
