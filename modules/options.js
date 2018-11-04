@@ -4,6 +4,6 @@ module.exports = {
   spotUrls: {
     schellinkhout: 'https://www.windfinder.com/weatherforecast/markermeer_schellinkhout',
     hondehemeltje: 'https://www.windfinder.com/weatherforecast/broekerhaven',
-    andijk: 'https://www.windfinder.com/weatherforecast/jachthaven-stichting-andijk',
+    andijk: 'https://www.windfinder.com/weatherforecast/jachthaven-stichting-andijk'
   }
 }

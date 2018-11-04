@@ -50,11 +50,8 @@ function objToStr (obj) {
 function exportObj (name, obj) {
   var fs = require('fs')
   fs.writeFile(name + '-export.json', objToStr(obj), err => {
-    if (err) {
-      throw err
-    } else {
-      console.log(`${name}-export.json written`)
-    }
+    if (err) throw err
+    console.log(`${name}-export.json written`)
   })
 }
 

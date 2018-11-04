@@ -39,9 +39,9 @@
         <% } %>
           <label for="sail<%= i %>">Sail size <%= i + 1 %></label>
           <% if (prefs.sails[i] != '') { %>
-            <input id="sail<%= i %>" type="number" name="sail<%= i %>" step="0.1" value="<%= prefs.sails[i] %>">
+            <input id="sail<%= i %>" type="number" name="sail<%= i %>" step="0.1" value="<%= prefs.sails[i] %>" max="20">
           <% } else { %>
-            <input id="sail<%= i %>" type="number" name="sail<%= i %>" step="0.1">
+            <input id="sail<%= i %>" type="number" name="sail<%= i %>" step="0.1" max="20">
           <% } %>
         </div>
       <% } %>
