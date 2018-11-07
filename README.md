@@ -80,9 +80,7 @@ Everything is now set up succesfully and ready for use! 🎉
 The only thing left to do is go out and shred! 🤙
 
 ## To do
-- [x] Add users
-- [x] Rewrite this readme
+- [ ] Use a proper session store instead of session-file-store
 - [ ] Add preferences for spots
-- [ ] Fix the missing options (use a board/sail/spot that is not in your preferences)
+- [ ] Fix the missing options (use a spot that is not in your preferences)
 - [ ] Visualize the data
-- [ ] Despaghettify the code (use more modern (es6) features & make code more modular)
