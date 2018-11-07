@@ -40,7 +40,7 @@ Download or clone this repository using:
 ```
 git clone https://github.com/jeroentvb/windsurf-stats.git
 ```
-`cd` into the folder.
+`cd windsurf-stats` into the folder.
 Install the required node.js packages using
 ```
 npm install
@@ -65,33 +65,15 @@ SESSION_SECRET=
 ```
 Fill in the blanks after the = with your database host and credentials. Also fill in the SESSION_SECRET, this can be anything you like.
 
-Uncomment the following line and function from [index.js](index.js)
-```js
-// .get('/setupDb', setupDb)
-
-// function setupDb (req, res) { ... }
+To set up the database and its tables use
 ```
-Comment the following line out otherwise the server will crash
-```js
-database: process.env.DB_NAME
+npm run-script setupdb
 ```
-Launch the application using `npm start`, `node index.js` or `nodemon`.
-The application can be reached from [127.0.0.1:25561](http://127.0.0.1:25561), your local ip or your external ip. Including the specified port. If you want to run it on a different port you can specify that in `/modules/options.js`.
 
-Visit the application at [127.0.0.1:25561/setupDb](http://127.0.0.1:25561/setupDb), this will create the database and three tables. A users table, a statistics table and a preferences table.
-
-If the application returns `Tables created succesfully` the database has succesfully been set up. If you get an error you have done something wrong and may need to troubleshoot the issue.
-You can now comment the following again
-```js
-.get('/setupDb', setupDb)
-
-function setupDb (req, res) { ... }
+Run the application using
 ```
-and uncomment
-```js
-// database: process.env.DB_NAME
+npm start
 ```
-Restart the application (if you are using nodemon, this is done when saving the file).
 
 Everything is now set up succesfully and ready for use! 🎉
 

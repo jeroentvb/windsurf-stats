@@ -4,11 +4,16 @@
   "description": "A web interface to keep track of windsurf session statistics",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "setupdb": "node modules/setupDb.js"
   },
-  "keywords": [],
+  "keywords": ["windsurf", "statistics"],
   "author": "jeroentvb",
   "license": "ISC",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/jeroentvb/windsurf-stats.git"
+  },
   "dependencies": {
     "bcrypt": "^3.0.1",
     "body-parser": "^1.18.3",

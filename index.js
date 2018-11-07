@@ -63,8 +63,6 @@ function getHtml (url) {
 }
 
 module.exports = express()
-  // .get('/setupDb', setupDb)
-
   .set('view engine', 'ejs')
   .set('views', 'templates')
   .use(express.static('static'))
@@ -105,19 +103,6 @@ function render (req, res) {
     loginStatus: req.session.user
   })
 }
-
-// Obsolete function
-// function renderIfLoggedIn (req, res) {
-//   if (req.session.user == undefined) {
-//     needLogin(req, res)
-//   } else {
-//     var id = req.originalUrl.replace('/', '')
-//     res.render(id, {
-//       page: (id.charAt(0).toUpperCase() + id.substr(1)).replace('-', ' '),
-//       loginStatus: req.session.user
-//     })
-//   }
-// }
 
 function addSession (req, res, next) {
   query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
@@ -245,7 +230,7 @@ function submitData (req, res) {
       .then(windfinder => {
         // Gather all the data that's going to be used
         responses.windspeed = Math.max(...windfinder.windspeed)
-        responses.index = windfinder.windspeed.findIndex(el => el = responses.windspeed)
+        responses.index = windfinder.windspeed.findIndex(() => responses.windspeed)
         responses.time = windfinder.time[responses.index]
         responses.windgust = windfinder.windgust[responses.index]
         responses.windDirection = windfinder.windDirection[responses.index]
@@ -523,90 +508,9 @@ function logout (req, res) {
   })
 }
 
-// Obsolete function
-// function needLogin (req, res) {
-//   res.status(401).render('error', {
-//     page: 'Error 401',
-//     error: 'You need to log in to view this page.'
-//   })
-// }
-
 function notFound (req, res) {
   res.status(404).render('error', {
     page: 'Error 404',
     error: 'The page was not found'
   })
 }
-
-// // Set up the database
-// function setupDb (req, res) {
-//   function createDb () {
-//     return new Promise((resolve, reject) => {
-//       db.query('CREATE DATABASE IF NOT EXISTS windsurfStatistics', (err, result) => {
-//         if (err) {
-//           reject(err)
-//         } else {
-//           console.log(chalk.yellow('[MySql] Database created'))
-//           resolve()
-//         }
-//       })
-//     })
-//   }
-//
-//   function createTable (query, tableName) {
-//     return new Promise((resolve, reject) => {
-//       db.query(query, (err, result) => {
-//         if (err) {
-//           reject(err)
-//         } else {
-//           console.log(chalk.yellow(`[MySql] ${tableName} table created`))
-//           resolve()
-//         }
-//       })
-//     })
-//   }
-//
-//   const queries = {
-//     statistics: `CREATE TABLE IF NOT EXISTS windsurfStatistics.statistics(statisticId int NOT NULL AUTO_INCREMENT,
-//       userId INT, date VARCHAR(10), spot VARCHAR(100), windspeed INT, windgust INT, windDirection VARCHAR(30),
-//       sailSize FLOAT, board VARCHAR(30), rating FLOAT, note VARCHAR(255), PRIMARY KEY (statisticId))`,
-//     users: `CREATE TABLE IF NOT EXISTS windsurfStatistics.users(id int NOT NULL AUTO_INCREMENT,
-//       username VARCHAR(255), email VARCHAR(255), password VARCHAR(255), PRIMARY KEY(id))`,
-//     prefs: `CREATE TABLE IF NOT EXISTS windsurfStatistics.preferences(id int NOT NULL AUTO_INCREMENT, userId INT,
-//       board0 VARCHAR(255), board1 VARCHAR(255), board2 VARCHAR(255), board3 VARCHAR(255), board4 VARCHAR(255),
-//       sail0 VARCHAR(255), sail1 VARCHAR(255), sail2 VARCHAR(255), sail3 VARCHAR(255), sail4 VARCHAR(255),
-//       sail5 VARCHAR(255), sail6 VARCHAR(255), sail7 VARCHAR(255), sail8 VARCHAR(255), sail9 VARCHAR(255),
-//       spot0 VARCHAR(255), spot1 VARCHAR(255), spot2 VARCHAR(255), spot3 VARCHAR(255), spot4 VARCHAR(255),
-//       PRIMARY KEY(id))`
-//   }
-//
-//   Promise.all([
-//     createDb(),
-//     createTable(queries.statistics, 'statistics'),
-//     createTable(queries.users, 'users'),
-//     createTable(queries.prefs, 'preferences')
-//   ])
-//     .then(() => {
-//       console.log(chalk.green('[MySql] Database set up succesfully'))
-//       res.send('Tables created succesfully')
-//     })
-//     .catch(err => {
-//       res.status(404).render('error', {
-//         page: 'Error',
-//         error: err
-//       })
-//       console.error(err)
-//       db.query('DROP DATABASE windsurfStatistics', (error, result) => {
-//         if (error) {
-//           console.log(chalk.red('Database could not be reset'))
-//           throw error
-//         } else {
-//           console.log(chalk.yellow('Database was reset'))
-//           res.status(404).render('error', {
-//             page: 'Error',
-//             error: `The database could not be set up because of the following error: \n ${err}`
-//           })
-//         }
-//       })
-//     })
-// }
