@@ -21,6 +21,7 @@ var dbConfig = {
 }
 var db
 function handleDisconnect () {
+  console.log(chalk.green('[MySql] trying to connect..'))
   db = mysql.createConnection(dbConfig)
   // connect to db
   db.connect(err => {
