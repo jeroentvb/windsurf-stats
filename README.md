@@ -46,6 +46,8 @@ Install the required node.js packages using
 ```
 npm install
 ```
+<details><summary>Troubleshooting installation</summary>
+
 If you are using windows you may have to execute the following commands first
 ```
 npm install -g node-gyp
@@ -55,6 +57,8 @@ On mac you may need to install the xcode command line tools using
 ```
 xcode-select --install
 ```
+
+</details><br/>
 
 Create a `.env` file and add the following:
 ```
