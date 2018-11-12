@@ -1,0 +1,78 @@
+{
+  "menu": {
+    "statistics": "Statistieken",
+    "add_session": "Sessie toevoegen",
+    "preferences": "Voorkeuren",
+    "logout": "Uitloggen",
+    "login": "Inloggen"
+  },
+  "page": {
+    "statistics": {
+      "name": "Statistieken",
+      "statistics_for": "Statistieken van"
+    },
+    "add_session": {
+      "name": "Sessie toevoegen",
+      "title": "Vul windsurf data in",
+      "sub_title": "Was de sessie vandaag of een andere dag?"
+    },
+    "confirm_submission": {
+      "name": "Bevestig inzending",
+      "title": "Ingestuurde data",
+      "sub_title": "Controleer of de ingestuurde data correct is.",
+      "correct_data": "De data is",
+      "correct": "Correct",
+      "incorrect": "Incorrect"
+    },
+    "preferences": {
+      "name": "Voorkeuren",
+      "title": "Alleen het eerste veld van elke categorie is vereist"
+    }
+  },
+  "general": {
+    "date": "Datum",
+    "spot": ["Spot", "Spots"],
+    "windspeed": "Windsnelheid",
+    "windgust": "Windvlagen",
+    "wind_direction": "Windrichting",
+    "sail_size": ["Zeilgrootte", "Zeilgrootten"],
+    "board": ["Plank", "Planken"],
+    "rating": "Beoordeling",
+    "note": "Opmerking",
+    "today": "Vandaag",
+    "other": "Anders"
+  },
+  "account": {
+    "register": "Registreer",
+    "login": "Log in",
+    "logout": "Log uit",
+    "password": "Wachtwoord",
+    "username": "Gebruikersnaam",
+    "repeat_passwd": "Herhaal wachtwoord",
+    "register_help": "Het wachtwoord moet tenmiste bestaan uit: 8 tekens, 1 hoofdletter en 1 nummer."
+  },
+  "error": {
+    "go_back": "Ga terug",
+    "_401_passwd": "Verkeerd wachtwoord..",
+    "_401_email": "E-mail adres bestaat niet..",
+    "_404": "De pagina is niet gevonden.."
+  },
+  "wind_directions": [
+    "N",
+    "NNO",
+    "NO",
+    "ONO",
+    "O",
+    "OZO",
+    "ZO",
+    "ZZO",
+    "Z",
+    "ZZW",
+    "ZW",
+    "WZW",
+    "W",
+    "WNW",
+    "NW",
+    "NNW"
+  ]
+}

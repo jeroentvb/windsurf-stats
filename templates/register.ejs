@@ -1,12 +1,12 @@
 <% include head %>
 
 <main>
-  <h1>Register</h1>
+  <h1><%= lang.account.register %></h1>
 
   <form action="/sign-up" method="post" id="register-form">
     <fieldset class="seperate">
       <div class="field first">
-        <label for="username">Username</label>
+        <label for="username"><%= lang.account.username %></label>
         <input id="username" type="text" name="username" placeholder="WindsurfDude123" required>
       </div>
 
@@ -16,17 +16,17 @@
       </div>
 
       <div class="field">
-        <label for="password">Password</label>
+        <label for="password"><%= lang.account.password %></label>
         <input id="password" type="password" name="password" placeholder="" min="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
       </div>
 
       <div class="field last">
-        <label for="password">Repeat password</label>
+        <label for="password"><%= lang.account.repeat_passwd %></label>
         <input id="repeat-password" type="password" name="repeat-password" placeholder="" min="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
       </div>
     </fieldset>
 
-    <p class="seperate">Password needs to be at least 8 characters, contain 1 uppercase letter and 1 number</p>
+    <p class="seperate"><%= lang.account.register_help %></p>
 
     <fieldset class="seperate not-white">
       <input type="submit" name="submit" id="submit">

@@ -1,9 +1,9 @@
 <% include head %>
 
 <main id="preferences">
-  <h3>Only the first entry of every category is required</h3>
+  <h3><%= lang.page.preferences.title %></h3>
   <form id="preferences-form" action="/update-prefs" method="post">
-    <h4>Boards</h4>
+    <h4><%= lang.general.board[1] %></h4>
     <fieldset class="seperate" id="boards">
       <% for (var i = 0; i < prefs.boards.length; i++) {
         if (i == 0) { %>
@@ -15,7 +15,7 @@
         <% } else { %>
           <div class="field">
         <% } %>
-          <label for="board<%= i %>">Board <%= i + 1 %></label>
+          <label for="board<%= i %>"><%= lang.general.board[0] %> <%= i + 1 %></label>
           <% if (prefs.boards[i] != '') { %>
             <input id="board<%= i %>" type="text" name="board<%= i %>" value="<%= prefs.boards[i] %>">
           <% } else { %>
@@ -25,7 +25,7 @@
       <% } %>
     </fieldset>
 
-    <h4>Sail sizes</h4>
+    <h4><%= lang.general.sail_size[1] %></h4>
     <fieldset class="seperate">
       <% for (var i = 0; i < prefs.sails.length; i++) {
         if (i == 0) { %>
@@ -37,7 +37,7 @@
         <% } else { %>
           <div class="field">
         <% } %>
-          <label for="sail<%= i %>">Sail size <%= i + 1 %></label>
+          <label for="sail<%= i %>"><%= lang.general.sail_size[0] %> <%= i + 1 %></label>
           <% if (prefs.sails[i] != '') { %>
             <input id="sail<%= i %>" type="number" name="sail<%= i %>" step="0.1" value="<%= prefs.sails[i] %>" max="20">
           <% } else { %>
@@ -47,7 +47,7 @@
       <% } %>
     </fieldset>
 
-    <h4>Spots</h4>
+    <h4><%= lang.general.spot[1] %></h4>
     <fieldset class="seperate">
       <% for (var i = 0; i < prefs.spots.length; i++) {
         if (i == 0) { %>
@@ -59,7 +59,7 @@
         <% } else { %>
           <div class="field">
         <% } %>
-          <label for="spot<%= i %>">Spot url <%= i + 1 %></label>
+          <label for="spot<%= i %>"><%= lang.general.spot[0] %> url <%= i + 1 %></label>
           <% if (prefs.spots[i] != '') { %>
             <input id="spot<%= i %>" type="url" name="spot<%= i %>" value="<%= prefs.spots[i] %>">
           <% } else { %>

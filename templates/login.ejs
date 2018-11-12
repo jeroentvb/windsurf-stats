@@ -1,7 +1,7 @@
 <% include head %>
 
 <main>
-  <h1>Log in</h1>
+  <h1><%= lang.account.login %></h1>
 
   <form id="login" action="/sign-in" method="post">
     <fieldset class="seperate">
@@ -11,7 +11,7 @@
       </div>
 
       <div class="field second last">
-        <label for="password">Password</label>
+        <label for="password"><%= lang.account.password %></label>
         <input type="password" name="password" id="password" required>
       </div>
     </fieldset>
