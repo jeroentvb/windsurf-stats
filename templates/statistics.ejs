@@ -1,18 +1,18 @@
 <% include head %>
 
 <main id="statistics">
-  <h2>Statistics for: <%= loginStatus.name %></h2>
+  <h2><%= lang.page.statistics.statistics_for %>: <%= loginStatus.name %></h2>
   <table>
     <tr>
-      <th>Date</th>
-      <th>Spot</th>
-      <th>Windspeed</th>
-      <th>Windgust</th>
-      <th>Wind direction</th>
-      <th>Sail size</th>
-      <th>Board</th>
-      <th>Rating</th>
-      <th>Note</th>
+      <th><%= lang.general.date %></th>
+      <th><%= lang.general.spot[0] %></th>
+      <th><%= lang.general.windspeed %></th>
+      <th><%= lang.general.windgust %></th>
+      <th><%= lang.general.wind_direction %></th>
+      <th><%= lang.general.sail_size[0] %></th>
+      <th><%= lang.general.board[0] %></th>
+      <th><%= lang.general.rating %></th>
+      <th><%= lang.general.note %></th>
     </tr>
 
     <%

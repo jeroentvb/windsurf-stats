@@ -1,0 +1,79 @@
+{
+  "menu": {
+    "statistics": "Statistics",
+    "addSession": "Add session",
+    "preferences": "Preferences",
+    "logout": "Log out",
+    "login": "Log in"
+  },
+  "page": {
+    "statistics": {
+      "name": "Statistics",
+      "statistics_for": "Statistics for"
+    },
+    "add_session": {
+      "name": "Add session",
+      "title": "Input windsurf data",
+      "sub_title": "Was the session today or a another day?"
+    },
+    "confirm_submission": {
+      "name": "Confirm submission",
+      "title": "Submitted data",
+      "sub_title": "Confirm the submitted data is correct.",
+      "correct_data": "The data is",
+      "correct": "Correct",
+      "incorrect": "Incorrect"
+    },
+    "preferences": {
+      "name": "Preferences",
+      "title": "Only the first entry of every category is required"
+    }
+  },
+  "general": {
+    "date": "Date",
+    "spot": ["Spot", "Spots"],
+    "windspeed": "Windspeed",
+    "windgust": "Windgusts",
+    "wind_direction": "Wind direction",
+    "sail_size": ["Sail size", "Sail sizes"],
+    "board": ["Board", "Boards"],
+    "rating": "Rating",
+    "note": "Note",
+    "today": "Today",
+    "other": "Other"
+  },
+  "account": {
+    "register": "Register",
+    "login": "Login",
+    "logout": "Logout",
+    "password": "Password",
+    "username": "Username",
+    "repeat_passwd": "Repeat password",
+    "register_help": "Password needs to be at least 8 characters, contain 1 uppercase letter and 1 number."
+
+  },
+  "error": {
+    "go_back": "Go back",
+    "_401_passwd": "Wrong password..",
+    "_401_email": "The e-mail adress does not exist..",
+    "_404": "The page could not be found.."
+  },
+  "wind_directions": [
+    "N",
+    "NNE",
+    "NE",
+    "ENE",
+    "E",
+    "ESE",
+    "SE",
+    "SSE",
+    "S",
+    "SSW",
+    "SW",
+    "WSW",
+    "W",
+    "WNW",
+    "NW",
+    "NNW"
+  ]
+}

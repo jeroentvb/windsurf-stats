@@ -9,6 +9,7 @@ const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
 const tools = require('./modules/tools')
 const options = require('./modules/options')
+const lang = options.language('nl')
 
 require('dotenv').config()
 
@@ -28,8 +29,9 @@ function handleDisconnect () {
     if (err) {
       console.error('[MySql] error while connecting to the db:', err)
       setTimeout(handleDisconnect, 10000)
+    } else {
+      console.log(chalk.green('[MySql] connection established..'))
     }
-    console.log(chalk.green('[MySql] connection established..'))
   })
   // Handle db errors
   db.on('error', err => {
@@ -101,7 +103,8 @@ function render (req, res) {
 
   res.render(id, {
     page: id.charAt(0).toUpperCase() + id.substr(1),
-    loginStatus: req.session.user
+    loginStatus: req.session.user,
+    lang: lang
   })
 }
 
@@ -139,9 +142,10 @@ function addSession (req, res, next) {
         date: tools.getYesterday()
       }
       res.render('add-session', {
-        page: 'Add session',
+        page: lang.page.add_session.name,
         loginStatus: req.session.user,
-        prefs: formattedPrefs
+        prefs: formattedPrefs,
+        lang: lang
       })
     })
     .catch(err => console.error(err))
@@ -245,15 +249,17 @@ function submitData (req, res) {
       })
       .then(allData => {
         res.render('confirm-data', {
-          page: 'Confirm submission',
+          page: lang.page.confirm_submission.name,
           data: allData,
-          loginStatus: req.session.user
+          loginStatus: req.session.user,
+          lang: lang
         })
       })
       .catch(err => {
         res.render('error', {
           page: 'error',
-          error: err
+          error: err,
+          lang: lang
         })
         console.error(err)
       })
@@ -263,9 +269,10 @@ function submitData (req, res) {
       ...additionalData
     }
     res.render('confirm-data', {
-      page: 'Confirm submission',
+      page: lang.page.confirm_submission.name,
       data: manualData,
-      loginStatus: req.session.user
+      loginStatus: req.session.user,
+      lang: lang
     })
   }
 }
@@ -311,9 +318,10 @@ function showStatistics (req, res, next) {
     query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
       .then(result => {
         res.render('statistics', {
-          page: 'Statistics',
+          page: lang.page.statistics.name,
           loginStatus: req.session.user,
-          statistics: result
+          statistics: result,
+          lang: lang
         })
       })
       .catch(err => console.error(err))
@@ -353,9 +361,10 @@ function renderPreferences (req, res, next) {
         ]
       }
       res.render('preferences', {
-        page: 'Preferences',
+        page: lang.page.preferences.name,
         loginStatus: req.session.user,
-        prefs: formattedPrefs
+        prefs: formattedPrefs,
+        lang: lang
       })
     })
     .catch(err => console.error(err))
@@ -459,8 +468,9 @@ function register (req, res, next) {
           }
 
           res.render('setPrefs', {
-            page: 'Preferences',
-            loginStatus: req.session.user
+            page: lang.page.preferences.name,
+            loginStatus: req.session.user,
+            lang: lang
           })
         })
       })
@@ -484,7 +494,7 @@ function login (req, res, next) {
       } else {
         res.status(401).render('error', {
           page: 'Error',
-          error: 'E-mail does not exist.'
+          error: lang.error._401_email
         })
       }
 
@@ -500,7 +510,7 @@ function login (req, res, next) {
         } else {
           res.status(401).render('error', {
             page: 'Error',
-            error: 'Incorrect password.'
+            error: lang.error._401_passwd
           })
         }
       }
@@ -518,6 +528,7 @@ function logout (req, res) {
 function notFound (req, res) {
   res.status(404).render('error', {
     page: 'Error 404',
-    error: 'The page was not found'
+    error: lang.error._404,
+    lang: lang
   })
 }
