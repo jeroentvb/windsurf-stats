@@ -398,6 +398,12 @@ function preferences (req, res, next) {
     ]
   }
 
+  prefData.spots.forEach((spot, i) => {
+    if (!spot.includes('windfinder')) {
+      prefData.spots[i] = ''
+    }
+  })
+
   query(prefsQuery, {
     userId: req.session.user.id,
     board0: prefData.boards[0],
