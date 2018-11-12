@@ -9,6 +9,7 @@ The application is functional but misses some features/options I would like to b
 ## Table of contents
 * [What it does](#what-it-does)
 * [Usage](#usage)
+* [Localization](#localization)
 * [To do](#to-do)
 
 ## What it does
@@ -78,6 +79,16 @@ npm start
 Everything is now set up succesfully and ready for use! 🎉
 
 The only thing left to do is go out and shred! 🤙
+
+## Localization
+I've set up the application to use text from a localized (json) file so you can use the application in your own language. To use another language other than english or dutch you need to create a copy of the `en.json` file in the [localization](/localization) folder and rename it with your own language characters, for example `de` (for germany).
+Now you can replace the text with your own language. After you've done that you need to alter [this line](https://github.com/jeroentvb/windsurf-stats/blob/6fbddc1f5261745f8d7b49c140f061de8ed3bec0/index.js#L12), so it uses the letters you gave your json file. It should like something like the following:
+```js
+const lang = options.language('de')
+```
+Make sure your file has all the object keys that the english file has, otherwise the application will crash when it can't find a translation.
+
+*If you create a translation, I would highly appreciate it if you made a pull request with your additions.*
 
 ## To do
 - [ ] Use a proper session store instead of session-file-store

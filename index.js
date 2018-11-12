@@ -9,7 +9,7 @@ const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
 const tools = require('./modules/tools')
 const options = require('./modules/options')
-const lang = options.language('nl')
+const lang = options.language('en')
 
 require('dotenv').config()
 
