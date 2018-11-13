@@ -494,7 +494,8 @@ function login (req, res, next) {
       } else {
         res.status(401).render('error', {
           page: 'Error',
-          error: lang.error._401_email
+          error: lang.error._401_email,
+          lang: lang
         })
       }
 
@@ -510,7 +511,8 @@ function login (req, res, next) {
         } else {
           res.status(401).render('error', {
             page: 'Error',
-            error: lang.error._401_passwd
+            error: lang.error._401_passwd,
+            lang: lang
           })
         }
       }
