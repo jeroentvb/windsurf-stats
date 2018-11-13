@@ -54,8 +54,11 @@
       default: %>
       <header>
         <nav>
-          <ul>
-            <li><%= page %></li>
+          <h2><%= page %></h2>
+          <img id="open-menu" src="img/menu-icon.svg" alt="Menu icon">
+          <ul id="menu">
+              <li><img id="close-menu" src="img/close-icon.svg" alt="Close menu icon"></li>
+              <li>Menu</li>
             <% if (typeof loginStatus != 'undefined') { %>
               <li><a href="/statistics"><%= lang.menu.statistics %></a></li>
               <li><a href="/add-session"><%= lang.menu.add_session %></a></li>

@@ -53,51 +53,94 @@ body {
 header {
   padding: 1px 16px;
   background-color: $white;
-  // color: $white;
-  // margin-bottom: 16px;
   border-bottom: 1px solid $grey-line;
 
   nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h2 {
+      flex-grow: 1;
+    }
+
+    img {
+      width: 3em;
+      height: 3em;
+    }
+
     ul {
-      padding: 0;
-      display: flex;
-      flex-direction: row;
+      transform: scale(0);
       list-style-type: none;
+      position: absolute;
+      background-color: $white;
+      padding: 1em 2em 2em 2em;
+      right: -55%;
+      top: 0;
+      min-width: 200px;
+      max-width: 300px;
+      width: 50%;
+      text-align: right;
+      height: 100%;
+      margin: 0;
+      border-left: 1px solid #bebebe;
 
       li {
+        margin-bottom: 0.5em;
         font-size: 1.2em;
-        font-weight: 500;
-        align-self: center;
-        &:hover {
-          cursor: default;
-        }
 
-        &:first-child {
+        &:nth-child(1) {
+          margin-bottom: 1em;
+          font-size: 1em;
+        }
+        &:nth-child(2) {
           font-size: 1.5em;
           font-weight: 600;
-          flex-grow: 1;
+          margin-bottom: 0.8em;
         }
 
-        &:nth-child(-n+4) {
-          margin-right: 32px;
-        }
-
-        &:last-child {
-          margin-left: auto;
+        img {
+          width: 2.4em;
+          height: 2.4em;
         }
 
         a {
-          color: rgb(0, 0, 0);
           text-decoration: none;
-
-          &:hover {
-            text-decoration: underline;
-            cursor: pointer;
-          }
+          color: #000;
         }
       }
     }
   }
+}
+
+@keyframes showmenu {
+  from {
+    right: -55%;
+    transform: scale(0);
+  }
+  to {
+    right: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes hidemenu {
+  from {
+    right: 0;
+    transform: scale(1);
+  }
+  to {
+    right: -55%;
+    transform: scale(inherit);
+  }
+}
+
+.show-menu {
+  animation: .5s forwards showmenu;
+}
+
+.hide-menu {
+  animation: .5s forwards hidemenu;
 }
 
 // Form

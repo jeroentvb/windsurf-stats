@@ -12,6 +12,10 @@
     h1, h2, h3, form, nav, table {
       grid-column: 2 / 2;
     }
+
+    nav ul {
+      padding: 2em;
+    }
   }
 
   .center-content {
@@ -106,5 +110,33 @@
 @media (min-width: 1600px) {
   main, .center-content, header {
     grid-template-columns: 1fr 40% 1fr;
+
+    nav {
+      #open-menu, #close-menu {
+        display: none;
+      }
+
+      ul {
+        transform: scale(1);
+
+        position: inherit;
+        border-left: none;
+        display: flex;
+        flex-direction: row;
+        width: auto;
+        min-width: inherit;
+        max-width: inherit;
+        padding: 0;
+
+        li {
+          margin-left: 1em;
+          margin-bottom: 0;
+
+          &:nth-child(2) {
+            display: none;
+          }
+        }
+      }
+    }
   }
 }
