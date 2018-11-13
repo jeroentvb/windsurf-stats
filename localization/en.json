@@ -1,7 +1,7 @@
 {
   "menu": {
     "statistics": "Statistics",
-    "addSession": "Add session",
+    "add_session": "Add session",
     "preferences": "Preferences",
     "logout": "Log out",
     "login": "Log in"
