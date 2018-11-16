@@ -67,6 +67,9 @@ header {
     img {
       width: 3em;
       height: 3em;
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     ul {
@@ -107,6 +110,9 @@ header {
         a {
           text-decoration: none;
           color: #000;
+          &:hover {
+            opacity: 0.6;
+          }
         }
       }
     }
