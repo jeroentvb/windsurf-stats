@@ -8,8 +8,8 @@
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="shortcut icon" type="image/png" href="img/favicon.png"/>
   <link rel="apple-touch-icon" href="img/touch-icon-iphone.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="white">
+  <%# <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="white"> %>
   <title><%= page %></title>
   </head>
 
@@ -18,36 +18,28 @@
       case 'Error 404': %>
       <header>
         <nav>
-          <ul>
-            <li><%= page %></li>
-          </ul>
+          <h2><%= page %></h2>
         </nav>
       </header>
         <% break
       case 'Error 401': %>
       <header>
         <nav>
-          <ul>
-            <li><%= page %></li>
-          </ul>
+          <h2><%= page %></h2>
         </nav>
       </header>
         <% break
       case 'Login': %>
       <header>
         <nav>
-          <ul>
-            <li><%= page %></li>
-          </ul>
+          <h2><%= page %></h2>
         </nav>
       </header>
         <% break
         case 'Register': %>
         <header>
           <nav>
-            <ul>
-              <li><%= page %></li>
-            </ul>
+            <h2><%= page %></h2>
           </nav>
         </header>
           <% break
