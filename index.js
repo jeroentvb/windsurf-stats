@@ -8,8 +8,8 @@ const chalk = require('chalk')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
 const tools = require('./modules/tools')
-const options = require('./modules/options')
-const lang = options.language('en')
+const config = require('./app-config.json')
+const lang = tools.localize(config.language)
 
 require('dotenv').config()
 
@@ -96,7 +96,7 @@ module.exports = express()
   .post('/submit-data', submitData)
   .post('/confirm-submit', confirmedData)
   .use(notFound)
-  .listen(options.port, () => console.log(chalk.green(`[Server] listening on port ${options.port}...`)))
+  .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))
 
 function render (req, res) {
   var id = req.originalUrl.replace('/', '')
@@ -190,7 +190,7 @@ function submitData (req, res) {
       index: Number
     }
 
-    getHtml(options.spotUrls[submittedData.spot])
+    getHtml(config.spotUrls[submittedData.spot])
       .then(html => {
         // Extract data from html
         var $ = cheerio.load(html)
@@ -449,7 +449,7 @@ function register (req, res, next) {
     res.status(400).send('Name, e-mail or password are missing!')
   }
 
-  bcrypt.hash(password, options.saltRounds)
+  bcrypt.hash(password, config.saltRounds)
     .then(hash => {
       db.query('INSERT INTO windsurfStatistics.users SET ?', {
         username: username,

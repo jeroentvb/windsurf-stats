@@ -77,11 +77,17 @@ function spliceToDayHours (array) {
   array.splice(48, 10)
 }
 
+function localize (lang) {
+  const localization = require(`../localization/${lang}.json`)
+  return localization
+}
+
 module.exports = {
   spliceToFirstDay,
   getToday,
   getYesterday,
   objToStr,
   exportObj,
-  cleanObj
+  cleanObj,
+  localize
 }
