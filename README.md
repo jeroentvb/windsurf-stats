@@ -72,7 +72,7 @@ Fill in the blanks after the = with your database host and credentials. Also fil
 
 To set up the database and its tables use
 ```
-npm run-script setupdb
+npm run setupdb
 ```
 
 Run the application using

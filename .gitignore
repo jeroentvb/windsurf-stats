@@ -64,3 +64,4 @@ typings/
 sessions/
 .sass-cache/
 style.css.map
+dist/
