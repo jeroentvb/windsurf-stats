@@ -1,6 +1,7 @@
 const express = require('express')
 const session = require('express-session')
 const FileStore = require('session-file-store')(session)
+const helmet = require('helmet')
 const request = require('request')
 const mysql = require('mysql')
 const cheerio = require('cheerio')
@@ -68,6 +69,7 @@ function getHtml (url) {
 module.exports = express()
   .set('view engine', 'ejs')
   .set('views', 'templates')
+  .use(helmet())
   .use(express.static('static'))
   .use(bodyParser.urlencoded({
     extended: true

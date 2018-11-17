@@ -1,10 +1,11 @@
-var a = document.getElementsByTagName('a')
-for (var i = 0; i < a.length; i++) {
-  a[i].onclick = function () {
-    window.location = this.getAttribute('href')
-    return false
-  }
-}
+// Code for links inside a apple-mobile content enabled app
+// var a = document.getElementsByTagName('a')
+// for (var i = 0; i < a.length; i++) {
+//   a[i].onclick = function () {
+//     window.location = this.getAttribute('href')
+//     return false
+//   }
+// }
 
 var openMenu = document.getElementById('open-menu')
 var closeMenu = document.getElementById('close-menu')
