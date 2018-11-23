@@ -2,9 +2,8 @@ const express = require('express')
 const session = require('express-session')
 const FileStore = require('session-file-store')(session)
 const helmet = require('helmet')
-const request = require('request')
 const mysql = require('mysql')
-const cheerio = require('cheerio')
+const scrape = require('wind-scrape')
 const chalk = require('chalk')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
@@ -52,16 +51,6 @@ function query (query, params) {
     db.query(query, params, (err, result) => {
       if (err) reject(err)
       resolve(result)
-    })
-  })
-}
-
-// Wrap a request in a promise to use throughout the application
-function getHtml (url) {
-  return new Promise((resolve, reject) => {
-    request(url, (err, response, html) => {
-      if (err) reject(err)
-      resolve(html)
     })
   })
 }
@@ -176,13 +165,6 @@ function submitData (req, res) {
   if (date === 'today') {
     submittedData.date = tools.getToday()
 
-    var windfinder = {
-      time: [],
-      windspeed: [],
-      windgust: [],
-      windDirection: []
-    }
-
     var responses = {
       spot: '',
       time: '',
@@ -192,55 +174,26 @@ function submitData (req, res) {
       index: Number
     }
 
-    getHtml(config.spotUrls[submittedData.spot])
-      .then(html => {
-        // Extract data from html
-        var $ = cheerio.load(html)
-
-        // Get the spots name
-        $('#spotheader-spotname').filter(function () {
-          responses.spot = $(this).text()
-        })
-
-        // Get the time
-        $('.data-time').find($('.value')).filter(function (i) {
-          // console.log($(this).text())
-          windfinder.time[i] = $(this).text()
-        })
-        tools.spliceToFirstDay(windfinder.time)
-
-        // Get the average wind speed
-        $('.data--major').find($('.units-ws')).filter(function (i) {
-          windfinder.windspeed[i] = $(this).text()
-        })
+    scrape.windfinder(config.spotUrls[submittedData.spot])
+      .then(windfinder => {
         tools.spliceToFirstDay(windfinder.windspeed)
-
-        // Get the wind gusts
-        $('.data-gusts').find($('.units-ws')).filter(function (i) {
-          windfinder.windgust[i] = $(this).text()
-        })
+        tools.spliceToFirstDay(windfinder.time)
         tools.spliceToFirstDay(windfinder.windgust)
-
-        // Get the wind direction; do some converting
-        $('.data-direction-arrow').find($('.directionarrow')).filter(function (i) {
-          var data = parseInt($(this).attr('title').replace('°', ' '))// - 180
-          // This can be used to calculate the wind direction in wind direction instead of angles
-          var val = Math.floor((data / 22.5) + 0.5)
-          var windDirections = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
-          windfinder.windDirection[i] = windDirections[(val % 16)]
-          // windfinder.windDirection[i] = data
-        })
-        tools.spliceToFirstDay(windfinder.windDirection)
+        tools.spliceToFirstDay(windfinder.winddirection)
 
         return windfinder
       })
       .then(windfinder => {
-        // Gather all the data that's going to be used
+        responses.spot = windfinder.spot
         responses.windspeed = Math.max(...windfinder.windspeed)
         responses.index = windfinder.windspeed.findIndex(() => responses.windspeed)
         responses.time = windfinder.time[responses.index]
         responses.windgust = windfinder.windgust[responses.index]
-        responses.windDirection = windfinder.windDirection[responses.index]
+
+        windfinder.winddirection.forEach((direction, index) => {
+          windfinder.winddirection[index] = tools.getWindDirection(direction, lang.wind_directions)
+        })
+        responses.windDirection = windfinder.winddirection[responses.index]
 
         let allData = {
           ...submittedData,

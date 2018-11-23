@@ -1,7 +1,7 @@
 // Splice windfinder data to the first day instead of the three days from the superforecast
 function spliceToFirstDay (array) {
   // Remove the first 7 hours
-  array.splice(0, 9)
+  // array.splice(0, 9)
   // Remove other days
   array.splice(12, 60)
 }
@@ -82,6 +82,12 @@ function localize (lang) {
   return localization
 }
 
+function getWindDirection (deg, windDirections) {
+  if (deg < 0) deg += 360
+  let val = Math.floor(((deg - 180) / 22.5) + 0.5)
+  return windDirections[(val % 16)]
+}
+
 module.exports = {
   spliceToFirstDay,
   getToday,
@@ -89,5 +95,6 @@ module.exports = {
   objToStr,
   exportObj,
   cleanObj,
-  localize
+  localize,
+  getWindDirection
 }
