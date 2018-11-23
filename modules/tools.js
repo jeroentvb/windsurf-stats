@@ -83,7 +83,6 @@ function localize (lang) {
 }
 
 function getWindDirection (deg, windDirections) {
-  // if (deg < 0) deg += 360
   let val = Math.floor((deg / 22.5) + 0.5)
   return windDirections[(val % 16)]
 }
