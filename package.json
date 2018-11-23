@@ -32,5 +32,8 @@
   },
   "devDependencies": {
     "nodemon": "^1.18.6"
+  },
+  "nodemonConfig": {
+    "ignore": ["sessions/*", "localization/*", "README"] 
   }
 }
