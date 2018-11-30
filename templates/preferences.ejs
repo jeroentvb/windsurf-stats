@@ -48,6 +48,7 @@
     </fieldset>
 
     <h4><%= lang.general.spot[1] %></h4>
+    <p><%= lang.page.preferences.spotexplaination %></p>
     <fieldset class="seperate">
       <% for (var i = 0; i < prefs.spots.length; i++) {
         if (i == 0) { %>
@@ -59,11 +60,11 @@
         <% } else { %>
           <div class="field">
         <% } %>
-          <label for="spot<%= i %>"><%= lang.general.spot[0] %> url <%= i + 1 %></label>
+          <label for="spot<%= i %>"><%= lang.general.spot[0]%> <%= i + 1 %></label>
           <% if (prefs.spots[i] != '') { %>
-            <input id="spot<%= i %>" type="url" name="spot<%= i %>" value="<%= prefs.spots[i] %>">
+            <input id="spot<%= i %>" type="text" name="spot<%= i %>" value="<%= prefs.spots[i] %>">
           <% } else { %>
-            <input id="spot<%= i %>" type="url" name="spot<%= i %>">
+            <input id="spot<%= i %>" type="text" name="spot<%= i %>">
           <% } %>
         </div>
       <% } %>

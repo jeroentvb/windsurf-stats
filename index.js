@@ -132,6 +132,7 @@ function addSession (req, res, next) {
         ],
         date: tools.getYesterday()
       }
+
       res.render('add-session', {
         page: lang.page.add_session.name,
         loginStatus: req.session.user,
@@ -174,7 +175,7 @@ function submitData (req, res) {
       index: Number
     }
 
-    scrape.windfinder(config.spotUrls[submittedData.spot])
+    scrape.windfinder(submittedData.spot)
       .then(windfinder => {
         tools.spliceToFirstDay(windfinder.windspeed)
         tools.spliceToFirstDay(windfinder.time)
@@ -254,15 +255,6 @@ function confirmedData (req, res, next) {
     query('INSERT INTO windsurfStatistics.statistics SET ?', submittedData)
       .then(res.redirect('statistics'))
       .catch(err => console.log(err))
-
-    // Obsolete function
-    // db.query('INSERT INTO windsurfStatistics.statistics SET ?', submittedData, (err, result) => {
-    //   if (err) {
-    //     next(err)
-    //   } else {
-    //     res.redirect('statistics')
-    //   }
-    // })
   }
 }
 
@@ -332,6 +324,7 @@ function preferences (req, res, next) {
   } else {
     prefsQuery = `UPDATE windsurfStatistics.preferences SET ? WHERE userId = ${req.session.user.id}`
   }
+
   let prefData = {
     boards: [
       req.body.board0.trim(),
@@ -353,20 +346,13 @@ function preferences (req, res, next) {
       req.body.sail9
     ],
     spots: [
-      req.body.spot0,
-      req.body.spot1,
-      req.body.spot2,
-      req.body.spot3,
-      req.body.spot4
-      // Spot names?
+      req.body.spot0.trim(),
+      req.body.spot1.trim(),
+      req.body.spot2.trim(),
+      req.body.spot3.trim(),
+      req.body.spot4.trim()
     ]
   }
-
-  prefData.spots.forEach((spot, i) => {
-    if (!spot.includes('windfinder')) {
-      prefData.spots[i] = ''
-    }
-  })
 
   query(prefsQuery, {
     userId: req.session.user.id,

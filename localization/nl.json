@@ -26,7 +26,8 @@
     },
     "preferences": {
       "name": "Voorkeuren",
-      "title": "Alleen het eerste veld van elke categorie is vereist"
+      "title": "Alleen het eerste veld van elke categorie is vereist",
+      "spotexplaination": "Dit is de spot naam zoals die in de windfinder url staat. Voorbeeld: voor Maui Honolua Bay is het: maui_honolua_bay."
     }
   },
   "general": {

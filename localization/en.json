@@ -26,7 +26,8 @@
     },
     "preferences": {
       "name": "Preferences",
-      "title": "Only the first entry of every category is required"
+      "title": "Only the first entry of every category is required",
+      "spotexplaination": "This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay."
     }
   },
   "general": {

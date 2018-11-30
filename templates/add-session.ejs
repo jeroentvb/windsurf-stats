@@ -46,10 +46,28 @@
       <div class="field first">
         <label for="spot-other"><%= lang.general.spot[0] %></label>
         <select id="spot" name="spot">
-          <option value="schellinkhout" selected="selected">Schellinhout</option>
-          <option value="hondehemeltje">Hondehemeltje</option>
-          <option value="andijk">Andijk</option>
-          <option value="onderijk" disabled>Onderdijk</option>
+          <% prefs.spots.forEach((spot, i) => {
+            if (i === 0) { %>
+              <option value="<%= spot %>" selected="selected">
+                <%= spot
+                .split('-').join(' ')
+                .split('_').join(' ')
+                .split(' ')
+                .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+                .join(' ') %>
+              </option>
+            <% } else if (spot !== '') { %>
+              <option value="<%= spot %>">
+                <%= spot
+                .split('-').join(' ')
+                .split('_').join(' ')
+                .split(' ')
+                .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+                .join(' ') %>
+              </option>
+            <% }
+          }) %>
+
           <option value="other" disabled><%= lang.general.other %></option>
         </select>
       </div>
