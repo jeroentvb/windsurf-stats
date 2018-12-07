@@ -175,7 +175,7 @@ function submitData (req, res) {
       index: Number
     }
 
-    scrape.windfinder(submittedData.spot)
+    scrape.windfinder(`https://www.windfinder.com/weatherforecast/${submittedData.spot}`)
       .then(windfinder => {
         tools.spliceToFirstDay(windfinder.windspeed)
         tools.spliceToFirstDay(windfinder.time)
