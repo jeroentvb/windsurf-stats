@@ -224,12 +224,19 @@ function submitData (req, res) {
       ...submittedData,
       ...additionalData
     }
-    res.render('confirm-data', {
-      page: lang.page.confirm_submission.name,
-      data: manualData,
-      loginStatus: req.session.user,
-      lang: lang
-    })
+
+    scrape.windfinder(submittedData.spot)
+      .then(res => {
+        manualData.spot = res.spot
+        return manualData
+      })
+      .then(manualData => res.render('confirm-data', {
+        page: lang.page.confirm_submission.name,
+        data: manualData,
+        loginStatus: req.session.user,
+        lang: lang
+      }))
+      .catch(err => console.error(err))
   }
 }
 
