@@ -252,6 +252,10 @@ fieldset {
   &.after-title {
     border: none;
   }
+  &.custom-field {
+    border-top: 1px solid $grey-line;
+    border-bottom: none;
+  }
 }
 
 // Classes
