@@ -1,16 +1,17 @@
 # Windsurf statistics tracking
 This project is a web interface to easily save windsurf session data.
-It currently works best for my own use case (gear and spots), but I'm plannig to make it accessible for windsurfers from all around the world.
+It was originally built to suit my needs, but it should be usable for any windsurfer.
 
 I started this project because I used to save my windsurf session data in an excel file, but I figured it would be easier to use a web interface and visualize the statistics in a nice way. And so this project was born.
 
-The application is functional but misses some features/options I would like to build/include. It also has a few bugs.
+The application is functional but misses some features/options I would like to build/include. As it is still in development, it may contain a few bugs. Please [create an issue](https://github.com/jeroentvb/windsurf-stats/issues) if you find one!  
+If you have a feature request, you should also make an issue.
 
 ## Table of contents
 * [What it does](#what-it-does)
 * [Usage](#usage)
 * [Localization](#localization)
-* [To do](#to-do)
+  * [Included languages](#currently-included-languages)
 
 ## What it does
 It currently stores the following values in a databse on a per user basis:
@@ -94,6 +95,6 @@ Make sure your file has all the object keys that the english file has, otherwise
 
 *If you create a translation, I would highly appreciate it if you made a pull request with your additions.*
 
-## To do
-- [ ] Use a proper session store instead of session-file-store
-- [ ] Visualize the data
+### Currently included languages
+* English (en)
+* Dutch (nl)
