@@ -96,5 +96,5 @@ Make sure your file has all the object keys that the english file has, otherwise
 *If you create a translation, I would highly appreciate it if you made a pull request with your additions.*
 
 ### Currently included languages
-* English (en)
-* Dutch (nl)
+* [English (en)](localization/en.json)
+* [Dutch (nl)](localization/nl.json)
