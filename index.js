@@ -144,23 +144,14 @@ function addSession (req, res, next) {
 }
 
 function submitData (req, res) {
-  console.log(chalk.yellow(`Recieved data submission from user ${req.session.user.name}`))
-
   let date = req.body.date
 
   let submittedData = {
-    sail: req.body.sailSize,
-    board: req.body.windsurfBoard,
+    spot: req.body.spotOther ? req.body.spotOther : req.body.spot,
+    sail: req.body.sailSizeOther ? req.body.sailSizeOther : req.body.sailSize,
+    board: req.body.windsurfBoardOther ? req.body.windsurfBoardOther : req.body.windsurfBoard,
     rating: req.body.rating,
-    note: req.body.note,
-    spot: req.body.spot
-  }
-
-  let additionalData = {
-    date: req.body.dateInput,
-    windspeed: req.body.windspeed,
-    windgust: req.body.windgust,
-    windDirection: req.body.windDirection
+    note: req.body.note
   }
 
   if (date === 'today') {
@@ -175,7 +166,7 @@ function submitData (req, res) {
       index: Number
     }
 
-    scrape.windfinder(`https://www.windfinder.com/weatherforecast/${submittedData.spot}`)
+    scrape.windfinder(submittedData.spot)
       .then(windfinder => {
         tools.spliceToFirstDay(windfinder.windspeed)
         tools.spliceToFirstDay(windfinder.time)
@@ -220,6 +211,13 @@ function submitData (req, res) {
         console.error(err)
       })
   } else {
+    let additionalData = {
+      date: req.body.dateInput,
+      windspeed: req.body.windspeed,
+      windgust: req.body.windgust,
+      windDirection: req.body.windDirection
+    }
+
     let manualData = {
       ...submittedData,
       ...additionalData

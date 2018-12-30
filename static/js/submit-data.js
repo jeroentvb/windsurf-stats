@@ -29,6 +29,13 @@ function checkOtherInputError (otherInput, otherWrap, e) {
   }
 }
 
+// Empty other value field if the option of top element isn't other
+function checkOtherValue (el, elOther) {
+  if (el.value !== 'other') {
+    elOther.value = ''
+  }
+}
+
 if (document.getElementById('submit-form') !== undefined) {
   // Show wind-data input fields if session was not today
   var additionalStats = document.getElementById('additional-stats')
@@ -69,11 +76,30 @@ if (document.getElementById('submit-form') !== undefined) {
   var noteInput = document.getElementById('note')
   var submitForm = document.getElementById('submit-form')
 
+  var dropdowns = [
+    [
+      spot,
+      otherSpot
+    ],
+    [
+      sailSize,
+      otherSailSize
+    ],
+    [
+      windsurfBoard,
+      otherWindsurfBoard
+    ]
+  ]
+
   submitForm.addEventListener('click', function (e) {
     checkInputError(ratingInput, e)
     checkInputError(noteInput, e)
     checkOtherInputError(otherSpot, otherSpotWrap, e)
     checkOtherInputError(otherSailSize, otherSailSizeWrap, e)
     checkOtherInputError(otherWindsurfBoard, otherWindsurfBoardWrap, e)
+
+    for (var i = 0; i < dropdowns.length; i++) {
+      checkOtherValue(dropdowns[i][0], dropdowns[i][1])
+    }
   })
 }

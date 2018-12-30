@@ -96,6 +96,4 @@ Make sure your file has all the object keys that the english file has, otherwise
 
 ## To do
 - [ ] Use a proper session store instead of session-file-store
-- [ ] Add preferences for spots
-- [ ] Fix the missing options (use a spot that is not in your preferences)
 - [ ] Visualize the data

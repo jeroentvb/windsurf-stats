@@ -44,7 +44,7 @@
 
     <fieldset>
       <div class="field first">
-        <label for="spot-other"><%= lang.general.spot[0] %></label>
+        <label for="spot"><%= lang.general.spot[0] %></label>
         <select id="spot" name="spot">
           <% prefs.spots.forEach((spot, i) => {
             if (i === 0) { %>
@@ -68,18 +68,18 @@
             <% }
           }) %>
 
-          <option value="other" disabled><%= lang.general.other %></option>
+          <option value="other"><%= lang.general.other %></option>
         </select>
       </div>
       <div id="spot-other-wrapper" class="field hidden">
-        <label>Other spot</label>
-        <input id="spot-other" type="text" name="spot-other" class="custom-field" placeholder="Insert custom spot">
+        <label for="spot-other"></label>
+        <input id="spot-other" type="text" name="spotOther" class="custom-field" placeholder="Insert custom spot">
       </div>
     </fieldset>
 
     <fieldset>
       <div class="field second">
-        <label  for="windsurf-sail-size-other"><%= lang.general.sail_size[0] %></label>
+        <label  for="windsurf-sail-size"><%= lang.general.sail_size[0] %></label>
         <select id="windsurf-sail-size" name="sailSize">
           <% for (let i = 0; i < prefs.sails.length; i++) {
             if (prefs.sails[i] != '' && i == 0) { %>
@@ -88,17 +88,17 @@
               <option value="<%= prefs.sails[i] %>"><%= prefs.sails[i] %></option>
             <% }
           } %>
-          <option value="other" disabled><%= lang.general.other %></option>
+          <option value="other"><%= lang.general.other %></option>
         </select>
       </div>
 
       <div id="windsurf-sail-size-other-wrapper" class="field hidden">
-        <label></label>
+        <label for="windsurf-sail-size-other"></label>
         <input id="windsurf-sail-size-other" type="number" name="sailSizeOther" class="custom-field" placeholder="Insert custom sail size" max="10" min="1">
       </div>
 
       <div class="field">
-        <label for="windsurf-board-other"><%= lang.general.board[0] %></label>
+        <label for="windsurf-board"><%= lang.general.board[0] %></label>
         <select id="windsurf-board" name="windsurfBoard">
           <% for (let i = 0; i < prefs.boards.length; i++) {
             if (prefs.boards[i] != '' && i == 0) { %>
@@ -107,13 +107,13 @@
               <option value="<%= prefs.boards[i] %>"><%= prefs.boards[i] %></option>
             <% }
           } %>
-          <option value="other" disabled><%= lang.general.other %></option>
+          <option value="other"><%= lang.general.other %></option>
         </select>
       </div>
 
       <div id="windsurf-board-other-wrapper" class="field hidden">
-        <label></label>
-        <input id="windsurf-board-other" type="text" name="windsurf-board-other" class="custom-field" placeholder="Insert custom board">
+        <label for="windsurf-board-other"></label>
+        <input id="windsurf-board-other" type="text" name="windsurfBoardOther" class="custom-field" placeholder="Insert custom board">
       </div>
     </fieldset>
 
