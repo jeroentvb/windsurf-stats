@@ -7,9 +7,9 @@ const scrape = require('wind-scrape')
 const chalk = require('chalk')
 const bodyParser = require('body-parser')
 const bcrypt = require('bcrypt')
-const tools = require('./modules/tools')
+const helper = require('./modules/helper')
 const config = require('./app-config.json')
-const lang = tools.localize(config.language)
+const lang = helper.localize(config.language)
 
 require('dotenv').config()
 
@@ -130,7 +130,7 @@ function addSession (req, res, next) {
           prefs.spot3,
           prefs.spot4
         ],
-        date: tools.getYesterday()
+        date: helper.getYesterday()
       }
 
       res.render('add-session', {
@@ -155,7 +155,7 @@ function submitData (req, res) {
   }
 
   if (date === 'today') {
-    submittedData.date = tools.getToday()
+    submittedData.date = helper.getToday()
 
     var responses = {
       spot: '',
@@ -168,10 +168,10 @@ function submitData (req, res) {
 
     scrape.windfinder(submittedData.spot)
       .then(windfinder => {
-        tools.spliceToFirstDay(windfinder.windspeed)
-        tools.spliceToFirstDay(windfinder.time)
-        tools.spliceToFirstDay(windfinder.windgust)
-        tools.spliceToFirstDay(windfinder.winddirection)
+        helper.spliceToFirstDay(windfinder.windspeed)
+        helper.spliceToFirstDay(windfinder.time)
+        helper.spliceToFirstDay(windfinder.windgust)
+        helper.spliceToFirstDay(windfinder.winddirection)
 
         return windfinder
       })
@@ -183,7 +183,7 @@ function submitData (req, res) {
         responses.windgust = windfinder.windgust[responses.index]
 
         windfinder.winddirection.forEach((direction, index) => {
-          windfinder.winddirection[index] = tools.getWindDirection(direction, lang.wind_directions)
+          windfinder.winddirection[index] = helper.getWindDirection(direction, lang.wind_directions)
         })
         responses.windDirection = windfinder.winddirection[responses.index]
 
