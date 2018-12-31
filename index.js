@@ -75,6 +75,7 @@ module.exports = express()
   }))
   .get('/', showStatistics)
   .get('/statistics', showStatistics)
+  .get('/data', sendData)
   .get('/add-session', addSession)
   .get('/register', render)
   .get('/preferences', renderPreferences)
@@ -276,6 +277,33 @@ function showStatistics (req, res, next) {
           lang: lang
         })
       })
+      .catch(err => console.error(err))
+  }
+}
+
+function sendData (req, res) {
+  if (!req.session.user) {
+    res.redirect('/login')
+  } else {
+    query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+      .then(result => {
+        let data = []
+        result.forEach(session => {
+          data.push({
+            date: session.date,
+            spot: session.spot,
+            windspeed: session.windspeed,
+            windgust: session.windgust,
+            windDirection: session.windDirection,
+            sailSize: session.sailSize,
+            board: session.board,
+            rating: session.rating,
+            note: session.note
+          })
+        })
+        return data
+      })
+      .then(data => res.json(data))
       .catch(err => console.error(err))
   }
 }
