@@ -20,6 +20,7 @@
       "name": "Confirm submission",
       "title": "Submitted data",
       "sub_title": "Confirm the submitted data is correct.",
+      "windfinder_link": "Wind data obtained from",
       "correct_data": "The data is",
       "correct": "Correct",
       "incorrect": "Incorrect"

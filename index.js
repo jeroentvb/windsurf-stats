@@ -189,7 +189,8 @@ function submitData (req, res) {
 
         let allData = {
           ...submittedData,
-          ...responses
+          ...responses,
+          windfinderLink: `https://www.windfinder.com/forecast/${submittedData.spot}`
         }
 
         return allData
