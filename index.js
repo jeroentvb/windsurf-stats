@@ -80,6 +80,8 @@ module.exports = express()
   .get('/preferences', renderPreferences)
   .post('/set-prefs', preferences)
   .post('/update-prefs', preferences)
+  .get('/account', getAccountDetails)
+  .post('/update-account', account)
   .get('/login', render)
   .post('/sign-up', register)
   .post('/sign-in', login)
@@ -385,6 +387,27 @@ function preferences (req, res, next) {
   })
     .then(result => res.redirect('/statistics'))
     .catch(err => { throw err })
+}
+
+function getAccountDetails (req, res, next) {
+  if (!req.session.user) {
+    res.redirect('/login')
+  } else {
+    query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+      .then(result => {
+        res.render('account', {
+          page: lang.page.account.name,
+          loginStatus: req.session.user,
+          userData: result[0],
+          lang: lang
+        })
+      })
+      .catch(err => console.error(err))
+  }
+}
+
+function account (req, res, next) {
+
 }
 
 function register (req, res, next) {

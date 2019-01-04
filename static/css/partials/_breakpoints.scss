@@ -108,6 +108,10 @@
   article.seperate {
     background-color: inherit;
   }
+
+  .center {
+    grid-column: 2 / 2;
+  }
 }
 
 @media (min-width: 1600px) {
