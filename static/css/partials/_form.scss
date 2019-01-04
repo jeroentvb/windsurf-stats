@@ -1,0 +1,177 @@
+// Form
+form {
+  width: 100%;
+}
+
+fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background-color: $white;
+  margin: 0 -18px;
+  padding: 0 18px;
+
+  &.radio-buttons {
+    border-bottom: 1px solid $grey-line;
+  }
+
+  label {
+    margin: 6px 0;
+    font-size: 1em;
+    // font-weight: 600;
+    width: 30%;
+  }
+
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  select, input, textarea {
+    // margin-bottom: 32px;
+    font-size: 1em;
+    &:focus {
+      outline: none;
+    }
+  }
+
+  input[type=radio] {
+    margin-left: 8px;
+  }
+
+  input[type=submit] {
+    border: none;
+    padding: 16px 24px;
+    border-radius: 4px;
+    color: #ffffff;
+    background-color: $color-primary;
+    width: 100%;
+    transition: .3s;
+    box-shadow: none;
+
+    &:hover {
+      background-color: $color-primary-dark;
+      cursor: pointer;
+    }
+  }
+
+  input[type=number], input[type=text], input[type=email], input[type=password], input[type=url], textarea, select {
+    border: none;
+    // border-bottom: 1px solid $grey-line;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 16px 18px !important;
+    width: 70%;
+  }
+
+  textarea {
+    resize: none;
+    border-radius: 4px;
+    border: 1px solid $grey-line;
+    background-color: $white;
+    width: 100%;
+  }
+
+  select:hover, option:hover, input[type=radio] {
+    cursor: pointer;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-bottom: 1px solid $grey-line;
+  background-color: $white;
+  &.first {
+    border-top: 1px solid $grey-line;
+    margin: 0 -18px;
+    padding: 0 18px;
+    border-bottom: none;
+  }
+  &.second {
+    border-top: 1px solid $grey-line;
+  }
+  &.last {
+    margin: 0 -18px;
+    padding: 0 18px;
+  }
+  &.after-title {
+    border: none;
+  }
+  &.custom-field {
+    border-top: 1px solid $grey-line;
+    border-bottom: none;
+  }
+}
+
+#main-form {
+  h1 {
+    margin-top: 0;
+  }
+}
+
+#date-radio, #confirm-radio, #before-after-time-radio {
+  label:nth-of-type(2) {
+    margin-left: 32px;
+  }
+}
+
+#confirm-radio {
+  margin-bottom: 32px;
+}
+
+// Radio button styling
+.radio-buttons {
+  p.field {
+    padding-top: 12px;
+  }
+
+  p {
+    margin-bottom: 4px;
+  }
+
+  #date-radio {
+    padding-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  #before-after-time-radio {
+    padding-bottom: 10px;
+  }
+
+  input[type=radio] {
+    display: none;
+  }
+
+  label {
+    width: 50%;
+    text-align: center;
+    padding: 6px;
+    margin-left: 0 !important;
+    color: $normal-blue;
+    border: 1px solid $normal-blue;
+    transition: .2s;
+    &:nth-of-type(1) {
+      border-radius: 4px 0 0 4px;
+    }
+    &:nth-of-type(2) {
+      border-radius: 0 4px 4px 0;
+    }
+  }
+
+  input[type=radio]:checked + label {
+    background-color: $normal-blue;
+    color: $white;
+  }
+
+  input[type=radio]:disabled + label {
+    color: $text-disabled;
+  }
+
+  input[type=radio] + label:hover {
+    cursor: pointer;
+  }
+}
