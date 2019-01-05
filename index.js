@@ -94,6 +94,11 @@ module.exports = express()
 function render (req, res) {
   var id = req.originalUrl.replace('/', '')
 
+  if (id === 'register' && config.allowRegister === false) {
+    res.redirect('/login')
+    return
+  }
+
   res.render(id, {
     page: id.charAt(0).toUpperCase() + id.substr(1),
     loginStatus: req.session.user,
