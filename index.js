@@ -80,6 +80,8 @@ module.exports = express()
   .get('/preferences', renderPreferences)
   .post('/set-prefs', preferences)
   .post('/update-prefs', preferences)
+  .get('/account', getAccountDetails)
+  .post('/update-email', updateEmail)
   .get('/login', render)
   .post('/sign-up', register)
   .post('/sign-in', login)
@@ -385,6 +387,67 @@ function preferences (req, res, next) {
   })
     .then(result => res.redirect('/statistics'))
     .catch(err => { throw err })
+}
+
+function getAccountDetails (req, res, next) {
+  if (!req.session.user) {
+    res.redirect('/login')
+  } else {
+    query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+      .then(result => {
+        res.render('account', {
+          page: lang.page.account.name,
+          loginStatus: req.session.user,
+          userData: result[0],
+          lang: lang
+        })
+      })
+      .catch(err => console.error(err))
+  }
+}
+
+function updateEmail (req, res, next) {
+  let email = req.body.email
+  let password = req.body.password
+
+  if (!email || !password) {
+    res.status(400).send('Username or password is missing!')
+  }
+
+  query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+    .then(data => {
+      let user = data && data[0]
+      if (user) {
+        return bcrypt.compare(password, user.password).then(onverify, next)
+      } else {
+        res.status(401).render('error', {
+          page: 'Error',
+          error: lang.error._401_email,
+          lang: lang
+        })
+      }
+
+      function onverify (match) {
+        if (match) {
+          query(`UPDATE windsurfStatistics.users SET email = ? WHERE id = ?`, [
+            email,
+            req.session.user.id
+          ])
+            .then(() => {
+              req.session.user.email = email
+              res.redirect('/account')
+            })
+            .catch(err => console.error(err))
+        } else {
+          res.status(401).render('error', {
+            page: 'Error',
+            error: lang.error._401_passwd,
+            lang: lang
+          })
+        }
+      }
+    })
+    .catch(err => console.error(err))
 }
 
 function register (req, res, next) {

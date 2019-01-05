@@ -3,6 +3,7 @@
     "statistics": "Statistics",
     "add_session": "Add session",
     "preferences": "Preferences",
+    "account": "Account",
     "logout": "Log out",
     "login": "Log in"
   },
@@ -29,6 +30,9 @@
       "name": "Preferences",
       "title": "Only the first entry of every category is required",
       "spotexplaination": "This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay."
+    },
+    "account": {
+      "name": "Account"
     }
   },
   "general": {
