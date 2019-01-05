@@ -95,7 +95,7 @@ function render (req, res) {
   var id = req.originalUrl.replace('/', '')
 
   if (id === 'register' && config.allowRegister === false) {
-    res.redirect('/login')
+    res.redirect('/')
     return
   }
 
