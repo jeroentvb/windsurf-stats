@@ -18,5 +18,7 @@ function toggleMenu (remove, add) {
   }
 }
 
-openMenu.addEventListener('click', toggleMenu('hide-menu', 'show-menu'))
-closeMenu.addEventListener('click', toggleMenu('show-menu', 'hide-menu'))
+if (document.getElementById('menu')) {
+  openMenu.addEventListener('click', toggleMenu('hide-menu', 'show-menu'))
+  closeMenu.addEventListener('click', toggleMenu('show-menu', 'hide-menu'))
+}
