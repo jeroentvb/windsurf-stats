@@ -12,7 +12,29 @@
       <p>E-mail adress:</p>
       <p><%= userData.email %></p>
     </div>
+    <button type="button" name="button" id="change-email" class="button-small">Change e-mail</button>
+
+    <form action="/update-email" method="post" id="update-email" class="hidden">
+      <h4>Change e-mail adress</h4>
+      <fieldset class="seperate">
+        <div class="field first">
+          <label for="email">New e-mail adress</label>
+          <input id="email" type="email" name="email" placeholder="joopie@example.com" required>
+        </div>
+
+        <div class="field second last">
+          <label for="password">Password</label>
+          <input id="password" type="password" name="password" required>
+        </div>
+      </fieldset>
+
+      <fieldset class="seperate not-white">
+        <input type="submit" name="submit" id="submit">
+      </fieldset>
+    </form>
   </section>
 </main>
+
+<script src="js/account.js"></script>
 
 <% include tail %>

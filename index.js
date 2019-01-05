@@ -81,7 +81,7 @@ module.exports = express()
   .post('/set-prefs', preferences)
   .post('/update-prefs', preferences)
   .get('/account', getAccountDetails)
-  .post('/update-account', account)
+  .post('/update-email', updateEmail)
   .get('/login', render)
   .post('/sign-up', register)
   .post('/sign-in', login)
@@ -406,8 +406,48 @@ function getAccountDetails (req, res, next) {
   }
 }
 
-function account (req, res, next) {
+function updateEmail (req, res, next) {
+  let email = req.body.email
+  let password = req.body.password
 
+  if (!email || !password) {
+    res.status(400).send('Username or password is missing!')
+  }
+
+  query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+    .then(data => {
+      let user = data && data[0]
+      if (user) {
+        return bcrypt.compare(password, user.password).then(onverify, next)
+      } else {
+        res.status(401).render('error', {
+          page: 'Error',
+          error: lang.error._401_email,
+          lang: lang
+        })
+      }
+
+      function onverify (match) {
+        if (match) {
+          query(`UPDATE windsurfStatistics.users SET email = ? WHERE id = ?`, [
+            email,
+            req.session.user.id
+          ])
+            .then(() => {
+              req.session.user.email = email
+              res.redirect('/account')
+            })
+            .catch(err => console.error(err))
+        } else {
+          res.status(401).render('error', {
+            page: 'Error',
+            error: lang.error._401_passwd,
+            lang: lang
+          })
+        }
+      }
+    })
+    .catch(err => console.error(err))
 }
 
 function register (req, res, next) {
