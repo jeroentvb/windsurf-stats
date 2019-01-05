@@ -30,6 +30,13 @@
       "name": "Voorkeuren",
       "title": "Alleen het eerste veld van elke categorie is vereist",
       "spotexplaination": "Dit is de spot naam zoals die in de windfinder url staat. Voorbeeld: voor Maui Honolua Bay is het: maui_honolua_bay."
+    },
+    "account": {
+      "name": "Account",
+      "title": "Accountdetails",
+      "email_addr": "E-mail adres",
+      "change_email": ["Verander e-mail", "Verander e-mail adres"],
+      "new_email": "Nieuw e-mail adres"
     }
   },
   "general": {

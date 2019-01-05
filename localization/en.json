@@ -32,7 +32,11 @@
       "spotexplaination": "This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay."
     },
     "account": {
-      "name": "Account"
+      "name": "Account",
+      "title": "Account details",
+      "email_addr": "E-mail adress",
+      "change_email": ["Change e-mail", "Change e-mail adress"],
+      "new_email": "New e-mail adress"
     }
   },
   "general": {
@@ -56,7 +60,6 @@
     "username": "Username",
     "repeat_passwd": "Repeat password",
     "register_help": "Password needs to be at least 8 characters, contain 1 uppercase letter and 1 number."
-
   },
   "error": {
     "go_back": "Go back",
