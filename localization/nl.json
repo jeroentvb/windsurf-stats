@@ -10,7 +10,9 @@
   "page": {
     "statistics": {
       "name": "Statistieken",
-      "statistics_for": "Statistieken van"
+      "statistics_for": "Statistieken van",
+      "sail_usage": "Het aantal keer dat je je zeil hebt gebruikt",
+      "all_stats": "Alle statistieken"
     },
     "add_session": {
       "name": "Sessie toevoegen",

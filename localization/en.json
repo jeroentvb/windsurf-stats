@@ -10,7 +10,9 @@
   "page": {
     "statistics": {
       "name": "Statistics",
-      "statistics_for": "Statistics for"
+      "statistics_for": "Statistics for",
+      "sail_usage": "Amount of times you have used your sail",
+      "all_stats": "All statistics"
     },
     "add_session": {
       "name": "Add session",
