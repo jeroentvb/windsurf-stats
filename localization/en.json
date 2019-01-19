@@ -3,6 +3,7 @@
     "statistics": "Statistics",
     "add_session": "Add session",
     "preferences": "Preferences",
+    "account": "Account",
     "logout": "Log out",
     "login": "Log in"
   },
@@ -20,6 +21,7 @@
       "name": "Confirm submission",
       "title": "Submitted data",
       "sub_title": "Confirm the submitted data is correct.",
+      "windfinder_link": "Wind data obtained from",
       "correct_data": "The data is",
       "correct": "Correct",
       "incorrect": "Incorrect"
@@ -28,6 +30,13 @@
       "name": "Preferences",
       "title": "Only the first entry of every category is required",
       "spotexplaination": "This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay."
+    },
+    "account": {
+      "name": "Account",
+      "title": "Account details",
+      "email_addr": "E-mail adress",
+      "change_email": ["Change e-mail", "Change e-mail adress"],
+      "new_email": "New e-mail adress"
     }
   },
   "general": {
@@ -51,7 +60,6 @@
     "username": "Username",
     "repeat_passwd": "Repeat password",
     "register_help": "Password needs to be at least 8 characters, contain 1 uppercase letter and 1 number."
-
   },
   "error": {
     "go_back": "Go back",

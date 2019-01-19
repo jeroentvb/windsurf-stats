@@ -1,0 +1,40 @@
+<% include head %>
+
+<main>
+  <h1><%= lang.page.account.title %></h1>
+  <section class="center">
+    <div class="row">
+      <p><%= lang.account.username %>:</p>
+      <p><%= userData.username %></p>
+    </div>
+
+    <div class="row">
+      <p><%= lang.page.account.email_addr %>:</p>
+      <p><%= userData.email %></p>
+    </div>
+    <button type="button" name="button" id="change-email" class="button-small"><%= lang.page.account.change_email[0] %></button>
+
+    <form action="/update-email" method="post" id="update-email" class="hidden">
+      <h4><%= lang.page.account.change_email[1] %></h4>
+      <fieldset class="seperate">
+        <div class="field first">
+          <label for="email"><%= lang.page.account.new_email %></label>
+          <input id="email" type="email" name="email" placeholder="joopie@example.com" required>
+        </div>
+
+        <div class="field second last">
+          <label for="password"><%= lang.account.password %></label>
+          <input id="password" type="password" name="password" required>
+        </div>
+      </fieldset>
+
+      <fieldset class="seperate not-white">
+        <input type="submit" name="submit" id="submit">
+      </fieldset>
+    </form>
+  </section>
+</main>
+
+<script src="js/account.js"></script>
+
+<% include tail %>

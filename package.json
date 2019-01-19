@@ -20,7 +20,7 @@
   "dependencies": {
     "bcrypt": "^3.0.3",
     "body-parser": "^1.18.3",
-    "chalk": "^2.4.1",
+    "chalk": "^2.4.2",
     "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
@@ -37,8 +37,8 @@
     "ignore": [
       "static/*",
       "sessions/*",
-      "localization/*",
-      "README"
+      "README",
+      "docs/*"
     ]
   }
 }

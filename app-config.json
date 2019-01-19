@@ -1,5 +1,6 @@
 {
   "port": 25561,
   "saltRounds": 10,
-  "language": "en"
+  "language": "en",
+  "allowRegister": true
 }

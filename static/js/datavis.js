@@ -36,7 +36,7 @@ function parseSailUsage (data) {
     }
   })
   console.log(sailCount)
-  return sailCount
+  return sailCount.reverse()
 }
 
 function renderSailUsageGraph (data) {

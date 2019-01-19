@@ -3,6 +3,7 @@
     "statistics": "Statistieken",
     "add_session": "Sessie toevoegen",
     "preferences": "Voorkeuren",
+    "account": "Account",
     "logout": "Uitloggen",
     "login": "Inloggen"
   },
@@ -20,6 +21,7 @@
       "name": "Bevestig inzending",
       "title": "Ingestuurde data",
       "sub_title": "Controleer of de ingestuurde data correct is.",
+      "windfinder_link": "Wind data verkregen van",
       "correct_data": "De data is",
       "correct": "Correct",
       "incorrect": "Incorrect"
@@ -28,6 +30,13 @@
       "name": "Voorkeuren",
       "title": "Alleen het eerste veld van elke categorie is vereist",
       "spotexplaination": "Dit is de spot naam zoals die in de windfinder url staat. Voorbeeld: voor Maui Honolua Bay is het: maui_honolua_bay."
+    },
+    "account": {
+      "name": "Account",
+      "title": "Accountdetails",
+      "email_addr": "E-mail adres",
+      "change_email": ["Verander e-mail", "Verander e-mail adres"],
+      "new_email": "Nieuw e-mail adres"
     }
   },
   "general": {

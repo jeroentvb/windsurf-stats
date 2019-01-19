@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="./assets/style.css">
+  <link rel="shortcut icon" type="image/png" href="./assets/favicon.png">
+
+  <title>Confirm submission</title>
+  </head>
+
+  <body>
+
+      <header>
+        <nav>
+          <h2>Confirm submission</h2>
+          <img id="open-menu" src="./assets/menu-icon.svg" alt="Menu icon">
+          <ul id="menu">
+              <li><img id="close-menu" src="./assets/close-icon.svg" alt="Close menu icon"></li>
+              <li>Menu</li>
+
+              <li><a href="./statistics.htm">Statistics</a></li>
+              <li><a href="./add-session.htm">Add session</a></li>
+              <li><a href="./preferences.htm">Preferences</a></li>
+              <li><a href="./account.htm">Account</a></li>
+              <li><a href="../">Log out</a></li>
+
+          </ul>
+        </nav>
+      </header>
+
+
+
+<main id="confirm-data">
+  <h1>Submitted data</h1>
+  <h3>Confirm the submitted data is correct.</h3>
+
+  <form action="./statistics.htm">
+    <fieldset class="seperate">
+      <div class="field first">
+        <label for="date">Date</label>
+        <input id="date" type="text" name="date" value="18-01-2019" placeholder="dd-mm-yyyy" maxlength="10" required="">
+      </div>
+
+      <div class="field second">
+        <label for="spot">Spot</label>
+        <input id="spot" type="text" name="spot" value="Tarifa Centro" placeholder="Tarifa Centro" required="">
+      </div>
+
+      <div class="field">
+        <label for="windspeed">Windspeed</label>
+        <input id="windspeed" type="number" name="windspeed" value="15" placeholder="15" required="">
+      </div>
+
+      <div class="field">
+        <label for="windgust">Windgusts</label>
+        <input id="windgust" type="number" name="windgust" value="10" placeholder="10 kts" required="">
+      </div>
+
+      <div class="field last">
+        <label for="wind-direction">Wind direction</label>
+        <input id="wind-direction" type="text" name="windDirection" value="N" placeholder="N kts" maxlength="3" required="">
+      </div>
+
+      <p>Wind data obtained from <a href="https://www.windfinder.com/forecast/tarifa" target="_blank">windfinder.com</a></p>
+    </fieldset>
+
+    <fieldset class="seperate">
+      <div class="field first">
+        <label for="sail">Sail size</label>
+        <input id="sail" type="number" name="sail" value="3.7" placeholder="3.7" required="">
+      </div>
+
+      <div class="field second">
+        <label for="board">Board</label>
+        <input id="board" type="text" name="board" value="Fanatic Gecko 120" placeholder="Fanatic Gecko 120" required="">
+      </div>
+
+      <div class="field last">
+        <label for="rating">Rating</label>
+        <input id="rating" type="number" name="rating" value="7" placeholder="7" maxlength="3" required="">
+      </div>
+    </fieldset>
+
+    <fieldset class="seperate not-white">
+      <label for="note">Note</label>
+      <textarea id="note" name="note" rows="5" cols="80" placeholder="Nice wind &amp; waves." required="">Nice wind &amp; waves.</textarea>
+    </fieldset>
+
+    <h2>The data is:</h2>
+    <fieldset class="seperate radio-buttons not-white">
+      <div id="confirm-radio" class="field after-title">
+        <input id="correct" type="radio" name="confirmData" value="correct" checked="">
+        <label for="correct">Correct</label>
+        <input id="incorrect" type="radio" name="confirmData" value="incorrect">
+        <label for="incorrect">Incorrect</label>
+      </div>
+
+      <input type="submit" name="confirm-submit" id="confirm-submit">
+    </fieldset>
+  </form>
+
+</main>
+
+  <script src="./assets/script.js"></script>
+
+
+
+</body></html>
