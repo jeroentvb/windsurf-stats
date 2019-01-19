@@ -39,3 +39,8 @@
 .button-small {
   @include button(50%)
 }
+
+.datavis {
+  width: 100%;
+  margin-bottom: 32px;
+}

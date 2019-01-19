@@ -35,7 +35,7 @@ function parseSailUsage (data) {
       })
     }
   })
-  console.log(sailCount)
+
   return sailCount.reverse()
 }
 
@@ -46,7 +46,7 @@ function renderSailUsageGraph (data) {
   }
   const margin = {
     top: 10,
-    right: 30,
+    right: 0,
     bottom: 30,
     left: 30
   }
