@@ -65,3 +65,4 @@ sessions/
 .sass-cache/
 style.css.map
 dist/
+*.old
