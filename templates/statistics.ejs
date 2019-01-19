@@ -2,6 +2,13 @@
 
 <main id="statistics">
   <h2><%= lang.page.statistics.statistics_for %>: <%= loginStatus.name %></h2>
+
+  <h3>Amount of times you have used your sail</h3>
+  <svg id="sail-usage" class="datavis">
+
+  </svg>
+
+  <h3>All statistics</h3>
   <table>
     <tr>
       <th><%= lang.general.date %></th>
@@ -32,10 +39,6 @@
     <% } %>
 
   </table>
-
-  <svg>
-    
-  </svg>
 </main>
 
 <script src="js/d3.min.js"></script>

@@ -1,105 +1,84 @@
-/* global d3, fetch */
-
-const margin = ({
-  top: 10,
-  right: 10,
-  bottom: 20,
-  left: 40
-})
-
-const width = 600
-const height = 600
+/* global fetch, d3 */
 
 function init () {
   fetch('/data')
     .then(res => res.json())
-    .then(json => parseData(json))
-    .then(data => renderData(data))
+    .then(json => parseSailUsage(json))
+    .then(data => renderSailUsageGraph(data))
     .catch(err => console.error(err))
 }
 
-function parseData (json) {
-  let data = json
-  data.names = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'Mei',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sep',
-    'Okt',
-    'Nov',
-    'Dec'
-  ]
+function parseSailUsage (data) {
+  let sailCount = []
 
-  data.totals = []
-  data.names.forEach(month => {
-    data.totals.push(0)
+  data.forEach((session, i) => {
+    var exists = false
+    if (i === 0) {
+      sailCount.push({
+        name: session.sailSize,
+        count: 1
+      })
+      return
+    }
+
+    sailCount.forEach(item => {
+      if (item.name === session.sailSize) {
+        item.count++
+        exists = true
+      }
+    })
+
+    if (exists === false) {
+      sailCount.push({
+        name: session.sailSize,
+        count: 1
+      })
+    }
   })
-
-  json.forEach(session => {
-    let month = session.date.split('-')[1]
-    data.totals[month - 1]++
-  })
-
-  data.keys = [
-    '<12',
-    '12-15',
-    '16-19',
-    '20-23',
-    '>23'
-  ]
-
-  return data
+  console.log(sailCount)
+  return sailCount
 }
 
-function renderData (data) {
-  console.log(data)
+function renderSailUsageGraph (data) {
+  const dimensions = {
+    width: document.getElementById('sail-usage').clientWidth,
+    height: 500
+  }
+  const margin = {
+    top: 10,
+    right: 30,
+    bottom: 30,
+    left: 30
+  }
 
-  const x = d3.scaleBand()
-    .domain(data.names)
-    .range([margin.left, width - margin.right])
+  var x = d3.scaleBand()
+    .domain(data.map(d => d.name))
+    .range([margin.left, dimensions.width - margin.right])
     .padding(0.1)
 
-  const y = d3.scaleLinear()
-    .domain([0, d3.max(data.totals)])
-    .rangeRound([height - margin.bottom, margin.top])
+  var y = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.count)]).nice()
+    .range([dimensions.height - margin.bottom, margin.top])
 
-  const color = d3.scaleOrdinal()
-    .unknown('#ccc')
-    .domain(data.keys)
-    .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse())
+  var xAxis = g => g
+    .attr('transform', `translate(0,${dimensions.height - margin.bottom})`)
+    .call(d3.axisBottom(x).tickSizeOuter(0))
 
-  function xAxis (g) {
-    return g => g
-      .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(d3.axisBottom(x).tickSizeOuter(0))
-      .call(g => g.selectAll('.domain').remove())
-  }
-
-  function yAxis (g) {
-    return g => g
-      .attr('transform', `translate(${margin.left},0)`)
-      .call(d3.axisLeft(y).ticks(null, 's'))
-      .call(g => g.selectAll('.domain').remove())
-  }
+  var yAxis = g => g
+    .attr('transform', `translate(${margin.left},0)`)
+    .call(d3.axisLeft(y))
+    .call(g => g.select('.domain').remove())
 
   const svg = d3.select('svg')
+    .attr('width', dimensions.width)
+    .attr('height', dimensions.height)
 
   svg.append('g')
-    .selectAll('g')
-    .data(data)
-    .enter().append('g')
-    .attr('fill', (d, i) => color(data.keys[i]))
-    .selectAll('rect')
-    .data(d => d)
-    .enter().append('rect')
-    .attr('x', (d, i) => x(data.names[i]))
-    .attr('y', d => y(d[1]))
-    .attr('height', d => y(d[0]) - y(d[1]))
+    .attr('fill', 'steelblue')
+    .selectAll('rect').data(data).enter().append('rect')
+    .attr('x', d => x(d.name))
+    .attr('y', d => y(d.count))
+    .attr('height', d => y(0) - y(d.count))
     .attr('width', x.bandwidth())
 
   svg.append('g')
@@ -107,10 +86,6 @@ function renderData (data) {
 
   svg.append('g')
     .call(yAxis)
-
-  svg.append('g')
-    .attr('transform', `translate(${width - margin.right},${margin.top})`)
-    // .call(legend)
 }
 
 init()
