@@ -1,11 +1,26 @@
-/* global fetch, d3 */
+/* global d3, XMLHttpRequest */
 
 function init () {
-  fetch('/data')
-    .then(res => res.json())
-    .then(json => parseSailUsage(json))
+  request('/data')
+    .then(data => parseSailUsage(data))
     .then(data => renderSailUsageGraph(data))
     .catch(err => console.error(err))
+}
+
+function request (url) {
+  return new Promise((resolve, reject) => {
+    let req = new XMLHttpRequest()
+
+    req.onreadystatechange = function () {
+      if (req.readyState === 4 && req.status === 200) {
+        resolve(JSON.parse(req.responseText))
+      } else if (req.status === 404) {
+        reject(new Error('The server responded with 404, not found'))
+      }
+    }
+    req.open('GET', url, true)
+    req.send()
+  })
 }
 
 function parseSailUsage (data) {
