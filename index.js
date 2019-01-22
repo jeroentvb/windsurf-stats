@@ -73,8 +73,9 @@ module.exports = express()
       maxAge: 2592000000
     }
   }))
-  .get('/', showStatistics)
-  .get('/statistics', showStatistics)
+  .get('/', render)
+  .get('/statistics', render)
+  .get('/all-stats', showAllStatistics)
   .get('/data', sendData)
   .get('/add-session', addSession)
   .get('/register', render)
@@ -100,11 +101,19 @@ function render (req, res) {
     return
   }
 
-  res.render(id, {
-    page: id.charAt(0).toUpperCase() + id.substr(1),
-    loginStatus: req.session.user,
-    lang: lang
-  })
+  if (id === '') {
+    res.render('statistics', {
+      page: lang.page.statistics.name,
+      loginStatus: req.session.user,
+      lang: lang
+    })
+  } else {
+    res.render(id, {
+      page: id.charAt(0).toUpperCase() + id.substr(1),
+      loginStatus: req.session.user,
+      lang: lang
+    })
+  }
 }
 
 function addSession (req, res, next) {
@@ -272,13 +281,13 @@ function confirmedData (req, res, next) {
   }
 }
 
-function showStatistics (req, res, next) {
+function showAllStatistics (req, res, next) {
   if (!req.session.user) {
     res.redirect('/login')
   } else {
     query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
       .then(result => {
-        res.render('statistics', {
+        res.render('statistics-table', {
           page: lang.page.statistics.name,
           loginStatus: req.session.user,
           statistics: result,

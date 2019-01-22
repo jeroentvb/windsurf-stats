@@ -30,6 +30,9 @@
   &:hover {
     background-color:$color-primary-dark;
   }
+  &:link {
+    text-decoration: none;
+  }
 }
 
 .button-large {
