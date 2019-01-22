@@ -11,7 +11,8 @@
     "statistics": {
       "name": "Statistics",
       "statistics_for": "Statistics for",
-      "sail_usage": "Amount of times you have used your sail",
+      "sail_usage": "Amount of times you have used your sails",
+      "board_usage": "Amount of times you have used your boards",
       "all_stats": "All statistics"
     },
     "add_session": {

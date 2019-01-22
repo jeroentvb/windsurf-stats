@@ -2,8 +2,16 @@
 
 function init () {
   request('/data')
-    .then(data => parseSailUsage(data))
-    .then(data => renderSailUsageGraph(data))
+    .then(json => {
+      return {
+        sail: parseUsage(json, 'sailSize'),
+        board: parseUsage(json, 'board')
+      }
+    })
+    .then(data => {
+      renderUsageGraph(data.sail, 'sail-usage')
+      renderUsageGraph(data.board, 'board-usage')
+    })
     .catch(err => console.error(err))
 }
 
@@ -23,40 +31,39 @@ function request (url) {
   })
 }
 
-function parseSailUsage (data) {
-  let sailCount = []
-
+function parseUsage (data, type) {
+  let array = []
   data.forEach((session, i) => {
     var exists = false
     if (i === 0) {
-      sailCount.push({
-        name: session.sailSize,
+      array.push({
+        name: session[type],
         count: 1
       })
       return
     }
 
-    sailCount.forEach(item => {
-      if (item.name === session.sailSize) {
+    array.forEach(item => {
+      if (item.name === session[type]) {
         item.count++
         exists = true
       }
     })
 
     if (exists === false) {
-      sailCount.push({
-        name: session.sailSize,
+      array.push({
+        name: session[type],
         count: 1
       })
     }
   })
 
-  return sailCount.reverse()
+  return array.reverse()
 }
 
-function renderSailUsageGraph (data) {
+function renderUsageGraph (data, svgId) {
   const dimensions = {
-    width: document.getElementById('sail-usage').clientWidth,
+    width: document.getElementById(svgId).clientWidth,
     height: 500
   }
   const margin = {
@@ -84,7 +91,7 @@ function renderSailUsageGraph (data) {
     .call(d3.axisLeft(y))
     .call(g => g.select('.domain').remove())
 
-  const svg = d3.select('svg')
+  const svg = d3.select(`#${svgId}`)
     .attr('width', dimensions.width)
     .attr('height', dimensions.height)
 

@@ -11,7 +11,8 @@
     "statistics": {
       "name": "Statistieken",
       "statistics_for": "Statistieken van",
-      "sail_usage": "Het aantal keer dat je je zeil hebt gebruikt",
+      "sail_usage": "Het aantal keer dat je je zeilen hebt gebruikt",
+      "board_usage": "Het aantal keer dat je je planken hebt gebruikt",
       "all_stats": "Alle statistieken"
     },
     "add_session": {
