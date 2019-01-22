@@ -13,6 +13,10 @@
       grid-column: 2 / 2;
     }
 
+    nav h2 {
+      margin: 0;
+    }
+
     nav ul {
       padding: 2em;
     }
@@ -118,9 +122,9 @@
   }
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1200px) {
   main, .center-content, header {
-    grid-template-columns: 1fr 40% 1fr;
+    grid-template-columns: 1fr 50% 1fr;
 
     nav {
       #open-menu, #close-menu {
