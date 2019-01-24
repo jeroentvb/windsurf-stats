@@ -10,6 +10,7 @@ If you have a feature request, you should also make an issue.
 ## Table of contents
 * [What it does](#what-it-does)
 * [Usage](#usage)
+* [Configuration](#configuration)
 * [Localization](#localization)
   * [Included languages](#currently-included-languages)
 
