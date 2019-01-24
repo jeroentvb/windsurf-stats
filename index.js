@@ -96,13 +96,8 @@ module.exports = express()
 function render (req, res) {
   var id = req.originalUrl.replace('/', '')
 
-  if (!req.session.user) {
-    res.render('login', {
-      page: 'Login',
-      loginStatus: req.session.user,
-      lang: lang,
-      config: config
-    })
+  if ((id === 'login' || id === 'register') && req.session.user !== undefined) {
+    res.redirect('/')
     return
   }
 
@@ -453,7 +448,7 @@ function getAccountDetails (req, res, next) {
   if (!req.session.user) {
     res.redirect('/login')
   } else if (config.allowChangeEmail === false) {
-    res.redirect('/statistics')
+    res.redirect('/')
   } else {
     query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
       .then(result => {
