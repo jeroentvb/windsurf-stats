@@ -90,6 +90,7 @@ function renderUsageGraph (data, svgId) {
     .attr('transform', `translate(${margin.left},0)`)
     .call(d3.axisLeft(y))
     .call(g => g.select('.domain').remove())
+    .call(d3.axisLeft(y).ticks(d3.max(data, d => d.count)))
 
   const svg = d3.select(`#${svgId}`)
     .attr('width', dimensions.width)

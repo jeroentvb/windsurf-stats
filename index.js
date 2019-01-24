@@ -436,7 +436,7 @@ function preferences (req, res, next) {
     spot4: prefData.spots[4]
   })
     .then(result => res.redirect('/statistics'))
-    .catch(err => { throw err })
+    .catch(err => console.error(err))
 }
 
 function getAccountDetails (req, res, next) {
