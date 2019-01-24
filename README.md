@@ -89,24 +89,24 @@ The only thing left to do is go out and shred! 🤙
 ## Configuration
 The app has a few configurable options located in [app-config.json](app-config.json).
 
-#### Port
-The port that the server will listen on.
+### Port
+The port that the server will listen on.  
 Default: `25561`
 
-#### saltRounds
-The amount of saltrounds you want to add to the pasword hashes.
+### saltRounds
+The amount of saltrounds you want to add to the pasword hashes.  
 Default: `10`
 
-#### Language
-The language you want the application to use for the front-end. For more information see [localization](#localization).
+### Language
+The language you want the application to use for the front-end. For more information see [localization](#localization).  
 Default: `"en"`
 
-#### allowRegister
-When enabled, anyone can create an account. If you don't want this set this value to `false`.
+### allowRegister
+When enabled, anyone can create an account. If you don't want this set this value to `false`  
 Default: `true`
 
-#### allowChangeEmail
-Allow users to change their e-mail adress associated with their account. This is disabled by default due to security concerns because there's no additional information required to change the e-mail adress. One only needs to be logged in.
+### allowChangeEmail
+Allow users to change their e-mail adress associated with their account. This is disabled by default due to security concerns because there's no additional information required to change the e-mail adress. One only needs to be logged in.  
 Default: `false`
 
 ## Localization
