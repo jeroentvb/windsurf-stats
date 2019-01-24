@@ -2,5 +2,6 @@
   "port": 25561,
   "saltRounds": 10,
   "language": "en",
-  "allowRegister": true
+  "allowRegister": true,
+  "allowChangeEmail": false
 }

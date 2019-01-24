@@ -85,6 +85,29 @@ Everything is now set up succesfully and ready for use! 🎉
 
 The only thing left to do is go out and shred! 🤙
 
+## Configuration
+The app has a few configurable options located in [app-config.json](app-config.json).
+
+#### Port
+The port that the server will listen on.
+Default: `25561`
+
+#### saltRounds
+The amount of saltrounds you want to add to the pasword hashes.
+Default: `10`
+
+#### Language
+The language you want the application to use for the front-end. For more information see [localization](#localization).
+Default: `"en"`
+
+#### allowRegister
+When enabled, anyone can create an account. If you don't want this set this value to `false`.
+Default: `true`
+
+#### allowChangeEmail
+Allow users to change their e-mail adress associated with their account. This is disabled by default due to security concerns because there's no additional information required to change the e-mail adress. One only needs to be logged in.
+Default: `false`
+
 ## Localization
 I've set up the application to use text from a localized (json) file so you can use the application in your own language. To use another language other than english or dutch you need to create a copy of the `en.json` file in the [localization](/localization) folder and rename it with your own language characters, for example `de` (for germany).
 Now you can replace the text with your own language. After you've done that you need to alter [this line](https://github.com/jeroentvb/windsurf-stats/blob/6fbddc1f5261745f8d7b49c140f061de8ed3bec0/index.js#L12), so it uses the letters you gave your json file. It should like something like the following:

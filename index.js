@@ -105,13 +105,15 @@ function render (req, res) {
     res.render('statistics', {
       page: lang.page.statistics.name,
       loginStatus: req.session.user,
-      lang: lang
+      lang: lang,
+      config: config
     })
   } else {
     res.render(id, {
       page: id.charAt(0).toUpperCase() + id.substr(1),
       loginStatus: req.session.user,
-      lang: lang
+      lang: lang,
+      config: config
     })
   }
 }
@@ -154,7 +156,8 @@ function addSession (req, res, next) {
         page: lang.page.add_session.name,
         loginStatus: req.session.user,
         prefs: formattedPrefs,
-        lang: lang
+        lang: lang,
+        config: config
       })
     })
     .catch(err => console.error(err))
@@ -217,14 +220,16 @@ function submitData (req, res) {
           page: lang.page.confirm_submission.name,
           data: allData,
           loginStatus: req.session.user,
-          lang: lang
+          lang: lang,
+          config: config
         })
       })
       .catch(err => {
         res.render('error', {
           page: 'error',
           error: err,
-          lang: lang
+          lang: lang,
+          config: config
         })
         console.error(err)
       })
@@ -250,7 +255,8 @@ function submitData (req, res) {
         page: lang.page.confirm_submission.name,
         data: manualData,
         loginStatus: req.session.user,
-        lang: lang
+        lang: lang,
+        config: config
       }))
       .catch(err => console.error(err))
   }
@@ -291,7 +297,8 @@ function showAllStatistics (req, res, next) {
           page: lang.page.statistics.name,
           loginStatus: req.session.user,
           statistics: result,
-          lang: lang
+          lang: lang,
+          config: config
         })
       })
       .catch(err => console.error(err))
@@ -361,7 +368,8 @@ function renderPreferences (req, res, next) {
         page: lang.page.preferences.name,
         loginStatus: req.session.user,
         prefs: formattedPrefs,
-        lang: lang
+        lang: lang,
+        config: config
       })
     })
     .catch(err => console.error(err))
@@ -434,6 +442,8 @@ function preferences (req, res, next) {
 function getAccountDetails (req, res, next) {
   if (!req.session.user) {
     res.redirect('/login')
+  } else if (config.allowChangeEmail === false) {
+    res.redirect('/statistics')
   } else {
     query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
       .then(result => {
@@ -441,7 +451,8 @@ function getAccountDetails (req, res, next) {
           page: lang.page.account.name,
           loginStatus: req.session.user,
           userData: result[0],
-          lang: lang
+          lang: lang,
+          config: config
         })
       })
       .catch(err => console.error(err))
@@ -522,7 +533,8 @@ function register (req, res, next) {
           res.render('setPrefs', {
             page: lang.page.preferences.name,
             loginStatus: req.session.user,
-            lang: lang
+            lang: lang,
+            config: config
           })
         })
       })
