@@ -1,6 +1,6 @@
 {
   "name": "windsurf-stats",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A web interface to keep track of windsurf session statistics",
   "main": "index.js",
   "scripts": {
