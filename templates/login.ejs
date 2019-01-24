@@ -20,6 +20,12 @@
       <input type="submit" name="submit" id="submit">
     </fieldset>
   </form>
+
+  <% if (config.allowRegister) { %>
+    <section class="center">
+      <p>Don't have an account? Register <a href="/register">here</a></p>
+    </section>
+  <% } %>
 </main>
 
 <% include tail %>

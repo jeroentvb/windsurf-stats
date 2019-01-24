@@ -96,12 +96,27 @@ module.exports = express()
 function render (req, res) {
   var id = req.originalUrl.replace('/', '')
 
-  if ((id === 'login' || id === 'register') && req.session.user !== undefined) {
+  if (id === 'register' && config.allowRegister === false) {
     res.redirect('/')
     return
   }
 
-  if (id === 'register' && config.allowRegister === false) {
+  if ((id === 'login' || id === 'register') && !req.session.user) {
+    res.render(id, {
+      page: id.charAt(0).toUpperCase() + id.substr(1),
+      loginStatus: req.session.user,
+      lang: lang,
+      config: config
+    })
+    return
+  }
+
+  if (!req.session.user) {
+    res.redirect('login')
+    return
+  }
+
+  if ((id === 'login' || id === 'register') && req.session.user !== undefined) {
     res.redirect('/')
     return
   }
