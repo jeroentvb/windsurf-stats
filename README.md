@@ -101,6 +101,10 @@ Default: `10`
 The language you want the application to use for the front-end. For more information see [localization](#localization).  
 Default: `"en"`
 
+### cookieMaxAge
+The time a user should stay logged in. Set to a month by default.  
+Default: `2592000000`
+
 ### allowRegister
 When enabled, anyone can create an account. If you don't want this set this value to `false`  
 Default: `true`

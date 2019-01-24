@@ -70,7 +70,7 @@ module.exports = express()
     rolling: true,
     secret: process.env.SESSION_SECRET,
     cookie: {
-      maxAge: 2592000000
+      maxAge: config.cookieMaxAge
     }
   }))
   .get('/', render)
