@@ -1,5 +1,6 @@
 // Function for showing other options
 function hideShowOther (select, otherInput, wrap) {
+  if (select.value === 'other') wrap.classList.remove('hidden')
   select.addEventListener('change', function () {
     if (select.value === 'other') {
       wrap.classList.remove('hidden')
