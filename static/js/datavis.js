@@ -60,6 +60,16 @@ function parseUsage (data, type) {
     }
   })
 
+  if (type === 'sailSize') {
+    array.sort((a, b) => {
+      return a.name - b.name
+    })
+  } else {
+    array.sort((a, b) => {
+      return b.count - a.count
+    })
+  }
+
   return array.reverse()
 }
 
