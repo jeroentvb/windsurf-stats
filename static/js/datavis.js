@@ -5,12 +5,14 @@ function init () {
     .then(json => {
       return {
         sail: parseUsage(json, 'sailSize'),
-        board: parseUsage(json, 'board')
+        board: parseUsage(json, 'board'),
+        spots: parseUsage(json, 'spot')
       }
     })
     .then(data => {
       renderUsageGraph(data.sail, 'sail-usage')
       renderUsageGraph(data.board, 'board-usage')
+      renderUsageGraph(data.spots, 'spot-visits')
     })
     .catch(err => console.error(err))
 }
