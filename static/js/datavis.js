@@ -1,8 +1,24 @@
 /* global d3, XMLHttpRequest */
 
+const months = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december'
+]
+
 function init () {
   request('/data')
     .then(json => {
+      document.getElementById('total-sessions').textContent = json.length
       return {
         sessions: parseSessionData(json),
         sail: parseUsage(json, 'sailSize'),
@@ -76,59 +92,41 @@ function parseUsage (data, type) {
 }
 
 function parseSessionData (data) {
-  let array = [
-    {
-      name: 'january',
-      count: 0
-    },
-    {
-      name: 'februari',
-      count: 0
-    },
-    {
-      name: 'march',
-      count: 0
-    },
-    {
-      name: 'april',
-      count: 0
-    },
-    {
-      name: 'may',
-      count: 0
-    },
-    {
-      name: 'june',
-      count: 0
-    },
-    {
-      name: 'july',
-      count: 0
-    },
-    {
-      name: 'august',
-      count: 0
-    },
-    {
-      name: 'september',
-      count: 0
-    },
-    {
-      name: 'october',
-      count: 0
-    },
-    {
-      name: 'november',
-      count: 0
-    },
-    {
-      name: 'december',
-      count: 0
-    }
-  ]
+  let array = []
+
+  data.sort((a, b) => {
+    let c = a.date.split('-').reverse()
+    let d = b.date.split('-').reverse()
+    return new Date(c) - new Date(d)
+  })
+
   data.forEach((session, i) => {
     let month = session.date.split('-')[1]
-    array[month - 1].count++
+    let year = session.date.split('-')[2]
+    let shortDate = `${months[month - 1]} ${year}`
+    let exists = false
+
+    if (i === 0) {
+      array.push({
+        name: shortDate,
+        count: 1
+      })
+      return
+    }
+
+    array.forEach(item => {
+      if (item.name === shortDate) {
+        item.count++
+        exists = true
+      }
+    })
+
+    if (exists === false) {
+      array.push({
+        name: shortDate,
+        count: 1
+      })
+    }
   })
 
   return array
