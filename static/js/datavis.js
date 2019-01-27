@@ -4,15 +4,17 @@ function init () {
   request('/data')
     .then(json => {
       return {
+        sessions: parseSessionData(json),
         sail: parseUsage(json, 'sailSize'),
         board: parseUsage(json, 'board'),
         spots: parseUsage(json, 'spot')
       }
     })
     .then(data => {
-      renderUsageGraph(data.sail, 'sail-usage')
-      renderUsageGraph(data.board, 'board-usage')
-      renderUsageGraph(data.spots, 'spot-visits')
+      renderBarChart(data.sessions, 'session-amount')
+      renderBarChart(data.sail, 'sail-usage')
+      renderBarChart(data.board, 'board-usage')
+      renderBarChart(data.spots, 'spot-visits')
     })
     .catch(err => console.error(err))
 }
@@ -70,10 +72,69 @@ function parseUsage (data, type) {
     })
   }
 
-  return array.reverse()
+  return array
 }
 
-function renderUsageGraph (data, svgId) {
+function parseSessionData (data) {
+  let array = [
+    {
+      name: 'january',
+      count: 0
+    },
+    {
+      name: 'februari',
+      count: 0
+    },
+    {
+      name: 'march',
+      count: 0
+    },
+    {
+      name: 'april',
+      count: 0
+    },
+    {
+      name: 'may',
+      count: 0
+    },
+    {
+      name: 'june',
+      count: 0
+    },
+    {
+      name: 'july',
+      count: 0
+    },
+    {
+      name: 'august',
+      count: 0
+    },
+    {
+      name: 'september',
+      count: 0
+    },
+    {
+      name: 'october',
+      count: 0
+    },
+    {
+      name: 'november',
+      count: 0
+    },
+    {
+      name: 'december',
+      count: 0
+    }
+  ]
+  data.forEach((session, i) => {
+    let month = session.date.split('-')[1]
+    array[month - 1].count++
+  })
+
+  return array
+}
+
+function renderBarChart (data, svgId) {
   const dimensions = {
     width: document.getElementById(svgId).clientWidth,
     height: 500

@@ -11,6 +11,7 @@
     "statistics": {
       "name": "Statistics",
       "statistics_for": "Statistics for",
+      "session_amount": "Amount of times you've windsurfed in a month",
       "sail_usage": "Amount of times you have used your sails",
       "board_usage": "Amount of times you have used your boards",
       "spot_visits": "Spots you visit the most",
