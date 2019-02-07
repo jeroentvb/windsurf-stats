@@ -18,7 +18,7 @@
     "url": "https://github.com/jeroentvb/windsurf-stats.git"
   },
   "dependencies": {
-    "bcrypt": "^3.0.3",
+    "bcrypt": "^3.0.4",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.2",
     "dotenv": "^6.2.0",
