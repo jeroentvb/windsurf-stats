@@ -63,6 +63,6 @@ typings/
 # project related excludes
 sessions/
 .sass-cache/
-style.css.map
+*.css.map
 dist/
 *.old
