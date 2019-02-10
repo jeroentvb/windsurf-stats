@@ -1,74 +1,77 @@
 <% include head %>
 
 <main id="confirm-data">
-  <h1><%= lang.page.confirm_submission.title %></h1>
-  <h3><%= lang.page.confirm_submission.sub_title %></h3>
+  <section class="content">
+    <h1><%= lang.page.confirm_submission.title %></h1>
+    <h3><%= lang.page.confirm_submission.sub_title %></h3>
 
-  <form action="/confirm-submit" method="post">
-    <fieldset class="seperate">
-      <div class="field first">
-        <label for="date"><%= lang.general.date %></label>
-        <input id="date" type="text" name="date" value="<%= data.date %>" placeholder="dd-mm-yyyy" maxlength="10" required>
-      </div>
+    <form action="/confirm-submit" method="post">
+      <fieldset class="fieldset fieldset--margin">
+        <div class="field field--first">
+          <label for="date"><%= lang.general.date %></label>
+          <input id="date" class="input" type="text" name="date" value="<%= data.date %>" placeholder="dd-mm-yyyy" maxlength="10" required>
+        </div>
 
-      <div class="field second">
-        <label for="spot"><%= lang.general.spot[0] %></label>
-        <input id="spot" type="text" name="spot" value="<%= data.spot.charAt(0).toUpperCase() + data.spot.substr(1) %>" placeholder="<%= data.spot %>" required>
-      </div>
+        <div class="field field--second">
+          <label for="spot"><%= lang.general.spot[0] %></label>
+          <input id="spot" class="input" type="text" name="spot" value="<%= data.spot.charAt(0).toUpperCase() + data.spot.substr(1) %>" placeholder="<%= data.spot %>" required>
+        </div>
 
-      <div class="field">
-        <label for="windspeed"><%= lang.general.windspeed %></label>
-        <input id="windspeed" type="number" name="windspeed" value="<%= data.windspeed %>" placeholder="<%= data.windspeed %>" required>
-      </div>
+        <div class="field">
+          <label for="windspeed"><%= lang.general.windspeed %></label>
+          <input id="windspeed" class="input" type="number" name="windspeed" value="<%= data.windspeed %>" placeholder="<%= data.windspeed %>" required>
+        </div>
 
-      <div class="field">
-        <label for="windgust"><%= lang.general.windgust %></label>
-        <input id="windgust" type="number" name="windgust" value="<%= data.windgust %>" placeholder="<%= data.windgust %> kts" required>
-      </div>
+        <div class="field">
+          <label for="windgust"><%= lang.general.windgust %></label>
+          <input id="windgust" class="input" type="number" name="windgust" value="<%= data.windgust %>" placeholder="<%= data.windgust %> kts" required>
+        </div>
 
-      <div class="field last">
-        <label for="wind-direction"><%= lang.general.wind_direction %></label>
-        <input id="wind-direction" type="text" name="windDirection" value="<%= data.windDirection %>" placeholder="<%= data.windDirection %> kts" maxlength="3" required>
-      </div>
+        <div class="field field--last">
+          <label for="wind-direction"><%= lang.general.wind_direction %></label>
+          <input id="wind-direction" class="input" type="text" name="windDirection" value="<%= data.windDirection %>" placeholder="<%= data.windDirection %> kts" maxlength="3" required>
+        </div>
 
-      <p><%= lang.page.confirm_submission.windfinder_link %> <a href="<%= data.windfinderLink %>" target="_blank">windfinder.com</a></p>
-    </fieldset>
+        <p><%= lang.page.confirm_submission.windfinder_link %> <a href="<%= data.windfinderLink %>" target="_blank">windfinder.com</a></p>
+      </fieldset>
 
-    <fieldset class="seperate">
-      <div class="field first">
-        <label for="sail"><%= lang.general.sail_size[0] %></label>
-        <input id="sail" type="number" name="sail" value="<%= data.sail %>" placeholder="<%= data.sail %>" required>
-      </div>
+      <fieldset class="fieldset fieldset--margin">
+        <div class="field field--first">
+          <label for="sail"><%= lang.general.sail_size[0] %></label>
+          <input id="sail" class="input" type="number" name="sail" value="<%= data.sail %>" placeholder="<%= data.sail %>" required>
+        </div>
 
-      <div class="field second">
-        <label for="board"><%= lang.general.board[0] %></label>
-        <input id="board" type="text" name="board" value="<%= data.board %>" placeholder="<%= data.board %>" required>
-      </div>
+        <div class="field field--second">
+          <label for="board"><%= lang.general.board[0] %></label>
+          <input id="board" class="input" type="text" name="board" value="<%= data.board %>" placeholder="<%= data.board %>" required>
+        </div>
 
-      <div class="field last">
-        <label for="rating"><%= lang.general.rating %></label>
-        <input id="rating" type="number" name="rating" value="<%= data.rating %>" placeholder="<%= data.rating %>" maxlength="3" required>
-      </div>
-    </fieldset>
+        <div class="field field--last">
+          <label for="rating"><%= lang.general.rating %></label>
+          <input id="rating" class="input" type="number" name="rating" value="<%= data.rating %>" placeholder="<%= data.rating %>" maxlength="3" required>
+        </div>
+      </fieldset>
 
-    <fieldset class="seperate not-white">
-      <label for="note"><%= lang.general.note %></label>
-      <textarea id="note" name="note" rows="5" cols="80" placeholder="<%= data.note %>" required><%= data.note %></textarea>
-    </fieldset>
+      <fieldset class="fieldset--margin">
+        <label for="note"><%= lang.general.note %></label>
+        <textarea id="note" name="note" rows="5" cols="80" placeholder="<%= data.note %>" required><%= data.note %></textarea>
+      </fieldset>
 
-    <h2><%= lang.page.confirm_submission.correct_data %>:</h2>
-    <fieldset class="seperate radio-buttons not-white">
-      <div id="confirm-radio" class="field after-title">
-        <input id="correct" type="radio" name="confirmData" value="correct" checked>
-        <label for="correct"><%= lang.page.confirm_submission.correct %></label>
-        <input id="incorrect" type="radio" name="confirmData" value="incorrect">
-        <label for="incorrect"><%= lang.page.confirm_submission.incorrect %></label>
-      </div>
+      <h2><%= lang.page.confirm_submission.correct_data %>:</h2>
+      <fieldset class="fieldset--margin radio-buttons">
+        <div id="confirm-radio" class="field after-title radio-buttons__container">
+          <input id="correct" type="radio" name="confirmData" value="correct" checked>
+          <label for="correct" class="radio-label"><%= lang.page.confirm_submission.correct %></label>
+          <input id="incorrect" type="radio" name="confirmData" value="incorrect">
+          <label for="incorrect" class="radio-label"><%= lang.page.confirm_submission.incorrect %></label>
+        </div>
+      </fieldset>
 
-      <input type="submit" name="confirm-submit" id="confirm-submit">
-    </fieldset>
-  </form>
-
+      <fieldset class="fieldset--margin">
+        <input type="submit" name="confirm-submit" id="confirm-submit">
+      </fieldset>
+    </form>
+  </section>
 </main>
 
 <% include tail %>

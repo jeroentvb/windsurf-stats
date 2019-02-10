@@ -1,0 +1,27 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'system-ui', sans-serif;
+  width: 100%;
+  background-color: $background-color;
+  margin: 0;
+}
+
+main {
+  padding: 1em;
+  margin-bottom: 1em;
+}
+
+.hidden {
+  display: none !important; 
+}

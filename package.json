@@ -31,7 +31,7 @@
     "wind-scrape": "github:jeroentvb/wind-scrape"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.10"
   },
   "nodemonConfig": {
     "ignore": [

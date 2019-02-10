@@ -1,4 +1,3 @@
-// Form
 form {
   width: 100%;
 }
@@ -8,40 +7,24 @@ fieldset {
   display: flex;
   flex-direction: column;
   padding: 0;
-  background-color: $white;
   margin: 0 -18px;
   padding: 0 18px;
+}
 
-  &.radio-buttons {
+.fieldset {
+  background-color: $secondary-background-color;
+
+  &--radio-buttons {
     border-bottom: 1px solid $grey-line;
   }
 
-  label {
-    margin: 6px 0;
-    font-size: 1em;
-    // font-weight: 600;
-    width: 30%;
+  &--margin {
+    margin-bottom: 32px;
   }
+}
 
-  select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
-
-  select, input, textarea {
-    // margin-bottom: 32px;
-    font-size: 1em;
-    &:focus {
-      outline: none;
-    }
-  }
-
-  input[type=radio] {
-    margin-left: 8px;
-  }
-
-  input[type=submit] {
+input {
+  &[type=submit] {
     border: none;
     padding: 16px 24px;
     border-radius: 4px;
@@ -51,32 +34,57 @@ fieldset {
     transition: .3s;
     box-shadow: none;
 
+
     &:hover {
       background-color: $color-primary-dark;
       cursor: pointer;
     }
   }
 
-  input[type=number], input[type=text], input[type=email], input[type=password], input[type=url], textarea, select {
-    border: none;
-    // border-bottom: 1px solid $grey-line;
-    background-color: transparent;
-    border-radius: 0;
-    padding: 16px 18px !important;
-    width: 70%;
+  &[type=radio] {
+    margin-left: 8px;
   }
+}
 
-  textarea {
-    resize: none;
-    border-radius: 4px;
-    border: 1px solid $grey-line;
-    background-color: $white;
-    width: 100%;
-  }
+// input[type=number], input[type=text], input[type=email], input[type=password], input[type=url], textarea, select {
+.input {
+  border: none;
+  background-color: transparent;
+  border-radius: 0;
+  padding: 16px 18px;
+  width: 70%;
+}
 
-  select:hover, option:hover, input[type=radio] {
-    cursor: pointer;
+textarea {
+  resize: none;
+  border-radius: 4px;
+  border: 1px solid $grey-line;
+  background-color: $secondary-background-color;
+  width: 100%;
+  padding: 1rem;
+}
+
+label {
+  margin: 6px 0;
+  font-size: 1em;
+  width: 30%;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+select, input, textarea {
+  font-size: 1em;
+  &:focus {
+    outline: none;
   }
+}
+
+select:hover, option:hover, input[type=radio] {
+  cursor: pointer;
 }
 
 .field {
@@ -84,17 +92,17 @@ fieldset {
   flex-direction: row;
   align-items: center;
   border-bottom: 1px solid $grey-line;
-  background-color: $white;
-  &.first {
+  background-color: $secondary-background-color;
+  &--first {
     border-top: 1px solid $grey-line;
     margin: 0 -18px;
     padding: 0 18px;
     border-bottom: none;
   }
-  &.second {
+  &--second {
     border-top: 1px solid $grey-line;
   }
-  &.last {
+  &--last {
     margin: 0 -18px;
     padding: 0 18px;
   }
@@ -107,71 +115,93 @@ fieldset {
   }
 }
 
-#main-form {
-  h1 {
-    margin-top: 0;
-  }
-}
-
-#date-radio, #confirm-radio, #before-after-time-radio {
-  label:nth-of-type(2) {
-    margin-left: 32px;
-  }
-}
-
-#confirm-radio {
-  margin-bottom: 32px;
-}
-
-// Radio button styling
 .radio-buttons {
-  p.field {
+  border-bottom: 1px solid $grey-line;
+
+  p {
     padding-top: 12px;
   }
 
-  p {
-    margin-bottom: 4px;
-  }
-
-  #date-radio {
+  &__container {
     padding-top: 10px;
     margin-bottom: 10px;
-  }
 
-  #before-after-time-radio {
-    padding-bottom: 10px;
-  }
+    input[type=radio] {
+      display: none;
 
-  input[type=radio] {
-    display: none;
-  }
+      &:checked + label {
+        background-color: $color-primary;
+        color: $secondary-background-color;
+      }
 
-  label {
-    width: 50%;
-    text-align: center;
-    padding: 6px;
-    margin-left: 0 !important;
-    color: $normal-blue;
-    border: 1px solid $normal-blue;
-    transition: .2s;
-    &:nth-of-type(1) {
-      border-radius: 4px 0 0 4px;
-    }
-    &:nth-of-type(2) {
-      border-radius: 0 4px 4px 0;
+      &:disabled + label {
+        color: $text-disabled;
+      }
+
+      & + label:hover {
+        cursor: pointer;
+      }
     }
   }
+}
 
-  input[type=radio]:checked + label {
-    background-color: $normal-blue;
-    color: $white;
+.radio-label {
+  width: 50%;
+  text-align: center;
+  padding: 6px;
+  // margin-left: 0;
+  color: $color-primary;
+  border: 1px solid $color-primary;
+  transition: .2s;
+  &:nth-of-type(1) {
+    border-radius: 4px 0 0 4px;
+  }
+  &:nth-of-type(2) {
+    border-radius: 0 4px 4px 0;
+  }
+}
+
+@media (min-width: 800px) {
+  fieldset {
+    background-color: inherit;
+
+    &.radio-buttons {
+      border-bottom: none;
+    }
+
+    label {
+      width: 20%;
+    }
+
+    .input {
+      background-color: $secondary-background-color;
+      border: 1px solid $grey-line;
+      padding: 4px;
+      width: 80%;
+      border-radius: 4px;
+      &:focus {
+        outline: 1px solid $color-primary;
+      }
+    }
+    textarea:focus {
+      outline: 1px solid $color-primary;
+    }
+    input[type=radio] + label {
+      background-color: $secondary-background-color;
+    }
   }
 
-  input[type=radio]:disabled + label {
-    color: $text-disabled;
+  .fieldset {
+    background-color: $background-color;
   }
 
-  input[type=radio] + label:hover {
-    cursor: pointer;
+  .field {
+      border: none;
+      background-color: inherit;
+      margin-bottom: 8px
   }
+
+  // #confirm-radio {
+  //   margin-bottom: 32px !important;
+  // }
 }

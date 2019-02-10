@@ -1,149 +1,151 @@
 <% include head %>
 
-<main id="main-form">
-  <h1><%= lang.page.add_session.title %></h1>
+<main>
+  <section class="content">
+    <h1><%= lang.page.add_session.title %></h1>
 
-  <form action="/submit-data" method="post">
-    <fieldset class="seperate radio-buttons">
-      <p class="field first"><%= lang.page.add_session.sub_title %></p>
-      <div id="date-radio" class="field after-title">
-        <input id="today" type="radio" name="date" value="today" checked>
-        <label for="today" class="radio"><%= lang.general.today %></label>
-        <input id="other-day" type="radio" name="date" value="other">
-        <label for="other-day" class="radio"><%= lang.general.other %></label>
-      </div>
-    </fieldset>
+    <form action="/submit-data" method="post">
+      <fieldset class="radio-buttons fieldset fieldset--margin">
+        <p class="field field--first"><%= lang.page.add_session.sub_title %></p>
+        <div class="field after-title radio-buttons__container">
+          <input id="today" type="radio" name="date" value="today" checked>
+          <label for="today" class="radio-label"><%= lang.general.today %></label>
+          <input id="other-day" type="radio" name="date" value="other">
+          <label for="other-day" class="radio-label"><%= lang.general.other %></label>
+        </div>
+      </fieldset>
 
-    <fieldset id="additional-stats" class="seperate hidden">
-      <div class="field first">
-        <label for="date-input"><%= lang.general.date %></label>
-        <input id="date-input" type="text" name="dateInput" placeholder="dd-mm-yyy" value="<%= prefs.date %>" maxlength="10">
-      </div>
+      <fieldset id="additional-stats" class="fieldset fieldset--margin hidden">
+        <div class="field field--first">
+          <label for="date-input"><%= lang.general.date %></label>
+          <input id="date-input" class="input" type="text" name="dateInput" placeholder="dd-mm-yyy" value="<%= prefs.date %>" maxlength="10">
+        </div>
 
-      <div class="field second">
-        <label for="windspeed"><%= lang.general.windspeed %> (in kts)</label>
-        <input id="windspeed" type="number" name="windspeed" placeholder="18" min="1" max="99">
-      </div>
+        <div class="field field--second">
+          <label for="windspeed"><%= lang.general.windspeed %> (in kts)</label>
+          <input id="windspeed" class="input" type="number" name="windspeed" placeholder="18" min="1" max="99">
+        </div>
 
-      <div class="field">
-        <label for="windgust"><%= lang.general.windgust %> (in kts)</label>
-        <input id="windgust" type="number" name="windgust" placeholder="22" min="1" max="99">
-      </div>
+        <div class="field">
+          <label for="windgust"><%= lang.general.windgust %> (in kts)</label>
+          <input id="windgust" class="input" type="number" name="windgust" placeholder="22" min="1" max="99">
+        </div>
 
-      <div class="field last">
-        <label for="wind-direction"><%= lang.general.wind_direction %></label>
-        <select id="wind-direction" name="windDirection">
-          <% var windDirections = lang.wind_directions
+        <div class="field field--last">
+          <label for="wind-direction"><%= lang.general.wind_direction %></label>
+          <select id="wind-direction" class="input" name="windDirection">
+            <% var windDirections = lang.wind_directions
 
-          for (let i = 0; i < windDirections.length; i++) { %>
-            <option value="<%= windDirections[i] %>"><%= windDirections[i] %></option>
-          <% } %>
-        </select>
-      </div>
-    </fieldset>
+            for (let i = 0; i < windDirections.length; i++) { %>
+              <option value="<%= windDirections[i] %>"><%= windDirections[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </fieldset>
 
-    <fieldset>
-      <div class="field first">
-        <label for="spot"><%= lang.general.spot[0] %></label>
-        <select id="spot" name="spot">
-          <% prefs.spots.forEach((spot, i) => {
-            if (i === 0) { %>
-              <option value="<%= spot %>" selected="selected">
-                <%= spot
-                .split('-').join(' ')
-                .split('_').join(' ')
-                .split(' ')
-                .map(s => s.charAt(0).toUpperCase() + s.substring(1))
-                .join(' ') %>
-              </option>
-            <% } else if (spot !== '') { %>
-              <option value="<%= spot %>">
-                <%= spot
-                .split('-').join(' ')
-                .split('_').join(' ')
-                .split(' ')
-                .map(s => s.charAt(0).toUpperCase() + s.substring(1))
-                .join(' ') %>
-              </option>
-            <% }
-          }) %>
-
-          <option value="other"><%= lang.general.other %></option>
-        </select>
-      </div>
-
-      <div id="spot-other-wrapper" class="field custom-field hidden">
-        <label for="spot-other"></label>
-        <input id="spot-other" type="text" name="spotOther" class="custom-field" placeholder="Example: maui_honolua_bay">
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <div class="field second">
-        <label  for="windsurf-sail-size"><%= lang.general.sail_size[0] %></label>
-        <select id="windsurf-sail-size" name="sailSize">
-          <% for (let i = 0; i < prefs.sails.length; i++) {
-            if (prefs.sails[i] != '' && i == 0) { %>
-              <option value="<%= prefs.sails[i] %>" selected><%= prefs.sails[i] %></option>
-            <% } else if (prefs.sails[i] != '') { %>
-              <option value="<%= prefs.sails[i] %>"><%= prefs.sails[i] %></option>
-            <% }
-          } %>
-          <option value="other"><%= lang.general.other %></option>
-        </select>
-      </div>
-
-      <div id="windsurf-sail-size-other-wrapper" class="field hidden">
-        <label for="windsurf-sail-size-other"></label>
-        <input id="windsurf-sail-size-other" type="number" name="sailSizeOther" class="custom-field" placeholder="Insert custom sail size" max="10" step="0.1" min="1">
-      </div>
-
-      <div class="field">
-        <label for="windsurf-board"><%= lang.general.board[0] %></label>
-        <select id="windsurf-board" name="windsurfBoard">
-          <% for (let i = 0; i < prefs.boards.length; i++) {
-            if (prefs.boards[i] != '' && i == 0) { %>
-              <option value="<%= prefs.boards[i] %>" selected><%= prefs.boards[i] %></option>
-            <% } else if (prefs.boards[i] != '') { %>
-              <option value="<%= prefs.boards[i] %>"><%= prefs.boards[i] %></option>
-            <% }
-          } %>
-          <option value="other"><%= lang.general.other %></option>
-        </select>
-      </div>
-
-      <div id="windsurf-board-other-wrapper" class="field hidden">
-        <label for="windsurf-board-other"></label>
-        <input id="windsurf-board-other" type="text" name="windsurfBoardOther" class="custom-field" placeholder="Insert custom board">
-      </div>
-    </fieldset>
-
-    <fieldset class="seperate">
-      <div class="field last">
-        <label for="rating"><%= lang.general.rating %></label>
-        <select id="rating" name="rating">
-          <% for (let i=1; i < 10.5; i += 0.5) {
-              if (i == 7) { %>
-                <option value="<%= i %>" selected><%= i %></option>
-              <% } else { %>
-                <option value="<%= i %>"><%= i %></option>
+      <fieldset class="fieldset">
+        <div class="field field--first">
+          <label for="spot"><%= lang.general.spot[0] %></label>
+          <select id="spot" class="input" name="spot">
+            <% prefs.spots.forEach((spot, i) => {
+              if (i === 0) { %>
+                <option value="<%= spot %>" selected="selected">
+                  <%= spot
+                  .split('-').join(' ')
+                  .split('_').join(' ')
+                  .split(' ')
+                  .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+                  .join(' ') %>
+                </option>
+              <% } else if (spot !== '') { %>
+                <option value="<%= spot %>">
+                  <%= spot
+                  .split('-').join(' ')
+                  .split('_').join(' ')
+                  .split(' ')
+                  .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+                  .join(' ') %>
+                </option>
               <% }
-             } %>
-        </select>
-      </div>
-    </fieldset>
+            }) %>
 
-    <fieldset class="seperate not-white">
-      <label for="note"><%= lang.general.note %></label>
-      <textarea id="note" name="note" rows="5" cols="80"></textarea>
-    </fieldset>
+            <option value="other"><%= lang.general.other %></option>
+          </select>
+        </div>
 
-    <p id="error-message"></p>
+        <div id="spot-other-wrapper" class="field custom-field hidden">
+          <label for="spot-other"></label>
+          <input id="spot-other" class="input" type="text" name="spotOther" class="custom-field" placeholder="Example: maui_honolua_bay">
+        </div>
+      </fieldset>
 
-    <fieldset class="seperate not-white">
-      <input type="submit" name="submit" id="submit-form">
-    </fieldset>
-  </form>
+      <fieldset class="fieldset">
+        <div class="field field--second">
+          <label  for="windsurf-sail-size"><%= lang.general.sail_size[0] %></label>
+          <select id="windsurf-sail-size" class="input" name="sailSize">
+            <% for (let i = 0; i < prefs.sails.length; i++) {
+              if (prefs.sails[i] != '' && i == 0) { %>
+                <option value="<%= prefs.sails[i] %>" selected><%= prefs.sails[i] %></option>
+              <% } else if (prefs.sails[i] != '') { %>
+                <option value="<%= prefs.sails[i] %>"><%= prefs.sails[i] %></option>
+              <% }
+            } %>
+            <option value="other"><%= lang.general.other %></option>
+          </select>
+        </div>
+
+        <div id="windsurf-sail-size-other-wrapper" class="field hidden">
+          <label for="windsurf-sail-size-other"></label>
+          <input id="windsurf-sail-size-other" class="input" type="number" name="sailSizeOther" class="custom-field" placeholder="Insert custom sail size" max="10" step="0.1" min="1">
+        </div>
+
+        <div class="field">
+          <label for="windsurf-board"><%= lang.general.board[0] %></label>
+          <select id="windsurf-board" class="input" name="windsurfBoard">
+            <% for (let i = 0; i < prefs.boards.length; i++) {
+              if (prefs.boards[i] != '' && i == 0) { %>
+                <option value="<%= prefs.boards[i] %>" selected><%= prefs.boards[i] %></option>
+              <% } else if (prefs.boards[i] != '') { %>
+                <option value="<%= prefs.boards[i] %>"><%= prefs.boards[i] %></option>
+              <% }
+            } %>
+            <option value="other"><%= lang.general.other %></option>
+          </select>
+        </div>
+
+        <div id="windsurf-board-other-wrapper" class="field hidden">
+          <label for="windsurf-board-other"></label>
+          <input id="windsurf-board-other" class="input" type="text" name="windsurfBoardOther" class="custom-field" placeholder="Insert custom board">
+        </div>
+      </fieldset>
+
+      <fieldset class="fieldset fieldset--margin">
+        <div class="field field--last">
+          <label for="rating"><%= lang.general.rating %></label>
+          <select id="rating" class="input" name="rating">
+            <% for (let i=1; i < 10.5; i += 0.5) {
+                if (i == 7) { %>
+                  <option value="<%= i %>" selected><%= i %></option>
+                <% } else { %>
+                  <option value="<%= i %>"><%= i %></option>
+                <% }
+               } %>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset class="fieldset--margin">
+        <label for="note"><%= lang.general.note %></label>
+        <textarea id="note" name="note" rows="5" cols="80"></textarea>
+      </fieldset>
+
+      <p id="error-message"></p>
+
+      <fieldset class="fieldset--margin">
+        <input type="submit" name="submit" id="submit-form">
+      </fieldset>
+    </form>
+  </section>
 </main>
 
 <script src="js/submit-data.js"></script>
