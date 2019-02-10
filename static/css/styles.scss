@@ -1,32 +1,7 @@
-@import 'config/normalize';
 @import 'config/vars';
-@import 'config/classes';
+@import 'config/global';
+@import 'partials/buttons';
 @import 'partials/header';
 @import 'partials/main';
 @import 'partials/form';
-@import 'partials/confirm-submission';
 @import 'partials/account';
-@import 'partials/breakpoints';
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-* {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-body {
-  font-family: system-ui, sans-serif;
-  width: 100%;
-  background-color: $grey; //#C7C7CD;
-
-  main {
-    padding: 1em;
-    margin-bottom: 1em;
-  }
-}
