@@ -2,58 +2,18 @@ const express = require('express')
 const session = require('express-session')
 const FileStore = require('session-file-store')(session)
 const helmet = require('helmet')
-const mysql = require('mysql')
+const db = require('./modules/db')
 const scrape = require('wind-scrape')
 const chalk = require('chalk')
 const bodyParser = require('body-parser')
-const bcrypt = require('bcrypt')
+const user = require('./modules/user')
 const helper = require('./modules/helper')
 const config = require('./app-config.json')
 const lang = helper.localize(config.language)
 
 require('dotenv').config()
 
-// create mysql connection
-const dbConfig = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-}
-let db
-function handleDisconnect () {
-  console.log(chalk.green('[MySql] trying to connect..'))
-  db = mysql.createConnection(dbConfig)
-  // connect to db
-  db.connect(err => {
-    if (err) {
-      console.error('[MySql] error while connecting to the db:', err)
-      setTimeout(handleDisconnect, 10000)
-    } else {
-      console.log(chalk.green('[MySql] connection established..'))
-    }
-  })
-  // Handle db errors
-  db.on('error', err => {
-    console.error('[MySql] db error:', err)
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      handleDisconnect()
-    } else {
-      throw err
-    }
-  })
-}
-handleDisconnect()
-
-// Wrap a database query in a promise to use throughout the application
-function query (query, params) {
-  return new Promise((resolve, reject) => {
-    db.query(query, params, (err, result) => {
-      if (err) reject(err)
-      resolve(result)
-    })
-  })
-}
+db.init()
 
 module.exports = express()
   .set('view engine', 'ejs')
@@ -80,14 +40,14 @@ module.exports = express()
   .get('/add-session', addSession)
   .get('/register', render)
   .get('/preferences', renderPreferences)
-  .post('/set-prefs', preferences)
-  .post('/update-prefs', preferences)
-  .get('/account', getAccountDetails)
-  .post('/update-email', updateEmail)
+  .post('/set-prefs', user.preferences)
+  .post('/update-prefs', user.preferences)
+  .get('/account', user.getAccountDetails)
+  .post('/update-email', user.updateEmail)
   .get('/login', render)
-  .post('/sign-up', register)
-  .post('/sign-in', login)
-  .get('/sign-out', logout)
+  .post('/sign-up', user.register)
+  .post('/sign-in', user.login)
+  .get('/sign-out', user.logout)
   .post('/submit-data', submitData)
   .post('/confirm-submit', confirmedData)
   .use(notFound)
@@ -139,7 +99,7 @@ function render (req, res) {
 }
 
 function addSession (req, res, next) {
-  query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
+  db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
     .then(result => {
       let prefs = result[0]
       let formattedPrefs = {
@@ -301,7 +261,7 @@ function confirmedData (req, res, next) {
   if (checkCorrect === 'incorrect') {
     res.redirect('/')
   } else {
-    query('INSERT INTO windsurfStatistics.statistics SET ?', submittedData)
+    db.query('INSERT INTO windsurfStatistics.statistics SET ?', submittedData)
       .then(res.redirect('statistics'))
       .catch(err => console.log(err))
   }
@@ -311,7 +271,7 @@ function showAllStatistics (req, res, next) {
   if (!req.session.user) {
     res.redirect('/login')
   } else {
-    query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+    db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
       .then(result => {
         res.render('statistics-table', {
           page: lang.page.statistics.name,
@@ -329,7 +289,7 @@ function sendData (req, res) {
   if (!req.session.user) {
     res.redirect('/login')
   } else {
-    query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+    db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
       .then(result => {
         let data = []
         result.forEach(session => {
@@ -353,7 +313,7 @@ function sendData (req, res) {
 }
 
 function renderPreferences (req, res, next) {
-  query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
+  db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
     .then(result => {
       let prefs = result[0]
       let formattedPrefs = {
@@ -393,234 +353,6 @@ function renderPreferences (req, res, next) {
       })
     })
     .catch(err => console.error(err))
-}
-
-function preferences (req, res, next) {
-  let prefsQuery
-  if (req.originalUrl === '/set-prefs') {
-    prefsQuery = 'INSERT INTO windsurfStatistics.preferences SET ?'
-  } else {
-    prefsQuery = `UPDATE windsurfStatistics.preferences SET ? WHERE userId = ${req.session.user.id}`
-  }
-
-  let prefData = {
-    boards: [
-      req.body.board0.trim(),
-      req.body.board1.trim(),
-      req.body.board2.trim(),
-      req.body.board3.trim(),
-      req.body.board4.trim()
-    ],
-    sails: [
-      req.body.sail0,
-      req.body.sail1,
-      req.body.sail2,
-      req.body.sail3,
-      req.body.sail4,
-      req.body.sail5,
-      req.body.sail6,
-      req.body.sail7,
-      req.body.sail8,
-      req.body.sail9
-    ],
-    spots: [
-      req.body.spot0.trim(),
-      req.body.spot1.trim(),
-      req.body.spot2.trim(),
-      req.body.spot3.trim(),
-      req.body.spot4.trim()
-    ]
-  }
-
-  query(prefsQuery, {
-    userId: req.session.user.id,
-    board0: prefData.boards[0],
-    board1: prefData.boards[1],
-    board2: prefData.boards[2],
-    board3: prefData.boards[3],
-    board4: prefData.boards[4],
-    sail0: prefData.sails[0],
-    sail1: prefData.sails[1],
-    sail2: prefData.sails[2],
-    sail3: prefData.sails[3],
-    sail4: prefData.sails[4],
-    sail5: prefData.sails[5],
-    sail6: prefData.sails[6],
-    sail7: prefData.sails[7],
-    sail8: prefData.sails[8],
-    sail9: prefData.sails[9],
-    spot0: prefData.spots[0],
-    spot1: prefData.spots[1],
-    spot2: prefData.spots[2],
-    spot3: prefData.spots[3],
-    spot4: prefData.spots[4]
-  })
-    .then(result => res.redirect('/statistics'))
-    .catch(err => console.error(err))
-}
-
-function getAccountDetails (req, res, next) {
-  if (!req.session.user) {
-    res.redirect('/login')
-  } else if (config.allowChangeEmail === false) {
-    res.redirect('/')
-  } else {
-    query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
-      .then(result => {
-        res.render('account', {
-          page: lang.page.account.name,
-          loginStatus: req.session.user,
-          userData: result[0],
-          lang: lang,
-          config: config
-        })
-      })
-      .catch(err => console.error(err))
-  }
-}
-
-function updateEmail (req, res, next) {
-  let email = req.body.email
-  let password = req.body.password
-
-  if (!email || !password) {
-    res.status(400).send('Username or password is missing!')
-  }
-
-  query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
-    .then(data => {
-      let user = data && data[0]
-      if (user) {
-        return bcrypt.compare(password, user.password).then(onverify, next)
-      } else {
-        res.status(401).render('error', {
-          page: 'Error',
-          error: lang.error._401_email,
-          lang: lang
-        })
-      }
-
-      function onverify (match) {
-        if (match) {
-          query(`UPDATE windsurfStatistics.users SET email = ? WHERE id = ?`, [
-            email,
-            req.session.user.id
-          ])
-            .then(() => {
-              req.session.user.email = email
-              res.redirect('/account')
-            })
-            .catch(err => console.error(err))
-        } else {
-          res.status(401).render('error', {
-            page: 'Error',
-            error: lang.error._401_passwd,
-            lang: lang
-          })
-        }
-      }
-    })
-    .catch(err => console.error(err))
-}
-
-function register (req, res, next) {
-  let username = req.body.username
-  let email = req.body.email
-  let password = req.body.password
-
-  if (!username || !email || !password) {
-    res.status(400).send('Name, e-mail or password are missing!')
-  }
-
-  query('SELECT * from windsurfStatistics.users WHERE email = ?', email)
-    .then(result => {
-      if (result.length > 0) {
-        res.render('error', {
-          page: 'Error',
-          error: 'E-mail already exists',
-          lang: lang
-        })
-      } else {
-        bcrypt.hash(password, config.saltRounds)
-          .then(hash => {
-            db.query('INSERT INTO windsurfStatistics.users SET ?', {
-              username: username,
-              email: email,
-              password: hash
-            }, (err, data) => {
-              if (err) next(err)
-              db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', email, (err, result) => {
-                if (err) next(err)
-                let userId = result[0].id
-
-                req.session.user = {
-                  name: username,
-                  email: email,
-                  id: userId
-                }
-
-                res.render('setPrefs', {
-                  page: lang.page.preferences.name,
-                  loginStatus: req.session.user,
-                  lang: lang,
-                  config: config
-                })
-              })
-            })
-          })
-          .catch(err => console.error(err))
-      }
-    })
-    .catch(err => console.error(err))
-}
-
-function login (req, res, next) {
-  let email = req.body.email
-  let password = req.body.password
-
-  if (!email || !password) {
-    res.status(400).send('Username or password is missing!')
-  }
-
-  query('SELECT * FROM windsurfStatistics.users WHERE email = ?', email)
-    .then(data => {
-      let user = data && data[0]
-      if (user) {
-        return bcrypt.compare(password, user.password).then(onverify, next)
-      } else {
-        res.status(401).render('error', {
-          page: 'Error',
-          error: lang.error._401_email,
-          lang: lang
-        })
-      }
-
-      function onverify (match) {
-        if (match) {
-          req.session.user = {
-            name: user.username,
-            email: email,
-            id: user.id
-          }
-
-          res.redirect('/')
-        } else {
-          res.status(401).render('error', {
-            page: 'Error',
-            error: lang.error._401_passwd,
-            lang: lang
-          })
-        }
-      }
-    })
-    .catch(err => console.error(err))
-}
-
-function logout (req, res) {
-  req.session.destroy(err => {
-    if (err) throw err
-    res.redirect('/')
-  })
 }
 
 function notFound (req, res) {
