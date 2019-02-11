@@ -14,13 +14,13 @@ const lang = helper.localize(config.language)
 require('dotenv').config()
 
 // create mysql connection
-var dbConfig = {
+const dbConfig = {
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME
 }
-var db
+let db
 function handleDisconnect () {
   console.log(chalk.green('[MySql] trying to connect..'))
   db = mysql.createConnection(dbConfig)
@@ -94,7 +94,7 @@ module.exports = express()
   .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))
 
 function render (req, res) {
-  var id = req.originalUrl.replace('/', '')
+  let id = req.originalUrl.replace('/', '')
 
   if (id === 'register' && config.allowRegister === false) {
     res.redirect('/')
@@ -197,7 +197,7 @@ function submitData (req, res) {
   if (date === 'today') {
     submittedData.date = helper.getToday()
 
-    var responses = {
+    let responses = {
       spot: '',
       time: '',
       windspeed: Number,
@@ -283,9 +283,9 @@ function submitData (req, res) {
 }
 
 function confirmedData (req, res, next) {
-  var checkCorrect = req.body.confirmData
+  let checkCorrect = req.body.confirmData
 
-  var submittedData = {
+  let submittedData = {
     userId: req.session.user.id,
     date: req.body.date,
     spot: req.body.spot,
@@ -524,47 +524,59 @@ function updateEmail (req, res, next) {
 }
 
 function register (req, res, next) {
-  var username = req.body.username
-  var email = req.body.email
-  var password = req.body.password
+  let username = req.body.username
+  let email = req.body.email
+  let password = req.body.password
 
   if (!username || !email || !password) {
     res.status(400).send('Name, e-mail or password are missing!')
   }
 
-  bcrypt.hash(password, config.saltRounds)
-    .then(hash => {
-      db.query('INSERT INTO windsurfStatistics.users SET ?', {
-        username: username,
-        email: email,
-        password: hash
-      }, (err, data) => {
-        if (err) next(err)
-        db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', email, (err, result) => {
-          if (err) next(err)
-          var userId = result[0].id
-
-          req.session.user = {
-            name: username,
-            email: email,
-            id: userId
-          }
-
-          res.render('setPrefs', {
-            page: lang.page.preferences.name,
-            loginStatus: req.session.user,
-            lang: lang,
-            config: config
-          })
+  query('SELECT * from windsurfStatistics.users WHERE email = ?', email)
+    .then(result => {
+      if (result.length > 0) {
+        res.render('error', {
+          page: 'Error',
+          error: 'E-mail already exists',
+          lang: lang
         })
-      })
+      } else {
+        bcrypt.hash(password, config.saltRounds)
+          .then(hash => {
+            db.query('INSERT INTO windsurfStatistics.users SET ?', {
+              username: username,
+              email: email,
+              password: hash
+            }, (err, data) => {
+              if (err) next(err)
+              db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', email, (err, result) => {
+                if (err) next(err)
+                let userId = result[0].id
+
+                req.session.user = {
+                  name: username,
+                  email: email,
+                  id: userId
+                }
+
+                res.render('setPrefs', {
+                  page: lang.page.preferences.name,
+                  loginStatus: req.session.user,
+                  lang: lang,
+                  config: config
+                })
+              })
+            })
+          })
+          .catch(err => console.error(err))
+      }
     })
     .catch(err => console.error(err))
 }
 
 function login (req, res, next) {
-  var email = req.body.email
-  var password = req.body.password
+  let email = req.body.email
+  let password = req.body.password
 
   if (!email || !password) {
     res.status(400).send('Username or password is missing!')
