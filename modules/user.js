@@ -80,7 +80,7 @@ function preferences (req, res, next) {
 function getAccountDetails (req, res, next) {
   if (!req.session.user) {
     res.redirect('/login')
-  } else if (config.allowChangeEmail === false) {
+  } else if (config.allowChangeEmail === false && config.enableApi === false) {
     res.redirect('/')
   } else {
     db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)

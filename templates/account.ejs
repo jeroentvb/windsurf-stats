@@ -12,26 +12,57 @@
       <p><%= lang.page.account.email_addr %>:</p>
       <p><%= userData.email %></p>
     </div>
-    <button type="button" name="button" id="change-email" class="button"><%= lang.page.account.change_email[0] %></button>
 
-    <form action="/update-email" method="post" id="update-email" class="hidden">
-      <h4><%= lang.page.account.change_email[1] %></h4>
-      <fieldset class="fieldset fieldset--margin">
-        <div class="field field--first">
-          <label for="email"><%= lang.page.account.new_email %></label>
-          <input id="email" class="input" type="email" name="email" placeholder="joopie@example.com" required>
-        </div>
+    <% if (config.enableApi) { %>
+      <div class="row">
+        <p>Api key:</p>
+        <p id="user-api-key"><%= userData.apiKey %></p>
+      </div>
+    <% } %>
 
-        <div class="field field--second field--last">
-          <label for="password"><%= lang.account.password %></label>
-          <input id="password" class="input" type="password" name="password" required>
-        </div>
-      </fieldset>
 
-      <fieldset class="fieldset--margin">
-        <input type="submit" name="submit" id="submit">
-      </fieldset>
-    </form>
+    <% if (config.allowChangeEmail) { %>
+      <button type="button" name="button" id="change-email" class="button"><%= lang.page.account.change_email[0] %></button>
+
+      <form action="/update-email" method="post" id="update-email" class="hidden">
+        <h4><%= lang.page.account.change_email[1] %></h4>
+        <fieldset class="fieldset fieldset--margin">
+          <div class="field field--first">
+            <label for="email"><%= lang.page.account.new_email %></label>
+            <input id="email" class="input" type="email" name="email" placeholder="joopie@example.com" required>
+          </div>
+
+          <div class="field field--second field--last">
+            <label for="password"><%= lang.account.password %></label>
+            <input id="password" class="input" type="password" name="password" required>
+          </div>
+        </fieldset>
+
+        <fieldset class="fieldset--margin">
+          <input type="submit" name="submit" id="submit">
+        </fieldset>
+      </form>
+    <% } %>
+
+    <% if (config.enableApi === true && userData.apiKey === null) { %>
+      <section id="api-key-generator">
+        <h1>Api Key</h1>
+        <p>You can generate an api key for your account using the button below.</p>
+
+        <form>
+          <fieldset class="fieldset fieldset--margin fieldset--standalone">
+            <div class="">
+              <label for="generated key">Your api key</label>
+              <input class="input" type="text" id="generated-key">
+            </div>
+          </fieldset>
+
+          <fieldset class="fieldset--margin">
+            <input type="submit" name="submit" id="api-key">
+          </fieldset>
+        </form>
+      </section>
+    <% } %>
   </section>
 </main>
 
