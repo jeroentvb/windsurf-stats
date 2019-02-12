@@ -130,3 +130,7 @@ Make sure your file has all the object keys that the english file has, otherwise
 ### Currently included languages
 * [English (en)](localization/en.json)
 * [Dutch (nl)](localization/nl.json)
+
+## API
+**Experimental feature**  
+Create an API key in your account settings. Copy the key and navigate to `urlOfTheApplication/api?key=yourApiKey`.
