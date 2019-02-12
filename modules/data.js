@@ -136,7 +136,7 @@ function send (req, res) {
       .then(result => {
         result.forEach(session => {
           delete session.statisticId
-          delete session.userID
+          delete session.userId
         })
         return result
       })
