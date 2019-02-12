@@ -42,7 +42,9 @@
       "title": "Account details",
       "email_addr": "E-mail adress",
       "change_email": ["Change e-mail", "Change e-mail adress"],
-      "new_email": "New e-mail adress"
+      "new_email": "New e-mail adress",
+      "api_key": ["Api key", "Your api key"],
+      "generate_key": "You can generate an api key for your account using the button below."
     }
   },
   "general": {

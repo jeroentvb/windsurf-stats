@@ -15,7 +15,7 @@
 
     <% if (config.enableApi) { %>
       <div class="row">
-        <p>Api key:</p>
+        <p><%= lang.page.account.api_key[0] %>:</p>
         <p id="user-api-key"><%= userData.apiKey %></p>
       </div>
     <% } %>
@@ -46,13 +46,13 @@
 
     <% if (config.enableApi === true && userData.apiKey === null) { %>
       <section id="api-key-generator">
-        <h1>Api Key</h1>
-        <p>You can generate an api key for your account using the button below.</p>
+        <h1><%= lang.page.account.api_key[0] %></h1>
+        <p><%= lang.page.account.generate_key %></p>
 
         <form>
           <fieldset class="fieldset fieldset--margin fieldset--standalone">
             <div class="">
-              <label for="generated key">Your api key</label>
+              <label for="generated key"><%= lang.page.account.api_key[1] %></label>
               <input class="input" type="text" id="generated-key">
             </div>
           </fieldset>
