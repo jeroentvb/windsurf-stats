@@ -1,12 +1,14 @@
 <% include head %>
 
-<main class="center-content">
-  <h1>Error!</h1>
-  <p><%= error %></p>
-  <% if (page == 'Error 401') { %>
-    <p><a href="/login"><%= lang.account.login %></a></p>
-  <% } %>
-  <a href="#" onclick="event.preventDefault(); window.history.back();"><%= lang.error.go_back %></a>
+<main>
+  <section class="content">
+    <h1>Error!</h1>
+    <p><%= error %></p>
+    <% if (page == 'Error 401') { %>
+      <p><a href="/login"><%= lang.account.login %></a></p>
+    <% } %>
+    <a href="#" onclick="event.preventDefault(); window.history.back();"><%= lang.error.go_back %></a>
+  </section>
 </main>
 
 <% include tail %>

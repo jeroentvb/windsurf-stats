@@ -4,5 +4,6 @@
   "language": "en",
   "cookieMaxAge": 2592000000,
   "allowRegister": true,
-  "allowChangeEmail": false
+  "allowChangeEmail": false,
+  "enableApi": false
 }

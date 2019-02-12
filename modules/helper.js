@@ -8,33 +8,25 @@ function spliceToFirstDay (array) {
 
 // Get the date in dd-mm-yyyy format
 function getToday () {
-  var today = new Date()
-  var dd = today.getDate()
-  var mm = today.getMonth() + 1
-  var yyyy = today.getFullYear()
+  const today = new Date()
+  let dd = today.getDate()
+  let mm = today.getMonth() + 1
+  let yyyy = today.getFullYear()
 
-  if (dd < 10) {
-    dd = `0${dd}`
-  }
-  if (mm < 10) {
-    mm = `0${mm}`
-  }
+  if (dd < 10) dd = `0${dd}`
+  if (mm < 10) mm = `0${mm}`
 
   return `${dd}-${mm}-${yyyy}`
 }
 
 function getYesterday () {
-  var today = new Date()
-  var dd = today.getDate()
-  var mm = today.getMonth() + 1
-  var yyyy = today.getFullYear()
+  const today = new Date()
+  let dd = today.getDate()
+  let mm = today.getMonth() + 1
+  let yyyy = today.getFullYear()
 
-  if (dd < 10) {
-    dd = `0${dd}`
-  }
-  if (mm < 10) {
-    mm = `0${mm}`
-  }
+  if (dd < 10) dd = `0${dd}`
+  if (mm < 10) mm = `0${mm}`
 
   if (dd - 1 === 0) {
     return `${30}-${mm - 1}-${yyyy}`
@@ -48,7 +40,7 @@ function objToStr (obj) {
 }
 
 function exportObj (name, obj) {
-  var fs = require('fs')
+  const fs = require('fs')
   fs.writeFile(name + '-export.json', objToStr(obj), err => {
     if (err) throw err
     console.log(`${name}-export.json written`)
@@ -58,8 +50,8 @@ function exportObj (name, obj) {
 function cleanObj (obj) {
   for (let key in obj) {
     if (obj[key] === '' || obj[key] === null) {
-      console.log(obj[key])
-      console.log(typeof obj[key])
+      // console.log(obj[key])
+      // console.log(typeof obj[key])
       delete obj[key]
     }
   }
@@ -83,7 +75,7 @@ function localize (lang) {
 }
 
 function getWindDirection (deg, windDirections) {
-  let val = Math.floor((deg / 22.5) + 0.5)
+  const val = Math.floor((deg / 22.5) + 0.5)
   return windDirections[(val % 16)]
 }
 

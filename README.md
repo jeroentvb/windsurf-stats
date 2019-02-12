@@ -113,6 +113,10 @@ Default: `true`
 Allow users to change their e-mail adress associated with their account. This is disabled by default due to security concerns because there's no additional information required to change the e-mail adress. One only needs to be logged in.  
 Default: `false`
 
+### enableApi
+**Experimental feature.**  
+Enable or disable the API feature. Default is `false`, because there is no rate limit yet. Use with caution.
+
 ## Localization
 I've set up the application to use text from a localized (json) file so you can use the application in your own language. To use another language other than english or dutch you need to create a copy of the `en.json` file in the [localization](/localization) folder and rename it with your own language characters, for example `de` (for germany).
 Now you can replace the text with your own language. After you've done that you need to alter [this line](https://github.com/jeroentvb/windsurf-stats/blob/6fbddc1f5261745f8d7b49c140f061de8ed3bec0/index.js#L12), so it uses the letters you gave your json file. It should like something like the following:
@@ -126,3 +130,7 @@ Make sure your file has all the object keys that the english file has, otherwise
 ### Currently included languages
 * [English (en)](localization/en.json)
 * [Dutch (nl)](localization/nl.json)
+
+## API
+**Experimental feature**  
+Create an API key in your account settings. Copy the key and navigate to `urlOfTheApplication/api?key=yourApiKey`.

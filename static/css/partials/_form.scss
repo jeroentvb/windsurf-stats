@@ -21,6 +21,11 @@ fieldset {
   &--margin {
     margin-bottom: 32px;
   }
+
+  &--standalone {
+    border-bottom: 1px solid $grey-line;
+    border-top: 1px solid $grey-line;
+  }
 }
 
 input {
@@ -38,6 +43,11 @@ input {
     &:hover {
       background-color: $color-primary-dark;
       cursor: pointer;
+    }
+
+    &:disabled {
+      background-color: $grey-line;
+      cursor: not-allowed;
     }
   }
 
@@ -193,6 +203,10 @@ select:hover, option:hover, input[type=radio] {
 
   .fieldset {
     background-color: $background-color;
+
+    &--standalone {
+      border: none;
+    }
   }
 
   .field {

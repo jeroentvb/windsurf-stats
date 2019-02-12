@@ -55,7 +55,7 @@
               <li><a href="/statistics"><%= lang.menu.statistics %></a></li>
               <li><a href="/add-session"><%= lang.menu.add_session %></a></li>
               <li><a href="/preferences"><%= lang.menu.preferences %></a></li>
-              <% if (config.allowChangeEmail) { %>
+              <% if (config.allowChangeEmail || config.enableApi) { %>
                 <li><a href="/account"><%= lang.menu.account %></a></li>
               <% } %>
               <li><a href="/sign-out"><%= lang.menu.logout %></a></li>
