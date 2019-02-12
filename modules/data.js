@@ -134,21 +134,11 @@ function send (req, res) {
   } else {
     db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
       .then(result => {
-        let data = []
         result.forEach(session => {
-          data.push({
-            date: session.date,
-            spot: session.spot,
-            windspeed: session.windspeed,
-            windgust: session.windgust,
-            windDirection: session.windDirection,
-            sailSize: session.sailSize,
-            board: session.board,
-            rating: session.rating,
-            note: session.note
-          })
+          delete session.statisticId
+          delete session.userID
         })
-        return data
+        return result
       })
       .then(data => res.json(data))
       .catch(err => console.error(err))

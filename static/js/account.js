@@ -32,9 +32,6 @@ if (document.getElementById('api-key')) {
   var button = document.getElementById('api-key')
   var input = document.getElementById('generated-key')
   var userApiKey = document.getElementById('user-api-key')
-  var form = document.getElementById('api-key-generator')
-  //
-  // if (userApiKey.textContent) form.classList.add('hidden')
 
   button.addEventListener('click', function (e) {
     e.preventDefault()
