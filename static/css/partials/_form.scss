@@ -38,7 +38,7 @@ input {
     width: 100%;
     transition: .3s;
     box-shadow: none;
-
+    -webkit-appearance: none;
 
     &:hover {
       background-color: $color-primary-dark;
