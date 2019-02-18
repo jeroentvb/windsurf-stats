@@ -44,7 +44,15 @@
       </fieldset>
 
       <fieldset class="fieldset">
-        <div class="field field--first">
+        <div class="field field--first" id="hour-field">
+          <label for="hour">At which hour did you sail?</label>
+          <select id="hour" class="input" name="hour">
+            <% for (let i = 7; i < 21; i++) { %>
+              <option value="<%= i %>"><%= i %></option>
+            <% } %>
+          </select>
+        </div>
+        <div class="field field--second">
           <label for="spot"><%= lang.general.spot[0] %></label>
           <select id="spot" class="input" name="spot">
             <% prefs.spots.forEach((spot, i) => {
@@ -80,7 +88,7 @@
       </fieldset>
 
       <fieldset class="fieldset">
-        <div class="field field--second">
+        <div class="field">
           <label  for="windsurf-sail-size"><%= lang.general.sail_size[0] %></label>
           <select id="windsurf-sail-size" class="input" name="sailSize">
             <% for (let i = 0; i < prefs.sails.length; i++) {

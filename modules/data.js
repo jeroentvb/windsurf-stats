@@ -8,6 +8,7 @@ function submit (req, res) {
   let date = req.body.date
 
   let submittedData = {
+    index: req.body.hour - 7,
     spot: req.body.spotOther ? req.body.spotOther : req.body.spot,
     sail: req.body.sailSizeOther ? req.body.sailSizeOther : req.body.sailSize,
     board: req.body.windsurfBoardOther ? req.body.windsurfBoardOther : req.body.windsurfBoard,
@@ -23,8 +24,7 @@ function submit (req, res) {
       time: '',
       windspeed: Number,
       windgust: Number,
-      windDirection: '',
-      index: Number
+      windDirection: ''
     }
 
     scrape.windfinder(submittedData.spot)
@@ -38,20 +38,19 @@ function submit (req, res) {
       })
       .then(windfinder => {
         responses.spot = windfinder.spot
-        responses.windspeed = Math.max(...windfinder.windspeed)
-        responses.index = windfinder.windspeed.findIndex(() => responses.windspeed)
-        responses.time = windfinder.time[responses.index]
-        responses.windgust = windfinder.windgust[responses.index]
+        responses.windspeed = windfinder.windspeed[submittedData.index]
+        responses.time = windfinder.time[submittedData.index]
+        responses.windgust = windfinder.windgust[submittedData.index]
 
         windfinder.winddirection.forEach((direction, index) => {
           windfinder.winddirection[index] = helper.getWindDirection(direction, lang.wind_directions)
         })
-        responses.windDirection = windfinder.winddirection[responses.index]
+        responses.windDirection = windfinder.winddirection[submittedData.index]
 
         let allData = {
           ...submittedData,
           ...responses,
-          windfinderLink: `https://www.windfinder.com/forecast/${submittedData.spot}`
+          windfinderLink: `https://www.windfinder.com/weatherforecast/${submittedData.spot}`
         }
 
         return allData

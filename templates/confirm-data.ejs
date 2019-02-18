@@ -32,7 +32,9 @@
           <input id="wind-direction" class="input" type="text" name="windDirection" value="<%= data.windDirection %>" placeholder="<%= data.windDirection %> kts" maxlength="3" required>
         </div>
 
-        <p><%= lang.page.confirm_submission.windfinder_link %> <a href="<%= data.windfinderLink %>" target="_blank">windfinder.com</a></p>
+        <% if (data.windfinderLink) { %>
+          <p><%= lang.page.confirm_submission.windfinder_link %> <a href="<%= data.windfinderLink %>" target="_blank">windfinder.com</a></p>
+        <% } %>
       </fieldset>
 
       <fieldset class="fieldset fieldset--margin">
