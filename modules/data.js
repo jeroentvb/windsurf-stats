@@ -8,7 +8,7 @@ function submit (req, res) {
   let date = req.body.date
 
   let submittedData = {
-    index: req.body.hour - 7,
+    index: parseInt(req.body.hour),
     spot: req.body.spotOther ? req.body.spotOther : req.body.spot,
     sail: req.body.sailSizeOther ? req.body.sailSizeOther : req.body.sailSize,
     board: req.body.windsurfBoardOther ? req.body.windsurfBoardOther : req.body.windsurfBoard,
@@ -19,33 +19,22 @@ function submit (req, res) {
   if (date === 'today') {
     submittedData.date = helper.getToday()
 
-    let responses = {
-      spot: '',
-      time: '',
-      windspeed: Number,
-      windgust: Number,
-      windDirection: ''
-    }
+    let responses
 
     scrape.windfinder(submittedData.spot)
       .then(windfinder => {
-        helper.spliceToFirstDay(windfinder.windspeed)
-        helper.spliceToFirstDay(windfinder.time)
-        helper.spliceToFirstDay(windfinder.windgust)
-        helper.spliceToFirstDay(windfinder.winddirection)
-
-        return windfinder
-      })
-      .then(windfinder => {
-        responses.spot = windfinder.spot
-        responses.windspeed = windfinder.windspeed[submittedData.index]
-        responses.time = windfinder.time[submittedData.index]
-        responses.windgust = windfinder.windgust[submittedData.index]
-
-        windfinder.winddirection.forEach((direction, index) => {
-          windfinder.winddirection[index] = helper.getWindDirection(direction, lang.wind_directions)
+        windfinder.days[0].hours.forEach(hour => {
+          if (parseInt(hour.hour) === submittedData.index) {
+            responses = {
+              spot: windfinder.spot,
+              time: hour.hour,
+              windspeed: hour.windspeed,
+              windgust: hour.windspeed,
+              winddirection: helper.getWindDirection(hour.winddirection, lang.wind_directions),
+              temperature: hour.temperature
+            }
+          }
         })
-        responses.windDirection = windfinder.winddirection[submittedData.index]
 
         let allData = {
           ...submittedData,
@@ -111,7 +100,7 @@ function confirm (req, res, next) {
     spot: req.body.spot,
     windspeed: req.body.windspeed,
     windgust: req.body.windgust,
-    windDirection: req.body.windDirection,
+    windDirection: req.body.winddirection,
     sailSize: req.body.sail,
     board: req.body.board,
     rating: req.body.rating,
