@@ -1,0 +1,50 @@
+[
+    {
+        "userID": 21,
+        "date": "18-01-2019",
+        "spot": "Tarifa Centro",
+        "windspeed": 15,
+        "windgust": 25,
+        "windDirection": "S",
+        "sailSize": 4.2,
+        "board": "Fanatic Stubby TE 82",
+        "rating": 7.5,
+        "note": "Good wind. Fun session."
+    },
+    {
+        "userID": 21,
+        "date": "05-01-2019",
+        "spot": "Tarifa Centro",
+        "windspeed": 18,
+        "windgust": 28,
+        "windDirection": "SE",
+        "sailSize": 4.2,
+        "board": "Fanatic Stubby TE 82",
+        "rating": 8,
+        "note": "Nice wind. Great waves."
+    },
+    {
+        "userID": 21,
+        "date": "12-02-2019",
+        "spot": "Tarifa Centro",
+        "windspeed": 28,
+        "windgust": 40,
+        "windDirection": "SW",
+        "sailSize": 3.7,
+        "board": "Fanatic Stubby TE 82",
+        "rating": 8.5,
+        "note": "Insane wind!"
+    },
+    {
+        "userID": 21,
+        "date": "27-02-2019",
+        "spot": "Roses/Port Estrella",
+        "windspeed": 13,
+        "windgust": 20,
+        "windDirection": "S",
+        "sailSize": 6.4,
+        "board": "Fanatic Gecko 120",
+        "rating": 7,
+        "note": "Nice low wind session."
+    }
+]
