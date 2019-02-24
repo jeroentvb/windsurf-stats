@@ -45,6 +45,7 @@ function submit (req, res) {
         return allData
       })
       .then(allData => {
+        console.log(allData)
         res.render('confirm-data', {
           page: lang.page.confirm_submission.name,
           data: allData,
@@ -67,7 +68,7 @@ function submit (req, res) {
       date: req.body.dateInput,
       windspeed: req.body.windspeed,
       windgust: req.body.windgust,
-      windDirection: req.body.windDirection
+      winddirection: req.body.winddirection
     }
 
     let manualData = {
