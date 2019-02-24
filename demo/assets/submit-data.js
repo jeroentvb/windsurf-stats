@@ -1,5 +1,6 @@
 // Function for showing other options
 function hideShowOther (select, otherInput, wrap) {
+  if (select.value === 'other') wrap.classList.remove('hidden')
   select.addEventListener('change', function () {
     if (select.value === 'other') {
       wrap.classList.remove('hidden')
@@ -41,13 +42,16 @@ if (document.getElementById('submit-form') !== undefined) {
   var additionalStats = document.getElementById('additional-stats')
   var radioToday = document.getElementById('today')
   var radioOther = document.getElementById('other-day')
+  var hourField = document.getElementById('hour-field')
 
   radioOther.addEventListener('click', function () {
     additionalStats.classList.remove('hidden')
+    hourField.classList.add('hidden')
   })
 
   radioToday.addEventListener('click', function () {
     additionalStats.classList.add('hidden')
+    hourField.classList.remove('hidden')
   })
 
   // Choosing other spot

@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" type="text/css" href="./assets/style.css">
-  <link rel="shortcut icon" type="image/png" href="./assets/favicon.png">
+  <link rel="shortcut icon" type="image/png" href="./assets/favicon.png"/>
 
   <title>Preferences</title>
   </head>
@@ -13,7 +16,7 @@
 
       <header>
         <nav>
-          <h2>Preferences</h2>
+          <h2 class="page-heading">Preferences</h2>
           <img id="open-menu" src="./assets/menu-icon.svg" alt="Menu icon">
           <ul id="menu">
               <li><img id="close-menu" src="./assets/close-icon.svg" alt="Close menu icon"></li>
@@ -22,7 +25,7 @@
               <li><a href="./statistics.htm">Statistics</a></li>
               <li><a href="./add-session.htm">Add session</a></li>
               <li><a href="./preferences.htm">Preferences</a></li>
-              <li><a href="./account.htm">Account</a></li>
+
               <li><a href="../">Log out</a></li>
 
           </ul>
@@ -31,193 +34,193 @@
 
 
 
-<main id="preferences">
-  <h3>Only the first entry of every category is required</h3>
-  <form id="preferences-form" action="./statistics.htm">
-    <h4>Boards</h4>
-    <fieldset class="seperate" id="boards">
+<main>
+  <section class="content">
+    <h3>Only the first entry of every category is required</h3>
+    <form id="preferences-form" action="./statistics.htm">
+      <h4>Boards</h4>
+      <fieldset class="fieldset fieldset--margin" id="boards">
 
-          <div class="field first">
+            <div class="field field--first">
 
-          <label for="board0">Board 1</label>
+            <label for="board0">Board 1</label>
 
-            <input id="board0" type="text" name="board0" value="Fanatic Gecko 120">
+              <input id="board0" class="input" type="text" name="board0" value="Fanatic Gecko 120">
 
-        </div>
+          </div>
 
-          <div class="field second">
+            <div class="field field--second">
 
-          <label for="board1">Board 2</label>
+            <label for="board1">Board 2</label>
 
-            <input id="board1" type="text" name="board1" value="Fanatic Stubby TE 82">
+              <input id="board1" class="input" type="text" name="board1" value="Fanatic Stubby TE 82">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="board2">Board 3</label>
+            <label for="board2">Board 3</label>
 
-            <input id="board2" type="text" name="board2">
+              <input id="board2" class="input" type="text" name="board2">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="board3">Board 4</label>
+            <label for="board3">Board 4</label>
 
-            <input id="board3" type="text" name="board3">
+              <input id="board3" class="input" type="text" name="board3">
 
-        </div>
+          </div>
 
-          <div class="field last">
+            <div class="field field--last">
 
-          <label for="board4">Board 5</label>
+            <label for="board4">Board 5</label>
 
-            <input id="board4" type="text" name="board4">
+              <input id="board4" class="input" type="text" name="board4">
 
-        </div>
+          </div>
 
-    </fieldset>
+      </fieldset>
 
-    <h4>Sail sizes</h4>
-    <fieldset class="seperate">
+      <h4>Sail sizes</h4>
+      <fieldset class="fieldset fieldset--margin">
 
-          <div class="field first">
+            <div class="field field--first">
 
-          <label for="sail0">Sail size 1</label>
+            <label for="sail0">Sail size 1</label>
 
-            <input id="sail0" type="number" name="sail0" step="0.1" value="3.7" max="20">
+              <input id="sail0" class="input" type="number" name="sail0" step="0.1" value="3.7" max="20">
 
-        </div>
+          </div>
 
-          <div class="field second">
+            <div class="field field--second">
 
-          <label for="sail1">Sail size 2</label>
+            <label for="sail1">Sail size 2</label>
 
-            <input id="sail1" type="number" name="sail1" step="0.1" value="4.2" max="20">
+              <input id="sail1" class="input" type="number" name="sail1" step="0.1" value="4.2" max="20">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="sail2">Sail size 3</label>
+            <label for="sail2">Sail size 3</label>
 
-            <input id="sail2" type="number" name="sail2" step="0.1" value="4.7" max="20">
+              <input id="sail2" class="input" type="number" name="sail2" step="0.1" value="4.7" max="20">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="sail3">Sail size 4</label>
+            <label for="sail3">Sail size 4</label>
 
-            <input id="sail3" type="number" name="sail3" step="0.1" value="5.3" max="20">
+              <input id="sail3" class="input" type="number" name="sail3" step="0.1" value="5.3" max="20">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="sail4">Sail size 5</label>
+            <label for="sail4">Sail size 5</label>
 
-            <input id="sail4" type="number" name="sail4" step="0.1" max="20">
+              <input id="sail4" class="input" type="number" name="sail4" step="0.1" max="20">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="sail5">Sail size 6</label>
+            <label for="sail5">Sail size 6</label>
 
-            <input id="sail5" type="number" name="sail5" step="0.1" max="20">
+              <input id="sail5" class="input" type="number" name="sail5" step="0.1" max="20">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="sail6">Sail size 7</label>
+            <label for="sail6">Sail size 7</label>
 
-            <input id="sail6" type="number" name="sail6" step="0.1" max="20">
+              <input id="sail6" class="input" type="number" name="sail6" step="0.1" max="20">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="sail7">Sail size 8</label>
+            <label for="sail7">Sail size 8</label>
 
-            <input id="sail7" type="number" name="sail7" step="0.1" max="20">
+              <input id="sail7" class="input" type="number" name="sail7" step="0.1" max="20">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="sail8">Sail size 9</label>
+            <label for="sail8">Sail size 9</label>
 
-            <input id="sail8" type="number" name="sail8" step="0.1" max="20">
+              <input id="sail8" class="input" type="number" name="sail8" step="0.1" max="20">
 
-        </div>
+          </div>
 
-          <div class="field last">
+            <div class="field field--last">
 
-          <label for="sail9">Sail size 10</label>
+            <label for="sail9">Sail size 10</label>
 
-            <input id="sail9" type="number" name="sail9" step="0.1" max="20">
+              <input id="sail9" class="input" type="number" name="sail9" step="0.1" max="20">
 
-        </div>
+          </div>
 
-    </fieldset>
+      </fieldset>
 
-    <h4>Spots</h4>
-    <p>This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay.</p>
-    <fieldset class="seperate">
+      <h4>Spots</h4>
+      <p>This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay.</p>
+      <fieldset class="fieldset fieldset--margin">
 
-          <div class="field first">
+            <div class="field field--first">
 
-          <label for="spot0">Spot 1</label>
+            <label for="spot0">Spot 1</label>
 
-            <input id="spot0" type="text" name="spot0" value="tarifa">
+              <input id="spot0" class="input" type="text" name="spot0" value="tarifa">
 
-        </div>
+          </div>
 
-          <div class="field second">
+            <div class="field field--second">
 
-          <label for="spot1">Spot 2</label>
+            <label for="spot1">Spot 2</label>
 
-            <input id="spot1" type="text" name="spot1" value="roses">
+              <input id="spot1" class="input" type="text" name="spot1" value="roses">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="spot2">Spot 3</label>
+            <label for="spot2">Spot 3</label>
 
-            <input id="spot2" type="text" name="spot2">
+              <input id="spot2" class="input" type="text" name="spot2">
 
-        </div>
+          </div>
 
-          <div class="field">
+            <div class="field">
 
-          <label for="spot3">Spot 4</label>
+            <label for="spot3">Spot 4</label>
 
-            <input id="spot3" type="text" name="spot3">
+              <input id="spot3" class="input" type="text" name="spot3">
 
-        </div>
+          </div>
 
-          <div class="field last">
+            <div class="field field--last">
 
-          <label for="spot4">Spot 5</label>
+            <label for="spot4">Spot 5</label>
 
-            <input id="spot4" type="text" name="spot4">
+              <input id="spot4" class="input" type="text" name="spot4">
 
-        </div>
+          </div>
 
-    </fieldset>
+      </fieldset>
 
-    <fieldset class="seperate not-white">
-      <input type="submit" name="submit" id="submit">
-    </fieldset>
-  </form>
+      <fieldset class="fieldset--margin">
+        <input type="submit" name="submit" id="submit">
+      </fieldset>
+    </form>
+  </section>
 </main>
 
   <script src="./assets/script.js"></script>
-
-
-
-</body></html>
+</body>
+</html>
