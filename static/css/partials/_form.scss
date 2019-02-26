@@ -171,6 +171,10 @@ select:hover, option:hover, input[type=radio] {
   }
 }
 
+.error {
+  border: 1px solid red;
+}
+
 @media (min-width: 800px) {
   fieldset {
     background-color: inherit;
@@ -214,8 +218,4 @@ select:hover, option:hover, input[type=radio] {
       background-color: inherit;
       margin-bottom: 8px
   }
-
-  // #confirm-radio {
-  //   margin-bottom: 32px !important;
-  // }
 }

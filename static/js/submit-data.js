@@ -77,7 +77,6 @@ if (document.getElementById('submit-form') !== undefined) {
 
   // Check form before submitting
   var ratingInput = document.getElementById('rating')
-  var noteInput = document.getElementById('note')
   var submitForm = document.getElementById('submit-form')
 
   var dropdowns = [
@@ -97,7 +96,6 @@ if (document.getElementById('submit-form') !== undefined) {
 
   submitForm.addEventListener('click', function (e) {
     checkInputError(ratingInput, e)
-    checkInputError(noteInput, e)
     checkOtherInputError(otherSpot, otherSpotWrap, e)
     checkOtherInputError(otherSailSize, otherSailSizeWrap, e)
     checkOtherInputError(otherWindsurfBoard, otherWindsurfBoardWrap, e)

@@ -16,7 +16,7 @@ table {
 @media (min-width: 800px) {
   main {
     display: grid;
-    grid-template-columns: 1fr 50% 1fr;
+    grid-template-columns: 1fr 60% 1fr;
     grid-column-gap: 32px;
   }
 
@@ -27,6 +27,6 @@ table {
 
 @media (min-width: 1200px) {
   main {
-    grid-template-columns: 1fr 50% 1fr;
+    // grid-template-columns: 1fr 50% 1fr;
   }
 }
