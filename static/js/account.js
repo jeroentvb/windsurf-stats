@@ -33,11 +33,14 @@
   }
 
   form.password.show.addEventListener('click', function () {
-    form.password.form.classList.remove('hidden')
+    if (form.password.form.classList.contains('hidden')) {
+      form.password.form.classList.remove('hidden')
+    } else {
+      form.password.form.classList.add('hidden')
+    }
   })
 
   form.password.submit.addEventListener('click', function (e) {
-    console.log('test')
     if (form.password.new.value !== form.password.confirm.value) {
       e.preventDefault()
       window.alert('Confirmed password does not match.')
@@ -46,7 +49,11 @@
 
   if (document.getElementById('update-email')) {
     form.email.show.addEventListener('click', function () {
-      form.email.form.classList.remove('hidden')
+      if (form.email.form.classList.contains('hidden')) {
+        form.email.form.classList.remove('hidden')
+      } else {
+        form.email.form.classList.add('hidden')
+      }
     })
   }
 

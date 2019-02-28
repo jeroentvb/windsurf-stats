@@ -22,6 +22,10 @@
 
     <button type="button" name="button" id="change-password" class="button"><%= lang.page.account.change_password %></button>
 
+    <% if (config.allowChangeEmail) { %>
+      <button type="button" name="button" id="change-email" class="button"><%= lang.page.account.change_email[0] %></button>
+    <% } %>
+
     <form action="/change-password" method="post" id="change-password-form" class="hidden">
       <h4><%= lang.page.account.change_password %></h4>
       <fieldset class="fieldset fieldset--margin">
@@ -47,8 +51,6 @@
     </form>
 
     <% if (config.allowChangeEmail) { %>
-      <button type="button" name="button" id="change-email" class="button"><%= lang.page.account.change_email[0] %></button>
-
       <form action="/update-email" method="post" id="update-email" class="hidden">
         <h4><%= lang.page.account.change_email[1] %></h4>
         <fieldset class="fieldset fieldset--margin">
