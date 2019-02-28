@@ -80,8 +80,6 @@ function preferences (req, res, next) {
 function getAccountDetails (req, res, next) {
   if (!req.session.user) {
     res.redirect('/login')
-  } else if (config.allowChangeEmail === false && config.enableApi === false) {
-    res.redirect('/')
   } else {
     db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
       .then(result => {
@@ -129,6 +127,51 @@ function updateEmail (req, res, next) {
               res.redirect('/account')
             })
             .catch(err => console.error(err))
+        } else {
+          res.status(401).render('error', {
+            page: 'Error',
+            error: lang.error._401_passwd,
+            lang: lang
+          })
+        }
+      }
+    })
+    .catch(err => console.error(err))
+}
+
+function changePassword (req, res, next) {
+  let oldPassword = req.body.oldPassword
+  let newPassword = req.body.newPassword
+
+  if (!oldPassword || !newPassword) {
+    res.status(400).send('Password is missing!')
+  }
+
+  db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+    .then(data => {
+      let user = data && data[0]
+      if (user) {
+        return bcrypt.compare(oldPassword, user.password).then(onverify, next)
+      } else {
+        res.status(401).render('error', {
+          page: 'Error',
+          error: lang.error._401_email,
+          lang: lang
+        })
+      }
+
+      function onverify (match) {
+        if (match) {
+          // hash password and store in DB
+          hashPassword(newPassword)
+            .then(hash => {
+              db.query(`UPDATE windsurfStatistics.users SET password = ? WHERE id = ?`, [
+                hash,
+                req.session.user.id
+              ])
+                .then(() => res.redirect('/sign-out'))
+                .catch(err => console.error(err))
+            })
         } else {
           res.status(401).render('error', {
             page: 'Error',
@@ -254,6 +297,7 @@ module.exports = {
   preferences,
   getAccountDetails,
   updateEmail,
+  changePassword,
   register,
   login,
   logout
