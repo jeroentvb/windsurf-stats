@@ -17,7 +17,7 @@
     })
   }
 
-  var form = {
+  const form = {
     password: {
       form: document.getElementById('change-password-form'),
       show: document.getElementById('change-password'),
@@ -32,7 +32,7 @@
     }
   }
 
-  form.password.show.addEventListener('click', function () {
+  form.password.show.addEventListener('click', () => {
     if (form.password.form.classList.contains('hidden')) {
       form.password.form.classList.remove('hidden')
     } else {
@@ -40,7 +40,7 @@
     }
   })
 
-  form.password.submit.addEventListener('click', function (e) {
+  form.password.submit.addEventListener('click', e => {
     if (form.password.new.value !== form.password.confirm.value) {
       e.preventDefault()
       window.alert('Confirmed password does not match.')
@@ -48,7 +48,7 @@
   })
 
   if (document.getElementById('update-email')) {
-    form.email.show.addEventListener('click', function () {
+    form.email.show.addEventListener('click', () => {
       if (form.email.form.classList.contains('hidden')) {
         form.email.form.classList.remove('hidden')
       } else {
@@ -58,11 +58,11 @@
   }
 
   if (document.getElementById('api-key')) {
-    var button = document.getElementById('api-key')
-    var input = document.getElementById('generated-key')
-    var userApiKey = document.getElementById('user-api-key')
+    const button = document.getElementById('api-key')
+    const input = document.getElementById('generated-key')
+    const userApiKey = document.getElementById('user-api-key')
 
-    button.addEventListener('click', function (e) {
+    button.addEventListener('click', e => {
       e.preventDefault()
       request('/api-key')
         .then(res => res)

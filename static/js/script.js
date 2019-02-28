@@ -1,18 +1,20 @@
+'use strict'
+
 // Code for links inside a apple-mobile content enabled app
-// var a = document.getElementsByTagName('a')
-// for (var i = 0; i < a.length; i++) {
+// const a = document.getElementsByTagName('a')
+// for (const i = 0; i < a.length; i++) {
 //   a[i].onclick = function () {
 //     window.location = this.getAttribute('href')
 //     return false
 //   }
 // }
 
-var openMenu = document.getElementById('open-menu')
-var closeMenu = document.getElementById('close-menu')
-var menu = document.getElementById('menu')
+const openMenu = document.getElementById('open-menu')
+const closeMenu = document.getElementById('close-menu')
+const menu = document.getElementById('menu')
 
 function toggleMenu (remove, add) {
-  return function () {
+  return () => {
     menu.classList.remove(remove)
     menu.classList.add(add)
   }
