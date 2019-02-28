@@ -42,6 +42,9 @@
       "title": "Accountdetails",
       "email_addr": "E-mail adres",
       "change_email": ["Verander e-mail", "Verander e-mail adres"],
+      "change_password": "Verander wachtwoord",
+      "old_password": "Oud wachtwoord",
+      "new_password": "Nieuw wachtwoord",
       "new_email": "Nieuw e-mail adres",
       "api_key": ["Api sleutel", "Jouw api sleutel"],
       "generate_key": "Met de knop hieronder genereen je een api sleutel voor je account."
