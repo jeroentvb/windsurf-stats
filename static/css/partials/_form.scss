@@ -172,7 +172,7 @@ select:hover, option:hover, input[type=radio] {
 }
 
 .error {
-  border: 1px solid red;
+  border: 1px solid red !important;
 }
 
 @media (min-width: 800px) {
