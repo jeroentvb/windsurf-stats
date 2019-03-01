@@ -48,110 +48,137 @@ function page (req, res) {
   }
 }
 
-function addSession (req, res, next) {
-  db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
-    .then(result => {
-      let prefs = result[0]
-      let formattedPrefs = {
-        boards: [
-          prefs.board0,
-          prefs.board1,
-          prefs.board2,
-          prefs.board3,
-          prefs.board4
-        ],
-        sails: [
-          prefs.sail0,
-          prefs.sail1,
-          prefs.sail2,
-          prefs.sail3,
-          prefs.sail4,
-          prefs.sail5,
-          prefs.sail6,
-          prefs.sail7,
-          prefs.sail8,
-          prefs.sail9
-        ],
-        spots: [
-          prefs.spot0,
-          prefs.spot1,
-          prefs.spot2,
-          prefs.spot3,
-          prefs.spot4
-        ],
-        date: helper.getYesterday()
-      }
+async function addSession (req, res) {
+  try {
+    const result = await db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
+    const preferences = result[0]
+    const formattedPrefs = {
+      boards: [
+        preferences.board0,
+        preferences.board1,
+        preferences.board2,
+        preferences.board3,
+        preferences.board4
+      ],
+      sails: [
+        preferences.sail0,
+        preferences.sail1,
+        preferences.sail2,
+        preferences.sail3,
+        preferences.sail4,
+        preferences.sail5,
+        preferences.sail6,
+        preferences.sail7,
+        preferences.sail8,
+        preferences.sail9
+      ],
+      spots: [
+        preferences.spot0,
+        preferences.spot1,
+        preferences.spot2,
+        preferences.spot3,
+        preferences.spot4
+      ],
+      date: helper.getYesterday()
+    }
 
-      res.render('add-session', {
-        page: lang.page.add_session.name,
-        loginStatus: req.session.user,
-        prefs: formattedPrefs,
-        lang: lang,
-        config: config
-      })
+    res.render('add-session', {
+      page: lang.page.add_session.name,
+      loginStatus: req.session.user,
+      prefs: formattedPrefs,
+      lang: lang,
+      config: config
     })
-    .catch(err => console.error(err))
-}
-
-function allStatistics (req, res, next) {
-  if (!req.session.user) {
-    res.redirect('/login')
-  } else {
-    db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
-      .then(result => {
-        res.render('statistics-table', {
-          page: lang.page.statistics.name,
-          loginStatus: req.session.user,
-          statistics: result,
-          lang: lang,
-          config: config
-        })
-      })
-      .catch(err => console.error(err))
+  } catch (err) {
+    console.error(err)
   }
 }
 
-function preferences (req, res, next) {
-  db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
-    .then(result => {
-      let prefs = result[0]
-      let formattedPrefs = {
-        boards: [
-          prefs.board0,
-          prefs.board1,
-          prefs.board2,
-          prefs.board3,
-          prefs.board4
-        ],
-        sails: [
-          prefs.sail0,
-          prefs.sail1,
-          prefs.sail2,
-          prefs.sail3,
-          prefs.sail4,
-          prefs.sail5,
-          prefs.sail6,
-          prefs.sail7,
-          prefs.sail8,
-          prefs.sail9
-        ],
-        spots: [
-          prefs.spot0,
-          prefs.spot1,
-          prefs.spot2,
-          prefs.spot3,
-          prefs.spot4
-        ]
-      }
-      res.render('preferences', {
-        page: lang.page.preferences.name,
-        loginStatus: req.session.user,
-        prefs: formattedPrefs,
-        lang: lang,
-        config: config
-      })
+async function allStatistics (req, res, next) {
+  if (!req.session.user) {
+    res.redirect('/login')
+    return
+  }
+
+  try {
+    const sessions = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+
+    res.render('statistics-table', {
+      page: lang.page.statistics.name,
+      loginStatus: req.session.user,
+      statistics: sessions,
+      lang: lang,
+      config: config
     })
-    .catch(err => console.error(err))
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+async function preferences (req, res, next) {
+  try {
+    const result = await db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
+    const preferences = result[0]
+    let formattedPrefs = {
+      boards: [
+        preferences.board0,
+        preferences.board1,
+        preferences.board2,
+        preferences.board3,
+        preferences.board4
+      ],
+      sails: [
+        preferences.sail0,
+        preferences.sail1,
+        preferences.sail2,
+        preferences.sail3,
+        preferences.sail4,
+        preferences.sail5,
+        preferences.sail6,
+        preferences.sail7,
+        preferences.sail8,
+        preferences.sail9
+      ],
+      spots: [
+        preferences.spot0,
+        preferences.spot1,
+        preferences.spot2,
+        preferences.spot3,
+        preferences.spot4
+      ]
+    }
+
+    res.render('preferences', {
+      page: lang.page.preferences.name,
+      loginStatus: req.session.user,
+      prefs: formattedPrefs,
+      lang: lang,
+      config: config
+    })
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+async function account (req, res) {
+  if (!req.session.user) {
+    res.redirect('/login')
+    return
+  }
+
+  try {
+    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+
+    res.render('account', {
+      page: lang.page.account.name,
+      loginStatus: req.session.user,
+      userData: userData[0],
+      lang: lang,
+      config: config
+    })
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 function notFound (req, res) {
@@ -167,5 +194,6 @@ module.exports = {
   addSession,
   allStatistics,
   preferences,
+  account,
   notFound
 }

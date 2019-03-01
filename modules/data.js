@@ -4,7 +4,7 @@ const config = require('../app-config.json')
 const lang = helper.localize(config.language)
 const scrape = require('wind-scrape')
 
-function submit (req, res) {
+async function submit (req, res) {
   let date = req.body.date
 
   let submittedData = {
@@ -21,48 +21,44 @@ function submit (req, res) {
 
     let responses
 
-    scrape.windfinder(submittedData.spot)
-      .then(windfinder => {
-        windfinder.days[0].hours.forEach(hour => {
-          if (parseInt(hour.hour) === submittedData.index) {
-            responses = {
-              spot: windfinder.spot,
-              time: hour.hour,
-              windspeed: hour.windspeed,
-              windgust: hour.windspeed,
-              winddirection: helper.getWindDirection(hour.winddirection, lang.wind_directions),
-              temperature: hour.temperature
-            }
+    try {
+      const windfinder = await scrape.windfinder(submittedData.spot)
+
+      windfinder.days[0].hours.forEach(hour => {
+        if (parseInt(hour.hour) === submittedData.index) {
+          responses = {
+            spot: windfinder.spot,
+            time: hour.hour,
+            windspeed: hour.windspeed,
+            windgust: hour.windspeed,
+            winddirection: helper.getWindDirection(hour.winddirection, lang.wind_directions),
+            temperature: hour.temperature
           }
-        })
-
-        let allData = {
-          ...submittedData,
-          ...responses,
-          windfinderLink: `https://www.windfinder.com/weatherforecast/${submittedData.spot}`
         }
+      })
 
-        return allData
+      const allData = {
+        ...submittedData,
+        ...responses,
+        windfinderLink: `https://www.windfinder.com/weatherforecast/${submittedData.spot}`
+      }
+
+      res.render('confirm-data', {
+        page: lang.page.confirm_submission.name,
+        data: allData,
+        loginStatus: req.session.user,
+        lang: lang,
+        config: config
       })
-      .then(allData => {
-        console.log(allData)
-        res.render('confirm-data', {
-          page: lang.page.confirm_submission.name,
-          data: allData,
-          loginStatus: req.session.user,
-          lang: lang,
-          config: config
-        })
+    } catch (err) {
+      res.render('error', {
+        page: 'error',
+        error: err,
+        lang: lang,
+        config: config
       })
-      .catch(err => {
-        res.render('error', {
-          page: 'error',
-          error: err,
-          lang: lang,
-          config: config
-        })
-        console.error(err)
-      })
+      console.error(err)
+    }
   } else {
     let additionalData = {
       date: req.body.dateInput,
@@ -76,19 +72,20 @@ function submit (req, res) {
       ...additionalData
     }
 
-    scrape.windfinder(submittedData.spot)
-      .then(res => {
-        manualData.spot = res.spot
-        return manualData
-      })
-      .then(manualData => res.render('confirm-data', {
+    try {
+      const windfinder = await scrape.windfinder(submittedData.spot)
+      manualData.spot = windfinder.spot
+
+      res.render('confirm-data', {
         page: lang.page.confirm_submission.name,
         data: manualData,
         loginStatus: req.session.user,
         lang: lang,
         config: config
-      }))
-      .catch(err => console.error(err))
+      })
+    } catch (err) {
+      console.error(err)
+    }
   }
 }
 
@@ -117,20 +114,23 @@ function confirm (req, res, next) {
   }
 }
 
-function send (req, res) {
+async function send (req, res) {
   if (!req.session.user) {
     res.redirect('/login')
-  } else {
-    db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
-      .then(result => {
-        result.forEach(session => {
-          delete session.statisticId
-          delete session.userId
-        })
-        return result
-      })
-      .then(data => res.json(data))
-      .catch(err => console.error(err))
+    return
+  }
+
+  try {
+    const sessions = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+
+    sessions.forEach(session => {
+      delete session.statisticId
+      delete session.userId
+    })
+
+    res.json(sessions)
+  } catch (err) {
+    console.error(err)
   }
 }
 

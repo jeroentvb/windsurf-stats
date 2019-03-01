@@ -2,7 +2,7 @@ const db = require('./db')
 const uuidv4 = require('uuid/v4')
 const config = require('../app-config.json')
 
-function get (req, res) {
+async function get (req, res) {
   if (!config.enableApi) {
     res.status(403).json({ error: 'Forbidden' })
     return
@@ -16,27 +16,26 @@ function get (req, res) {
     return
   }
 
-  db.query('SELECT id FROM windsurfStatistics.users WHERE apiKey = ?', key)
-    .then(result => {
-      if (result.length < 1) {
-        res.status(401).json({ error: 'Invalid key' })
-        return
-      }
+  try {
+    const userData = await db.query('SELECT id FROM windsurfStatistics.users WHERE apiKey = ?', key)
 
-      const id = result[0].id
+    if (userData.length < 1) {
+      res.status(401).json({ error: 'Invalid key' })
+      return
+    }
 
-      db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', id)
-        .then(result => {
-          result.forEach(session => {
-            delete session.statisticId
-            delete session.userId
-          })
-          return result
-        })
-        .then(data => res.json(data))
-        .catch(err => console.error(err))
+    const userId = userData[0].id
+    const sessions = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', userId)
+
+    sessions.forEach(session => {
+      delete session.statisticId
+      delete session.userId
     })
-    .catch(err => console.error(err))
+
+    res.json(sessions)
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 function key (req, res) {
