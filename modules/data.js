@@ -1,11 +1,12 @@
 const db = require('./db')
+const render = require('./render')
 const helper = require('./helper')
 const config = require('../app-config.json')
 const lang = helper.localize(config.language)
 const scrape = require('wind-scrape')
 
 async function submit (req, res) {
-  let date = req.body.date
+  const date = req.body.date
 
   let submittedData = {
     index: parseInt(req.body.hour),
@@ -51,16 +52,11 @@ async function submit (req, res) {
         config: config
       })
     } catch (err) {
-      res.render('error', {
-        page: 'error',
-        error: err,
-        lang: lang,
-        config: config
-      })
       console.error(err)
+      render.unexpectedError(res)
     }
   } else {
-    let additionalData = {
+    const additionalData = {
       date: req.body.dateInput,
       windspeed: req.body.windspeed,
       windgust: req.body.windgust,
@@ -85,14 +81,15 @@ async function submit (req, res) {
       })
     } catch (err) {
       console.error(err)
+      render.unexpectedError(res)
     }
   }
 }
 
-function confirm (req, res, next) {
-  let checkCorrect = req.body.confirmData
+async function confirm (req, res) {
+  const checkCorrect = req.body.confirmData
 
-  let submittedData = {
+  const submittedData = {
     userId: req.session.user.id,
     date: req.body.date,
     spot: req.body.spot,
@@ -108,9 +105,13 @@ function confirm (req, res, next) {
   if (checkCorrect === 'incorrect') {
     res.redirect('/')
   } else {
-    db.query('INSERT INTO windsurfStatistics.statistics SET ?', submittedData)
-      .then(res.redirect('statistics'))
-      .catch(err => console.log(err))
+    try {
+      await db.query('INSERT INTO windsurfStatistics.statistics SET ?', submittedData)
+      res.redirect('statistics')
+    } catch (err) {
+      console.error(err)
+      render.unexpectedError(res)
+    }
   }
 }
 
@@ -131,6 +132,7 @@ async function send (req, res) {
     res.json(sessions)
   } catch (err) {
     console.error(err)
+    render.unexpectedError(res)
   }
 }
 

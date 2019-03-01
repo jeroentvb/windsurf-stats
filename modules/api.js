@@ -35,10 +35,12 @@ async function get (req, res) {
     res.json(sessions)
   } catch (err) {
     console.error(err)
+
+    res.json({ error: 'An error occurred..' })
   }
 }
 
-function key (req, res) {
+async function key (req, res) {
   if (!config.enableApi) {
     res.redirect('/')
     return
@@ -46,12 +48,17 @@ function key (req, res) {
   const user = req.session.user
   const uuid = uuidv4()
 
-  db.query('UPDATE windsurfStatistics.users SET apiKey = ? WHERE id = ?', [
-    uuid,
-    user.id
-  ])
-    .then(result => res.json(uuid))
-    .catch(err => console.error(err))
+  try {
+    await db.query('UPDATE windsurfStatistics.users SET apiKey = ? WHERE id = ?', [
+      uuid,
+      user.id
+    ])
+    res.json(uuid)
+  } catch (err) {
+    console.error(err)
+
+    res.json({ error: 'An error occurred..' })
+  }
 }
 
 module.exports = {

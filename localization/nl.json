@@ -76,7 +76,8 @@
     "go_back": "Ga terug",
     "_401_passwd": "Verkeerd wachtwoord..",
     "_401_email": "E-mail adres bestaat niet..",
-    "_404": "De pagina is niet gevonden.."
+    "_404": "De pagina is niet gevonden..",
+    "_500": "Er is een error opgetreden. Dit is niet jou fout."
   },
   "wind_directions": [
     "N",

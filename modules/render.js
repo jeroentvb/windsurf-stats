@@ -1,4 +1,5 @@
 const db = require('./db')
+const render = require('./render')
 const helper = require('./helper')
 const config = require('../app-config.json')
 const lang = helper.localize(config.language)
@@ -91,6 +92,7 @@ async function addSession (req, res) {
     })
   } catch (err) {
     console.error(err)
+    render.unexpectedError(res)
   }
 }
 
@@ -112,6 +114,7 @@ async function allStatistics (req, res, next) {
     })
   } catch (err) {
     console.error(err)
+    render.unexpectedError(res)
   }
 }
 
@@ -157,6 +160,7 @@ async function preferences (req, res, next) {
     })
   } catch (err) {
     console.error(err)
+    render.unexpectedError(res)
   }
 }
 
@@ -177,8 +181,17 @@ async function account (req, res) {
       config: config
     })
   } catch (err) {
+    render.unexpectedError(res)
     console.error(err)
   }
+}
+
+function unexpectedError (res) {
+  res.status(500).render('error', {
+    page: 'Error 500',
+    error: lang.error._505,
+    lang: lang
+  })
 }
 
 function notFound (req, res) {
@@ -195,5 +208,6 @@ module.exports = {
   allStatistics,
   preferences,
   account,
+  unexpectedError,
   notFound
 }

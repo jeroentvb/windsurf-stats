@@ -76,7 +76,8 @@
     "go_back": "Go back",
     "_401_passwd": "Wrong password..",
     "_401_email": "The e-mail adress does not exist..",
-    "_404": "The page could not be found.."
+    "_404": "The page could not be found..",
+    "_500": "An unexpected error occured. This isn't your fault."
   },
   "wind_directions": [
     "N",
