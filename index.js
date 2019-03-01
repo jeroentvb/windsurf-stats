@@ -36,25 +36,35 @@ module.exports = express()
       maxAge: config.cookieMaxAge
     }
   }))
+
   .get('/', render.page)
   .get('/statistics', render.page)
   .get('/all-stats', render.allStatistics)
   .get('/data', data.send)
+
   .get('/add-session', render.addSession)
-  .get('/register', render.page)
+  .post('/submit-data', data.submit)
+
+  .post('/confirm-submit', data.confirm)
+
   .get('/preferences', render.preferences)
   .post('/set-prefs', user.preferences)
   .post('/update-prefs', user.preferences)
+
   .get('/account', render.account)
+  .get('/api-key', api.key)
   .post('/update-email', user.updateEmail)
   .post('/change-password', user.changePassword)
-  .get('/login', render.page)
-  .post('/sign-up', user.register)
-  .post('/sign-in', user.login)
-  .get('/sign-out', user.logout)
-  .post('/submit-data', data.submit)
-  .post('/confirm-submit', data.confirm)
+
   .get('/api', api.get)
-  .get('/api-key', api.key)
+
+  .get('/register', render.page)
+  .post('/sign-up', user.register)
+
+  .get('/login', render.page)
+  .post('/sign-in', user.login)
+
+  .get('/sign-out', user.logout)
+
   .use(render.notFound)
   .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))
