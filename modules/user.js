@@ -13,7 +13,7 @@ function hashPassword (password) {
   })
 }
 
-function preferences (req, res, next) {
+async function preferences (req, res, next) {
   let prefsQuery
   if (req.originalUrl === '/set-prefs') {
     prefsQuery = 'INSERT INTO windsurfStatistics.preferences SET ?'
@@ -50,141 +50,146 @@ function preferences (req, res, next) {
     ]
   }
 
-  db.query(prefsQuery, {
-    userId: req.session.user.id,
-    board0: prefData.boards[0],
-    board1: prefData.boards[1],
-    board2: prefData.boards[2],
-    board3: prefData.boards[3],
-    board4: prefData.boards[4],
-    sail0: prefData.sails[0],
-    sail1: prefData.sails[1],
-    sail2: prefData.sails[2],
-    sail3: prefData.sails[3],
-    sail4: prefData.sails[4],
-    sail5: prefData.sails[5],
-    sail6: prefData.sails[6],
-    sail7: prefData.sails[7],
-    sail8: prefData.sails[8],
-    sail9: prefData.sails[9],
-    spot0: prefData.spots[0],
-    spot1: prefData.spots[1],
-    spot2: prefData.spots[2],
-    spot3: prefData.spots[3],
-    spot4: prefData.spots[4]
-  })
-    .then(result => res.redirect('/statistics'))
-    .catch(err => console.error(err))
-}
-
-function getAccountDetails (req, res, next) {
-  if (!req.session.user) {
-    res.redirect('/login')
-  } else {
-    db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
-      .then(result => {
-        res.render('account', {
-          page: lang.page.account.name,
-          loginStatus: req.session.user,
-          userData: result[0],
-          lang: lang,
-          config: config
-        })
-      })
-      .catch(err => console.error(err))
+  try {
+    await db.query(prefsQuery, {
+      userId: req.session.user.id,
+      board0: prefData.boards[0],
+      board1: prefData.boards[1],
+      board2: prefData.boards[2],
+      board3: prefData.boards[3],
+      board4: prefData.boards[4],
+      sail0: prefData.sails[0],
+      sail1: prefData.sails[1],
+      sail2: prefData.sails[2],
+      sail3: prefData.sails[3],
+      sail4: prefData.sails[4],
+      sail5: prefData.sails[5],
+      sail6: prefData.sails[6],
+      sail7: prefData.sails[7],
+      sail8: prefData.sails[8],
+      sail9: prefData.sails[9],
+      spot0: prefData.spots[0],
+      spot1: prefData.spots[1],
+      spot2: prefData.spots[2],
+      spot3: prefData.spots[3],
+      spot4: prefData.spots[4]
+    })
+    res.redirect('/statistics')
+  } catch (err) {
+    console.error(err)
   }
 }
 
-function updateEmail (req, res, next) {
-  let email = req.body.email
-  let password = req.body.password
+async function accountDetails (req, res) {
+  if (!req.session.user) {
+    res.redirect('/login')
+    return
+  }
+
+  try {
+    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+
+    res.render('account', {
+      page: lang.page.account.name,
+      loginStatus: req.session.user,
+      userData: userData[0],
+      lang: lang,
+      config: config
+    })
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+async function updateEmail (req, res, next) {
+  const email = req.body.email
+  const password = req.body.password
 
   if (!email || !password) {
     res.status(400).send('Username or password is missing!')
   }
 
-  db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
-    .then(data => {
-      let user = data && data[0]
-      if (user) {
-        return bcrypt.compare(password, user.password).then(onverify, next)
-      } else {
-        res.status(401).render('error', {
-          page: 'Error',
-          error: lang.error._401_email,
-          lang: lang
-        })
-      }
+  try {
+    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+    const user = userData && userData[0]
 
-      function onverify (match) {
-        if (match) {
-          db.query(`UPDATE windsurfStatistics.users SET email = ? WHERE id = ?`, [
-            email,
-            req.session.user.id
-          ])
-            .then(() => {
-              req.session.user.email = email
-              res.redirect('/account')
-            })
-            .catch(err => console.error(err))
-        } else {
-          res.status(401).render('error', {
-            page: 'Error',
-            error: lang.error._401_passwd,
-            lang: lang
-          })
-        }
-      }
-    })
-    .catch(err => console.error(err))
+    if (!user) {
+      res.status(401).render('error', {
+        page: 'Error',
+        error: lang.error._401_email,
+        lang: lang
+      })
+      return
+    }
+
+    const match = await bcrypt.compare(password, user.password)
+
+    if (!match) {
+      res.status(401).render('error', {
+        page: 'Error',
+        error: lang.error._401_passwd,
+        lang: lang
+      })
+      return
+    }
+
+    await db.query(`UPDATE windsurfStatistics.users SET email = ? WHERE id = ?`, [
+      email,
+      req.session.user.id
+    ])
+    req.session.user.email = email
+
+    res.redirect('/account')
+  } catch (err) {
+    console.error(err)
+  }
 }
 
-function changePassword (req, res, next) {
-  let oldPassword = req.body.oldPassword
-  let newPassword = req.body.newPassword
+async function changePassword (req, res, next) {
+  const oldPassword = req.body.oldPassword
+  const newPassword = req.body.newPassword
 
   if (!oldPassword || !newPassword) {
     res.status(400).send('Password is missing!')
+    return
   }
 
-  db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
-    .then(data => {
-      let user = data && data[0]
-      if (user) {
-        return bcrypt.compare(oldPassword, user.password).then(onverify, next)
-      } else {
-        res.status(401).render('error', {
-          page: 'Error',
-          error: lang.error._401_email,
-          lang: lang
-        })
-      }
+  try {
+    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+    const user = userData && userData[0]
 
-      function onverify (match) {
-        if (match) {
-          // hash password and store in DB
-          hashPassword(newPassword)
-            .then(hash => {
-              db.query(`UPDATE windsurfStatistics.users SET password = ? WHERE id = ?`, [
-                hash,
-                req.session.user.id
-              ])
-                .then(() => res.redirect('/sign-out'))
-                .catch(err => console.error(err))
-            })
-        } else {
-          res.status(401).render('error', {
-            page: 'Error',
-            error: lang.error._401_passwd,
-            lang: lang
-          })
-        }
-      }
-    })
-    .catch(err => console.error(err))
+    if (!user) {
+      res.status(401).render('error', {
+        page: 'Error',
+        error: lang.error._401_email,
+        lang: lang
+      })
+      return
+    }
+
+    const match = await bcrypt.compare(oldPassword, user.password)
+    if (!match) {
+      res.status(401).render('error', {
+        page: 'Error',
+        error: lang.error._401_passwd,
+        lang: lang
+      })
+      return
+    }
+
+    const hash = await hashPassword(newPassword)
+    await db.query(`UPDATE windsurfStatistics.users SET password = ? WHERE id = ?`, [
+      hash,
+      req.session.user.id
+    ])
+
+    res.redirect('/sign-out')
+  } catch (err) {
+    console.error(err)
+  }
 }
 
-function register (req, res, next) {
+async function register (req, res, next) {
   const user = {
     name: req.body.username,
     email: req.body.email,
@@ -196,106 +201,139 @@ function register (req, res, next) {
     return
   }
 
-  // Check if the e-mail already exists in the db
-  db.query('SELECT * from windsurfStatistics.users WHERE email = ?', user.email)
-    .then(result => {
-      if (result.length > 0) {
-        res.render('error', {
-          page: 'Error',
-          error: 'E-mail already exists',
-          lang: lang
-        })
-      } else {
-        storeInDb(req, res, user)
-      }
-    })
-}
-
-function storeInDb (req, res, user) {
-  hashPassword(user.password)
-    .then(hash => {
-      db.query('INSERT INTO windsurfStatistics.users SET ?', {
-        username: user.name,
-        email: user.email,
-        password: hash
+  try {
+    const userData = await db.query('SELECT * from windsurfStatistics.users WHERE email = ?', user.email)
+    if (userData.length > 0) {
+      res.render('error', {
+        page: 'Error',
+        error: 'E-mail already exists',
+        lang: lang
       })
-        .then(result => {
-          db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', user.email)
-            .then(result => {
-              let userId = result[0].id
-
-              req.session.user = {
-                name: user.name,
-                email: user.email,
-                id: userId
-              }
-
-              res.render('setPrefs', {
-                page: lang.page.preferences.name,
-                loginStatus: req.session.user,
-                lang: lang,
-                config: config
-              })
-            })
-            .catch(err => console.error(err))
-        })
-        .catch(err => console.error(err))
-    })
-    .catch(err => console.error(err))
+    } else {
+      storeInDb(req, res, user)
+    }
+  } catch (err) {
+    console.error(err)
+  }
 }
 
-function login (req, res, next) {
-  let email = req.body.email
-  let password = req.body.password
+async function storeInDb (req, res, user) {
+  try {
+    const hash = await hashPassword(user.password)
+    await db.query('INSERT INTO windsurfStatistics.users SET ?', {
+      username: user.name,
+      email: user.email,
+      password: hash
+    })
+
+    const userData = await db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', user.email)
+    const userId = userData[0].id
+
+    req.session.user = {
+      name: user.name,
+      email: user.email,
+      id: userId
+    }
+
+    res.render('setPrefs', {
+      page: lang.page.preferences.name,
+      loginStatus: req.session.user,
+      lang: lang,
+      config: config
+    })
+  } catch (err) {
+    console.error(err)
+  }
+
+  // hashPassword(user.password)
+  //   .then(hash => {
+  //     db.query('INSERT INTO windsurfStatistics.users SET ?', {
+  //       username: user.name,
+  //       email: user.email,
+  //       password: hash
+  //     })
+  //       .then(result => {
+  //         db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', user.email)
+  //           .then(result => {
+  //             let userId = result[0].id
+  //
+  //             req.session.user = {
+  //               name: user.name,
+  //               email: user.email,
+  //               id: userId
+  //             }
+  //
+  //             res.render('setPrefs', {
+  //               page: lang.page.preferences.name,
+  //               loginStatus: req.session.user,
+  //               lang: lang,
+  //               config: config
+  //             })
+  //           })
+  //           .catch(err => console.error(err))
+  //       })
+  //       .catch(err => console.error(err))
+  //   })
+  //   .catch(err => console.error(err))
+}
+
+async function login (req, res, next) {
+  const email = req.body.email
+  const password = req.body.password
 
   if (!email || !password) {
     res.status(400).send('Username or password is missing!')
+    return
   }
 
-  db.query('SELECT * FROM windsurfStatistics.users WHERE email = ?', email)
-    .then(data => {
-      let user = data && data[0]
-      if (user) {
-        bcrypt.compare(password, user.password).then(onverify, next)
-      } else {
-        res.status(401).render('error', {
-          page: 'Error',
-          error: lang.error._401_email,
-          lang: lang
-        })
-      }
+  try {
+    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE email = ?', email)
+    const user = userData && userData[0]
 
-      function onverify (match) {
-        if (match) {
-          req.session.user = {
-            name: user.username,
-            email: email,
-            id: user.id
-          }
+    if (!user) {
+      res.status(401).render('error', {
+        page: 'Error',
+        error: lang.error._401_email,
+        lang: lang
+      })
+      return
+    }
 
-          res.redirect('/')
-        } else {
-          res.status(401).render('error', {
-            page: 'Error',
-            error: lang.error._401_passwd,
-            lang: lang
-          })
-        }
-      }
-    })
-    .catch(err => console.error(err))
+    const match = await bcrypt.compare(password, user.password)
+    if (!match) {
+      res.status(401).render('error', {
+        page: 'Error',
+        error: lang.error._401_passwd,
+        lang: lang
+      })
+      return
+    }
+
+    req.session.user = {
+      name: user.username,
+      email: email,
+      id: user.id
+    }
+
+    res.redirect('/')
+  } catch (err) {
+    console.error(err)
+  }
 }
 
 function logout (req, res) {
   req.session.destroy(err => {
-    if (err) throw err
+    if (err) {
+      console.error(err)
+      return
+    }
     res.redirect('/')
   })
 }
 
 module.exports = {
   preferences,
-  getAccountDetails,
+  accountDetails,
   updateEmail,
   changePassword,
   register,
