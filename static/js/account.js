@@ -65,7 +65,6 @@
     button.addEventListener('click', e => {
       e.preventDefault()
       request('/api-key')
-        .then(res => res)
         .then(key => {
           input.value = key
           userApiKey.textContent = key
