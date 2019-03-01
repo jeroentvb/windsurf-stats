@@ -80,27 +80,6 @@ async function preferences (req, res, next) {
   }
 }
 
-async function accountDetails (req, res) {
-  if (!req.session.user) {
-    res.redirect('/login')
-    return
-  }
-
-  try {
-    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
-
-    res.render('account', {
-      page: lang.page.account.name,
-      loginStatus: req.session.user,
-      userData: userData[0],
-      lang: lang,
-      config: config
-    })
-  } catch (err) {
-    console.error(err)
-  }
-}
-
 async function updateEmail (req, res, next) {
   const email = req.body.email
   const password = req.body.password
@@ -244,37 +223,6 @@ async function storeInDb (req, res, user) {
   } catch (err) {
     console.error(err)
   }
-
-  // hashPassword(user.password)
-  //   .then(hash => {
-  //     db.query('INSERT INTO windsurfStatistics.users SET ?', {
-  //       username: user.name,
-  //       email: user.email,
-  //       password: hash
-  //     })
-  //       .then(result => {
-  //         db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', user.email)
-  //           .then(result => {
-  //             let userId = result[0].id
-  //
-  //             req.session.user = {
-  //               name: user.name,
-  //               email: user.email,
-  //               id: userId
-  //             }
-  //
-  //             res.render('setPrefs', {
-  //               page: lang.page.preferences.name,
-  //               loginStatus: req.session.user,
-  //               lang: lang,
-  //               config: config
-  //             })
-  //           })
-  //           .catch(err => console.error(err))
-  //       })
-  //       .catch(err => console.error(err))
-  //   })
-  //   .catch(err => console.error(err))
 }
 
 async function login (req, res, next) {
@@ -333,7 +281,6 @@ function logout (req, res) {
 
 module.exports = {
   preferences,
-  accountDetails,
   updateEmail,
   changePassword,
   register,

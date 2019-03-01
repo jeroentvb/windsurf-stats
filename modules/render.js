@@ -160,6 +160,27 @@ async function preferences (req, res, next) {
   }
 }
 
+async function account (req, res) {
+  if (!req.session.user) {
+    res.redirect('/login')
+    return
+  }
+
+  try {
+    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+
+    res.render('account', {
+      page: lang.page.account.name,
+      loginStatus: req.session.user,
+      userData: userData[0],
+      lang: lang,
+      config: config
+    })
+  } catch (err) {
+    console.error(err)
+  }
+}
+
 function notFound (req, res) {
   res.status(404).render('error', {
     page: 'Error 404',
@@ -173,5 +194,6 @@ module.exports = {
   addSession,
   allStatistics,
   preferences,
+  account,
   notFound
 }
