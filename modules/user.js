@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const db = require('./db')
+const render = require('./render')
 const helper = require('./helper')
 const config = require('../app-config.json')
 const lang = helper.localize(config.language)
@@ -74,9 +75,11 @@ async function preferences (req, res, next) {
       spot3: prefData.spots[3],
       spot4: prefData.spots[4]
     })
+
     res.redirect('/statistics')
   } catch (err) {
     console.error(err)
+    render.unexpectedError(res)
   }
 }
 
@@ -86,6 +89,7 @@ async function updateEmail (req, res, next) {
 
   if (!email || !password) {
     res.status(400).send('Username or password is missing!')
+    return
   }
 
   try {
@@ -121,6 +125,7 @@ async function updateEmail (req, res, next) {
     res.redirect('/account')
   } catch (err) {
     console.error(err)
+    render.unexpectedError(res)
   }
 }
 
@@ -165,6 +170,7 @@ async function changePassword (req, res, next) {
     res.redirect('/sign-out')
   } catch (err) {
     console.error(err)
+    render.unexpectedError(res)
   }
 }
 
@@ -193,6 +199,7 @@ async function register (req, res, next) {
     }
   } catch (err) {
     console.error(err)
+    render.unexpectedError(res)
   }
 }
 
@@ -222,6 +229,7 @@ async function storeInDb (req, res, user) {
     })
   } catch (err) {
     console.error(err)
+    render.unexpectedError(res)
   }
 }
 
@@ -266,6 +274,7 @@ async function login (req, res, next) {
     res.redirect('/')
   } catch (err) {
     console.error(err)
+    render.unexpectedError(res)
   }
 }
 
@@ -273,6 +282,8 @@ function logout (req, res) {
   req.session.destroy(err => {
     if (err) {
       console.error(err)
+      render.unexpectedError(res)
+
       return
     }
     res.redirect('/')
