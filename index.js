@@ -1,8 +1,9 @@
 const express = require('express')
 const session = require('express-session')
-const FileStore = require('session-file-store')(session)
+const MySQLStore = require('express-mysql-session')(session)
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
+const chalk = require('chalk')
 
 const db = require('./modules/db')
 const user = require('./modules/user')
@@ -11,8 +12,6 @@ const render = require('./modules/render')
 const api = require('./modules/api')
 
 const config = require('./app-config.json')
-
-const chalk = require('chalk')
 
 require('dotenv').config()
 
@@ -27,7 +26,7 @@ module.exports = express()
     extended: true
   }))
   .use(session({
-    store: new FileStore(),
+    store: new MySQLStore(db.config),
     resave: false,
     saveUninitialized: false,
     rolling: true,

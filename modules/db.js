@@ -48,6 +48,7 @@ function query (query, params) {
 }
 
 module.exports = {
+  config: dbConfig,
   init,
   query
 }
