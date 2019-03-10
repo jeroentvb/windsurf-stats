@@ -40,6 +40,8 @@ module.exports = express()
   .get('/statistics', render.page)
   .get('/all-stats', render.allStatistics)
   .get('/data', data.send)
+  .get('/download-csv', data.download.csv)
+  .get('/download-json', data.download.json)
 
   .get('/add-session', render.addSession)
   .post('/submit-data', data.submit)
