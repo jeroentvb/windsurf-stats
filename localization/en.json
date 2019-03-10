@@ -16,7 +16,9 @@
       "sail_usage": "Amount of times you have used your sails",
       "board_usage": "Amount of times you have used your boards",
       "spot_visits": "Spots you visit the most",
-      "all_stats": "All statistics"
+      "all_stats": "All statistics",
+      "download_csv": "Download as .csv",
+      "download_json": "Download as .json"
     },
     "add_session": {
       "name": "Add session",
