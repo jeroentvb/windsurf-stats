@@ -31,7 +31,7 @@ async function submit (req, res) {
             spot: windfinder.spot,
             time: hour.hour,
             windspeed: hour.windspeed,
-            windgust: hour.windspeed,
+            windgust: hour.windgust,
             winddirection: helper.getWindDirection(hour.winddirection, lang.wind_directions),
             temperature: hour.temperature
           }
