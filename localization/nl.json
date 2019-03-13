@@ -16,7 +16,9 @@
       "sail_usage": "Het aantal keer dat je je zeilen hebt gebruikt",
       "board_usage": "Het aantal keer dat je je planken hebt gebruikt",
       "spot_visits": "Het aantal keer dat je een bepaalde spot bezoekt",
-      "all_stats": "Alle statistieken"
+      "all_stats": "Alle statistieken",
+      "download_csv": "Download als .csv",
+      "download_json": "Download als .json"
     },
     "add_session": {
       "name": "Sessie toevoegen",

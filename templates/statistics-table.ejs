@@ -5,6 +5,8 @@
   <main>
     <section class="content">
       <h3><%= lang.page.statistics.all_stats %></h3>
+      <button id="download-csv" class="button" type="button" name="button"><%= lang.page.statistics.download_csv %></button>
+      <button id="download-json" class="button" type="button" name="button"><%= lang.page.statistics.download_json %></button>
       <table>
         <tr>
           <th><%= lang.general.date %></th>
@@ -37,5 +39,7 @@
       </table>
     </section>
   </main>
+
+  <script src="js/all-stats.js"></script>
 
 <% include tail %>

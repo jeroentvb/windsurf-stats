@@ -4,6 +4,8 @@ const helper = require('./helper')
 const config = require('../app-config.json')
 const lang = helper.localize(config.language)
 const scrape = require('wind-scrape')
+const Json2csvParser = require('json2csv').Parser
+const helper2 = require('jeroentvb-helper')
 
 async function submit (req, res) {
   const date = req.body.date
@@ -122,22 +124,89 @@ async function send (req, res) {
   }
 
   try {
-    const sessions = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+    const data = await getUserStatistics(req)
 
-    sessions.forEach(session => {
-      delete session.statisticId
-      delete session.userId
-    })
-
-    res.json(sessions)
+    res.json(data)
   } catch (err) {
     console.error(err)
     render.unexpectedError(res)
   }
 }
 
+async function csv (req, res) {
+  if (!req.session.user) {
+    res.redirect('/login')
+    return
+  }
+
+  try {
+    const fields = [
+      'date',
+      'spot',
+      'windspeed',
+      'windgust',
+      'windDirection',
+      'sailSize',
+      'board',
+      'rating',
+      'note'
+    ]
+    const json2csvParser = new Json2csvParser({ fields, delimiter: ';' })
+
+    const data = await getUserStatistics(req)
+
+    const csv = json2csvParser.parse(data)
+
+    res.setHeader('Content-Type', 'text/csv')
+    res.setHeader('Content-Disposition', `attachment; filename="${req.session.user.name}-windsurf-stats-${Date.now()}.csv`)
+    res.send(csv)
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
+}
+
+async function json (req, res) {
+  if (!req.session.user) {
+    res.redirect('/login')
+    return
+  }
+
+  try {
+    const data = await getUserStatistics(req)
+
+    res.setHeader('Content-Type', 'application/json')
+    res.setHeader('Content-Disposition', `attachment; filename="${req.session.user.name}-windsurf-stats-${Date.now()}.json`)
+    res.send(helper2.stringify(data))
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
+}
+
+function getUserStatistics (req) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const sessions = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+
+      sessions.forEach(session => {
+        delete session.statisticId
+        delete session.userId
+      })
+
+      resolve(sessions)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
 module.exports = {
   submit,
   confirm,
-  send
+  send,
+  download: {
+    csv,
+    json
+  }
 }
