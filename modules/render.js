@@ -1,5 +1,4 @@
 const db = require('./db')
-const render = require('./render')
 const helper = require('./helper')
 const config = require('../app-config.json')
 const lang = helper.localize(config.language)
@@ -96,7 +95,7 @@ async function addSession (req, res) {
   }
 }
 
-async function allStatistics (req, res, next) {
+async function allStatistics (req, res) {
   if (!req.session.user) {
     res.redirect('/login')
     return
@@ -118,7 +117,7 @@ async function allStatistics (req, res, next) {
   }
 }
 
-async function preferences (req, res, next) {
+async function preferences (req, res) {
   try {
     const result = await db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
     const preferences = result[0]
