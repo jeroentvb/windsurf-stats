@@ -42,7 +42,7 @@
       <fieldset class="fieldset fieldset--margin">
         <div class="field field--first">
           <label for="sail"><%= lang.general.sail_size[0] %></label>
-          <input id="sail" class="input" type="number" name="sail" value="<%= data.sail %>" placeholder="<%= data.sail %>" required>
+          <input id="sail" class="input" type="number" name="sail" max="10" step="0.1" min="1" value="<%= data.sail %>" placeholder="<%= data.sail %>" required>
         </div>
 
         <div class="field field--second">
@@ -52,7 +52,7 @@
 
         <div class="field field--last">
           <label for="rating"><%= lang.general.rating %></label>
-          <input id="rating" class="input" type="number" name="rating" value="<%= data.rating %>" placeholder="<%= data.rating %>" maxlength="3" required>
+          <input id="rating" class="input" type="number" name="rating" max="10" step="0.5" min="1" value="<%= data.rating %>" placeholder="<%= data.rating %>" maxlength="3" required>
         </div>
       </fieldset>
 
