@@ -222,4 +222,8 @@ select:hover, option:hover, input[type=radio] {
       background-color: inherit;
       margin-bottom: 8px
   }
+
+  #confirm-radio {
+    border-top: none;
+  }
 }
