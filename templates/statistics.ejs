@@ -4,11 +4,26 @@
 
 <main id="statistics">
   <section class="content">
+    <noscript>
+      <p>Since javascript is disabled, you can check your statistics using the button below.</p>
+      <a href="/all-stats" class="button"><%= lang.page.statistics.all_stats %></a>
+    </noscript>
+
     <h2><%= lang.page.statistics.statistics_for %>: <%= loginStatus.name %></h2>
+    <p><%= lang.page.statistics.total_sessions %>: <span id="total-sessions">0</span></p>
+
+    <form>
+      <fieldset class="fieldset radio-buttons">
+        <div class="field field--first field--last">
+          <label for="select-year">Select year</label>
+          <select id="select-year" class="input" name="select-year"></select>
+        </div>
+      </fieldset>
+    </form>
 
     <h3><%= lang.page.statistics.session_amount %></h3>
     <svg id="session-amount" class="datavis"></svg>
-    <p><%= lang.page.statistics.total_sessions %>: <span id="total-sessions">0</span></p>
+
 
     <h3><%= lang.page.statistics.sail_usage %></h3>
     <svg id="sail-usage" class="datavis"></svg>
