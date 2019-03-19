@@ -270,7 +270,6 @@ const graph = {
     data.get()
       .then(json => {
         const year = select.year.input.value
-        document.getElementById('total-sessions').textContent = json.length
 
         // Sort the sessions by date
         json.sort((a, b) => {
@@ -281,6 +280,7 @@ const graph = {
         })
 
         if (year !== 'all') json = json.filter(item => item.date.split('-')[2] === year)
+        document.getElementById('total-sessions').textContent = json.length
 
         return {
           sessions: data.parse.session(json),
