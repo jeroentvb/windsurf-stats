@@ -13,12 +13,14 @@
       "statistics_for": "Statistieken van",
       "session_amount": "Het aantal keer dat je in een maand hebt gewindsurfd",
       "total_sessions": "Totaal aantal sessies",
+      "select_year": "Selecteer jaar",
       "sail_usage": "Het aantal keer dat je je zeilen hebt gebruikt",
       "board_usage": "Het aantal keer dat je je planken hebt gebruikt",
       "spot_visits": "Het aantal keer dat je een bepaalde spot bezoekt",
       "all_stats": "Alle statistieken",
       "download_csv": "Download als .csv",
-      "download_json": "Download als .json"
+      "download_json": "Download als .json",
+      "noscript": "Omdat javascript uit staat kan je alleen je statistieken bekijken via de onderstaande knop."
     },
     "add_session": {
       "name": "Sessie toevoegen",

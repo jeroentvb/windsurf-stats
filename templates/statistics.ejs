@@ -5,7 +5,7 @@
 <main id="statistics">
   <section class="content">
     <noscript>
-      <p>Since javascript is disabled, you can check your statistics using the button below.</p>
+      <p><%= lang.page.statistics.noscript %></p>
       <a href="/all-stats" class="button"><%= lang.page.statistics.all_stats %></a>
     </noscript>
 
@@ -15,7 +15,7 @@
     <form>
       <fieldset class="fieldset radio-buttons">
         <div class="field field--first field--last">
-          <label for="select-year">Select year</label>
+          <label for="select-year"><%= lang.page.statistics.select_year %>r</label>
           <select id="select-year" class="input" name="select-year"></select>
         </div>
       </fieldset>

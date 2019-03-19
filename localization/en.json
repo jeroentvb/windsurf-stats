@@ -13,12 +13,14 @@
       "statistics_for": "Statistics for",
       "session_amount": "Amount of times you've windsurfed in a month",
       "total_sessions": "Total sessions",
+      "select_year": "Select year",
       "sail_usage": "Amount of times you have used your sails",
       "board_usage": "Amount of times you have used your boards",
       "spot_visits": "Spots you visit the most",
       "all_stats": "All statistics",
       "download_csv": "Download as .csv",
-      "download_json": "Download as .json"
+      "download_json": "Download as .json",
+      "noscript": "Since javascript is disabled, you can check your statistics using the button below."
     },
     "add_session": {
       "name": "Add session",
