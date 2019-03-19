@@ -1,4 +1,5 @@
-/* global d3, XMLHttpRequest */
+'use strict'
+/* global d3, XMLHttpRequest, localStorage */
 
 const months = [
   'january',
@@ -15,24 +16,52 @@ const months = [
   'december'
 ]
 
-function init () {
-  request('/data')
-    .then(json => {
-      document.getElementById('total-sessions').textContent = json.length
-      return {
-        sessions: parseSessionData(json),
-        sail: parseUsage(json, 'sailSize'),
-        board: parseUsage(json, 'board'),
-        spots: parseUsage(json, 'spot')
-      }
-    })
-    .then(data => {
-      renderBarChart(data.sessions, 'session-amount')
-      renderBarChart(data.sail, 'sail-usage')
-      renderBarChart(data.board, 'board-usage')
-      renderBarChart(data.spots, 'spot-visits')
-    })
-    .catch(err => console.error(err))
+function checkLocalstorage () {
+  const test = 'test'
+  try {
+    localStorage.setItem(test, test)
+    localStorage.removeItem(test)
+    return true
+  } catch (err) {
+    return false
+  }
+}
+
+let localstorage = checkLocalstorage()
+
+getData()
+  .then(json => {
+    document.getElementById('total-sessions').textContent = json.length
+
+    return {
+      sessions: parseSessionData(json),
+      sail: parseUsage(json, 'sailSize'),
+      board: parseUsage(json, 'board'),
+      spots: parseUsage(json, 'spot')
+    }
+  })
+  .then(data => {
+    renderBarChart(data.sessions, 'session-amount')
+    renderBarChart(data.sail, 'sail-usage')
+    renderBarChart(data.board, 'board-usage')
+    renderBarChart(data.spots, 'spot-visits')
+  })
+  .catch(err => console.error(err))
+
+function getData (url) {
+  return new Promise((resolve, reject) => {
+    if (localstorage && localStorage.getItem('sessionData')) {
+      const data = JSON.parse(localStorage.getItem('sessionData'))
+      resolve(data)
+    } else {
+      request('/data')
+        .then(data => {
+          if (localStorage) localStorage.setItem('sessionData', JSON.stringify(data))
+          resolve(data)
+        })
+        .catch(err => reject(err))
+    }
+  })
 }
 
 function request (url) {
@@ -101,15 +130,16 @@ function parseSessionData (data) {
   })
 
   data.forEach((session, i) => {
-    let month = session.date.split('-')[1]
-    let year = session.date.split('-')[2]
+    let month = parseInt(session.date.split('-')[1])
+    let year = parseInt(session.date.split('-')[2])
     let shortDate = `${months[month - 1]} ${year}`
-    let exists = false
+    let exist = false
 
     if (i === 0) {
       array.push({
         name: shortDate,
-        count: 1
+        count: 1,
+        month: month
       })
       return
     }
@@ -117,15 +147,73 @@ function parseSessionData (data) {
     array.forEach(item => {
       if (item.name === shortDate) {
         item.count++
-        exists = true
+        exist = true
       }
     })
 
-    if (exists === false) {
-      array.push({
-        name: shortDate,
-        count: 1
-      })
+    if (!exist) {
+      const lastMonth = array[array.length - 1].month
+
+      if (lastMonth + 1 === 13) {
+        array.push({
+          name: shortDate,
+          count: 1,
+          month: month
+        })
+      } else if (lastMonth + 1 !== month) {
+        const difference = month - lastMonth - 1
+
+        if (difference < 0) {
+          // If there is more than one empty month and it spans over new year
+          const toDecember = 12 - lastMonth
+          const toCurrentMonth = month - 1
+
+          // Add all months to new year
+          for (let j = 0; j < toDecember; j++) {
+            array.push({
+              name: months[lastMonth + j] ? `${months[lastMonth + j]} ${year - 1}` : `${months[11]} ${year - 1}`,
+              count: 0,
+              month: lastMonth + (1 + j) === 13 ? 1 : lastMonth + (1 + j)
+            })
+          }
+
+          // Add all months to current month
+          for (let j = 0; j < toCurrentMonth; j++) {
+            array.push({
+              name: `${months[j]} ${year}`,
+              count: 0,
+              month: j + 1
+            })
+          }
+
+          array.push({
+            name: shortDate,
+            count: 1,
+            month: month
+          })
+        } else {
+          // If there is more than one empty month, add the right amount of empty months
+          for (let j = difference; j > 0; j--) {
+            array.push({
+              name: months[month - (1 + j)] ? `${months[month - (1 + j)]} ${year}` : `${months[11]} ${year - 1}`,
+              count: 0,
+              month: month - (1 + j) === 0 ? 12 : month - (1 + j)
+            })
+          }
+
+          array.push({
+            name: shortDate,
+            count: 1,
+            month: month
+          })
+        }
+      } else {
+        array.push({
+          name: shortDate,
+          count: 1,
+          month: month
+        })
+      }
     }
   })
 
@@ -181,5 +269,3 @@ function renderBarChart (data, svgId) {
   svg.append('g')
     .call(yAxis)
 }
-
-init()
