@@ -259,10 +259,30 @@ const graph = {
         }
       })
       .then(data => {
-        graph.render(data.sessions, 'session-amount')
-        graph.render(data.sail, 'sail-usage')
-        graph.render(data.board, 'board-usage')
-        graph.render(data.spots, 'spot-visits')
+        if (data.sessions.length <= 0) {
+          // Get translations..
+          const section = document.getElementsByClassName('content')[0]
+          while (section.firstChild) section.removeChild(section.firstChild)
+
+          const h2 = document.createElement('h2')
+          const text = document.createTextNode('You don\'t have any statistics yet. Go out and shred!')
+          h2.style = 'margin-bottom: 2rem;'
+          h2.appendChild(text)
+
+          const a = document.createElement('a')
+          a.href = '/add-session'
+          a.classList.add('button')
+          const linkText = document.createTextNode('Add session')
+          a.appendChild(linkText)
+
+          section.appendChild(h2)
+          section.appendChild(a)
+        } else {
+          graph.render(data.sessions, 'session-amount')
+          graph.render(data.sail, 'sail-usage')
+          graph.render(data.board, 'board-usage')
+          graph.render(data.spots, 'spot-visits')
+        }
       })
       .catch(err => console.error(err))
   },
