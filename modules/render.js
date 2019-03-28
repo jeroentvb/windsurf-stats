@@ -49,6 +49,11 @@ function page (req, res) {
 }
 
 async function addSession (req, res) {
+  if (!req.session.user) {
+    res.redirect('/login')
+    return
+  }
+
   try {
     const result = await db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
     const preferences = result[0]
