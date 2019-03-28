@@ -24,7 +24,7 @@ header {
     ul {
       transform: rotateY(90deg);
       list-style-type: none;
-      position: absolute;
+      position: fixed;
       background-color: $secondary-background-color;
       padding: 1em 2em 2em 2em;
       right: -55%;
