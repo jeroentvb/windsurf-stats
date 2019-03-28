@@ -22,7 +22,7 @@ header {
     }
 
     ul {
-      transform: scale(0);
+      transform: rotateY(90deg);
       list-style-type: none;
       position: absolute;
       background-color: $secondary-background-color;
@@ -71,17 +71,19 @@ header {
 @keyframes showmenu {
   from {
     right: -55%;
-    transform: scale(0);
+    // transform: scale(0);
+    transform: rotateY(90deg);
   }
   to {
-    right: 0;
-    transform: scale(1);
+    right: -2px;
+    // transform: scale(1);
+    transform: rotateY(0deg);
   }
 }
 
 @keyframes hidemenu {
   from {
-    right: 0;
+    right: -2px;
     transform: scale(1);
   }
   to {
