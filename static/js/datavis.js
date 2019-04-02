@@ -1,18 +1,5 @@
 'use strict'
-/* global d3, XMLHttpRequest, localStorage */
-
-function checkLocalstorage () {
-  const test = 'test'
-  try {
-    localStorage.setItem(test, test)
-    localStorage.removeItem(test)
-    return true
-  } catch (err) {
-    return false
-  }
-}
-
-let localstorage = checkLocalstorage()
+/* global d3, XMLHttpRequest */
 
 const months = [
   'january',
@@ -59,17 +46,17 @@ const select = {
 const data = {
   get: () => {
     return new Promise((resolve, reject) => {
-      if (localstorage && localStorage.getItem('sessionData')) {
-        const data = JSON.parse(localStorage.getItem('sessionData'))
-        resolve(data)
-      } else {
-        data.request('/data')
-          .then(data => {
-            if (localStorage) localStorage.setItem('sessionData', JSON.stringify(data))
-            resolve(data)
-          })
-          .catch(err => reject(err))
+      let req = new XMLHttpRequest()
+
+      req.onreadystatechange = function () {
+        if (req.readyState === 4 && req.status === 200) {
+          resolve(JSON.parse(req.responseText))
+        } else if (req.status === 404) {
+          reject(new Error('The server responded with 404, not found'))
+        }
       }
+      req.open('GET', '/data', true)
+      req.send()
     })
   },
   request: url => {

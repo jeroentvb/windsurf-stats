@@ -126,6 +126,7 @@ async function send (req, res) {
   try {
     const data = await getUserStatistics(req)
 
+    res.setHeader('Cache-Control', 'max-age=' + 0)
     res.json(data)
   } catch (err) {
     console.error(err)
