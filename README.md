@@ -4,10 +4,11 @@ It was originally built to suit my own needs, but it should be usable for any wi
 
 If you'd like to click through the app before installing, you can check the demo [here](https://jeroenvanberkum.nl/windsurf-stats/)
 
-I started this project because I used to save my windsurf session data in an excel file, but I figured it would be easier to use a web interface and visualize the statistics in a nice way. And so this project was born.
-
 If you find a bug, please [create an issue](https://github.com/jeroentvb/windsurf-stats/issues)!  
 If you have a feature request, you should also make an issue.
+
+### Backstory
+I started this project because I used to save my windsurf session data in an excel file, but I figured it would be easier to use a web interface and visualize the statistics in a nice way. And so this project was born.
 
 ## Table of contents
 * [What it does](#what-it-does)
@@ -51,19 +52,6 @@ Install the required node.js packages using
 ```
 npm install
 ```
-<details><summary>Troubleshooting installation</summary>
-
-If you are using windows you may have to execute the following commands first
-```
-npm install -g node-gyp
-npm install --g --production windows-build-tools
-```
-On mac you may need to install the xcode command line tools using
-```
-xcode-select --install
-```
-
-</details><br/>
 
 Create a `.env` file and add the following:
 ```
