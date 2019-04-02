@@ -23,7 +23,7 @@ module.exports = express()
     next()
   })
   .set('view engine', 'ejs')
-  .set('views', 'templates')
+  .set('views', 'templates/pages')
   .use(helmet())
   .use(express.static('static'))
   .use(bodyParser.urlencoded({
