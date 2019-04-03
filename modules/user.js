@@ -206,14 +206,12 @@ async function register (req, res, next) {
 async function storeInDb (req, res, user) {
   try {
     const hash = await hashPassword(user.password)
-    await db.query('INSERT INTO windsurfStatistics.users SET ?', {
+    const result = await db.query('INSERT INTO windsurfStatistics.users SET ?', {
       username: user.name,
       email: user.email,
       password: hash
     })
-
-    const userData = await db.query('SELECT id FROM windsurfStatistics.users WHERE email = ?', user.email)
-    const userId = userData[0].id
+    const userId = result.insertId
 
     req.session.user = {
       name: user.name,
