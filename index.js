@@ -71,5 +71,7 @@ module.exports = express()
 
   .get('/sign-out', user.logout)
 
+  .post('/delete-account', user.remove)
+
   .use(render.notFound)
   .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))

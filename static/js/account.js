@@ -74,4 +74,17 @@
         .catch(err => console.error(err))
     })
   }
+
+  if (document.getElementById('delete-account-form')) {
+    const button = document.getElementById('delete-account')
+    const form = document.getElementById('delete-account-form')
+
+    button.addEventListener('click', e => {
+      if (form.classList.contains('hidden')) {
+        form.classList.remove('hidden')
+      } else {
+        form.classList.add('hidden')
+      }
+    })
+  }
 })()

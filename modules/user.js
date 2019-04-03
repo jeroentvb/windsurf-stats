@@ -288,11 +288,37 @@ function logout (req, res) {
   })
 }
 
+function remove (req, res) {
+  const id = req.session.user.id
+
+  Promise.all([
+    db.query('DELETE FROM windsurfStatistics.statistics WHERE userId = ?', id),
+    db.query('DELETE FROM windsurfStatistics.preferences WHERE userId = ?', id),
+    db.query('DELETE FROM windsurfStatistics.users WHERE id = ?', id)
+  ])
+    .then(() => {
+      req.session.destroy(err => {
+        if (err) {
+          console.error(err)
+          render.unexpectedError(res)
+
+          return
+        }
+        res.redirect('/')
+      })
+    })
+    .catch(err => {
+      console.error(err)
+      render.unexpectedError(res)
+    })
+}
+
 module.exports = {
   preferences,
   updateEmail,
   changePassword,
   register,
   login,
-  logout
+  logout,
+  remove
 }
