@@ -286,7 +286,7 @@ function logout (req, res) {
 
       return
     }
-    res.redirect('/')
+    res.redirect('/login')
   })
 }
 
