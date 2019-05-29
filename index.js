@@ -69,7 +69,7 @@ module.exports = express()
   .get('/login', render.page)
   .post('/sign-in', user.login)
 
-  .get('/sign-out', user.logout)
+  .get('/logout', user.logout)
 
   .use(render.notFound)
   .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))
