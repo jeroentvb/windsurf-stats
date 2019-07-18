@@ -1,6 +1,6 @@
 {
   "name": "windsurf-stats",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A web interface to keep track of windsurf session statistics",
   "main": "index.js",
   "scripts": {
@@ -18,23 +18,23 @@
     "url": "https://github.com/jeroentvb/windsurf-stats.git"
   },
   "dependencies": {
-    "bcrypt": "^3.0.4",
-    "body-parser": "^1.18.3",
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
     "dotenv": "^6.2.0",
-    "ejs": "^2.6.1",
-    "express": "^4.16.4",
+    "ejs": "^2.6.2",
+    "express": "^4.17.1",
     "express-mysql-session": "^2.1.0",
-    "express-session": "^1.15.6",
-    "helmet": "^3.15.1",
+    "express-session": "^1.16.2",
+    "helmet": "^3.19.0",
     "jeroentvb-helper": "github:jeroentvb/jeroentvb-helper",
-    "json2csv": "^4.3.5",
-    "mysql": "^2.16.0",
+    "json2csv": "^4.5.2",
+    "mysql": "^2.17.1",
     "uuid": "^3.3.2",
     "wind-scrape": "github:jeroentvb/wind-scrape"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.19.1"
   },
   "nodemonConfig": {
     "ignore": [
