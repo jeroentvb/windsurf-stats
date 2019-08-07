@@ -52,14 +52,9 @@ module.exports = express()
     next()
   })
 
-  .get('/set-gear', (req, res) => {
-    res.render('set-gear', {
-      page: 'Set gear'
-    })
-  })
-
   .get('/', render.statistics)
   .get('/statistics', render.statistics)
+  .get('/gear', render.gear)
 
   .use(render.notFound)
   .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))

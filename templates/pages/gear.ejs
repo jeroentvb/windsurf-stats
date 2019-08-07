@@ -8,14 +8,62 @@
     
     <form action="/set-gear" method="post">
       <h2>Enter your boards</h2>      
-      <% include ../partials/form/boards %>
+      <fieldset>
+        <div class="field field--first">
+          <label for="board0">Board 1</label>
+          <input id="board0" class="input" type="text" name="board" value="<%= gear.boards[0] %>" required>
+        </div>
+
+        <% for (let i = 1; i < 5; i++) { %>
+          <div class="field">
+            <label for="board<%= i %>">Board <%= i + 1 %></label>
+            <% if (gear.boards[i] !== undefined) { %>
+            <input id="board<%= i %>" class="input" type="text" name="board" value="<%= gear.boards[i] %>">
+            <% } else { %>
+            <input id="board<%= i %>" class="input" type="text" name="board">
+            <% } %>
+          </div>
+        <% } %>
+      </fieldset>
 
       <h2>Enter your sails</h2>  
-      <% include ../partials/form/sails %>
+      <fieldset>
+        <div class="field field--first">
+          <label for="sail0">Sail 1</label>
+          <input id="sail0" class="input" type="text" name="sail" value="<%= gear.sails[0] %>" required>
+        </div>
+
+        <% for (let i = 1; i < 10; i++) { %>
+          <div class="field">
+            <label for="sail<%= i %>">Sail <%= i + 1 %></label>
+            <% if (gear.sails[i] !== undefined) { %>
+            <input id="sail<%= i %>" class="input" type="text" name="sail" value="<%= gear.sails[i] %>">
+            <% } else { %>
+            <input id="sail<%= i %>" class="input" type="text" name="sail">
+            <% } %>
+          </div>
+        <% } %>
+      </fieldset>
 
       <h2>Enter the spots you sail at</h2>
       <p>This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay.</p>
-      <% include ../partials/form/spots %>
+      <fieldset>
+        <div class="field field--first">
+          <label for="spot0">Board 1</label>
+          <input id="spot0" class="input" type="text" name="spot" value="<%= gear.spots[0] %>" required>
+        </div>
+
+        <% for (let i = 1; i < 5; i++) { %>
+          <div class="field">
+            <label for="spot<%= i %>">Board <%= i + 1 %></label>
+            <% if (gear.spots[i] !== undefined) { %>
+            <input id="spot<%= i %>" class="input" type="text" name="spot" value="<%= gear.spots[i] %>">
+            <% } else { %>
+            <input id="spot<%= i %>" class="input" type="text" name="spot">
+            <% } %>
+          </div>
+        <% } %>
+      </fieldset>
 
       <% include ../partials/form/submitForm %>
     </form>
