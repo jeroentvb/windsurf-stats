@@ -1,0 +1,27 @@
+<% include ../partials/head %>
+
+<% include ../partials/small-nav %>
+
+<main>
+  <section>
+    <p>Only the first entry of every category is required</p>
+
+    <form action="/set-gear" method="post">
+      <h2>Enter your boards</h2>      
+      <% include ../partials/form/boards %>
+
+      <h2>Enter your sails</h2>  
+      <% include ../partials/form/sails %>
+
+      <h2>Enter the spots you sail at</h2>
+      <p>This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay.</p>
+      <% include ../partials/form/spots %>
+
+      <% include ../partials/form/submitForm %>
+    </form>
+  </section>
+</main>
+
+<script src="./js/gear.js" type="module"></script>
+
+<% include ../partials/tail %>

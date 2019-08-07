@@ -1,14 +1,3 @@
-'use strict'
-
-// Code for links inside a apple-mobile content enabled app
-// const a = document.getElementsByTagName('a')
-// for (const i = 0; i < a.length; i++) {
-//   a[i].onclick = function () {
-//     window.location = this.getAttribute('href')
-//     return false
-//   }
-// }
-
 const openMenu = document.getElementById('open-menu')
 const closeMenu = document.getElementById('close-menu')
 const menu = document.getElementById('menu')

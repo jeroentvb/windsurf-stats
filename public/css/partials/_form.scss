@@ -1,0 +1,52 @@
+form {
+  fieldset {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    margin: 0 -18px 2rem -18px;
+    padding: 0 18px;
+
+    &:not(.submit-form) {
+      // border-top: 1px solid $grey;
+      // border-bottom: 1px solid $grey;
+    }
+
+    &.submit-form {
+      background-color: transparent;
+    }
+
+    &.fieldset--no-margin {
+      margin-bottom: 1rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      border-top: 1px solid $grey;
+
+      &--first {
+        border: none;
+      }
+
+      label {
+        width: 30%;
+        margin: 0.5rem 0;
+      }
+
+      input {
+        width: 70%;
+        font-size: 1rem;
+        border: none;
+        background-color: transparent;
+        border-radius: 0;
+        padding: 16px 18px;
+
+        &:focus {
+          outline-color: $color-primary;
+        }
+      }
+    }
+  }
+}

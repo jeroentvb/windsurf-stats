@@ -1,0 +1,13 @@
+<fieldset>
+  <div class="field field--first">
+    <label for="board0">Board 1</label>
+    <input id="board0" class="input" type="text" name="board" placeholder="Fanatic Gecko 120" required>
+  </div>
+
+  <% for (let i = 1; i < 5; i++) { %>
+    <div class="field">
+      <label for="board<%= i %>">Board <%= i + 1 %></label>
+      <input id="board<%= i %>" class="input" type="text" name="board">
+    </div>
+  <% } %>
+</fieldset>

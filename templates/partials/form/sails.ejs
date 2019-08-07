@@ -1,0 +1,13 @@
+<fieldset id="gear-sails" class="fieldset--no-margin">
+  <div class="field field--first">
+    <label for="sail0">Sail 1</label>
+    <input id="sail0" class="input" type="text" name="sail" placeholder="3.5" step="0.1" max="20" required>
+  </div>
+
+  <% for (let i = 1; i < 10; i++) { %>
+    <div class="field">
+      <label for="sail<%= i %>">Sail <%= i + 1 %></label>
+      <input id="sail<%= i %>" class="input" type="text" name="sail">
+    </div>
+  <% } %>
+</fieldset>

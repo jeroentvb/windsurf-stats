@@ -6,10 +6,8 @@ const bodyParser = require('body-parser')
 const chalk = require('chalk')
 
 const db = require('./modules/db')
-const user = require('./modules/user')
-const data = require('./modules/data')
 const render = require('./modules/render')
-const api = require('./modules/api')
+const user = require('./modules/user')
 
 const config = require('./app-config.json')
 
@@ -25,7 +23,7 @@ module.exports = express()
   .set('view engine', 'ejs')
   .set('views', 'templates/pages')
   .use(helmet())
-  .use(express.static('static'))
+  .use(express.static('public'))
   .use(bodyParser.urlencoded({
     extended: true
   }))
@@ -40,38 +38,28 @@ module.exports = express()
     }
   }))
 
-  .get('/', render.page)
-  .get('/statistics', render.page)
-  .get('/all-stats', render.allStatistics)
-  .get('/data', data.send)
-  .get('/download-csv', data.download.csv)
-  .get('/download-json', data.download.json)
-
-  .get('/add-session', render.addSession)
-  .post('/submit-data', data.submit)
-
-  .post('/confirm-submit', data.confirm)
-
-  .get('/preferences', render.preferences)
-  .post('/set-prefs', user.preferences)
-  .post('/update-prefs', user.preferences)
-
-  .get('/account', render.account)
-  .get('/api-key', api.key)
-  .post('/update-email', user.updateEmail)
-  .post('/change-password', user.changePassword)
-
-  .get('/api', api.get)
-
-  .get('/register', render.page)
-  .post('/sign-up', user.register)
-
-  .get('/login', render.page)
+  .get('/login', render.login)
   .post('/sign-in', user.login)
+
+  .get('/register', render.register)
+  .post('/sign-up', user.register)
+  .post('/set-gear', user.setGear)
 
   .get('/sign-out', user.logout)
 
-  .post('/delete-account', user.remove)
+  .use((req, res, next) => {
+    if (!req.session.user) res.redirect('/login')
+    next()
+  })
+
+  .get('/set-gear', (req, res) => {
+    res.render('set-gear', {
+      page: 'Set gear'
+    })
+  })
+
+  .get('/', render.statistics)
+  .get('/statistics', render.statistics)
 
   .use(render.notFound)
   .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))

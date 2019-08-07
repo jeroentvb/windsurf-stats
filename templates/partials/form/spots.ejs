@@ -1,0 +1,13 @@
+<fieldset>
+  <div class="field field--first">
+    <label for="spot0">Spot 1</label>
+    <input id="spot0" class="input" type="text" name="spot" placeholder="maui_honolua_bay" required>
+  </div>
+
+  <% for (let i = 1; i < 5; i++) { %>
+    <div class="field">
+      <label for="spot<%= i %>">Spot <%= i + 1 %></label>
+      <input id="spot<%= i %>" class="input" type="text" name="spot">
+    </div>
+  <% } %>
+</fieldset>
