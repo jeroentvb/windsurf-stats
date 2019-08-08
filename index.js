@@ -48,13 +48,17 @@ module.exports = express()
   .get('/sign-out', user.logout)
 
   .use((req, res, next) => {
-    if (!req.session.user) res.redirect('/login')
-    next()
+    if (!req.session.user) {
+      res.redirect('/login')
+    } else {
+      next()
+    }
   })
 
   .get('/', render.statistics)
   .get('/statistics', render.statistics)
   .get('/gear', render.gear)
+  .get('/add-session', render.addSession)
 
   .use(render.notFound)
   .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))
