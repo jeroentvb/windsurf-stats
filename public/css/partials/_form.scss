@@ -12,12 +12,18 @@ form {
       // border-bottom: 1px solid $grey;
     }
 
-    &.submit-form {
-      background-color: transparent;
-    }
-
-    &.fieldset--no-margin {
-      margin-bottom: 1rem;
+    &.fieldset {
+      &__textarea {
+        label {
+          margin-bottom: 1rem;
+        }
+      }
+      &--no-margin {
+        margin-bottom: 1rem;
+      }
+      &--transparent {
+        background-color: transparent;
+      }
     }
 
     .field {
@@ -35,7 +41,7 @@ form {
         margin: 0.5rem 0;
       }
 
-      input {
+      input, select {
         width: 70%;
         font-size: 1rem;
         border: none;
@@ -46,6 +52,62 @@ form {
         &:focus {
           outline-color: $color-primary;
         }
+      }
+    }
+
+    .radio-container {
+      display: flex;
+      flex-direction: row;
+      padding-bottom: 1rem;
+
+      input[type=radio] {
+        display: none;
+  
+        &:checked + label {
+          background-color: $color-primary;
+          color: $secondary-background-color;
+        }
+  
+        &:disabled + label {
+          color: $text-disabled;
+        }
+  
+        & + label:hover {
+          cursor: pointer;
+        }
+      }
+
+      label {
+        width: 50%;
+        text-align: center;
+        padding: 6px;
+        color: $color-primary;
+        border: 1px solid $color-primary;
+        transition: .2s;
+
+        &:nth-of-type(1) {
+          border-radius: 4px 0 0 4px;
+        }
+
+        &:nth-of-type(2) {
+          border-radius: 0 4px 4px 0;
+        }
+      }
+    }
+
+    textarea {
+      width: 100%;
+      resize: none;
+      border-radius: 4px;
+      border: 1px solid $grey;
+      background-color: $secondary-background-color;
+      padding: 1rem;
+      font-size: 1rem;
+      font-family: 'system-ui', sans-serif;
+
+      &:focus {
+        outline-color: $color-primary;
+        
       }
     }
   }

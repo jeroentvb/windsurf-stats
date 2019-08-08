@@ -23,8 +23,6 @@ header {
     ul {
       list-style-type: none;
       padding: 0;
-
-      // transform: rotateY(90deg);
       position: fixed;
       background-color: $secondary-background-color;
       padding: 1em 2em 2em 2em;
@@ -37,6 +35,24 @@ header {
       height: 100%;
       margin: 0;
       z-index: 1000;
+
+      li {
+        &:nth-child(2) {
+          font-size: 1.5em;
+          font-weight: 600;
+          margin: 0.8rem 0;
+        }
+
+        a {
+          text-decoration: none;
+          color: #000;
+          transition: 0.2s;
+
+          &:hover, &:active {
+            color: $color-primary;
+          }
+        }
+      }
     }
 
     @media (min-width: 767px) {

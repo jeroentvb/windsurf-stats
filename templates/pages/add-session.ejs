@@ -1,0 +1,173 @@
+<% include ../partials/head %>
+
+<% include ../partials/nav %>
+
+<main>
+  <section>
+    <form action="/submit-session">
+      <fieldset>
+        <p>Was the session today or another day?</p>
+
+        <div class="radio-container">
+          <input id="today" type="radio" name="date" value="today" checked>
+          <label for="today">Today</label>
+
+          <input id="other-day" type="radio" name="date" value="other">
+          <label for="other-day">Other</label>
+        </div>
+      </fieldset>
+
+      <fieldset id="manual-input" class="hidden">
+        <div class="field field--first">
+          <label for="date-input">Date</label>
+          <input id="date-input" type="text" name="dateInput" placeholder="dd-mm-yyy" value="<%= gear.date %>" maxlength="10">
+        </div>
+
+        <div class="field">
+          <label for="windspeed">Windspeed (in kts)</label>
+          <input id="windspeed" type="number" name="windspeed" placeholder="18" min="1" max="99">
+        </div>
+
+        <div class="field">
+          <label for="windgust">Windgust (in kts)</label>
+          <input id="windgust" type="number" name="windgust" placeholder="22" min="1" max="99">
+        </div>
+
+        <div class="field">
+          <label for="wind-direction">Wind direction</label>
+          <select id="wind-direction" name="winddirection">
+            <% var windDirections = [
+              "N",
+              "NNE",
+              "NE",
+              "ENE",
+              "E",
+              "ESE",
+              "SE",
+              "SSE",
+              "S",
+              "SSW",
+              "SW",
+              "WSW",
+              "W",
+              "WNW",
+              "NW",
+              "NNW"
+            ]
+
+            for (let i = 0; i < windDirections.length; i++) { %>
+              <option value="<%= windDirections[i] %>"><%= windDirections[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <div class="field field--first" id="hour-field">
+          <label for="hour">At which hour did you sail?</label>
+          <select id="hour" class="input" name="hour">
+            <% for (let i = 7; i < 21; i++) { %>
+              <option value="<%= i %>"><%= i %></option>
+            <% } %>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="spot">Spot</label>
+          <select id="spot" class="input" name="spot">
+            <% gear.spots.forEach((spot, i) => {
+              if (i === 0) { %>
+                <option value="<%= spot %>" selected="selected">
+                  <%= spot
+                  .split('-').join(' ')
+                  .split('_').join(' ')
+                  .split(' ')
+                  .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+                  .join(' ') %>
+                </option>
+              <% } else if (spot !== '') { %>
+                <option value="<%= spot %>">
+                  <%= spot
+                  .split('-').join(' ')
+                  .split('_').join(' ')
+                  .split(' ')
+                  .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+                  .join(' ') %>
+                </option>
+              <% }
+            }) %>
+
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div id="spot-other-wrapper" class="field hidden">
+          <label for="spot-other"></label>
+          <input id="spot-other" type="text" name="spotOther" placeholder="Example: maui_honolua_bay">
+        </div>
+
+        <div class="field">
+          <label for="sail">Sail</label>
+          <select id="sail" name="sail">
+            <% gear.sails.forEach((sail, i) => {
+              if (sail != '' && i == 0) { %>
+                <option value="<%= sail %>" selected><%= sail %></option>
+              <% } else if (sail != '') { %>
+                <option value="<%= sail %>"><%= sail %></option>
+              <% }
+            }) %>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div id="sail-other-wrapper" class="field hidden">
+          <label for="sail-other"></label>
+          <input id="sail-other" class="input" type="text" name="sailOther" placeholder="Enter custom sail">
+        </div>
+
+        <div class="field">
+          <label for="board">Board</label>
+          <select id="board" name="board">
+            <% gear.boards.forEach((board, i) => {
+              if (board != '' && i == 0) { %>
+                <option value="<%= board %>" selected><%= board %></option>
+              <% } else if (board != '') { %>
+                <option value="<%= board %>"><%= board %></option>
+              <% }
+            }) %>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div id="board-other-wrapper" class="field hidden">
+          <label for="board-other"></label>
+          <input id="board-other" type="text" name="boardOther" placeholder="Enter custom board">
+        </div>
+
+        <div class="field">
+          <label for="rating">Rating</label>
+          <select id="rating" name="rating">
+            <% for (let i = 1; i < 10.5; i += 0.5) {
+                if (i == 7) { %>
+                  <option value="<%= i %>" selected><%= i %></option>
+                <% } else { %>
+                  <option value="<%= i %>"><%= i %></option>
+                <% }
+               } %>
+          </select>
+        </div>
+      </fieldset>
+
+      <fieldset class="fieldset__textarea fieldset--transparent">
+        <label for="note">Note (max 255 characters)</label>
+        <textarea id="note" name="note" rows="5" cols="80" maxlength="255"></textarea>
+      </fieldset>
+
+      <% include ../partials/form/submitForm %>
+    </form>
+  </section>
+</main>
+
+<script src="./js/add-session.js"></script>
+
+<% include ../partials/tail %>

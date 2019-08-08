@@ -21,6 +21,10 @@ body {
   display: none !important;
 }
 
+.error {
+  border: 1px solid red !important;
+}
+
 @keyframes showmenu {
   from {
     right: -55%;
@@ -104,6 +108,19 @@ header nav ul {
   margin: 0;
   z-index: 1000;
 }
+header nav ul li:nth-child(2) {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 0.8rem 0;
+}
+header nav ul li a {
+  text-decoration: none;
+  color: #000;
+  transition: 0.2s;
+}
+header nav ul li a:hover, header nav ul li a:active {
+  color: #0076FF;
+}
 @media (min-width: 767px) {
   header nav #open-menu, header nav #close-menu {
     display: none;
@@ -137,11 +154,14 @@ form fieldset {
   margin: 0 -18px 2rem -18px;
   padding: 0 18px;
 }
-form fieldset.submit-form {
-  background-color: transparent;
+form fieldset.fieldset__textarea label {
+  margin-bottom: 1rem;
 }
 form fieldset.fieldset--no-margin {
   margin-bottom: 1rem;
+}
+form fieldset.fieldset--transparent {
+  background-color: transparent;
 }
 form fieldset .field {
   display: flex;
@@ -156,7 +176,7 @@ form fieldset .field label {
   width: 30%;
   margin: 0.5rem 0;
 }
-form fieldset .field input {
+form fieldset .field input, form fieldset .field select {
   width: 70%;
   font-size: 1rem;
   border: none;
@@ -164,7 +184,52 @@ form fieldset .field input {
   border-radius: 0;
   padding: 16px 18px;
 }
-form fieldset .field input:focus {
+form fieldset .field input:focus, form fieldset .field select:focus {
+  outline-color: #0076FF;
+}
+form fieldset .radio-container {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 1rem;
+}
+form fieldset .radio-container input[type=radio] {
+  display: none;
+}
+form fieldset .radio-container input[type=radio]:checked + label {
+  background-color: #0076FF;
+  color: #fff;
+}
+form fieldset .radio-container input[type=radio]:disabled + label {
+  color: #a2a2a7;
+}
+form fieldset .radio-container input[type=radio] + label:hover {
+  cursor: pointer;
+}
+form fieldset .radio-container label {
+  width: 50%;
+  text-align: center;
+  padding: 6px;
+  color: #0076FF;
+  border: 1px solid #0076FF;
+  transition: 0.2s;
+}
+form fieldset .radio-container label:nth-of-type(1) {
+  border-radius: 4px 0 0 4px;
+}
+form fieldset .radio-container label:nth-of-type(2) {
+  border-radius: 0 4px 4px 0;
+}
+form fieldset textarea {
+  width: 100%;
+  resize: none;
+  border-radius: 4px;
+  border: 1px solid #bebebe;
+  background-color: #fff;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: "system-ui", sans-serif;
+}
+form fieldset textarea:focus {
   outline-color: #0076FF;
 }
 

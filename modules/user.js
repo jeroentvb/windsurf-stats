@@ -58,7 +58,7 @@ async function setGear (req, res) {
   }
 
   try {
-    await db.query('INSERT INTO windsurfStatistics.preferences SET ?', {
+    await db.query('INSERT INTO windsurfStatistics.gear SET ?', {
       userId: req.session.user.id,
       board0: gear.boards[0],
       board1: gear.boards[1],

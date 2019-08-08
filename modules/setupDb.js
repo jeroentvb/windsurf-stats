@@ -45,7 +45,7 @@ const queries = {
     sailSize FLOAT, board VARCHAR(30), rating FLOAT, note VARCHAR(255), PRIMARY KEY (statisticId))`,
   users: `CREATE TABLE IF NOT EXISTS windsurfStatistics.users(id int NOT NULL AUTO_INCREMENT,
     username VARCHAR(255), email VARCHAR(255), password VARCHAR(255), apiKey VARCHAR(255), PRIMARY KEY(id))`,
-  gear: `CREATE TABLE IF NOT EXISTS windsurfStatistics.preferences(id int NOT NULL AUTO_INCREMENT, userId INT,
+  gear: `CREATE TABLE IF NOT EXISTS windsurfStatistics.gear(id int NOT NULL AUTO_INCREMENT, userId INT,
     board0 VARCHAR(255), board1 VARCHAR(255), board2 VARCHAR(255), board3 VARCHAR(255), board4 VARCHAR(255),
     sail0 VARCHAR(255), sail1 VARCHAR(255), sail2 VARCHAR(255), sail3 VARCHAR(255), sail4 VARCHAR(255),
     sail5 VARCHAR(255), sail6 VARCHAR(255), sail7 VARCHAR(255), sail8 VARCHAR(255), sail9 VARCHAR(255),
