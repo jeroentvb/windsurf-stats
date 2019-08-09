@@ -2,11 +2,11 @@
 
 <% include ../partials/small-nav %>
 
-<main>
+<main class="main--small">
   <section>
     <h1>Error!</h1>
-    <p><%= msg %></p>
-    <a href="#" onclick="event.preventDefault(); window.history.back();">Go back</a>
+    <p style="margin-bottom: 2rem;"><%= msg %></p>
+    <a href="#" onclick="event.preventDefault(); window.history.back();" class="button button--small" style="text-decoration: none;">Go back</a>
   </section>
 </main>
 

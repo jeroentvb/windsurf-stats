@@ -6,16 +6,16 @@
   <section>
     <p>Only the first entry of every category is required</p>
 
-    <form action="/set-gear" method="post">
-      <h2>Enter your boards</h2>      
-      <% include ../partials/form/boards %>
+    <form action="/set-gear" method="post" class="form--gear">
+      <%# <h2>Enter your boards</h2>       %>
+      
+      <%- include('../partials/form/gear', { gear: 'board', amount: 5, placeholder: 'Fanatic Gecko 120' }) %>
 
-      <h2>Enter your sails</h2>  
-      <% include ../partials/form/sails %>
+      <%# <h2>Enter your sails</h2> %>
+      <%- include('../partials/form/gear', { gear: 'sail', amount: 10, placeholder: '3.5' }) %>
 
-      <h2>Enter the spots you sail at</h2>
-      <p>This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay.</p>
-      <% include ../partials/form/spots %>
+      <%# <h2>Enter the spots you sail at</h2> %>
+      <%- include('../partials/form/gear', { gear: 'spot', amount: 5, placeholder: 'maui_honolua_bay' }) %>
 
       <% include ../partials/form/submitForm %>
     </form>

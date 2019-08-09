@@ -6,9 +6,10 @@
   <section>
     <p>Only the first entry of every category is required</p>
     
-    <form action="/set-gear" method="post">
-      <h2>Enter your boards</h2>      
+    <form action="/update-gear" method="post" class="form--gear">
       <fieldset>
+        <h2>Enter your boards</h2>
+
         <div class="field field--first">
           <label for="board0">Board 1</label>
           <input id="board0" class="input" type="text" name="board" value="<%= gear.boards[0] %>" required>
@@ -26,8 +27,9 @@
         <% } %>
       </fieldset>
 
-      <h2>Enter your sails</h2>  
-      <fieldset>
+      <fieldset id="gear-sails">
+        <h2>Enter your sails</h2>
+
         <div class="field field--first">
           <label for="sail0">Sail 1</label>
           <input id="sail0" class="input" type="text" name="sail" value="<%= gear.sails[0] %>" required>
@@ -45,9 +47,10 @@
         <% } %>
       </fieldset>
 
-      <h2>Enter the spots you sail at</h2>
-      <p>This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay.</p>
       <fieldset>
+        <h2>Enter the spots you sail at</h2>
+        <p class="help-message">This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay.</p>
+
         <div class="field field--first">
           <label for="spot0">Board 1</label>
           <input id="spot0" class="input" type="text" name="spot" value="<%= gear.spots[0] %>" required>
@@ -69,5 +72,7 @@
     </form>
   </section>
 </main>
+
+<script src="./js/gear.js" type="module"></script>
 
 <% include ../partials/tail %>

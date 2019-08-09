@@ -70,6 +70,20 @@ button--medium, .button--medium {
   padding: 16px 24px;
   border-radius: 4px;
   font-size: 1rem;
+  display: block;
+}
+button--small, .button--small {
+  width: auto;
+  padding: 16px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+button--large, .button--large {
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+  display: block;
 }
 
 header {
@@ -141,9 +155,26 @@ header nav ul li a:hover, header nav ul li a:active {
     display: none;
   }
 }
+@media (min-width: 767px) {
+  header {
+    margin-bottom: 2rem;
+  }
+}
 
 main {
   padding: 1rem;
+}
+@media (min-width: 767px) {
+  main {
+    padding: 1rem 3rem;
+  }
+}
+
+@media (min-width: 767px) {
+  .main--small {
+    width: 50%;
+    margin: 0 auto;
+  }
 }
 
 form fieldset {
@@ -162,6 +193,11 @@ form fieldset.fieldset--no-margin {
 }
 form fieldset.fieldset--transparent {
   background-color: transparent;
+}
+form fieldset h2, form fieldset .help-message {
+  background-color: #f2f1f5;
+  margin: 0 -18px 0 -18px;
+  padding: 1rem 18px;
 }
 form fieldset .field {
   display: flex;
@@ -186,6 +222,19 @@ form fieldset .field input, form fieldset .field select {
 }
 form fieldset .field input:focus, form fieldset .field select:focus {
   outline-color: #0076FF;
+}
+@media (min-width: 767px) {
+  form fieldset .field input, form fieldset .field select {
+    background-color: #fff;
+    padding: 4px;
+    width: 80%;
+    border-radius: 4px;
+  }
+}
+@media (min-width: 767px) {
+  form fieldset .field {
+    border: none;
+  }
 }
 form fieldset .radio-container {
   display: flex;
@@ -231,6 +280,57 @@ form fieldset textarea {
 }
 form fieldset textarea:focus {
   outline-color: #0076FF;
+}
+form fieldset .add-sail {
+  margin: 1rem 0;
+}
+@media (min-width: 767px) {
+  form fieldset {
+    background-color: transparent;
+  }
+}
+
+@media (min-width: 767px) {
+  .form--gear {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 4rem;
+  }
+  .form--gear fieldset:nth-child(odd) {
+    grid-column: 1/1;
+  }
+  .form--gear fieldset:nth-child(even) {
+    grid-column: 2/2;
+  }
+  .form--gear fieldset#gear-sails {
+    grid-row: 1/3;
+  }
+  .form--gear fieldset.submit-form {
+    grid-column: 1/3;
+  }
+  .form--gear .add-sail {
+    margin-top: 1rem;
+  }
+}
+@media (min-width: 767px) {
+  .form--add-session {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 4rem;
+  }
+  .form--add-session fieldset:nth-child(2) {
+    grid-column: 1/1;
+  }
+  .form--add-session fieldset:nth-child(3) {
+    grid-column: 1/1;
+  }
+  .form--add-session fieldset:nth-child(4) {
+    grid-column: 2/2;
+    grid-row: 2/2;
+  }
+  .form--add-session fieldset.submit-form {
+    grid-column: 1/3;
+  }
 }
 
 /*# sourceMappingURL=styles.css.map */

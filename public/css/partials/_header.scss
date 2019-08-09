@@ -79,4 +79,8 @@ header {
       }
     }
   }
+
+  @media (min-width: $breakpoint-small) {
+    margin-bottom: 2rem;
+  }
 }

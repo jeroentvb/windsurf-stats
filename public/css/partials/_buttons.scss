@@ -21,5 +21,21 @@ button, .button {
     padding: 16px 24px;
     border-radius: 4px;
     font-size: 1rem;
+    display: block;
+  }
+
+  &--small {
+    width: auto;
+    padding: 16px 24px;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+
+  &--large {
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 4px;
+    font-size: 1rem;
+    display: block;
   }
 }
