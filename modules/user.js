@@ -289,7 +289,43 @@ async function password (req, res) {
 }
 
 async function email (req, res) {
+  const user = {
+    email: req.body.email,
+    password: req.body.password
+  }
 
+  if (!user.email || !user.password) {
+    res.status(400).render('error', {
+      page: 'Error',
+      msg: 'E-mail or password is missing!'
+    })
+    return
+  }
+
+  try {
+    const userData = await db.query('SELECT password FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+
+    const match = await bcrypt.compare(user.password, userData[0].password)
+
+    if (!match) {
+      res.status(401).render('error', {
+        page: 'Error',
+        msg: 'Incorrect password'
+      })
+      return
+    }
+
+    await db.query('UPDATE windsurfStatistics.users SET email = ? WHERE id = ?', [
+      user.email,
+      req.session.user.id
+    ])
+    req.session.user.email = user.email
+
+    res.redirect('/account')
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
 }
 
 async function remove (req, res) {

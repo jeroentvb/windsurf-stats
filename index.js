@@ -58,7 +58,7 @@ module.exports = express()
   .get('/account', render.account)
 
   .post('/change-password', user.change.password)
-  // .post('/change-email', user.change.email)
+  .post('/change-email', user.change.email)
   // .post('/delete-account', user.remove)
 
   // .get('/profile', render.profile)
