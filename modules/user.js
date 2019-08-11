@@ -232,6 +232,70 @@ async function confirm (req, res) {
 
 }
 
+async function password (req, res) {
+  const password = {
+    old: req.body['old-password'],
+    new: req.body['new-password'],
+    confirm: req.body['confirm-password']
+  }
+
+  if (!password.old || !password.new || !password.confirm) {
+    res.status(400).render('error', {
+      page: 'Error',
+      msg: 'Password is missing!'
+    })
+    return
+  }
+
+  if (password.new !== password.confirm) {
+    res.status(400).render('error', {
+      page: 'Error',
+      msg: 'New password and repeat new password didn\'t match.'
+    })
+    return
+  }
+
+  if (password.new === password.old) {
+    res.status(400).render('error', {
+      page: 'Error',
+      msg: 'Old and new password can\'t be the same'
+    })
+    return
+  }
+
+  try {
+    const userData = await db.query('SELECT password FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+
+    const match = await bcrypt.compare(password.old, userData[0].password)
+    if (!match) {
+      res.status(401).render('error', {
+        page: 'Error',
+        msg: 'Old password is incorrect'
+      })
+      return
+    }
+
+    const hash = await helper.hashPassword(password.new)
+    await db.query(`UPDATE windsurfStatistics.users SET password = ? WHERE id = ?`, [
+      hash,
+      req.session.user.id
+    ])
+
+    res.redirect('/sign-out')
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
+}
+
+async function email (req, res) {
+
+}
+
+async function remove (req, res) {
+
+}
+
 module.exports = {
   checkLogin,
   register,
@@ -244,5 +308,10 @@ module.exports = {
   session: {
     submit,
     confirm
-  }
+  },
+  change: {
+    password,
+    email
+  },
+  remove
 }

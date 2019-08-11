@@ -1,5 +1,6 @@
 const db = require('./db')
 const helper = require('./helper')
+const config = require('../app-config.json')
 
 function login (req, res) {
   res.render('login', {
@@ -113,6 +114,32 @@ async function gear (req, res) {
   }
 }
 
+async function account (req, res) {
+  const user = req.session.user
+
+  res.render('account', {
+    page: 'Account',
+    user: {
+      name: user.name,
+      email: user.email
+    },
+    config: config
+  })
+}
+
+async function profile (req, res) {
+  const getUser = req.params.user
+
+  if (!getUser) {
+    res.render('profile', {
+      page: 'Profile',
+      user: {
+        name: req.session.user.name
+      }
+    })
+  }
+}
+
 function unexpectedError (res) {
   res.status(500).render('error', {
     page: 'Error 500',
@@ -133,6 +160,8 @@ module.exports = {
   statistics,
   addSession,
   gear,
+  account,
+  profile,
   unexpectedError,
   notFound
 }

@@ -1,7 +1,6 @@
 const mysql = require('mysql')
 const chalk = require('chalk')
-const bcrypt = require('bcrypt')
-const config = require('../app-config.json')
+const helper = require('./helper')
 
 require('dotenv').config()
 
@@ -49,19 +48,10 @@ function query (query, params) {
   })
 }
 
-function hashPassword (password) {
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(password, config.saltRounds, (err, hash) => {
-      if (err) reject(err)
-      resolve(hash)
-    })
-  })
-}
-
 function createUser (user) {
   return new Promise(async (resolve, reject) => {
     try {
-      const hash = await hashPassword(user.password)
+      const hash = await helper.hashPassword(user.password)
       const result = await query('INSERT INTO windsurfStatistics.users SET ?', {
         username: user.name,
         email: user.email,

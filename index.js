@@ -57,11 +57,18 @@ module.exports = express()
 
   .get('/account', render.account)
 
-  .get('/set-gear', (req, res) => {
-    res.render('set-gear', {
-      page: 'Set gear'
-    })
-  })
+  .post('/change-password', user.change.password)
+  // .post('/change-email', user.change.email)
+  // .post('/delete-account', user.remove)
+
+  // .get('/profile', render.profile)
+  // .get('/profile/:user', render.profile)
+
+  // .get('/set-gear', (req, res) => {
+  //   res.render('set-gear', {
+  //     page: 'Set gear'
+  //   })
+  // })
 
   .use(render.notFound)
   .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))
