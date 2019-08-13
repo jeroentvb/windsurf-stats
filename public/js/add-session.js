@@ -1,4 +1,5 @@
 const form = document.getElementsByTagName('form')[0]
+const hourField = document.getElementById('hour-field')
 const manual = {
   input: document.getElementById('manual-input'),
   windspeed: document.getElementById('windspeed'),
@@ -31,8 +32,10 @@ for (let item in radio) {
   radio[item].addEventListener('click', e => {
     if (item === 'today') {
       manual.input.classList.add('hidden')
+      hourField.classList.remove('hidden')
     } else {
       manual.input.classList.remove('hidden')
+      hourField.classList.add('hidden')
     }
   })
 }

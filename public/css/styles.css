@@ -377,5 +377,25 @@ form fieldset .add-sail {
     grid-column: 1/3;
   }
 }
+@media (min-width: 767px) {
+  .form--confirm-session {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 4rem;
+  }
+  .form--confirm-session fieldset:nth-child(2) {
+    grid-column: 1/1;
+  }
+  .form--confirm-session fieldset:nth-child(3) {
+    grid-column: 2/2;
+    grid-row: 1/1;
+  }
+  .form--confirm-session fieldset:nth-child(4) {
+    grid-column: 2/2;
+  }
+  .form--confirm-session fieldset.submit-form {
+    grid-column: 1/3;
+  }
+}
 
 /*# sourceMappingURL=styles.css.map */

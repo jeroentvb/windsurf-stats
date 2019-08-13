@@ -45,7 +45,7 @@ function image (src, alt, cssClass) {
   return img
 }
 
-function text (content, parent) {
+function text (parent, content) {
   const text = document.createTextNode(content)
 
   parent.appendChild(text)

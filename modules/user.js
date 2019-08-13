@@ -200,7 +200,6 @@ function logout (req, res) {
   })
 }
 
-// finish this function
 async function submit (req, res) {
   const date = req.body.date
 
@@ -217,19 +216,54 @@ async function submit (req, res) {
 
     try {
       const forecast = await scrape.windfinder(session.spot)
+      let windData = forecast.days[0].hours.filter(hour => hour.hour === session.sailedHour)
+      windData[0].winddirection = helper.getWindDirection(windData[0].winddirection)
 
+      const sessionData = {
+        ...session,
+        ...windData[0],
+        windfinderLink: `https://www.windfinder.com/weatherforecast/${session.spot}`
+      }
 
+      res.render('confirm-session', {
+        page: 'Confirm session data',
+        session: sessionData
+      })
     } catch (err) {
+      if (err.message === 'The provided windfinder spot doesn\'t exist..') {
+        res.status(400).render('error', {
+          page: 'Error',
+          msg: 'The entered windfinder spot doesn\'t exist'
+        })
+
+        return
+      }
+
       console.error(err)
       render.unexpectedError(res)
     }
   } else {
+    const session = {
+      spot: req.body.spotOther ? req.body.spotOther : req.body.spot,
+      sail: req.body.sailOther ? req.body.sailOther : req.body.sail,
+      board: req.body.boardOther ? req.body.boardOther : req.body.board,
+      rating: req.body.rating,
+      note: req.body.note,
+      date: req.body.dateInput,
+      windspeed: req.body.windspeed,
+      windgust: req.body.windgust,
+      winddirection: req.body.winddirection
+    }
 
+    res.render('confirm-session', {
+      page: 'Confirm session data',
+      session: session
+    })
   }
 }
 
 async function confirm (req, res) {
-
+  
 }
 
 async function password (req, res) {

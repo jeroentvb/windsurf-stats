@@ -8,6 +8,7 @@ const chalk = require('chalk')
 const db = require('./modules/db')
 const render = require('./modules/render')
 const user = require('./modules/user')
+const api = require('./modules/api')
 
 const config = require('./app-config.json')
 
@@ -48,11 +49,13 @@ module.exports = express()
   .get('/', render.statistics)
   .get('/statistics', render.statistics)
 
+  .get('/sessions', api.send.sessions)
+
   .get('/gear', render.gear)
   .post('/update-gear', user.gear.update)
 
   .get('/add-session', render.addSession)
-  // .post('/submit-session', user.session.submit)
+  .post('/submit-session', user.session.submit)
   // .post('/confirm-session', user.session.confirm)
 
   .get('/account', render.account)
