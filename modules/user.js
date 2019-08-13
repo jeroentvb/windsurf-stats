@@ -204,7 +204,7 @@ async function submit (req, res) {
   const date = req.body.date
 
   if (date === 'today') {
-    const session = {
+    let session = {
       sailedHour: parseInt(req.body.hour),
       spot: req.body.spotOther ? req.body.spotOther : req.body.spot,
       sail: req.body.sailOther ? req.body.sailOther : req.body.sail,
@@ -218,6 +218,7 @@ async function submit (req, res) {
       const forecast = await scrape.windfinder(session.spot)
       let windData = forecast.days[0].hours.filter(hour => hour.hour === session.sailedHour)
       windData[0].winddirection = helper.getWindDirection(windData[0].winddirection)
+      session.spot = forecast.spot
 
       const sessionData = {
         ...session,
@@ -243,7 +244,7 @@ async function submit (req, res) {
       render.unexpectedError(res)
     }
   } else {
-    const session = {
+    let session = {
       spot: req.body.spotOther ? req.body.spotOther : req.body.spot,
       sail: req.body.sailOther ? req.body.sailOther : req.body.sail,
       board: req.body.boardOther ? req.body.boardOther : req.body.board,
@@ -255,15 +256,52 @@ async function submit (req, res) {
       winddirection: req.body.winddirection
     }
 
-    res.render('confirm-session', {
-      page: 'Confirm session data',
-      session: session
-    })
+    try {
+      const forecast = await scrape.windfinder(session.spot)
+      session.spot = forecast.spot
+
+      res.render('confirm-session', {
+        page: 'Confirm session data',
+        session: session
+      })
+    } catch (err) {
+      if (err.message === 'The provided windfinder spot doesn\'t exist..') {
+        res.status(400).render('error', {
+          page: 'Error',
+          msg: 'The entered windfinder spot doesn\'t exist'
+        })
+
+        return
+      }
+
+      console.error(err)
+      render.unexpectedError(res)
+    }
   }
 }
 
 async function confirm (req, res) {
-  
+  const session = {
+    userId: req.session.user.id,
+    date: req.body.date,
+    spot: req.body.spot,
+    windspeed: req.body.windspeed,
+    windgust: req.body.windgust,
+    windDirection: req.body.winddirection,
+    sailSize: req.body.sail,
+    board: req.body.board,
+    rating: req.body.rating,
+    note: req.body.note
+  }
+
+  try {
+    await db.query('INSERT INTO windsurfStatistics.statistics SET ?', session)
+
+    res.redirect('/statistics')
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
 }
 
 async function password (req, res) {
