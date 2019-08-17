@@ -38,8 +38,33 @@ function getYesterday () {
   }
 }
 
+function getWindDirection (deg) {
+  const windDirections = [
+    'N',
+    'NNE',
+    'NE',
+    'ENE',
+    'E',
+    'ESE',
+    'SE',
+    'SSE',
+    'S',
+    'SSW',
+    'SW',
+    'WSW',
+    'W',
+    'WNW',
+    'NW',
+    'NNW'
+  ]
+
+  const val = Math.floor((deg / 22.5) + 0.5)
+  return windDirections[(val % 16)]
+}
+
 module.exports = {
   hashPassword,
   getToday,
-  getYesterday
+  getYesterday,
+  getWindDirection
 }

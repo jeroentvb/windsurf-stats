@@ -48,15 +48,16 @@ module.exports = express()
 
   .get('/', render.statistics)
   .get('/statistics', render.statistics)
+  .get('/api/gear', api.send.gear)
 
-  .get('/sessions', api.send.sessions)
+  .get('/api/sessions', api.send.sessions)
 
   .get('/gear', render.gear)
   .post('/update-gear', user.gear.update)
 
   .get('/add-session', render.addSession)
   .post('/submit-session', user.session.submit)
-  // .post('/confirm-session', user.session.confirm)
+  .post('/confirm-session', user.session.confirm)
 
   .get('/account', render.account)
 
