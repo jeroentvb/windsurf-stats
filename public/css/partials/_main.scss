@@ -15,14 +15,18 @@ main {
   }
 
   &--medium {
+    @media (min-width: $breakpoint-medium) {
+      width: 75%;
+      margin: 0 auto;
+    }
+  }
+
+  &--account {
     @media (min-width: $breakpoint-small) {
       display: grid;
       grid-template-columns: 1fr 1fr;
       grid-column-gap: 4rem;
     }
-  }
-
-  &--account {
     section {
     
       button {

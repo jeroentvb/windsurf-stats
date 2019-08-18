@@ -1,7 +1,7 @@
 export const select = {
   year: {
     input: document.getElementById('select-year'),
-    addOptions: years => {
+    addOptions: (years, callback) => {
       years.forEach(year => {
         select.year.input.appendChild(select.createOption(year))
       })
@@ -10,8 +10,7 @@ export const select = {
       select.year.input.selectedIndex = years.length - 1
 
       select.year.input.addEventListener('change', e => {
-        // Change the year and re-render the chart
-        console.log(e.target.value)
+        callback(e)
       })
     }
   },

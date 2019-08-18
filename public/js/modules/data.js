@@ -148,17 +148,30 @@ const parse = {
     let dataset = []
     let lastMonth
     let index = 1
+    // const colors = [
+    //   '#FEC800',
+    //   '#FEE100',
+    //   '#FEFE00',
+    //   '#B8FF61',
+    //   '#00FA00',
+    //   '#00E600',
+    //   '#11D411',
+    //   '#25C192',
+    //   '#00E6F0',
+    //   '#00C8FE'
+    // ]
+
     const colors = [
-      '#FEC800',
-      '#FEE100',
-      '#FEFE00',
-      '#B8FF61',
-      '#00FA00',
-      '#00E600',
-      '#11D411',
-      '#25C192',
-      '#00E6F0',
-      '#00C8FE'
+      '#ff3e30', // red
+      '#ff930f', // orange
+      '#ffe626', // yellow
+      '#45ff24', // green
+      '#009888', // teal
+      '#00BCD9', // cyan
+      '#3d61ff', // blue
+      '#4B0082', // deep purple
+      '#9400D3', // purple
+      '#7C5547' // brown
     ]
 
     sessions = data.sortByDate(sessions)

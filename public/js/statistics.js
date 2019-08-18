@@ -1,74 +1,37 @@
-
-
+// import { chart } from './modules/chart.js'
+import { BarChart } from './modules/chart.js'
 import { data } from './modules/data.js'
-// import { element } from './modules/element.js'
+import { element } from './modules/element.js'
 import { select } from './modules/selectYear.js'
-import { chart } from './modules/chart.js'
 
 (async () => {
   try {
     const json = await data.get.sessions()
     const sessions = data.sortByDate(json)
     const gear = await data.get.gear()
-    const years = data.get.years(sessions)
+    const sessionAmount = document.getElementById('session-amount')
 
-    select.year.addOptions(years)
+    const chart = new BarChart(sessions, gear)
 
-    const filteredSessions = data.filter.year(sessions, years[years.length - 1])
+    chart.init()
 
-    const labels = data.parse.months(filteredSessions)
-    const dataset = data.parse.sessions(filteredSessions, gear)
+    console.log(chart.chart.data.datasets)
 
-    document.getElementById('session-amount').textContent = sessions.length
+    sessionAmount.textContent = chart.sessionAmount
 
-    const graph = chart.render(dataset, labels)
+    select.year.addOptions(chart.years, e => {
+      const year = e.target.value
 
-    console.log(graph)
+      chart.update(year)
+
+      sessionAmount.textContent = chart.sessionAmount
+    })
   } catch (err) {
     console.error(err)
+
+    const main = document.getElementsByTagName('main')[0]
+    const p = element.paragraph('Something went wrong..')
+
+    element.update(main, p)
   }
 })()
-
-    // const dataset = [{
-    //   label: 'Amount of sessions in a month',
-    //   data: parsedData.map(item => item.count),
-    //   // backgroundColor: [
-    //   //   'rgba(255, 99, 132, 0.2)',
-    //   //   'rgba(54, 162, 235, 0.2)',
-    //   //   'rgba(255, 206, 86, 0.2)',
-    //   //   'rgba(75, 192, 192, 0.2)',
-    //   //   'rgba(153, 102, 255, 0.2)',
-    //   //   'rgba(255, 159, 64, 0.2)'
-    //   // ],
-    //   // borderColor: [
-    //   //   'rgba(255, 99, 132, 1)',
-    //   //   'rgba(54, 162, 235, 1)',
-    //   //   'rgba(255, 206, 86, 1)',
-    //   //   'rgba(75, 192, 192, 1)',
-    //   //   'rgba(153, 102, 255, 1)',
-    //   //   'rgba(255, 159, 64, 1)'
-    //   // ],
-    //   borderWidth: 1
-    // },
-    // {
-    //   label: 'Amount of sessions in a month',
-    //   data: parsedData.map(item => item.count),
-    //   backgroundColor: 'rgba(255, 99, 132, 0.2)',
-    //   // backgroundColor: [
-    //   //   'rgba(255, 99, 132, 0.2)',
-    //   //   'rgba(54, 162, 235, 0.2)',
-    //   //   'rgba(255, 206, 86, 0.2)',
-    //   //   'rgba(75, 192, 192, 0.2)',
-    //   //   'rgba(153, 102, 255, 0.2)',
-    //   //   'rgba(255, 159, 64, 0.2)'
-    //   // ],
-    //   // borderColor: [
-    //   //   'rgba(255, 99, 132, 1)',
-    //   //   'rgba(54, 162, 235, 1)',
-    //   //   'rgba(255, 206, 86, 1)',
-    //   //   'rgba(75, 192, 192, 1)',
-    //   //   'rgba(153, 102, 255, 1)',
-    //   //   'rgba(255, 159, 64, 1)'
-    //   // ],
-    //   borderWidth: 1
-    // }]

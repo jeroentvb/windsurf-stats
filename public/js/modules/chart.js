@@ -1,15 +1,13 @@
 /* global Chart */
 
-function render (dataset, labels) {
-  const ctx = document.getElementById('chart').getContext('2d')
+import { data } from './data.js'
 
-  const chart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels.map(month => month.name),
-      datasets: dataset
-    },
-    options: {
+export class BarChart {
+  constructor (data, gear) {
+    this.sessions = data
+    this.gear = gear
+
+    this.options = {
       legend: {
         display: false
       },
@@ -42,15 +40,58 @@ function render (dataset, labels) {
         }]
       }
     }
-  })
+  }
 
-  return chart
-}
+  init () {
+    this.years = data.get.years(this.sessions)
 
-function update (chart) {
-  
-}
+    const filteredSessions = data.filter.year(this.sessions, this.years[this.years.length - 1])
 
-export const chart = {
-  render
+    const labels = data.parse.months(filteredSessions).map(month => month.name)
+    const dataset = data.parse.sessions(filteredSessions, this.gear)
+
+    this.sessionAmount = filteredSessions.length
+
+    this.render(dataset, labels)
+  }
+
+  render (dataset, labels) {
+    const ctx = document.getElementById('chart').getContext('2d')
+
+    this.chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: dataset
+      },
+      options: this.options
+    })
+  }
+
+  update (year) {
+    let dataset
+    let labels
+    let filteredData
+
+    if (year === 'all') {
+      dataset = data.parse.sessions(this.sessions, this.gear)
+      labels = data.parse.months(this.sessions).map(item => item.name)
+    } else {
+      filteredData = data.filter.year(this.sessions, year)
+      dataset = data.parse.sessions(filteredData, this.gear)
+      labels = data.parse.months(filteredData).map(item => item.name)
+    }
+
+    this.sessionAmount = filteredData ? filteredData.length : this.sessions.length
+
+    this.chart.data.labels.pop()
+    this.chart.data.datasets.forEach(dataset => {
+      dataset.data.pop()
+    })
+
+    this.chart.data.labels = labels
+    this.chart.data.datasets = dataset
+
+    this.chart.update()
+  }
 }
