@@ -15,8 +15,6 @@ import { select } from './modules/selectYear.js'
 
     chart.init()
 
-    console.log(chart.chart.data.datasets)
-
     sessionAmount.textContent = chart.sessionAmount
 
     select.year.addOptions(chart.years, e => {

@@ -174,6 +174,15 @@ const parse = {
       '#7C5547' // brown
     ]
 
+    // Populate the dataset with empty days
+    for (let i = 0; i < 31; i++) {
+      dataset.push({
+        data: [],
+        sessions: [],
+        backgroundColor: []
+      })
+    }
+
     sessions = data.sortByDate(sessions)
 
     sessions.forEach((session, i) => {
@@ -182,11 +191,11 @@ const parse = {
       if (i === 0) {
         const itemColor = colors[gear.sails.indexOf(session.sailSize.toString())] ? colors[gear.sails.indexOf(session.sailSize.toString())] : ''
 
-        dataset.push({
+        dataset[0] = {
           data: [1],
           sessions: [session],
           backgroundColor: [itemColor]
-        })
+        }
 
         lastMonth = sessionMonth
 
@@ -196,17 +205,9 @@ const parse = {
       if (sessionMonth === lastMonth) {
         const itemColor = colors[gear.sails.indexOf(session.sailSize.toString())] ? colors[gear.sails.indexOf(session.sailSize.toString())] : ''
 
-        if (dataset[index]) {
-          dataset[index].data.push(1)
-          dataset[index].sessions.push(session)
-          dataset[index].backgroundColor.push(itemColor)
-        } else {
-          dataset[index] = {
-            data: [1],
-            sessions: [session],
-            backgroundColor: [itemColor]
-          }
-        }
+        dataset[index].data.push(1)
+        dataset[index].sessions.push(session)
+        dataset[index].backgroundColor.push(itemColor)
 
         index++
 
