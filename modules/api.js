@@ -1,5 +1,7 @@
 const db = require('./db')
 const render = require('./render')
+const Json2csvParser = require('json2csv').Parser
+const helper = require('jeroentvb-helper')
 
 async function sessions (req, res) {
   const username = req.query.user
@@ -75,9 +77,62 @@ async function gear (req, res) {
   }
 }
 
+async function downloadSessions (req, res) {
+  const type = req.query.type
+
+  if (!type) {
+    res.render('error', {
+      page: 'Error',
+      msg: 'Invalid url'
+    })
+
+    return
+  }
+
+  try {
+    const sessions = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+
+    sessions.forEach(session => {
+      delete session.statisticId
+      delete session.userId
+    })
+
+    if (type === 'csv') {
+      const fields = [
+        'date',
+        'spot',
+        'windspeed',
+        'windgust',
+        'wind direction',
+        'sail',
+        'board',
+        'rating',
+        'note'
+      ]
+
+      const json2csvParser = new Json2csvParser({ fields, delimiter: ';' })
+      const csv = json2csvParser.parse(sessions)
+
+      res.setHeader('Content-Type', 'text/csv')
+      res.setHeader('Content-Disposition', `attachment; filename="${req.session.user.name}-windsurf-stats-${Date.now()}.csv`)
+      res.send(csv)
+    } else if (type === 'json') {
+      res.setHeader('Content-Type', 'application/json')
+      res.setHeader('Content-Disposition', `attachment; filename="${req.session.user.name}-windsurf-stats-${Date.now()}.json`)
+      res.send(helper.stringify(sessions))
+    }
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
+}
+
 module.exports = {
   send: {
     sessions,
     gear
+  },
+  download: {
+    sessions: downloadSessions
   }
 }

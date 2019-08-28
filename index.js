@@ -48,7 +48,9 @@ module.exports = express()
 
   .get('/', render.statistics)
   .get('/statistics', render.statistics)
+  .get('/all-stats', render.allStatistics)
   .get('/api/gear', api.send.gear)
+  .get('/download-sessions', api.download.sessions)
 
   .get('/api/sessions', api.send.sessions)
 
