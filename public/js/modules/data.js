@@ -298,6 +298,45 @@ const parse = {
     })
 
     return dataset
+  },
+  usage: (data, type) => {
+    let array = []
+    data.forEach((session, i) => {
+      var exists = false
+      if (i === 0) {
+        array.push({
+          name: session[type],
+          count: 1
+        })
+        return
+      }
+
+      array.forEach(item => {
+        if (item.name === session[type]) {
+          item.count++
+          exists = true
+        }
+      })
+
+      if (exists === false) {
+        array.push({
+          name: session[type],
+          count: 1
+        })
+      }
+    })
+
+    if (type === 'sailSize') {
+      array.sort((a, b) => {
+        return a.name - b.name
+      })
+    } else {
+      array.sort((a, b) => {
+        return b.count - a.count
+      })
+    }
+
+    return array
   }
 }
 

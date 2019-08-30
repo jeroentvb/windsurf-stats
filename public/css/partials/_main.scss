@@ -2,7 +2,7 @@ main {
   padding: 1rem;
 
   @media (min-width: $breakpoint-small) {
-    padding: 1rem 3rem;
+    padding: 1rem 3rem 3rem 3rem;
   }
 }
 
@@ -73,5 +73,18 @@ main {
 
   button {
     margin-bottom: 1rem;
+  }
+}
+
+canvas {
+  margin-bottom: 3rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  th, td {
+    border: 1px solid $color-primary;
+    padding: 8px;
   }
 }

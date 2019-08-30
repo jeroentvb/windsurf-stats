@@ -20,6 +20,20 @@ function statistics (req, res) {
   })
 }
 
+async function allStatistics (req, res) {
+  try {
+    const sessions = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+
+    res.render('all-statistics', {
+      page: 'All statistics',
+      sessions: sessions
+    })
+  } catch (err) {
+    console.error(err)
+    unexpectedError(res)
+  }
+}
+
 async function addSession (req, res) {
   try {
     const gear = await db.query('SELECT * FROM windsurfStatistics.gear WHERE userId = ?', req.session.user.id)
@@ -158,6 +172,7 @@ module.exports = {
   login,
   register,
   statistics,
+  allStatistics,
   addSession,
   gear,
   account,

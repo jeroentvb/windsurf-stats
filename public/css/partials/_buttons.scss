@@ -3,6 +3,7 @@ button, .button {
   color: #fff;
   border: none;
   transition: 0.2s;
+  text-decoration: none;
 
   &:hover {
     background-color: $color-primary-dark;

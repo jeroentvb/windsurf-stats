@@ -4,10 +4,22 @@
 
 <main class="main--medium">
   <section>
-    <p>Amount of sessions: <span id="session-amount">0</span></p>
+    <form>
+      <fieldset>
+        <div class="field field--first">
+          <label for="select-chart">Select different dataset</label>
+          <select name="select-chart" id="select-chart">
+            <option value="sessions" selected>Amount of sessions</option>
+            <option value="sail">Sail usage</option>
+            <option value="board">Board usage</option>
+            <option value="spot">Spot visits</option>
+          </select>
+        </div>
+      </fieldset>
+    </form>
   </section>
 
-  <section>
+  <section id="chart-section">
     <form>
       <fieldset>
         <div class="field field--first">
@@ -17,12 +29,21 @@
       </fieldset>
     </form>
 
+    <p>Amount of sessions: <span id="session-amount">0</span></p>
+
     <canvas id="chart">
         <p>A chart will be rendered in here</p>
       </canvas>
   </section>
+
+  <section>
+    <a href="/all-stats" class="button button--small">All statistics</a>
+    <button id="download-csv" class="button--small" type="button" name="button">Download csv</button>
+    <button id="download-json" class="button--small" type="button" name="button">Download json</button>
+  </section>
 </main>
 
+<script src="./js/download.js"></script>
 <script src="./js/Chart.bundle.min.js"></script>
 <script src="./js/statistics.js" type="module"></script>
 

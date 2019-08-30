@@ -3,8 +3,8 @@
 import { data } from './data.js'
 
 export class BarChart {
-  constructor (data, gear) {
-    this.sessions = data
+  constructor (sessions, gear) {
+    this.sessions = sessions
     this.gear = gear
 
     this.options = {
@@ -40,23 +40,12 @@ export class BarChart {
         }]
       }
     }
-  }
 
-  init () {
-    this.years = data.get.years(this.sessions)
-
-    const filteredSessions = data.filter.year(this.sessions, this.years[this.years.length - 1])
-
-    const labels = data.parse.months(filteredSessions).map(month => month.name)
-    const dataset = data.parse.sessions(filteredSessions, this.gear)
-
-    this.sessionAmount = filteredSessions.length
-
-    this.render(dataset, labels)
+    this.canvas = document.getElementById('chart')
   }
 
   render (dataset, labels) {
-    const ctx = document.getElementById('chart').getContext('2d')
+    const ctx = this.canvas.getContext('2d')
 
     this.chart = new Chart(ctx, {
       type: 'bar',
@@ -93,5 +82,58 @@ export class BarChart {
     this.chart.data.datasets = dataset
 
     this.chart.update()
+  }
+
+  destroy () {
+    this.chart.destroy()
+  }
+}
+
+export class DoughnutChart {
+  constructor () {
+    this.canvas = document.getElementById('chart')
+
+    this.options = {
+      tooltips: {
+        custom: tooltip => {
+          if (!tooltip) return
+          tooltip.displayColors = false
+        },
+        callbacks: {
+          label: (tooltipItem, data) => {
+            return `${data.labels[tooltipItem.index]}: ${data.datasets[0].data[tooltipItem.index]}x`
+          }
+        }
+      }
+    }
+  }
+
+  render (dataset, labels) {
+    const ctx = this.canvas.getContext('2d')
+
+    this.chart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: dataset
+      },
+      options: this.options
+    })
+  }
+
+  update (dataset, labels) {
+    this.chart.data.labels.pop()
+    this.chart.data.datasets.forEach(dataset => {
+      dataset.data.pop()
+    })
+
+    this.chart.data.labels = labels
+    this.chart.data.datasets = dataset
+
+    this.chart.update()
+  }
+
+  destroy () {
+    this.chart.destroy()
   }
 }
