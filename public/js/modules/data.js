@@ -22,6 +22,8 @@ const get = {
     return new Promise((resolve, reject) => {
       fetch(url)
         .then(res => res.json())
+        // TODO: This filter belongs smoewhere else and should be dynamic/configurable
+        .then(data => data.filter(session => session.rating >= 5.5))
         .then(data => resolve(data))
         .catch(err => reject(err))
     })
