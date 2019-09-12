@@ -1,1 +1,424 @@
-input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}*{box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}body{font-family:"system-ui",sans-serif;width:100%;background-color:#f2f1f5;margin:0}.hidden{display:none !important}.error{border:1px solid red !important}@keyframes showmenu{from{right:-55%}to{right:-2px}}@keyframes hidemenu{from{right:-2px}to{right:-55%}}.show-menu{animation:.5s forwards showmenu}.hide-menu{animation:.5s forwards hidemenu}button,.button{background-color:#0076ff;color:#fff;border:none;transition:.2s;text-decoration:none}button:hover,.button:hover{background-color:#1b34b2;cursor:pointer}button--submit,.button--submit{padding:16px 24px;border-radius:4px;font-size:1rem;width:100%}button--medium,.button--medium{width:50%;padding:16px 24px;border-radius:4px;font-size:1rem;display:block}button--small,.button--small{width:auto;padding:16px 24px;border-radius:4px;font-size:1rem}button--large,.button--large{width:100%;padding:16px 24px;border-radius:4px;font-size:1rem;display:block}header{background-color:#fff;padding:1rem}header nav{display:flex;flex-direction:row;align-items:center}header nav h1{margin:0;flex-grow:1}header nav img{width:2em;height:2em}header nav img:hover{cursor:pointer}header nav ul{list-style-type:none;padding:0;position:fixed;background-color:#fff;padding:1em 2em 2em 2em;right:-55%;top:0;min-width:200px;max-width:300px;width:50%;text-align:right;height:100%;margin:0;z-index:1000}header nav ul li:nth-child(2){font-size:1.5em;font-weight:600;margin:.8rem 0}header nav ul li a{text-decoration:none;color:#000;transition:.2s}header nav ul li a:hover,header nav ul li a:active{color:#0076ff}@media(min-width: 767px){header nav #open-menu,header nav #close-menu{display:none}header nav ul{position:inherit;display:flex;flex-direction:row;width:auto;min-width:inherit;max-width:inherit;padding:0}header nav ul li{margin-left:1rem}header nav ul li:nth-child(2){display:none}}@media(min-width: 767px){header{margin-bottom:2rem}}main{padding:1rem}@media(min-width: 767px){main{padding:1rem 3rem 3rem 3rem}}@media(min-width: 767px){.main--small{width:50%;margin:0 auto}}@media(min-width: 1300px){.main--medium{width:75%;margin:0 auto}}@media(min-width: 767px){.main--account{display:grid;grid-template-columns:1fr 1fr;grid-column-gap:4rem}}.main--account section button{margin:.5rem 0}.main--account section:nth-child(1){grid-column:1/1}.main--account section:nth-child(2){grid-column:2/2}.main--account section .buttons{display:flex;flex-direction:column}@media(min-width: 767px){.main--account section .buttons{flex-direction:row}.main--account section .buttons button{margin-right:1rem;width:50%}}.row{display:flex;flex-direction:row}.row p:first-of-type{width:30%}.account-buttons{display:flex;flex-direction:column}.account-buttons button{margin-bottom:1rem}canvas{margin-bottom:3rem}table{border-collapse:collapse;width:100%}table th,table td{border:1px solid #0076ff;padding:8px}form fieldset{border:none;display:flex;flex-direction:column;background-color:#fff;margin:0 -18px 2rem -18px;padding:0 18px}form fieldset.fieldset__textarea label{margin-bottom:1rem}form fieldset.fieldset--no-margin{margin-bottom:1rem}form fieldset.fieldset--transparent{background-color:transparent}form fieldset h2,form fieldset .help-message{background-color:#f2f1f5;margin:0 -18px 0 -18px;padding:1rem 18px}form fieldset .field{display:flex;flex-direction:row;align-items:center;border-top:1px solid #bebebe}form fieldset .field--first{border:none}form fieldset .field label{width:30%;margin:.5rem 0}form fieldset .field input,form fieldset .field select{width:70%;font-size:1rem;border:none;background-color:transparent;border-radius:0;padding:16px 18px}form fieldset .field input:focus,form fieldset .field select:focus{outline-color:#0076ff}@media(min-width: 767px){form fieldset .field input,form fieldset .field select{background-color:#fff;padding:4px;width:80%;border-radius:4px}}@media(min-width: 767px){form fieldset .field{border:none}}form fieldset .radio-container{display:flex;flex-direction:row;padding-bottom:1rem}form fieldset .radio-container input[type=radio]{display:none}form fieldset .radio-container input[type=radio]:checked+label{background-color:#0076ff;color:#fff}form fieldset .radio-container input[type=radio]:disabled+label{color:#a2a2a7}form fieldset .radio-container input[type=radio]+label:hover{cursor:pointer}form fieldset .radio-container label{width:50%;text-align:center;padding:6px;color:#0076ff;border:1px solid #0076ff;transition:.2s}form fieldset .radio-container label:nth-of-type(1){border-radius:4px 0 0 4px}form fieldset .radio-container label:nth-of-type(2){border-radius:0 4px 4px 0}form fieldset textarea{width:100%;resize:none;border-radius:4px;border:1px solid #bebebe;background-color:#fff;padding:1rem;font-size:1rem;font-family:"system-ui",sans-serif}form fieldset textarea:focus{outline-color:#0076ff}form fieldset .add-sail{margin:1rem 0}@media(min-width: 767px){form fieldset{background-color:transparent}}@media(min-width: 767px){.form--gear{display:grid;grid-template-columns:1fr 1fr;grid-column-gap:4rem}.form--gear fieldset:nth-child(odd){grid-column:1/1}.form--gear fieldset:nth-child(even){grid-column:2/2}.form--gear fieldset#gear-sails{grid-row:1/3}.form--gear fieldset.submit-form{grid-column:1/3}.form--gear .add-sail{margin-top:1rem}}@media(min-width: 767px){.form--add-session{display:grid;grid-template-columns:1fr 1fr;grid-column-gap:4rem}.form--add-session fieldset:nth-child(2){grid-column:1/1}.form--add-session fieldset:nth-child(3){grid-column:1/1}.form--add-session fieldset:nth-child(4){grid-column:2/2;grid-row:2/2}.form--add-session fieldset.submit-form{grid-column:1/3}}@media(min-width: 767px){.form--confirm-session{display:grid;grid-template-columns:1fr 1fr;grid-column-gap:4rem}.form--confirm-session fieldset:nth-child(2){grid-column:1/1}.form--confirm-session fieldset:nth-child(3){grid-column:2/2;grid-row:1/1}.form--confirm-session fieldset:nth-child(4){grid-column:2/2}.form--confirm-session fieldset.submit-form{grid-column:1/3}}/*# sourceMappingURL=styles.css.map */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "system-ui", sans-serif;
+  width: 100%;
+  background-color: #f2f1f5;
+  margin: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.error {
+  border: 1px solid red !important;
+}
+
+@keyframes showmenu {
+  from {
+    right: -55%;
+  }
+  to {
+    right: -2px;
+  }
+}
+@keyframes hidemenu {
+  from {
+    right: -2px;
+  }
+  to {
+    right: -55%;
+  }
+}
+.show-menu {
+  animation: 0.5s forwards showmenu;
+}
+
+.hide-menu {
+  animation: 0.5s forwards hidemenu;
+}
+
+button, .button {
+  background-color: #0076FF;
+  color: #fff;
+  border: none;
+  transition: 0.2s;
+  text-decoration: none;
+}
+button:hover, .button:hover {
+  background-color: #1B34B2;
+  cursor: pointer;
+}
+button--submit, .button--submit {
+  padding: 16px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+  width: 100%;
+}
+button--medium, .button--medium {
+  width: 50%;
+  padding: 16px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+  display: block;
+}
+button--small, .button--small {
+  width: auto;
+  padding: 16px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+button--large, .button--large {
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: 4px;
+  font-size: 1rem;
+  display: block;
+}
+
+header {
+  background-color: #fff;
+  padding: 1rem;
+}
+header nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+header nav h1 {
+  margin: 0;
+  flex-grow: 1;
+}
+header nav img {
+  width: 2em;
+  height: 2em;
+}
+header nav img:hover {
+  cursor: pointer;
+}
+header nav ul {
+  list-style-type: none;
+  padding: 0;
+  position: fixed;
+  background-color: #fff;
+  padding: 1em 2em 2em 2em;
+  right: -55%;
+  top: 0;
+  min-width: 200px;
+  max-width: 300px;
+  width: 50%;
+  text-align: right;
+  height: 100%;
+  margin: 0;
+  z-index: 1000;
+}
+header nav ul li:nth-child(2) {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin: 0.8rem 0;
+}
+header nav ul li a {
+  text-decoration: none;
+  color: #000;
+  transition: 0.2s;
+}
+header nav ul li a:hover, header nav ul li a:active {
+  color: #0076FF;
+}
+@media (min-width: 767px) {
+  header nav #open-menu, header nav #close-menu {
+    display: none;
+  }
+  header nav ul {
+    position: inherit;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    min-width: inherit;
+    max-width: inherit;
+    padding: 0;
+  }
+  header nav ul li {
+    margin-left: 1rem;
+  }
+  header nav ul li:nth-child(2) {
+    display: none;
+  }
+}
+@media (min-width: 767px) {
+  header {
+    margin-bottom: 2rem;
+  }
+}
+
+main {
+  padding: 1rem;
+}
+@media (min-width: 767px) {
+  main {
+    padding: 1rem 3rem 3rem 3rem;
+  }
+}
+
+@media (min-width: 767px) {
+  .main--small {
+    width: 50%;
+    margin: 0 auto;
+  }
+}
+@media (min-width: 1300px) {
+  .main--medium {
+    width: 75%;
+    margin: 0 auto;
+  }
+}
+@media (min-width: 767px) {
+  .main--account {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 4rem;
+  }
+}
+.main--account section button {
+  margin: 0.5rem 0;
+}
+.main--account section:nth-child(1) {
+  grid-column: 1/1;
+}
+.main--account section:nth-child(2) {
+  grid-column: 2/2;
+}
+.main--account section .buttons {
+  display: flex;
+  flex-direction: column;
+}
+@media (min-width: 767px) {
+  .main--account section .buttons {
+    flex-direction: row;
+  }
+  .main--account section .buttons button {
+    margin-right: 1rem;
+    width: 50%;
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.row p:first-of-type {
+  width: 30%;
+}
+
+.account-buttons {
+  display: flex;
+  flex-direction: column;
+}
+.account-buttons button {
+  margin-bottom: 1rem;
+}
+
+canvas {
+  margin-bottom: 3rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+table th, table td {
+  border: 1px solid #0076FF;
+  padding: 8px;
+}
+
+form fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  margin: 0 -18px 2rem -18px;
+  padding: 0 18px;
+}
+form fieldset.fieldset__textarea label {
+  margin-bottom: 1rem;
+}
+form fieldset.fieldset--no-margin {
+  margin-bottom: 1rem;
+}
+form fieldset.fieldset--transparent {
+  background-color: transparent;
+}
+form fieldset h2, form fieldset .help-message {
+  background-color: #f2f1f5;
+  margin: 0 -18px 0 -18px;
+  padding: 1rem 18px;
+}
+form fieldset .field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-top: 1px solid #bebebe;
+}
+form fieldset .field--first {
+  border: none;
+}
+form fieldset .field label {
+  width: 30%;
+  margin: 0.5rem 0;
+}
+form fieldset .field input, form fieldset .field select {
+  width: 70%;
+  font-size: 1rem;
+  border: none;
+  background-color: transparent;
+  border-radius: 0;
+  padding: 16px 18px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+form fieldset .field input:focus, form fieldset .field select:focus {
+  outline-color: #0076FF;
+}
+@media (min-width: 767px) {
+  form fieldset .field input, form fieldset .field select {
+    background-color: #fff;
+    padding: 4px;
+    width: 80%;
+    border-radius: 4px;
+  }
+}
+@media (min-width: 767px) {
+  form fieldset .field {
+    border: none;
+  }
+}
+form fieldset .radio-container {
+  display: flex;
+  flex-direction: row;
+  padding-bottom: 1rem;
+}
+form fieldset .radio-container input[type=radio] {
+  display: none;
+}
+form fieldset .radio-container input[type=radio]:checked + label {
+  background-color: #0076FF;
+  color: #fff;
+}
+form fieldset .radio-container input[type=radio]:disabled + label {
+  color: #a2a2a7;
+}
+form fieldset .radio-container input[type=radio] + label:hover {
+  cursor: pointer;
+}
+form fieldset .radio-container label {
+  width: 50%;
+  text-align: center;
+  padding: 6px;
+  color: #0076FF;
+  border: 1px solid #0076FF;
+  transition: 0.2s;
+}
+form fieldset .radio-container label:nth-of-type(1) {
+  border-radius: 4px 0 0 4px;
+}
+form fieldset .radio-container label:nth-of-type(2) {
+  border-radius: 0 4px 4px 0;
+}
+form fieldset textarea {
+  width: 100%;
+  resize: none;
+  border-radius: 4px;
+  border: 1px solid #bebebe;
+  background-color: #fff;
+  padding: 1rem;
+  font-size: 1rem;
+  font-family: "system-ui", sans-serif;
+}
+form fieldset textarea:focus {
+  outline-color: #0076FF;
+}
+form fieldset .add-sail {
+  margin: 1rem 0;
+}
+@media (min-width: 767px) {
+  form fieldset {
+    background-color: transparent;
+  }
+}
+
+@media (min-width: 767px) {
+  .form--gear {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 4rem;
+  }
+  .form--gear fieldset:nth-child(odd) {
+    grid-column: 1/1;
+  }
+  .form--gear fieldset:nth-child(even) {
+    grid-column: 2/2;
+  }
+  .form--gear fieldset#gear-sails {
+    grid-row: 1/3;
+  }
+  .form--gear fieldset.submit-form {
+    grid-column: 1/3;
+  }
+  .form--gear .add-sail {
+    margin-top: 1rem;
+  }
+}
+@media (min-width: 767px) {
+  .form--add-session {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 4rem;
+  }
+  .form--add-session fieldset:nth-child(2) {
+    grid-column: 1/1;
+  }
+  .form--add-session fieldset:nth-child(3) {
+    grid-column: 1/1;
+  }
+  .form--add-session fieldset:nth-child(4) {
+    grid-column: 2/2;
+    grid-row: 2/2;
+  }
+  .form--add-session fieldset.submit-form {
+    grid-column: 1/3;
+  }
+}
+@media (min-width: 767px) {
+  .form--confirm-session {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 4rem;
+  }
+  .form--confirm-session fieldset:nth-child(2) {
+    grid-column: 1/1;
+  }
+  .form--confirm-session fieldset:nth-child(3) {
+    grid-column: 2/2;
+    grid-row: 1/1;
+  }
+  .form--confirm-session fieldset:nth-child(4) {
+    grid-column: 2/2;
+  }
+  .form--confirm-session fieldset.submit-form {
+    grid-column: 1/3;
+  }
+}
+
+/*# sourceMappingURL=styles.css.map */

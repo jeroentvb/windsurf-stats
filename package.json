@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "setupdb": "node modules/setupDb.js",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "css:watch": "cd public/css && sass --watch styles.scss:styles.css"
   },
   "keywords": [
     "windsurf",
