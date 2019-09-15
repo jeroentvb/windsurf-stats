@@ -18,6 +18,27 @@ function paragraph (content) {
   return p
 }
 
+function heading (headingType, content) {
+  const headings = [
+    'h1',
+    'h2',
+    'h3',
+    'h4',
+    'h5',
+    'h6'
+  ]
+
+  if (headings.indexOf(headingType) === -1) throw new Error('"headingType" must be a heading')
+  if (!content) console.warn('No content given!')
+
+  const heading = document.createElement(headingType)
+  const text = document.createTextNode(content)
+
+  heading.appendChild(text)
+
+  return heading
+}
+
 function button (content, cssClass) {
   if (!content) console.warn('No content given!')
 
@@ -78,6 +99,7 @@ function appendChildren (el, elements) {
 export const element = {
   create,
   paragraph,
+  heading,
   button,
   image,
   text,

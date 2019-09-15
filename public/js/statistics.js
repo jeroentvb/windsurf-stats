@@ -28,6 +28,11 @@ const colors = [
     const years = data.get.years(sessions)
     const filteredSessions = data.filter.year(sessions, years[years.length - 1])
 
+    if (filteredSessions.length === 0) {
+      renderZeroState()
+      return
+    }
+
     const labels = data.parse.months(filteredSessions).map(month => month.name)
     const sessionsDataset = data.parse.sessions(filteredSessions, gear)
     const usage = {
@@ -83,3 +88,12 @@ const colors = [
     element.update(main, p)
   }
 })()
+
+function renderZeroState () {
+  const main = document.getElementsByTagName('main')[0]
+
+  element.removeChildren(main)
+  const h1 = element.heading('h7', 'You don\'t have any sessions yet. Go hang loose!')
+
+  main.appendChild(h1)
+}

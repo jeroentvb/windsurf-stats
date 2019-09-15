@@ -101,7 +101,7 @@ export class DoughnutChart {
         },
         callbacks: {
           label: (tooltipItem, data) => {
-            return `${data.labels[tooltipItem.index]}: ${data.datasets[0].data[tooltipItem.index]}x`
+            return `${data.labels[tooltipItem.index]}m2 usage: ${data.datasets[0].data[tooltipItem.index]}x`
           }
         }
       }
