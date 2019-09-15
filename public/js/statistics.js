@@ -93,7 +93,7 @@ function renderZeroState () {
   const main = document.getElementsByTagName('main')[0]
 
   element.removeChildren(main)
-  const h1 = element.heading('h7', 'You don\'t have any sessions yet. Go hang loose!')
+  const h1 = element.heading('h2', 'You don\'t have any sessions yet. Go hang loose!')
 
   main.appendChild(h1)
 }
