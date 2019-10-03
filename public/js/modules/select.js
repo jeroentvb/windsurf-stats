@@ -7,7 +7,7 @@ export const select = {
       })
 
       select.year.input.appendChild(select.createOption('all'))
-      select.year.input.selectedIndex = years.length - 1
+      select.year.input.selectedIndex = years.length
 
       select.year.input.addEventListener('change', e => {
         callback(e)

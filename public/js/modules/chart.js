@@ -2,6 +2,82 @@
 
 import { data } from './data.js'
 
+export class Graph {
+  constructor (dataset) {
+    this.sessions = dataset.sessions
+    this.gear = dataset.gear
+    this.labels = dataset.labels
+
+    this.canvas = document.getElementById('chart')
+    this.ctx = this.canvas.getContext('2d')
+
+    this.options = {
+      legend: {
+        display: false
+      },
+      tooltips: {
+        custom: tooltip => {
+          if (!tooltip) return
+          tooltip.displayColors = false
+        },
+        callbacks: {
+          label: (tooltipItem, data) => {
+            const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
+
+            return `Date: ${session.date} Sail: ${session.sailSize}`
+          },
+          title: (tooltipItem, data) => {
+
+          }
+        }
+      },
+      scales: {
+        xAxes: [{
+          stacked: true
+        }],
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+            precision: 0
+          },
+          stacked: true
+        }]
+      }
+    }
+  }
+
+  render () {
+    console.log(this.labels)
+    this.chart = new Chart(this.ctx, {
+      type: 'bar',
+      data: {
+        labels: this.labels.all,
+        datasets: this.sessions.all
+      },
+      options: this.options
+    })
+  }
+
+  changeYear (year) {
+    // const dataset = this.sessions[year]
+    // const labels = this.labels[year]
+
+    this.sessionAmount = this.sessions[year].length
+
+    this.chart.data.labels.pop()
+    this.chart.data.datasets.forEach(dataset => {
+      dataset.data.pop()
+    })
+
+    console.log(this.chart.data)
+
+    this.chart.data.labels = this.labels[year].map(label => label)
+    this.chart.data.datasets = this.sessions[year]
+
+    this.chart.update()
+  }
+}
+
 export class BarChart {
   constructor (sessions, gear) {
     this.sessions = sessions
