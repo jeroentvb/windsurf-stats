@@ -1,99 +1,60 @@
-// import { chart } from './modules/chart.js'
-import { BarChart, DoughnutChart } from './modules/chart.js'
 import { data } from './modules/data.js'
-import { element } from './modules/element.js'
-import { select } from './modules/selectYear.js'
+import { Graph } from './modules/chart.js'
+import { select } from './modules/select.js'
 
-const selectChart = document.getElementById('select-chart')
-const colors = [
-  '#ff3e30', // red
-  '#ff930f', // orange
-  '#ffe626', // yellow
-  '#45ff24', // green
-  '#009888', // teal
-  '#00BCD9', // cyan
-  '#3d61ff', // blue
-  '#4B0082', // deep purple
-  '#9400D3', // purple
-  '#7C5547' // brown
-];
+async function init () {
+  // Get the data and createthe dataset object
+  const json = await data.get.sessions()
+  const sessions = data.sortByDate(json)
+  const gear = await data.get.gear()
+  const sessionAmount = document.getElementById('session-amount')
 
-(async () => {
-  try {
-    const json = await data.get.sessions()
-    const sessions = data.sortByDate(json)
-    const gear = await data.get.gear()
-    const sessionAmount = document.getElementById('session-amount')
-
-    const years = data.get.years(sessions)
-    const filteredSessions = data.filter.year(sessions, years[years.length - 1])
-
-    if (filteredSessions.length === 0) {
-      renderZeroState()
-      return
-    }
-
-    const labels = data.parse.months(filteredSessions).map(month => month.name)
-    const sessionsDataset = data.parse.sessions(filteredSessions, gear)
-    const usage = {
-      sail: data.parse.usage(filteredSessions, 'sailSize'),
-      board: data.parse.usage(filteredSessions, 'board'),
-      spot: data.parse.usage(filteredSessions, 'spot')
-    }
-
-    const barChart = new BarChart(sessions, gear)
-    const doughnutChart = new DoughnutChart()
-
-    barChart.render(sessionsDataset, labels)
-    sessionAmount.textContent = filteredSessions.length
-
-    select.year.addOptions(years, e => {
-      const year = e.target.value
-
-      barChart.update(year)
-      sessionAmount.textContent = barChart.sessionAmount
-    })
-
-    selectChart.addEventListener('change', e => {
-      const chartType = e.target.value
-
-      if (chartType === 'sessions') {
-        doughnutChart.destroy()
-
-        barChart.render(sessionsDataset, labels, 'bar')
-      } else {
-        if (barChart.chart.canvas !== null) {
-          barChart.destroy()
-
-          doughnutChart.render([{
-            data: usage[chartType].map(item => item.count),
-            backgroundColor: colors
-          }],
-          usage[chartType].map(item => item.name))
-        } else {
-          doughnutChart.update([{
-            data: usage[chartType].map(item => item.count),
-            backgroundColor: colors
-          }],
-          usage[chartType].map(item => item.name))
-        }
-      }
-    })
-  } catch (err) {
-    console.error(err)
-
-    const main = document.getElementsByTagName('main')[0]
-    const p = element.paragraph('Something went wrong..')
-
-    element.update(main, p)
+  // Construct the (partially filled) dataset object
+  const dataset = {
+    sessions: {
+      all: data.parse.sessions(sessions, gear)
+    },
+    sails: {
+      all: data.parse.usage(sessions, 'sailSize')
+    },
+    boards: {
+      all: data.parse.usage(sessions, 'board')
+    },
+    spots: {
+      all: data.parse.usage(sessions, 'spot')
+    },
+    labels: {
+      all: data.parse.months(sessions).map(label => label.name)
+    },
+    gear,
+    years: data.get.years(sessions)
   }
-})()
 
-function renderZeroState () {
-  const main = document.getElementsByTagName('main')[0]
+  // Add all statistics for every year
+  dataset.years.forEach(year => {
+    const filteredSessions = data.filter.year(sessions, year)
 
-  element.removeChildren(main)
-  const h1 = element.heading('h2', 'You don\'t have any sessions yet. Go hang loose!')
+    dataset.sessions[year] = data.parse.sessions(filteredSessions, gear)
+    dataset.labels[year] = data.parse.months(filteredSessions).map(label => label.name)
+    dataset.sails[year] = data.parse.usage(filteredSessions, 'sailSize')
+    dataset.boards[year] = data.parse.usage(filteredSessions, 'board')
+    dataset.spots[year] = data.parse.usage(filteredSessions, 'spot')
+  })
 
-  main.appendChild(h1)
+  // Add selection options to switch to available years
+  select.year.addOptions(dataset.years, e => {
+    const year = e.target.value
+
+    chart.changeYear(year)
+  })
+
+  document.getElementById('select-chart').addEventListener('change', e => {
+    chart.render(e.target.value)
+  })
+
+  // render the chart
+  const chart = new Graph(dataset)
+  chart.render('sessions')
 }
+
+init()
