@@ -56,6 +56,10 @@ async function init () {
   })
 
   document.getElementById('select-chart').addEventListener('change', e => {
+    chart.destroy()
+
+    select.year.input.value = 'all'
+
     chart.render(e.target.value)
   })
 

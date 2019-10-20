@@ -9,43 +9,6 @@ export class Graph {
     this.canvas = document.getElementById('chart')
     this.ctx = this.canvas.getContext('2d')
 
-    this.options = {
-      legend: {
-        display: false
-      },
-      tooltips: {
-        enabled: this.dataType === 'sessions' || this.dataType === undefined,
-        custom: tooltip => {
-          if (!tooltip) return
-          tooltip.displayColors = false
-        },
-        callbacks: {
-          label: (tooltipItem, data) => {
-            if (this.dataType === 'sessions' || this.dataType === undefined) {
-              const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
-
-              return `Date: ${session.date} Sail: ${session.sailSize}`
-            }
-          },
-          title: (tooltipItem, data) => {
-
-          }
-        }
-      },
-      scales: {
-        xAxes: [{
-          stacked: this.dataType === 'sessions' || this.dataType === undefined
-        }],
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            precision: 0
-          },
-          stacked: this.dataType === 'sessions' || this.dataType === undefined
-        }]
-      }
-    }
-
     this.colors = [
       '#ff3e30', // red
       '#ff930f', // orange
@@ -69,7 +32,42 @@ export class Graph {
         labels: this.getLabels('all'),
         datasets: this.getData('all')
       },
-      options: this.options
+      options: {
+        legend: {
+          display: false
+        },
+        tooltips: {
+          enabled: this.dataType === 'sessions' || this.dataType === undefined,
+          custom: tooltip => {
+            if (!tooltip) return
+            tooltip.displayColors = false
+          },
+          callbacks: {
+            label: (tooltipItem, data) => {
+              if (this.dataType === 'sessions' || this.dataType === undefined) {
+                const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
+  
+                return `Date: ${session.date} Sail: ${session.sailSize}`
+              }
+            },
+            title: (tooltipItem, data) => {
+  
+            }
+          }
+        },
+        scales: {
+          xAxes: [{
+            stacked: this.dataType === 'sessions' || this.dataType === undefined
+          }],
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              precision: 0
+            },
+            stacked: this.dataType === 'sessions' || this.dataType === undefined
+          }]
+        }
+      }
     })
   }
 
