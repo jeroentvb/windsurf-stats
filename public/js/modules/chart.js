@@ -4,27 +4,30 @@ import { data } from './data.js'
 
 export class Graph {
   constructor (dataset) {
-    this.sessions = dataset.sessions
-    this.gear = dataset.gear
-    this.labels = dataset.labels
+    this.dataset = dataset
 
     this.canvas = document.getElementById('chart')
     this.ctx = this.canvas.getContext('2d')
+
+    this.sessionAmount = document.getElementById('session-amount')
 
     this.options = {
       legend: {
         display: false
       },
       tooltips: {
+        enabled: this.dataType === 'sessions' || this.dataType === undefined,
         custom: tooltip => {
           if (!tooltip) return
           tooltip.displayColors = false
         },
         callbacks: {
           label: (tooltipItem, data) => {
-            const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
+            if (this.dataType === 'sessions' || this.dataType === undefined) {
+              const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
 
-            return `Date: ${session.date} Sail: ${session.sailSize}`
+              return `Date: ${session.date} Sail: ${session.sailSize}`
+            }
           },
           title: (tooltipItem, data) => {
 
@@ -33,48 +36,75 @@ export class Graph {
       },
       scales: {
         xAxes: [{
-          stacked: true
+          stacked: this.dataType === 'sessions' || this.dataType === undefined
         }],
         yAxes: [{
           ticks: {
             beginAtZero: true,
             precision: 0
           },
-          stacked: true
+          stacked: this.dataType === 'sessions' || this.dataType === undefined
         }]
       }
     }
+
+    this.colors = [
+      '#ff3e30', // red
+      '#ff930f', // orange
+      '#ffe626', // yellow
+      '#45ff24', // green
+      '#009888', // teal
+      '#00BCD9', // cyan
+      '#3d61ff', // blue
+      '#4B0082', // deep purple
+      '#9400D3', // purple
+      '#7C5547' // brown
+    ]
   }
 
-  render () {
-    console.log(this.labels)
+  render (dataType) {
+    this.dataType = dataType
+    this.sessionAmount.textContent = this.dataset.sessions.all.length
+
     this.chart = new Chart(this.ctx, {
       type: 'bar',
       data: {
-        labels: this.labels.all,
-        datasets: this.sessions.all
+        labels: this.getLabels('all'),
+        datasets: this.getData('all')
       },
       options: this.options
     })
   }
 
   changeYear (year) {
-    // const dataset = this.sessions[year]
-    // const labels = this.labels[year]
+    console.log(this.sessionAmount.textContent, this.dataset.sessions[year])
+    if (this.dataType === 'sessions') this.sessionAmount.textContent = this.dataset.sessions[year].length
 
-    this.sessionAmount = this.sessions[year].length
+    // Using .pop() removes the last item of the label array for some reason
+    // this.chart.data.labels.pop()
+    // this.chart.data.datasets.forEach(dataset => {
+    //   dataset.data.pop()
+    // })
 
-    this.chart.data.labels.pop()
-    this.chart.data.datasets.forEach(dataset => {
-      dataset.data.pop()
-    })
+    this.chart.data.labels = this.getLabels(year)
+    this.chart.data.datasets = this.getData(year)
 
-    console.log(this.chart.data)
+    this.chart.update(0)
+  }
 
-    this.chart.data.labels = this.labels[year].map(label => label)
-    this.chart.data.datasets = this.sessions[year]
+  destroy () {
+    this.chart.destroy()
+  }
 
-    this.chart.update()
+  getLabels (year) {
+    return this.dataType === 'sessions' ? this.dataset.labels[year] : this.dataset[this.dataType][year].map(x => x.name)
+  }
+
+  getData (year) {
+    return this.dataType === 'sessions' ? this.dataset[this.dataType][year] : [{
+      data: this.dataset[this.dataType][year].map(x => x.count),
+      backgroundColor: this.dataset[this.dataType][year].map((x, i) => this.colors[i])
+    }]
   }
 }
 
