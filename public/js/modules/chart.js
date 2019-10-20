@@ -46,12 +46,12 @@ export class Graph {
             label: (tooltipItem, data) => {
               if (this.dataType === 'sessions' || this.dataType === undefined) {
                 const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
-  
+
                 return `Date: ${session.date} Sail: ${session.sailSize}`
               }
             },
             title: (tooltipItem, data) => {
-  
+
             }
           }
         },
