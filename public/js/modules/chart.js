@@ -9,8 +9,6 @@ export class Graph {
     this.canvas = document.getElementById('chart')
     this.ctx = this.canvas.getContext('2d')
 
-    this.sessionAmount = document.getElementById('session-amount')
-
     this.options = {
       legend: {
         display: false
@@ -64,7 +62,6 @@ export class Graph {
 
   render (dataType) {
     this.dataType = dataType
-    this.sessionAmount.textContent = this.dataset.sessions.all.length
 
     this.chart = new Chart(this.ctx, {
       type: 'bar',
@@ -77,9 +74,6 @@ export class Graph {
   }
 
   changeYear (year) {
-    console.log(this.sessionAmount.textContent, this.dataset.sessions[year])
-    if (this.dataType === 'sessions') this.sessionAmount.textContent = this.dataset.sessions[year].length
-
     // Using .pop() removes the last item of the label array for some reason
     // this.chart.data.labels.pop()
     // this.chart.data.datasets.forEach(dataset => {

@@ -14,6 +14,9 @@ async function init () {
     sessions: {
       all: data.parse.sessions(sessions, gear)
     },
+    sessionAmounts: {
+      all: sessions.length
+    },
     sails: {
       all: data.parse.usage(sessions, 'sailSize')
     },
@@ -35,6 +38,9 @@ async function init () {
     const filteredSessions = data.filter.year(sessions, year)
 
     dataset.sessions[year] = data.parse.sessions(filteredSessions, gear)
+
+    dataset.sessionAmounts[year] = sessions.filter(session => session.date.includes(year)).length
+
     dataset.labels[year] = data.parse.months(filteredSessions).map(label => label.name)
     dataset.sails[year] = data.parse.usage(filteredSessions, 'sailSize')
     dataset.boards[year] = data.parse.usage(filteredSessions, 'board')
@@ -46,6 +52,7 @@ async function init () {
     const year = e.target.value
 
     chart.changeYear(year)
+    sessionAmount.textContent = dataset.sessionAmounts[year]
   })
 
   document.getElementById('select-chart').addEventListener('change', e => {
@@ -55,6 +62,7 @@ async function init () {
   // render the chart
   const chart = new Graph(dataset)
   chart.render('sessions')
+  sessionAmount.textContent = dataset.sessionAmounts.all
 }
 
 init()
