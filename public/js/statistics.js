@@ -67,8 +67,6 @@ async function init () {
   const chart = new Graph(dataset)
   chart.render('sessions')
   sessionAmount.textContent = dataset.sessionAmounts.all
-
-  console.log(data.parse.months(sessions))
 }
 
 init()
