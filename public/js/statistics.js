@@ -55,10 +55,11 @@ async function init () {
     sessionAmount.textContent = dataset.sessionAmounts[year]
   })
 
+  // Initialize the options to select different datasets
   document.getElementById('select-chart').addEventListener('change', e => {
     chart.destroy()
 
-    select.year.input.value = 'all'
+    select.year.input.value = dataset.years[dataset.years.length - 1]
 
     chart.render(e.target.value)
   })
@@ -66,7 +67,7 @@ async function init () {
   // render the chart
   const chart = new Graph(dataset)
   chart.render('sessions')
-  sessionAmount.textContent = dataset.sessionAmounts.all
+  sessionAmount.textContent = dataset.sessionAmounts[dataset.years[dataset.years.length - 1]]
 }
 
 init()

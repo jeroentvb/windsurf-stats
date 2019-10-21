@@ -4,6 +4,9 @@ button, .button {
   border: none;
   transition: 0.2s;
   text-decoration: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
   &:hover {
     background-color: $color-primary-dark;
