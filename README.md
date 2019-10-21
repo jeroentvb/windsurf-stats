@@ -2,7 +2,7 @@
 This project is a web interface to easily save windsurf session data.
 It was originally built to suit my own needs, but it should be usable for any windsurfer.  
 
-If you'd like to click through the app before installing, you can check the demo [here](https://jeroenvanberkum.nl/windsurf-stats/)
+If you'd like to click through the app before installing, you can check the demo [here](https://jeroenvanberkum.nl/windsurf-stats/) (This demo is outdated but still demoes the concept of the application).
 
 If you find a bug, please [create an issue](https://github.com/jeroentvb/windsurf-stats/issues)!  
 If you have a feature request, you should also make an issue.
@@ -14,9 +14,6 @@ I started this project because I used to save my windsurf session data in an exc
 * [What it does](#what-it-does)
 * [Usage](#usage)
 * [Configuration](#configuration)
-* [Localization](#localization)
-  * [Included languages](#currently-included-languages)
-* [Api](#api)
 
 ## What it does
 It currently stores the following values in a databse on a per user basis:
@@ -53,15 +50,7 @@ Install the required node.js packages using
 npm install
 ```
 
-Create a `.env` file and add the following:
-```
-DB_HOST=
-DB_USER=
-DB_PASSWORD=
-DB_NAME=windsurfStatistics
-SESSION_SECRET=
-```
-Fill in the blanks after the = with your database host and credentials. Also fill in the SESSION_SECRET, this can be anything you like.
+Rename the `.env.example` file to `.env` and fill in your database credentials.
 
 To set up the database and its tables use
 ```
@@ -79,10 +68,6 @@ The only thing left to do is go out and shred! 🤙
 
 ## Configuration
 The app has a few configurable options located in [app-config.json](app-config.json).
-
-### Port
-The port that the server will listen on.  
-Default: `25561`
 
 ### saltRounds
 The amount of saltrounds you want to add to the pasword hashes.  
@@ -103,25 +88,3 @@ Default: `true`
 ### allowChangeEmail
 Allow users to change their e-mail adress associated with their account. This is disabled by default due to security concerns because there's no additional information required to change the e-mail adress. One only needs to be logged in.  
 Default: `false`
-
-### enableApi
-**Experimental feature.**  
-Enable or disable the API feature. Default is `false`, because there is no rate limit yet. Use with caution.
-
-## Localization
-I've set up the application to use text from a localized (json) file so you can use the application in your own language. To use another language other than english or dutch you need to create a copy of the `en.json` file in the [localization](/localization) folder and rename it with your own language characters, for example `de` (for germany).
-Now you can replace the text with your own language. After you've done that you need to alter [this line](https://github.com/jeroentvb/windsurf-stats/blob/6fbddc1f5261745f8d7b49c140f061de8ed3bec0/index.js#L12), so it uses the letters you gave your json file. It should like something like the following:
-```js
-const lang = options.language('de')
-```
-Make sure your file has all the object keys that the english file has, otherwise the application will crash when it can't find a translation.
-
-*If you create a translation, I would highly appreciate it if you made a pull request with your additions.*
-
-### Currently included languages
-* [English (en)](localization/en.json)
-* [Dutch (nl)](localization/nl.json)
-
-## API
-**Experimental feature**  
-Create an API key in your account settings. Copy the key and navigate to `urlOfTheApplication/api?key=yourApiKey`.

@@ -77,4 +77,4 @@ module.exports = express()
   // })
 
   .use(render.notFound)
-  .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))
+  .listen(process.env.PORT, () => console.log(chalk.green(`[Server] listening on port ${process.env.PORT}...`)))
