@@ -1,33 +1,31 @@
 <% include ../partials/head %>
 
-<% include ../partials/nav %>
+<% include ../partials/small-nav %>
 
-<main>
-  <section class="content">
-    <h1><%= lang.account.login %></h1>
+<body>
+  <main class="main--small">
+    <section>
+      <form action="/sign-in" method="post">
+        <fieldset>
+          <div class="field field--first">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" required>
+          </div>
+          
+          <div class="field">
+            <label for="passwd">Password</label>
+            <input type="password" name="password" id="password" required>
+          </div>
+        </fieldset>
 
-    <form action="/sign-in" method="post">
-      <fieldset class="fieldset--margin">
-        <div class="field field--first">
-          <label for="email">E-mail</label>
-          <input class="input" type="email" name="email" id="email" required>
-        </div>
+        <% include ../partials/form/submitForm %>
+      </form>
+    </section>
 
-        <div class="field field--second field--last">
-          <label for="password"><%= lang.account.password %></label>
-          <input class="input" type="password" name="password" id="password" required>
-        </div>
-      </fieldset>
-
-      <fieldset>
-        <input type="submit" name="submit" id="submit">
-      </fieldset>
-    </form>
-
-    <% if (config.allowRegister) { %>
-      <p>Don't have an account? Register <a href="/register">here</a></p>
-    <% } %>
-  </section>
-</main>
+    <section>
+      <p>Don't have an account? Sign up <a href="/register">here</a></p>
+    </section>
+  </main>
+</body>
 
 <% include ../partials/tail %>

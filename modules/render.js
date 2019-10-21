@@ -1,98 +1,75 @@
 const db = require('./db')
 const helper = require('./helper')
 const config = require('../app-config.json')
-const lang = helper.localize(config.language)
 
-function page (req, res) {
-  let id = req.originalUrl.replace('/', '')
+function login (req, res) {
+  res.render('login', {
+    page: 'Login'
+  })
+}
 
-  if (id === 'register' && config.allowRegister === false) {
-    res.redirect('/')
-    return
-  }
+function register (req, res) {
+  res.render('register', {
+    page: 'Register'
+  })
+}
 
-  if ((id === 'login' || id === 'register') && !req.session.user) {
-    res.render(id, {
-      page: id.charAt(0).toUpperCase() + id.substr(1),
-      loginStatus: req.session.user,
-      lang: lang,
-      config: config
+function statistics (req, res) {
+  res.render('statistics', {
+    page: 'Statistics'
+  })
+}
+
+async function allStatistics (req, res) {
+  try {
+    const sessions = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+
+    res.render('all-statistics', {
+      page: 'All statistics',
+      sessions: sessions
     })
-    return
-  }
-
-  if (!req.session.user) {
-    res.redirect('login')
-    return
-  }
-
-  if ((id === 'login' || id === 'register') && req.session.user !== undefined) {
-    res.redirect('/')
-    return
-  }
-
-  if (id === '') {
-    res.render('statistics', {
-      page: lang.page.statistics.name,
-      loginStatus: req.session.user,
-      lang: lang,
-      config: config
-    })
-  } else {
-    res.render(id, {
-      page: id.charAt(0).toUpperCase() + id.substr(1),
-      loginStatus: req.session.user,
-      lang: lang,
-      config: config
-    })
+  } catch (err) {
+    console.error(err)
+    unexpectedError(res)
   }
 }
 
 async function addSession (req, res) {
-  if (!req.session.user) {
-    res.redirect('/login')
-    return
-  }
-
   try {
-    const result = await db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
-    const preferences = result[0]
-    const formattedPrefs = {
+    const gear = await db.query('SELECT * FROM windsurfStatistics.gear WHERE userId = ?', req.session.user.id)
+    const formattedGear = {
       boards: [
-        preferences.board0,
-        preferences.board1,
-        preferences.board2,
-        preferences.board3,
-        preferences.board4
+        gear[0].board0,
+        gear[0].board1,
+        gear[0].board2,
+        gear[0].board3,
+        gear[0].board4
       ],
       sails: [
-        preferences.sail0,
-        preferences.sail1,
-        preferences.sail2,
-        preferences.sail3,
-        preferences.sail4,
-        preferences.sail5,
-        preferences.sail6,
-        preferences.sail7,
-        preferences.sail8,
-        preferences.sail9
+        gear[0].sail0,
+        gear[0].sail1,
+        gear[0].sail2,
+        gear[0].sail3,
+        gear[0].sail4,
+        gear[0].sail5,
+        gear[0].sail6,
+        gear[0].sail7,
+        gear[0].sail8,
+        gear[0].sail9
       ],
       spots: [
-        preferences.spot0,
-        preferences.spot1,
-        preferences.spot2,
-        preferences.spot3,
-        preferences.spot4
+        gear[0].spot0,
+        gear[0].spot1,
+        gear[0].spot2,
+        gear[0].spot3,
+        gear[0].spot4
       ],
       date: helper.getYesterday()
     }
 
     res.render('add-session', {
-      page: lang.page.add_session.name,
-      loginStatus: req.session.user,
-      prefs: formattedPrefs,
-      lang: lang,
-      config: config
+      page: 'Add session',
+      gear: formattedGear
     })
   } catch (err) {
     console.error(err)
@@ -100,67 +77,50 @@ async function addSession (req, res) {
   }
 }
 
-async function allStatistics (req, res) {
-  if (!req.session.user) {
-    res.redirect('/login')
-    return
-  }
-
+async function gear (req, res) {
   try {
-    const sessions = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session.user.id)
+    const gear = await db.query('SELECT * FROM windsurfStatistics.gear WHERE userId = ?', req.session.user.id)
 
-    res.render('statistics-table', {
-      page: lang.page.statistics.name,
-      loginStatus: req.session.user,
-      statistics: sessions,
-      lang: lang,
-      config: config
-    })
-  } catch (err) {
-    console.error(err)
-    unexpectedError(res)
-  }
-}
+    if (gear.length === 0) {
+      res.render('set-gear', {
+        page: 'Set gear'
+      })
 
-async function preferences (req, res) {
-  try {
-    const result = await db.query('SELECT * FROM windsurfStatistics.preferences WHERE userId = ?', req.session.user.id)
-    const preferences = result[0]
-    let formattedPrefs = {
+      return
+    }
+
+    const formattedGear = {
       boards: [
-        preferences.board0,
-        preferences.board1,
-        preferences.board2,
-        preferences.board3,
-        preferences.board4
+        gear[0].board0,
+        gear[0].board1,
+        gear[0].board2,
+        gear[0].board3,
+        gear[0].board4
       ],
       sails: [
-        preferences.sail0,
-        preferences.sail1,
-        preferences.sail2,
-        preferences.sail3,
-        preferences.sail4,
-        preferences.sail5,
-        preferences.sail6,
-        preferences.sail7,
-        preferences.sail8,
-        preferences.sail9
+        gear[0].sail0,
+        gear[0].sail1,
+        gear[0].sail2,
+        gear[0].sail3,
+        gear[0].sail4,
+        gear[0].sail5,
+        gear[0].sail6,
+        gear[0].sail7,
+        gear[0].sail8,
+        gear[0].sail9
       ],
       spots: [
-        preferences.spot0,
-        preferences.spot1,
-        preferences.spot2,
-        preferences.spot3,
-        preferences.spot4
+        gear[0].spot0,
+        gear[0].spot1,
+        gear[0].spot2,
+        gear[0].spot3,
+        gear[0].spot4
       ]
     }
 
-    res.render('preferences', {
-      page: lang.page.preferences.name,
-      loginStatus: req.session.user,
-      prefs: formattedPrefs,
-      lang: lang,
-      config: config
+    res.render('gear', {
+      page: 'Gear settings',
+      gear: formattedGear
     })
   } catch (err) {
     console.error(err)
@@ -169,49 +129,54 @@ async function preferences (req, res) {
 }
 
 async function account (req, res) {
-  if (!req.session.user) {
-    res.redirect('/login')
-    return
-  }
+  const user = req.session.user
 
-  try {
-    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+  res.render('account', {
+    page: 'Account',
+    user: {
+      name: user.name,
+      email: user.email
+    },
+    config: config
+  })
+}
 
-    res.render('account', {
-      page: lang.page.account.name,
-      loginStatus: req.session.user,
-      userData: userData[0],
-      lang: lang,
-      config: config
+async function profile (req, res) {
+  const getUser = req.params.user
+
+  if (!getUser) {
+    res.render('profile', {
+      page: 'Profile',
+      user: {
+        name: req.session.user.name
+      }
     })
-  } catch (err) {
-    unexpectedError(res)
-    console.error(err)
   }
 }
 
 function unexpectedError (res) {
   res.status(500).render('error', {
     page: 'Error 500',
-    error: lang.error._500,
-    lang: lang
+    msg: 'There was an internal error'
   })
 }
 
 function notFound (req, res) {
   res.status(404).render('error', {
     page: 'Error 404',
-    error: lang.error._404,
-    lang: lang
+    msg: 'Error 404, page not found'
   })
 }
 
 module.exports = {
-  page,
-  addSession,
+  login,
+  register,
+  statistics,
   allStatistics,
-  preferences,
+  addSession,
+  gear,
   account,
+  profile,
   unexpectedError,
   notFound
 }

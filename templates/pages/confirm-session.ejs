@@ -1,0 +1,66 @@
+<% include ../partials/head %>
+
+<% include ../partials/nav %>
+
+<main class="main--medium">
+  <section>
+    <form action="/confirm-session" method="post" class="form--confirm-session">
+      <fieldset>
+        <div class="field field--first">
+          <label for="date">Date</label>
+          <input id="date" type="text" name="date" value="<%= session.date %>" placeholder="dd-mm-yyyy" maxlength="10" required>
+        </div>
+
+        <div class="field">
+          <label for="spot">Spot</label>
+          <input id="spot" type="text" name="spot" value="<%= session.spot.charAt(0).toUpperCase() + session.spot.substr(1) %>" placeholder="<%= session.spot %>" required>
+        </div>
+
+        <div class="field">
+          <label for="windspeed">Windspeed (in kts)</label>
+          <input id="windspeed" type="number" name="windspeed" value="<%= session.windspeed %>" placeholder="<%= session.windspeed %>" required>
+        </div>
+
+        <div class="field">
+          <label for="windgust">Windgusts (in kts)</label>
+          <input id="windgust" type="number" name="windgust" value="<%= session.windgust %>" placeholder="<%= session.windgust %> kts" required>
+        </div>
+
+        <div class="field">
+          <label for="wind-direction">Wind direction</label>
+          <input id="wind-direction" type="text" name="winddirection" value="<%= session.winddirection %>" placeholder="<%= session.winddirection %>" maxlength="3" required>
+        </div>
+
+        <% if (session.windfinderLink) { %>
+          <p class="help-message">Got wind data from: <a href="<%= session.windfinderLink %>" target="_blank">windfinder.com</a></p>
+        <% } %>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <div class="field field--first">
+          <label for="sail">Sail</label>
+          <input id="sail" type="text" name="sail" value="<%= session.sail %>" placeholder="<%= session.sail %>" required>
+        </div>
+
+        <div class="field">
+          <label for="board">Board</label>
+          <input id="board" type="text" name="board" value="<%= session.board %>" placeholder="<%= session.board %>" required>
+        </div>
+
+        <div class="field">
+          <label for="rating">Rating</label>
+          <input id="rating" type="number" name="rating" max="10" step="0.5" min="1" value="<%= session.rating %>" placeholder="<%= session.rating %>" maxlength="3" required>
+        </div>
+      </fieldset>
+
+      <fieldset class="fieldset__textarea fieldset--transparent">
+        <label for="note">Note</label>
+        <textarea id="note" name="note" rows="5" cols="80" maxlength="255" placeholder="<%= session.note %>"><%= session.note %></textarea>
+      </fieldset>
+
+      <% include ../partials/form/submitForm %>
+    </form>
+  </section>
+</main>
+
+<% include ../partials/tail %>

@@ -1,0 +1,90 @@
+main {
+  padding: 1rem;
+
+  @media (min-width: $breakpoint-small) {
+    padding: 1rem 3rem 3rem 3rem;
+  }
+}
+
+.main {
+  &--small {
+    @media (min-width: $breakpoint-small) {
+      width: 50%;
+      margin: 0 auto;
+    }
+  }
+
+  &--medium {
+    @media (min-width: $breakpoint-medium) {
+      width: 75%;
+      margin: 0 auto;
+    }
+  }
+
+  &--account {
+    @media (min-width: $breakpoint-small) {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-column-gap: 4rem;
+    }
+    section {
+    
+      button {
+        margin: 0.5rem 0;
+      }
+
+      &:nth-child(1) {
+        grid-column: 1 / 1;
+      }
+
+      &:nth-child(2) {
+        grid-column: 2 / 2;
+      }
+
+      .buttons {
+        display: flex;
+        flex-direction: column;
+
+        @media (min-width: $breakpoint-small) {
+          flex-direction: row;
+
+          button {
+            margin-right: 1rem;
+            width: 50%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+
+  p:first-of-type {
+    width: 30%;
+  }
+}
+
+.account-buttons {
+  display: flex;
+  flex-direction: column;
+
+  button {
+    margin-bottom: 1rem;
+  }
+}
+
+canvas {
+  margin-bottom: 3rem;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  th, td {
+    border: 1px solid $color-primary;
+    padding: 8px;
+  }
+}

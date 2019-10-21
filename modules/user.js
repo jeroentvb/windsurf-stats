@@ -2,78 +2,94 @@ const bcrypt = require('bcrypt')
 const db = require('./db')
 const render = require('./render')
 const helper = require('./helper')
-const config = require('../app-config.json')
-const lang = helper.localize(config.language)
+const scrape = require('wind-scrape')
 
-function hashPassword (password) {
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(password, config.saltRounds, (err, hash) => {
-      if (err) reject(err)
-      resolve(hash)
-    })
-  })
+function checkLogin (req, res, next) {
+  if (!req.session.user) {
+    res.redirect('/login')
+  } else {
+    next()
+  }
 }
 
-async function preferences (req, res, next) {
-  let prefsQuery
-  if (req.originalUrl === '/set-prefs') {
-    prefsQuery = 'INSERT INTO windsurfStatistics.preferences SET ?'
-  } else {
-    prefsQuery = `UPDATE windsurfStatistics.preferences SET ? WHERE userId = ${req.session.user.id}`
+async function register (req, res) {
+  const user = {
+    name: req.body.username,
+    email: req.body.email,
+    password: req.body.password
   }
 
-  let prefData = {
-    boards: [
-      req.body.board0.trim(),
-      req.body.board1.trim(),
-      req.body.board2.trim(),
-      req.body.board3.trim(),
-      req.body.board4.trim()
-    ],
-    sails: [
-      req.body.sail0,
-      req.body.sail1,
-      req.body.sail2,
-      req.body.sail3,
-      req.body.sail4,
-      req.body.sail5,
-      req.body.sail6,
-      req.body.sail7,
-      req.body.sail8,
-      req.body.sail9
-    ],
-    spots: [
-      req.body.spot0.trim(),
-      req.body.spot1.trim(),
-      req.body.spot2.trim(),
-      req.body.spot3.trim(),
-      req.body.spot4.trim()
-    ]
+  if (!user.name || !user.email || !user.password) {
+    res.status(400).render('error', {
+      page: 'Error 400',
+      msg: 'Name, e-mail or password are missing!'
+    })
+
+    return
   }
 
   try {
-    await db.query(prefsQuery, {
+    const userData = await db.query('SELECT * from windsurfStatistics.users WHERE email = ? OR username = ?', [
+      user.email,
+      user.name
+    ])
+
+    if (userData.length > 0) {
+      res.render('error', {
+        page: 'Error',
+        msg: 'Username or e-mail already exists'
+      })
+
+      return
+    }
+
+    const userId = await db.createUser(user)
+
+    req.session.user = {
+      name: user.name,
+      email: user.email,
+      id: userId
+    }
+
+    res.render('set-gear', {
+      page: 'Set gear'
+    })
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
+}
+
+async function set (req, res) {
+  const gear = {
+    boards: req.body.board.map(board => board.trim()),
+    sails: req.body.sail.map(sail => sail.trim()),
+    spots: req.body.spot.map(spot => spot.trim())
+  }
+
+  try {
+    await db.query('INSERT INTO windsurfStatistics.gear SET ?', {
       userId: req.session.user.id,
-      board0: prefData.boards[0],
-      board1: prefData.boards[1],
-      board2: prefData.boards[2],
-      board3: prefData.boards[3],
-      board4: prefData.boards[4],
-      sail0: prefData.sails[0],
-      sail1: prefData.sails[1],
-      sail2: prefData.sails[2],
-      sail3: prefData.sails[3],
-      sail4: prefData.sails[4],
-      sail5: prefData.sails[5],
-      sail6: prefData.sails[6],
-      sail7: prefData.sails[7],
-      sail8: prefData.sails[8],
-      sail9: prefData.sails[9],
-      spot0: prefData.spots[0],
-      spot1: prefData.spots[1],
-      spot2: prefData.spots[2],
-      spot3: prefData.spots[3],
-      spot4: prefData.spots[4]
+      board0: gear.boards[0],
+      board1: gear.boards[1],
+      board2: gear.boards[2],
+      board3: gear.boards[3],
+      board4: gear.boards[4],
+      sail0: gear.sails[0],
+      sail1: gear.sails[1],
+      sail2: gear.sails[2],
+      sail3: gear.sails[3],
+      sail4: gear.sails[4],
+      sail5: gear.sails[5],
+      sail6: gear.sails[6],
+      sail7: gear.sails[7],
+      sail8: gear.sails[8],
+      sail9: gear.sails[9],
+      spot0: gear.spots[0],
+      spot1: gear.spots[1],
+      spot2: gear.spots[2],
+      spot3: gear.spots[3],
+      spot4: gear.spots[4]
     })
 
     res.redirect('/statistics')
@@ -83,24 +99,67 @@ async function preferences (req, res, next) {
   }
 }
 
-async function updateEmail (req, res, next) {
-  const email = req.body.email
+async function update (req, res) {
+  const gear = {
+    boards: req.body.board.map(board => board.trim()),
+    sails: req.body.sail.map(sail => sail.trim()),
+    spots: req.body.spot.map(spot => spot.trim())
+  }
+
+  try {
+    await db.query('UPDATE windsurfStatistics.gear SET ? WHERE userId = ?', [
+      {
+        board0: gear.boards[0],
+        board1: gear.boards[1],
+        board2: gear.boards[2],
+        board3: gear.boards[3],
+        board4: gear.boards[4],
+        sail0: gear.sails[0],
+        sail1: gear.sails[1],
+        sail2: gear.sails[2],
+        sail3: gear.sails[3],
+        sail4: gear.sails[4],
+        sail5: gear.sails[5],
+        sail6: gear.sails[6],
+        sail7: gear.sails[7],
+        sail8: gear.sails[8],
+        sail9: gear.sails[9],
+        spot0: gear.spots[0],
+        spot1: gear.spots[1],
+        spot2: gear.spots[2],
+        spot3: gear.spots[3],
+        spot4: gear.spots[4]
+      },
+      req.session.user.id
+    ])
+
+    res.redirect('/statistics')
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
+}
+
+async function login (req, res) {
+  const username = req.body.username
   const password = req.body.password
 
-  if (!email || !password) {
-    res.status(400).send('Username or password is missing!')
+  if (!username || !password) {
+    res.status(400).render('error', {
+      page: 'Error 400',
+      msg: 'Username or password is missing!'
+    })
     return
   }
 
   try {
-    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE username = ?', username)
     const user = userData && userData[0]
 
     if (!user) {
       res.status(401).render('error', {
         page: 'Error',
-        error: lang.error._401_email,
-        lang: lang
+        msg: 'Incorrect e-mail or password.'
       })
       return
     }
@@ -110,163 +169,15 @@ async function updateEmail (req, res, next) {
     if (!match) {
       res.status(401).render('error', {
         page: 'Error',
-        error: lang.error._401_passwd,
-        lang: lang
-      })
-      return
-    }
-
-    await db.query(`UPDATE windsurfStatistics.users SET email = ? WHERE id = ?`, [
-      email,
-      req.session.user.id
-    ])
-    req.session.user.email = email
-
-    res.redirect('/account')
-  } catch (err) {
-    console.error(err)
-    render.unexpectedError(res)
-  }
-}
-
-async function changePassword (req, res, next) {
-  const oldPassword = req.body.oldPassword
-  const newPassword = req.body.newPassword
-
-  if (!oldPassword || !newPassword) {
-    res.status(400).send('Password is missing!')
-    return
-  }
-
-  try {
-    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
-    const user = userData && userData[0]
-
-    if (!user) {
-      res.status(401).render('error', {
-        page: 'Error',
-        error: lang.error._401_email,
-        lang: lang
-      })
-      return
-    }
-
-    const match = await bcrypt.compare(oldPassword, user.password)
-    if (!match) {
-      res.status(401).render('error', {
-        page: 'Error',
-        error: lang.error._401_passwd,
-        lang: lang
-      })
-      return
-    }
-
-    const hash = await hashPassword(newPassword)
-    await db.query(`UPDATE windsurfStatistics.users SET password = ? WHERE id = ?`, [
-      hash,
-      req.session.user.id
-    ])
-
-    res.redirect('/sign-out')
-  } catch (err) {
-    console.error(err)
-    render.unexpectedError(res)
-  }
-}
-
-async function register (req, res, next) {
-  const user = {
-    name: req.body.username,
-    email: req.body.email,
-    password: req.body.password
-  }
-
-  if (!user.name || !user.email || !user.password) {
-    res.status(400).send('Name, e-mail or password are missing!')
-    return
-  }
-
-  try {
-    const userData = await db.query('SELECT * from windsurfStatistics.users WHERE email = ?', user.email)
-    if (userData.length > 0) {
-      res.render('error', {
-        page: 'Error',
-        error: 'E-mail already exists',
-        lang: lang
-      })
-    } else {
-      storeInDb(req, res, user)
-    }
-  } catch (err) {
-    console.error(err)
-    render.unexpectedError(res)
-  }
-}
-
-async function storeInDb (req, res, user) {
-  try {
-    const hash = await hashPassword(user.password)
-    const result = await db.query('INSERT INTO windsurfStatistics.users SET ?', {
-      username: user.name,
-      email: user.email,
-      password: hash
-    })
-    const userId = result.insertId
-
-    req.session.user = {
-      name: user.name,
-      email: user.email,
-      id: userId
-    }
-
-    res.render('setPrefs', {
-      page: lang.page.preferences.name,
-      loginStatus: req.session.user,
-      lang: lang,
-      config: config
-    })
-  } catch (err) {
-    console.error(err)
-    render.unexpectedError(res)
-  }
-}
-
-async function login (req, res, next) {
-  const email = req.body.email
-  const password = req.body.password
-
-  if (!email || !password) {
-    res.status(400).send('Username or password is missing!')
-    return
-  }
-
-  try {
-    const userData = await db.query('SELECT * FROM windsurfStatistics.users WHERE email = ?', email)
-    const user = userData && userData[0]
-
-    if (!user) {
-      res.status(401).render('error', {
-        page: 'Error',
-        error: lang.error._401_email,
-        lang: lang
-      })
-      return
-    }
-
-    const match = await bcrypt.compare(password, user.password)
-    if (!match) {
-      res.status(401).render('error', {
-        page: 'Error',
-        error: lang.error._401_passwd,
-        lang: lang
+        msg: 'Incorrect password.'
       })
       return
     }
 
     req.session.user = {
       name: user.username,
-      email: email,
-      id: user.id
+      id: user.id,
+      email: user.email
     }
 
     res.redirect('/')
@@ -284,41 +195,231 @@ function logout (req, res) {
 
       return
     }
-    res.redirect('/')
+
+    res.redirect('/login')
   })
 }
 
-function remove (req, res) {
-  const id = req.session.user.id
+async function submit (req, res) {
+  const date = req.body.date
 
-  Promise.all([
-    db.query('DELETE FROM windsurfStatistics.statistics WHERE userId = ?', id),
-    db.query('DELETE FROM windsurfStatistics.preferences WHERE userId = ?', id),
-    db.query('DELETE FROM windsurfStatistics.users WHERE id = ?', id)
-  ])
-    .then(() => {
-      req.session.destroy(err => {
-        if (err) {
-          console.error(err)
-          render.unexpectedError(res)
+  if (date === 'today') {
+    let session = {
+      sailedHour: parseInt(req.body.hour),
+      spot: req.body.spotOther ? req.body.spotOther : req.body.spot,
+      sail: req.body.sailOther ? req.body.sailOther : req.body.sail,
+      board: req.body.boardOther ? req.body.boardOther : req.body.board,
+      rating: req.body.rating,
+      note: req.body.note,
+      date: helper.getToday()
+    }
 
-          return
-        }
-        res.redirect('/')
+    try {
+      const forecast = await scrape.windfinder(session.spot)
+      let windData = forecast.days[0].hours.filter(hour => hour.hour === session.sailedHour)
+      windData[0].winddirection = helper.getWindDirection(windData[0].winddirection)
+      session.spot = forecast.spot
+
+      const sessionData = {
+        ...session,
+        ...windData[0],
+        windfinderLink: `https://www.windfinder.com/weatherforecast/${session.spot}`
+      }
+
+      res.render('confirm-session', {
+        page: 'Confirm session data',
+        session: sessionData
       })
-    })
-    .catch(err => {
+    } catch (err) {
+      if (err.message === 'The provided windfinder spot doesn\'t exist..') {
+        res.status(400).render('error', {
+          page: 'Error',
+          msg: 'The entered windfinder spot doesn\'t exist'
+        })
+
+        return
+      }
+
       console.error(err)
       render.unexpectedError(res)
+    }
+  } else {
+    let session = {
+      spot: req.body.spotOther ? req.body.spotOther : req.body.spot,
+      sail: req.body.sailOther ? req.body.sailOther : req.body.sail,
+      board: req.body.boardOther ? req.body.boardOther : req.body.board,
+      rating: req.body.rating,
+      note: req.body.note,
+      date: req.body.dateInput,
+      windspeed: req.body.windspeed,
+      windgust: req.body.windgust,
+      winddirection: req.body.winddirection
+    }
+
+    try {
+      const forecast = await scrape.windfinder(session.spot)
+      session.spot = forecast.spot
+
+      res.render('confirm-session', {
+        page: 'Confirm session data',
+        session: session
+      })
+    } catch (err) {
+      if (err.message === 'The provided windfinder spot doesn\'t exist..') {
+        res.status(400).render('error', {
+          page: 'Error',
+          msg: 'The entered windfinder spot doesn\'t exist'
+        })
+
+        return
+      }
+
+      console.error(err)
+      render.unexpectedError(res)
+    }
+  }
+}
+
+async function confirm (req, res) {
+  const session = {
+    userId: req.session.user.id,
+    date: req.body.date,
+    spot: req.body.spot,
+    windspeed: req.body.windspeed,
+    windgust: req.body.windgust,
+    windDirection: req.body.winddirection,
+    sailSize: req.body.sail,
+    board: req.body.board,
+    rating: req.body.rating,
+    note: req.body.note
+  }
+
+  try {
+    await db.query('INSERT INTO windsurfStatistics.statistics SET ?', session)
+
+    res.redirect('/statistics')
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
+}
+
+async function password (req, res) {
+  const password = {
+    old: req.body['old-password'],
+    new: req.body['new-password'],
+    confirm: req.body['confirm-password']
+  }
+
+  if (!password.old || !password.new || !password.confirm) {
+    res.status(400).render('error', {
+      page: 'Error',
+      msg: 'Password is missing!'
     })
+    return
+  }
+
+  if (password.new !== password.confirm) {
+    res.status(400).render('error', {
+      page: 'Error',
+      msg: 'New password and repeat new password didn\'t match.'
+    })
+    return
+  }
+
+  if (password.new === password.old) {
+    res.status(400).render('error', {
+      page: 'Error',
+      msg: 'Old and new password can\'t be the same'
+    })
+    return
+  }
+
+  try {
+    const userData = await db.query('SELECT password FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+
+    const match = await bcrypt.compare(password.old, userData[0].password)
+    if (!match) {
+      res.status(401).render('error', {
+        page: 'Error',
+        msg: 'Old password is incorrect'
+      })
+      return
+    }
+
+    const hash = await helper.hashPassword(password.new)
+    await db.query(`UPDATE windsurfStatistics.users SET password = ? WHERE id = ?`, [
+      hash,
+      req.session.user.id
+    ])
+
+    res.redirect('/sign-out')
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
+}
+
+async function email (req, res) {
+  const user = {
+    email: req.body.email,
+    password: req.body.password
+  }
+
+  if (!user.email || !user.password) {
+    res.status(400).render('error', {
+      page: 'Error',
+      msg: 'E-mail or password is missing!'
+    })
+    return
+  }
+
+  try {
+    const userData = await db.query('SELECT password FROM windsurfStatistics.users WHERE id = ?', req.session.user.id)
+
+    const match = await bcrypt.compare(user.password, userData[0].password)
+
+    if (!match) {
+      res.status(401).render('error', {
+        page: 'Error',
+        msg: 'Incorrect password'
+      })
+      return
+    }
+
+    await db.query('UPDATE windsurfStatistics.users SET email = ? WHERE id = ?', [
+      user.email,
+      req.session.user.id
+    ])
+    req.session.user.email = user.email
+
+    res.redirect('/account')
+  } catch (err) {
+    console.error(err)
+    render.unexpectedError(res)
+  }
+}
+
+async function remove (req, res) {
+
 }
 
 module.exports = {
-  preferences,
-  updateEmail,
-  changePassword,
+  checkLogin,
   register,
+  gear: {
+    set,
+    update
+  },
   login,
   logout,
+  session: {
+    submit,
+    confirm
+  },
+  change: {
+    password,
+    email
+  },
   remove
 }

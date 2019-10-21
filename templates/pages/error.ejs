@@ -1,15 +1,12 @@
 <% include ../partials/head %>
 
-<% include ../partials/nav %>
+<% include ../partials/small-nav %>
 
-<main>
-  <section class="content">
+<main class="main--small">
+  <section>
     <h1>Error!</h1>
-    <p><%= error %></p>
-    <% if (page == 'Error 401') { %>
-      <p><a href="/login"><%= lang.account.login %></a></p>
-    <% } %>
-    <a href="#" onclick="event.preventDefault(); window.history.back();"><%= lang.error.go_back %></a>
+    <p style="margin-bottom: 2rem;"><%= msg %></p>
+    <a href="#" onclick="event.preventDefault(); window.history.back();" class="button button--small" style="text-decoration: none;">Go back</a>
   </section>
 </main>
 

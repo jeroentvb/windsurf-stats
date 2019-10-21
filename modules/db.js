@@ -1,5 +1,6 @@
 const mysql = require('mysql')
 const chalk = require('chalk')
+const helper = require('./helper')
 
 require('dotenv').config()
 
@@ -47,8 +48,27 @@ function query (query, params) {
   })
 }
 
+function createUser (user) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const hash = await helper.hashPassword(user.password)
+      const result = await query('INSERT INTO windsurfStatistics.users SET ?', {
+        username: user.name,
+        email: user.email,
+        password: hash
+      })
+      const userId = result.insertId
+
+      resolve(userId)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}
+
 module.exports = {
   config: dbConfig,
   init,
-  query
+  query,
+  createUser
 }
