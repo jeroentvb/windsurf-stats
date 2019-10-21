@@ -5,5 +5,5 @@
   "cookieMaxAge": 2592000000,
   "allowRegister": true,
   "allowChangeEmail": false,
-  "enableApi": false
+  "allowDeleteAccount": false
 }

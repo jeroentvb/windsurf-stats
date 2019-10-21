@@ -1,45 +1,45 @@
 <% include ../partials/head %>
 
-<% include ../partials/nav %>
+<% include ../partials/small-nav %>
 
-<main>
-  <section class="content">
-    <h1><%= lang.account.register %></h1>
-
+<main class="main--small">
+  <section>
     <form action="/sign-up" method="post">
-      <fieldset class="fieldset fieldset--margin">
+      <fieldset>
         <div class="field field--first">
-          <label for="username"><%= lang.account.username %></label>
-          <input id="username" class="input" type="text" name="username" placeholder="WindsurfDude123" required>
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" required>
         </div>
-
-        <div class="field field--second">
+        
+        <div class="field">
           <label for="email">E-mail</label>
-          <input id="email" class="input" type="email" name="email" placeholder="john@example.com" required>
+          <input type="email" name="email" id="email" required>
         </div>
 
         <div class="field">
-          <label for="password"><%= lang.account.password %></label>
-          <input id="password" class="input" type="password" name="password" placeholder="" min="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" min="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
         </div>
-
-        <div class="field field--last">
-          <label for="password"><%= lang.account.repeat_passwd %></label>
-          <input id="repeat-password" class="input" type="password" name="repeat-password" placeholder="" min="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+        
+        <div class="field">
+          <label for="repeat-password">Repeat password</label>
+          <input type="password" name="repeat-password" id="repeat-password" min="8" required>
         </div>
       </fieldset>
 
-      <p class="fieldset--margin"><%= lang.account.register_help %></p>
-
-      <fieldset class="fieldset--margin">
-        <input type="submit" name="submit" id="submit">
-      </fieldset>
+      <% include ../partials/form/submitForm %>
     </form>
-
-    <p>Already have an account? Log in <a href="/login">here</a></p>
   </section>
+
+  <section id="error">
+
+  </section>
+
+  <section>
+      <p>Already have an account? Log in <a href="/login">here</a></p>
+    </section>
 </main>
 
-<script src="js/register.js"></script>
+<script src="./js/register.js" type="module"></script>
 
 <% include ../partials/tail %>

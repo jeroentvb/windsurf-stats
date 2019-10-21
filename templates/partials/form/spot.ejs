@@ -1,0 +1,33 @@
+<div class="field">
+  <label for="spot">Spot</label>
+  <select id="spot" class="input" name="spot">
+    <% gear.spots.forEach((spot, i) => {
+      if (i === 0) { %>
+        <option value="<%= spot %>" selected="selected">
+          <%= spot
+          .split('-').join(' ')
+          .split('_').join(' ')
+          .split(' ')
+          .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+          .join(' ') %>
+        </option>
+      <% } else if (spot !== '') { %>
+        <option value="<%= spot %>">
+          <%= spot
+          .split('-').join(' ')
+          .split('_').join(' ')
+          .split(' ')
+          .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+          .join(' ') %>
+        </option>
+      <% }
+    }) %>
+
+    <option value="other">Other</option>
+  </select>
+</div>
+
+<div id="spot-other-wrapper" class="field hidden">
+  <label for="spot-other"></label>
+  <input id="spot-other" type="text" name="spotOther" placeholder="Example: maui_honolua_bay">
+</div>

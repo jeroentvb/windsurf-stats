@@ -6,9 +6,8 @@ const bodyParser = require('body-parser')
 const chalk = require('chalk')
 
 const db = require('./modules/db')
-const user = require('./modules/user')
-const data = require('./modules/data')
 const render = require('./modules/render')
+const user = require('./modules/user')
 const api = require('./modules/api')
 
 const config = require('./app-config.json')
@@ -21,7 +20,7 @@ module.exports = express()
   .set('view engine', 'ejs')
   .set('views', 'templates/pages')
   .use(helmet())
-  .use(express.static('static'))
+  .use(express.static('public'))
   .use(bodyParser.urlencoded({
     extended: true
   }))
@@ -36,36 +35,46 @@ module.exports = express()
     }
   }))
 
-  .get('/', render.page)
-  .get('/statistics', render.page)
-  .get('/all-stats', render.allStatistics)
-  .get('/data', data.send)
-  .get('/download-csv', data.download.csv)
-  .get('/download-json', data.download.json)
-
-  .get('/add-session', render.addSession)
-  .post('/submit-data', data.submit)
-
-  .post('/confirm-submit', data.confirm)
-
-  .get('/preferences', render.preferences)
-  .post('/set-prefs', user.preferences)
-  .post('/update-prefs', user.preferences)
-
-  .get('/account', render.account)
-  .get('/api-key', api.key)
-  .post('/update-email', user.updateEmail)
-  .post('/change-password', user.changePassword)
-
-  .get('/api', api.get)
-
-  .get('/register', render.page)
-  .post('/sign-up', user.register)
-
-  .get('/login', render.page)
+  .get('/login', render.login)
   .post('/sign-in', user.login)
 
-  .get('/logout', user.logout)
+  .get('/register', render.register)
+  .post('/sign-up', user.register)
+  .post('/set-gear', user.gear.set)
+
+  .get('/sign-out', user.logout)
+
+  .use(user.checkLogin)
+
+  .get('/', render.statistics)
+  .get('/statistics', render.statistics)
+  .get('/all-stats', render.allStatistics)
+  .get('/api/gear', api.send.gear)
+  .get('/download-sessions', api.download.sessions)
+
+  .get('/api/sessions', api.send.sessions)
+
+  .get('/gear', render.gear)
+  .post('/update-gear', user.gear.update)
+
+  .get('/add-session', render.addSession)
+  .post('/submit-session', user.session.submit)
+  .post('/confirm-session', user.session.confirm)
+
+  .get('/account', render.account)
+
+  .post('/change-password', user.change.password)
+  .post('/change-email', user.change.email)
+  // .post('/delete-account', user.remove)
+
+  // .get('/profile', render.profile)
+  // .get('/profile/:user', render.profile)
+
+  // .get('/set-gear', (req, res) => {
+  //   res.render('set-gear', {
+  //     page: 'Set gear'
+  //   })
+  // })
 
   .use(render.notFound)
   .listen(config.port, () => console.log(chalk.green(`[Server] listening on port ${config.port}...`)))

@@ -1,0 +1,44 @@
+<fieldset id="manual-input" class="hidden">
+        <div class="field field--first">
+          <label for="date-input">Date</label>
+          <input id="date-input" type="text" name="dateInput" placeholder="dd-mm-yyy" value="<%= gear.date %>" maxlength="10">
+        </div>
+
+        <div class="field">
+          <label for="windspeed">Windspeed (in kts)</label>
+          <input id="windspeed" type="number" name="windspeed" placeholder="18" min="1" max="99">
+        </div>
+
+        <div class="field">
+          <label for="windgust">Windgust (in kts)</label>
+          <input id="windgust" type="number" name="windgust" placeholder="22" min="1" max="99">
+        </div>
+
+        <div class="field">
+          <label for="wind-direction">Wind direction</label>
+          <select id="wind-direction" name="winddirection">
+            <% var windDirections = [
+              "N",
+              "NNE",
+              "NE",
+              "ENE",
+              "E",
+              "ESE",
+              "SE",
+              "SSE",
+              "S",
+              "SSW",
+              "SW",
+              "WSW",
+              "W",
+              "WNW",
+              "NW",
+              "NNW"
+            ]
+
+            for (let i = 0; i < windDirections.length; i++) { %>
+              <option value="<%= windDirections[i] %>"><%= windDirections[i] %></option>
+            <% } %>
+          </select>
+        </div>
+      </fieldset>

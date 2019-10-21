@@ -1,3 +1,15 @@
+const bcrypt = require('bcrypt')
+const config = require('../app-config.json')
+
+function hashPassword (password) {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(password, config.saltRounds, (err, hash) => {
+      if (err) reject(err)
+      resolve(hash)
+    })
+  })
+}
+
 function getToday () {
   const today = new Date()
   let dd = today.getDate()
@@ -26,19 +38,33 @@ function getYesterday () {
   }
 }
 
-function localize (lang) {
-  const localization = require(`../localization/${lang}.json`)
-  return localization
-}
+function getWindDirection (deg) {
+  const windDirections = [
+    'N',
+    'NNE',
+    'NE',
+    'ENE',
+    'E',
+    'ESE',
+    'SE',
+    'SSE',
+    'S',
+    'SSW',
+    'SW',
+    'WSW',
+    'W',
+    'WNW',
+    'NW',
+    'NNW'
+  ]
 
-function getWindDirection (deg, windDirections) {
   const val = Math.floor((deg / 22.5) + 0.5)
   return windDirections[(val % 16)]
 }
 
 module.exports = {
+  hashPassword,
   getToday,
   getYesterday,
-  localize,
   getWindDirection
 }

@@ -1,58 +1,17 @@
 <body>
-  <% switch (page) {
-    case 'Error 404': %>
-    <header>
+  <header>
       <nav>
-        <h2 class="page-heading"><%= page %></h2>
-      </nav>
-    </header>
-      <% break
-    case 'Error 401': %>
-    <header>
-      <nav>
-        <h2 class="page-heading"><%= page %></h2>
-      </nav>
-    </header>
-      <% break
-    case 'Error 500': %>
-    <header>
-      <nav>
-        <h2 class="page-heading"><%= page %></h2>
-      </nav>
-    </header>
-      <% break
-    case 'Login': %>
-    <header>
-      <nav>
-        <h2 class="page-heading"><%= page %></h2>
-      </nav>
-    </header>
-      <% break
-      case 'Register': %>
-      <header>
-        <nav>
-          <h2 class="page-heading"><%= page %></h2>
-        </nav>
-      </header>
-        <% break
-    default: %>
-    <header>
-      <nav>
-        <h2 class="page-heading"><%= page %></h2>
+        <h1><%= page %></h1>
         <img id="open-menu" src="img/menu-icon.svg" alt="Menu icon">
         <ul id="menu">
-            <li><img id="close-menu" src="img/close-icon.svg" alt="Close menu icon"></li>
-            <li>Menu</li>
-          <% if (typeof loginStatus != 'undefined') { %>
-            <li><a href="/statistics"><%= lang.menu.statistics %></a></li>
-            <li><a href="/add-session"><%= lang.menu.add_session %></a></li>
-            <li><a href="/preferences"><%= lang.menu.preferences %></a></li>
-            <li><a href="/account"><%= lang.menu.account %></a></li>
-            <li><a href="/logout"><%= lang.menu.logout %></a></li>
-          <% } else { %>
-            <li><a href="/login"><%= lang.menu.login %></a></li>
-          <% } %>
+          <li><img id="close-menu" src="img/close-icon.svg" alt="Close menu icon"></li>
+          <li>Menu</li>
+          <li><a href="/statistics">Statistics</a></li>
+          <li><a href="/add-session">Add session</a></li>
+          <li><a href="/gear">Gear settings</a></li>
+          <%# <li><a href="/profile">Profile</a></li> %>
+          <li><a href="/account">Account</a></li>
+          <li><a href="/sign-out">Log out</a></li>
         </ul>
       </nav>
     </header>
-  <% } %>

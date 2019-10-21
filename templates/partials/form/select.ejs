@@ -1,0 +1,18 @@
+<div class="field">
+  <label for="<%= field %>"><%= field.charAt(0).toUpperCase() + field.substring(1) %></label>
+  <select id="<%= field %>" name="<%= field %>">
+    <% gear[field + 's'].forEach((item, i) => {
+      if (item != '' && i == 0) { %>
+        <option value="<%= item %>" selected><%= item %></option>
+      <% } else if (item != '') { %>
+        <option value="<%= item %>"><%= item %></option>
+      <% }
+    }) %>
+    <option value="other">Other</option>
+  </select>
+</div>
+
+<div id="<%= field %>-other-wrapper" class="field hidden">
+  <label for="<%= field %>-other"></label>
+  <input id="<%= field %>-other" class="input" type="text" name="<%= field %>Other" placeholder="Enter custom <%= field %>">
+</div>
