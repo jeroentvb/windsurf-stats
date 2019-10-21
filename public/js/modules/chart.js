@@ -37,7 +37,6 @@ export class Graph {
           display: false
         },
         tooltips: {
-          enabled: this.dataType === 'sessions' || this.dataType === undefined,
           custom: tooltip => {
             if (!tooltip) return
             tooltip.displayColors = false
@@ -48,6 +47,8 @@ export class Graph {
                 const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
 
                 return `Date: ${session.date} Sail: ${session.sailSize}`
+              } else {
+                return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
               }
             },
             title: (tooltipItem, data) => {
