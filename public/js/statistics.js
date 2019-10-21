@@ -3,7 +3,7 @@ import { Graph } from './modules/chart.js'
 import { select } from './modules/select.js'
 
 async function init () {
-  // Get the data and createthe dataset object
+  // Get the data and create the dataset object
   const json = await data.get.sessions()
   const sessions = data.sortByDate(json)
   const gear = await data.get.gear()
@@ -67,6 +67,8 @@ async function init () {
   const chart = new Graph(dataset)
   chart.render('sessions')
   sessionAmount.textContent = dataset.sessionAmounts.all
+
+  console.log(data.parse.months(sessions))
 }
 
 init()
