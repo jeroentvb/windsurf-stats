@@ -33,6 +33,7 @@ export class Graph {
         datasets: this.getData('all')
       },
       options: {
+        maintainAspectRatio: false,
         legend: {
           display: false
         },
