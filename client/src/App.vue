@@ -1,22 +1,36 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
+    <v-navigation-drawer
+      v-if="loggedIn"
+      v-model="drawer"
+      app>
+      <v-list>
+        <v-list-item-group v-model="item" color="primary">
+          <v-list-item>
+            <!-- <v-list-item-icon>
+              <v-icon v-text="item.icon"></v-icon>
+            </v-list-item-icon> -->
+            <v-list-item-content>
+              <v-list-item-title>Test</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar
+      v-if="loggedIn"
+      app
+      dark
+      color="blue">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>{{ routeName }}</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
-      <HelloWorld/>
+      <v-container fluid fill-height>
+        <router-view />
+      </v-container>
     </v-content>
   </v-app>
 </template>
@@ -24,14 +38,44 @@
 <script lang="ts">
 import Vue from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
+import Axios from 'axios'
+import { USER_LOGIN } from './store/constants'
 
 export default Vue.extend({
   name: 'App',
-  components: {
-    HelloWorld
+
+  data () {
+    return {
+      drawer: ''
+    }
   },
-  data: () => ({
-    //
-  })
+
+  computed: {
+    routeName () {
+      return this.$route.name
+    },
+
+    loggedIn () {
+      return this.$store.state.loggedIn
+    }
+  },
+
+  async created () {
+    try {
+      const res = await Axios.get('http://localhost:25561', {
+        withCredentials: true
+      })
+
+      if (res.status === 200) {
+        this.$store.dispatch(USER_LOGIN)
+      }
+    } catch (err) {
+      // TODO: Show proper error message
+      if (err.response.status === 401) {
+        return console.error('Invalid credentials!')
+      }
+      console.error(err)
+    }
+  }
 })
 </script>

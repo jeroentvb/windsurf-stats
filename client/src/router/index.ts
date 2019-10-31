@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
+import store from '../store'
+
+// Components
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
@@ -25,7 +28,7 @@ const routes: RouteConfig[] = [
   },
   {
     path: '/',
-    name: 'home',
+    name: 'Statistics',
     component: Home
   },
   {
@@ -45,13 +48,15 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const isPublic = to.matched.some(record => record.meta.public)
   const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
-  const loggedIn = !!TokenService.getToken();
+  const loggedIn = store.state.loggedIn
+
+  console.log(isPublic)
 
   if (!isPublic && !loggedIn) {
     return next({
-      path:'/login',
-      query: { redirect: to.fullPath }  // Store the full path to redirect the user to after login
-    });
+      path: '/login',
+      query: { redirect: to.fullPath } // Store the full path to redirect the user to after login
+    })
   }
 
   // Do not allow user to visit login page or register page if they are logged in
@@ -59,7 +64,7 @@ router.beforeEach((to, from, next) => {
     return next('/')
   }
 
-  next();
+  next()
 })
 
 export default router
