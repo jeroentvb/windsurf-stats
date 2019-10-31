@@ -39,7 +39,7 @@ All the things you need to run this app.
 Optional
 * [Sass](https://sass-lang.com/) (if you want to customize the css)
 
-### Setup
+### Installation
 Download or clone this repository using:
 ```
 git clone https://github.com/jeroentvb/windsurf-stats.git
