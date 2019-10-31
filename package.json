@@ -4,10 +4,12 @@
   "description": "A web interface to keep track of windsurf session statistics",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
     "setupdb": "node modules/setupDb.js",
-    "dev": "nodemon",
-    "css:watch": "cd public/css && sass --watch styles.scss:styles.css"
+    "build-server": "tsc",
+    "build": "npm run build-server",
+    "start": "node ./server/dist/index.js",
+    "lint": "tslint -p . -c tslint.json \"**/*.ts\"",
+    "watch-server": "ts-node-dev --respawn --transpileOnly server/src/index.ts"
   },
   "keywords": [
     "windsurf",
@@ -24,7 +26,6 @@
     "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
     "dotenv": "^6.2.0",
-    "ejs": "^2.7.1",
     "express": "^4.17.1",
     "express-mysql-session": "^2.1.0",
     "express-session": "^1.17.0",
@@ -32,11 +33,20 @@
     "jeroentvb-helper": "github:jeroentvb/jeroentvb-helper",
     "json2csv": "^4.5.4",
     "mysql": "^2.17.1",
-    "uuid": "^3.3.3",
     "wind-scrape": "github:jeroentvb/wind-scrape"
   },
   "devDependencies": {
-    "nodemon": "^1.19.4"
+    "@types/bcrypt": "^3.0.0",
+    "@types/body-parser": "^1.17.1",
+    "@types/express": "^4.17.1",
+    "@types/express-session": "^1.15.15",
+    "@types/helmet": "0.0.45",
+    "@types/json2csv": "^4.5.0",
+    "@types/mysql": "^2.15.7",
+    "@types/node": "^12.12.3",
+    "ts-node-dev": "^1.0.0-pre.43",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.4"
   },
   "nodemonConfig": {
     "ignore": [
