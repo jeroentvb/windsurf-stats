@@ -4,8 +4,7 @@ It was originally built to suit my own needs, but it should be usable for any wi
 
 If you'd like to click through the app before installing, you can check the demo [here](https://jeroenvanberkum.nl/windsurf-stats/) (This demo is outdated but still demoes the concept of the application).
 
-If you find a bug, please [create an issue](https://github.com/jeroentvb/windsurf-stats/issues)!  
-If you have a feature request, you should also make an issue.
+If you find a bug or have a feature request, please [create an issue](https://github.com/jeroentvb/windsurf-stats/issues)!  
 
 ### Backstory
 I started this project because I used to save my windsurf session data in an excel file, but I figured it would be easier to use a web interface and visualize the statistics in a nice way. And so this project was born.
