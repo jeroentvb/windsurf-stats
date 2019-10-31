@@ -44,7 +44,7 @@ export async function login (req: Request, res: Response) {
       email: user.email
     }
 
-    res.send('Logged in!')
+    res.status(200).send()
   } catch (err) {
     console.error(err)
     // render.unexpectedError(res)
