@@ -17,6 +17,7 @@ export default new Vuex.Store({
     },
 
     [USER_LOGOUT] (state) {
+      console.warn('logging out')
       state.loggedIn = false
       router.push('login')
     }
@@ -25,6 +26,10 @@ export default new Vuex.Store({
   actions: {
     [USER_LOGIN] (context) {
       context.commit(USER_LOGIN)
+    },
+
+    [USER_LOGOUT] (context) {
+      context.commit(USER_LOGOUT)
     }
   },
   modules: {

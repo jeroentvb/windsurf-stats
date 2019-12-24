@@ -5,13 +5,21 @@
       v-model="drawer"
       app>
       <v-list>
-        <v-list-item-group v-model="item" color="primary">
-          <v-list-item>
+        <v-list-item-group color="primary">
+
             <!-- <v-list-item-icon>
               <v-icon v-text="item.icon"></v-icon>
             </v-list-item-icon> -->
+
+          <v-list-item>
             <v-list-item-content>
               <v-list-item-title>Test</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title @click="logout()">Log out</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
@@ -27,6 +35,7 @@
       <v-toolbar-title>{{ routeName }}</v-toolbar-title>
     </v-app-bar>
 
+    <!-- Router -->
     <v-content>
       <v-container fluid fill-height>
         <router-view />
@@ -39,7 +48,7 @@
 import Vue from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import Axios from 'axios'
-import { USER_LOGIN } from './store/constants'
+import { USER_LOGIN, USER_LOGOUT } from './store/constants'
 
 export default Vue.extend({
   name: 'App',
@@ -60,6 +69,22 @@ export default Vue.extend({
     }
   },
 
+  methods: {
+    async logout () {
+      try {
+        const res = await Axios.post('http://localhost:25561/logout', {
+          withCredentials: true
+        })
+
+        if (res.status === 200) {
+          this.$store.dispatch(USER_LOGOUT)
+        }
+      } catch (err) {
+        // TODO snackbar popup
+      }
+    }
+  },
+
   async created () {
     try {
       const res = await Axios.get('http://localhost:25561', {
@@ -67,7 +92,7 @@ export default Vue.extend({
       })
 
       if (res.status === 200) {
-        this.$store.dispatch(USER_LOGIN)
+        await this.$store.dispatch(USER_LOGIN)
       }
     } catch (err) {
       // TODO: Show proper error message

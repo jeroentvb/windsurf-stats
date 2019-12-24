@@ -7,7 +7,30 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 
+import Axios from 'axios'
+import { USER_LOGIN } from '@/store/constants'
+
 Vue.use(VueRouter)
+
+async function checkLogin (): Promise<void | Error> {
+  try {
+    const res = await Axios.get('http://localhost:25561', {
+      withCredentials: true
+    })
+
+    if (res.status === 200) {
+      console.log('LOGGED IN!')
+      store.dispatch(USER_LOGIN)
+    }
+  } catch (err) {
+    // TODO: Show proper error message
+    if (err.response.status === 401) {
+      throw new Error('Invalid credentials!')
+    }
+
+    throw err
+  }
+}
 
 const routes: RouteConfig[] = [
   {
@@ -45,12 +68,10 @@ const router = new VueRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const isPublic = to.matched.some(record => record.meta.public)
   const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
   const loggedIn = store.state.loggedIn
-
-  console.log(isPublic)
 
   if (!isPublic && !loggedIn) {
     return next({
