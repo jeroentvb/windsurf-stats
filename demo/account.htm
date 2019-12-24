@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
+  <link rel="shortcut icon" type="image/png" href="http://localhost:25561/img/favicon.png">
+
+  <title>Windsurf Stats - Account</title>
+  </head>
+
+
+<body>
+  <header>
+      <nav>
+        <h1>Account</h1>
+        <img id="open-menu" src="./assets/img/menu-icon.svg" alt="Menu icon">
+        <ul id="menu">
+          <li><img id="close-menu" src="./assets/img/close-icon.svg" alt="Close menu icon"></li>
+          <li>Menu</li>
+          <li><a href="./index.htm">Statistics</a></li>
+          <li><a href="./add-session.htm">Add session</a></li>
+          <li><a href="./gear.htm">Gear settings</a></li>
+
+          <li><a href="./account.htm">Account</a></li>
+          <li><a href="./login.htm">Log out</a></li>
+        </ul>
+      </nav>
+    </header>
+
+<main class="main--medium main--account">
+  <section>
+    <div class="row">
+      <p>Username:</p>
+      <p>demo</p>
+    </div>
+
+    <div class="row">
+      <p>E-mail:</p>
+      <p>demo@test.com</p>
+    </div>
+
+    <div class="buttons">
+      <button type="button" name="button" id="change-password" class="button--small">Change password</button>
+
+
+
+
+    </div>
+  </section>
+
+  <section>
+    <form action="./index.htm" id="change-password-form" class="hidden">
+      <h4>Change password</h4>
+      <fieldset>
+        <div class="field field--first">
+          <label for="old-password">Old password</label>
+          <input id="old-password" type="password" name="old-password" required="">
+        </div>
+
+        <div class="field">
+          <label for="new-password">New password</label>
+          <input id="new-password" type="password" name="new-password" min="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required="">
+        </div>
+
+        <div class="field">
+          <label for="confirm-password">Confirm new password</label>
+          <input id="confirm-password" type="password" name="confirm-password" required="">
+        </div>
+      </fieldset>
+
+      <fieldset class="fieldset--transparent submit-form">
+        <input type="submit" name="submit" id="submit-change-password" class="button button--submit">
+      </fieldset>
+    </form>
+
+
+
+
+  </section>
+</main>
+
+<script src="./assets/js/account.js"></script>
+
+  <script src="./assets/js/script.js"></script>
+
+
+
+</body></html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
+  <link rel="shortcut icon" type="image/png" href="http://localhost:25561/img/favicon.png">
+
+  <title>Windsurf Stats - Gear settings</title>
+  </head>
+
+
+<body>
+  <header>
+      <nav>
+        <h1>Gear settings</h1>
+        <img id="open-menu" src="./assets/img/menu-icon.svg" alt="Menu icon">
+        <ul id="menu">
+          <li><img id="close-menu" src="./assets/img/close-icon.svg" alt="Close menu icon"></li>
+          <li>Menu</li>
+          <li><a href="./index.htm">Statistics</a></li>
+          <li><a href="./add-session.htm">Add session</a></li>
+          <li><a href="./gear.htm">Gear settings</a></li>
+
+          <li><a href="./account.htm">Account</a></li>
+          <li><a href="./login.htm">Log out</a></li>
+        </ul>
+      </nav>
+    </header>
+
+<main class="main--medium">
+  <section>
+    <p>Only the first entry of every category is required</p>
+
+    <form action="./index.htm" class="form--gear">
+      <fieldset>
+        <h2>Enter your boards</h2>
+
+        <div class="field field--first">
+          <label for="board0">Board 1</label>
+          <input id="board0" class="input" type="text" name="board" value="Fanatic Free STB 84L" required="">
+        </div>
+
+
+          <div class="field">
+            <label for="board1">Board 2</label>
+
+            <input id="board1" class="input" type="text" name="board" value="F2 Stoke 106">
+
+          </div>
+
+          <div class="field">
+            <label for="board2">Board 3</label>
+
+            <input id="board2" class="input" type="text" name="board" value="">
+
+          </div>
+
+          <div class="field">
+            <label for="board3">Board 4</label>
+
+            <input id="board3" class="input" type="text" name="board" value="">
+
+          </div>
+
+          <div class="field">
+            <label for="board4">Board 5</label>
+
+            <input id="board4" class="input" type="text" name="board" value="">
+
+          </div>
+
+      </fieldset>
+
+      <fieldset id="gear-sails">
+        <h2>Enter your sails</h2>
+
+        <div class="field field--first">
+          <label for="sail0">Sail 1</label>
+          <input id="sail0" class="input" type="text" name="sail" value="3.5" required="">
+        </div>
+
+
+          <div class="field">
+            <label for="sail1">Sail 2</label>
+
+            <input id="sail1" class="input" type="text" name="sail" value="4.2">
+
+          </div>
+
+          <div class="field">
+            <label for="sail2">Sail 3</label>
+
+            <input id="sail2" class="input" type="text" name="sail" value="4.7">
+
+          </div>
+
+          <div class="field">
+            <label for="sail3">Sail 4</label>
+
+            <input id="sail3" class="input" type="text" name="sail" value="5.3">
+
+          </div>
+
+          <div class="field">
+            <label for="sail4">Sail 5</label>
+
+            <input id="sail4" class="input" type="text" name="sail" value="6">
+
+          </div>
+
+          <div class="field">
+            <label for="sail5">Sail 6</label>
+
+            <input id="sail5" class="input" type="text" name="sail" value="7">
+
+          </div>
+
+          <div class="field">
+            <label for="sail6">Sail 7</label>
+
+            <input id="sail6" class="input" type="text" name="sail" value="">
+
+          </div>
+
+          <div class="field">
+            <label for="sail7">Sail 8</label>
+
+            <input id="sail7" class="input" type="text" name="sail" value="">
+
+          </div>
+
+          <div class="field">
+            <label for="sail8">Sail 9</label>
+
+            <input id="sail8" class="input" type="text" name="sail" value="">
+
+          </div>
+
+          <div class="field">
+            <label for="sail9">Sail 10</label>
+
+            <input id="sail9" class="input" type="text" name="sail" value="">
+
+          </div>
+
+      </fieldset>
+
+      <fieldset>
+        <h2>Enter the spots you sail at</h2>
+        <p class="help-message">This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay.</p>
+
+        <div class="field field--first">
+          <label for="spot0">Board 1</label>
+          <input id="spot0" class="input" type="text" name="spot" value="wijk_aan_zee_noordpier" required="">
+        </div>
+
+
+          <div class="field">
+            <label for="spot1">Board 2</label>
+
+            <input id="spot1" class="input" type="text" name="spot" value="markermeer_schellinkhout">
+
+          </div>
+
+          <div class="field">
+            <label for="spot2">Board 3</label>
+
+            <input id="spot2" class="input" type="text" name="spot" value="">
+
+          </div>
+
+          <div class="field">
+            <label for="spot3">Board 4</label>
+
+            <input id="spot3" class="input" type="text" name="spot" value="">
+
+          </div>
+
+          <div class="field">
+            <label for="spot4">Board 5</label>
+
+            <input id="spot4" class="input" type="text" name="spot" value="">
+
+          </div>
+
+      </fieldset>
+
+      <fieldset class="fieldset--transparent submit-form">
+  <input type="submit" name="submit" id="submit" class="button button--submit">
+</fieldset>
+    </form>
+  </section>
+</main>
+
+<script src="./assets/js/gear.js" type="module"></script>
+
+  <script src="./assets/js/script.js"></script>
+
+
+</body></html>
