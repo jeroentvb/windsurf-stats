@@ -25,7 +25,7 @@ function start () {
     store: new MongoStore({
       client: db.client
     }),
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     rolling: true,
     secret: process.env.SESSION_SECRET,
@@ -38,10 +38,11 @@ function start () {
     credentials: true
   }))
   .use(express.json())
+
   .post('/register', auth.register)
   .post('/login', auth.login)
   .post('/logout', auth.logout)
-
+  
   .use(auth.checkLogin)
 
   // .get('/', (req, res) => {

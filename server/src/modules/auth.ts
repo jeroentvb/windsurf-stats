@@ -8,7 +8,6 @@ import { User } from '../interfaces/user';
 require('dotenv').config()
 
 export function checkLogin (req: Request, res: Response, next: NextFunction) {
-  console.log(req.session!.user)
   if (!req.session!.user) {
     res.status(401).send()
   } else {
@@ -95,14 +94,11 @@ export async function login (req: Request, res: Response) {
 }
 
 export async function logout (req: Request, res: Response) {
-  console.log(req.session)
-  delete req.session!.user
   req.session!.destroy(err => {
     if (err) return console.error(err)
     
-    res.status(200).end()
+    res.send()
   })
-  res.end()
 }
 
 function createHash (string: string): Promise<string | Error> {

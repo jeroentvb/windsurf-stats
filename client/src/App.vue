@@ -84,17 +84,15 @@ export default Vue.extend({
   methods: {
     async logout () {
       try {
-        const res = await Axios.post('http://localhost:25561/logout', {
+        const res = await Axios.post('http://localhost:25561/logout', {}, {
           withCredentials: true
         })
 
         if (res.status === 200) {
           this.$store.dispatch(USER_LOGOUT)
-        } else {
-          // showError()
-          console.error('Could not log out')
         }
       } catch (err) {
+        console.log(err.response.status)
         // TODO snackbar popup
       }
     }
