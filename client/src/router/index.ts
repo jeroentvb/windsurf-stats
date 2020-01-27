@@ -2,10 +2,11 @@ import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import store from '../store'
 
-// Components
+// Views
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
+import Gear from '../views/Gear.vue'
 
 import Axios from 'axios'
 import { USER_LOGIN } from '@/store/constants'
@@ -55,6 +56,11 @@ const routes: RouteConfig[] = [
     component: Home
   },
   {
+    path: '/gear',
+    name: 'Gear',
+    component: Gear
+  },
+  {
     path: '/about',
     name: 'about',
     // route level code-splitting
@@ -72,6 +78,8 @@ router.beforeEach(async (to, from, next) => {
   const isPublic = to.matched.some(record => record.meta.public)
   const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
   const loggedIn = store.state.loggedIn
+
+  console.log('logged in', loggedIn)
 
   if (!isPublic && !loggedIn) {
     return next({

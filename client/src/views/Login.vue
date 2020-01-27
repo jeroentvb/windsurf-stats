@@ -17,7 +17,7 @@
             @submit.prevent="submit"
             id="login-form">
             <v-text-field
-              v-model="user.username"
+              v-model="user.name"
               :rules="usernameRules"
               label="Username"
               name="username"
@@ -35,6 +35,11 @@
               <!-- prepend-icon="lock" -->
             </v-text-field>
           </v-form>
+
+          <FormError
+            v-if="formError"
+            :msg="formErrorMsg"
+          />
         </v-card-text>
 
         <v-card-actions>
@@ -53,15 +58,20 @@
 <script lang="ts">
 import Vue from 'vue'
 import Axios from 'axios'
+
+import FormError from '../components/FormError.vue'
+
 import { USER_LOGIN } from '../store/constants'
 
 export default Vue.extend({
-  name: 'Login',
+  components: {
+    FormError
+  },
 
   data () {
     return {
       user: {
-        username: '',
+        name: '',
         password: ''
       },
       usernameRules: [
@@ -69,15 +79,16 @@ export default Vue.extend({
       ],
       passwordRules: [
         (v: string) => !!v || 'Password is required'
-      ]
+      ],
+      formError: false,
+      formErrorMsg: ''
     }
   },
 
   methods: {
     async submit () {
-      if (!this.user.username || !this.user.password) {
-        // TODO: Show proper error message
-        console.error('Username or password missing!')
+      if (!this.user.name || !this.user.password) {
+        this.setError('Username or password missing!')
         return
       }
 
@@ -90,12 +101,21 @@ export default Vue.extend({
           this.$store.dispatch(USER_LOGIN)
         }
       } catch (err) {
-        // TODO: Show proper error message
-        if (err.response.status === 401) {
-          return console.error('Invalid credentials!')
+        const status = err.response.status
+
+        if (status === 422 || status === 401) {
+          this.setError('Invalid credentials')
         }
-        console.error(err)
+
+        if (status === 500) {
+          window.alert('Something went wrong. Try again later.')
+        }
       }
+    },
+
+    setError (msg: string): void {
+      this.formErrorMsg = msg
+      this.formError = true
     }
   }
 })

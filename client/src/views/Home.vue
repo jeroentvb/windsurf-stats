@@ -21,7 +21,7 @@ export default Vue.extend({
   },
 
   created () {
-    this.getData()
+    // this.getData()
   },
 
   methods: {

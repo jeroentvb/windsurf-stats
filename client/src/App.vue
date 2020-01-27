@@ -1,5 +1,13 @@
 <template>
   <v-app>
+    <v-overlay
+      :value="loading"
+      :opacity="1"
+      :z-index="10"
+    >
+      <v-progress-circular indeterminate size="64"></v-progress-circular>
+    </v-overlay>
+
     <v-navigation-drawer
       v-if="loggedIn"
       v-model="drawer"
@@ -48,7 +56,7 @@
 import Vue from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import Axios from 'axios'
-import { USER_LOGIN, USER_LOGOUT } from './store/constants'
+import { USER_LOGIN, USER_LOGOUT, SET_USERDATA, STOP_LOADING } from './store/constants'
 
 export default Vue.extend({
   name: 'App',
@@ -66,6 +74,10 @@ export default Vue.extend({
 
     loggedIn () {
       return this.$store.state.loggedIn
+    },
+
+    loading () {
+      return this.$store.state.loading
     }
   },
 
@@ -78,6 +90,9 @@ export default Vue.extend({
 
         if (res.status === 200) {
           this.$store.dispatch(USER_LOGOUT)
+        } else {
+          // showError()
+          console.error('Could not log out')
         }
       } catch (err) {
         // TODO snackbar popup
@@ -86,20 +101,18 @@ export default Vue.extend({
   },
 
   async created () {
+    console.warn('Created app.vue!')
     try {
-      const res = await Axios.get('http://localhost:25561', {
+      const res = await Axios.get('http://localhost:25561/user', {
         withCredentials: true
       })
 
       if (res.status === 200) {
-        await this.$store.dispatch(USER_LOGIN)
+        await this.$store.dispatch(SET_USERDATA, res.data)
       }
     } catch (err) {
-      // TODO: Show proper error message
-      if (err.response.status === 401) {
-        return console.error('Invalid credentials!')
-      }
-      console.error(err)
+      if (this.$route.path !== '/login') this.$router.push('/login')
+      this.$store.commit(STOP_LOADING)
     }
   }
 })
