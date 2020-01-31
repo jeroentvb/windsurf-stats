@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
+import Vuex, { Store } from 'vuex'
 import router from '@/router'
 
 import {
@@ -15,7 +15,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loggedIn: false,
-    newAccount: false,
+    newAccount: true,
     loading: true,
     user: {}
   },
@@ -28,7 +28,7 @@ export default new Vuex.Store({
 
     [USER_LOGIN] (state) {
       state.loggedIn = true
-      router.push('/')
+      // router.push('/')
     },
 
     [USER_LOGOUT] (state) {
@@ -52,6 +52,11 @@ export default new Vuex.Store({
 
     [USER_LOGIN] (context) {
       context.commit(USER_LOGIN)
+      if (router.currentRoute.query.redirect) {
+        router.push(router.currentRoute.query.redirect as string)
+      } else {
+        router.push('/')
+      }
     },
 
     [USER_LOGOUT] (context) {
@@ -60,10 +65,10 @@ export default new Vuex.Store({
       router.push('login')
     },
 
-    [SET_USERDATA] (context, payload) {
-      context.commit(SET_USERDATA, payload)
-      context.commit(STOP_LOADING)
-      context.commit(USER_LOGIN)
+    [SET_USERDATA] ({ dispatch, commit }, payload) {
+      commit(SET_USERDATA, payload)
+      commit(STOP_LOADING)
+      dispatch(USER_LOGIN)
     }
   },
   modules: {
