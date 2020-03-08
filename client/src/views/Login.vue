@@ -1,13 +1,12 @@
 <template>
   <v-layout
     align-center
-    justify-center
-    class="mt-n12">
+    justify-center>
     <v-flex
       xs12
       sm8
       md4>
-      <v-card outlined>
+      <v-card>
         <v-card-title>
           Login
         </v-card-title>
@@ -93,7 +92,7 @@ export default Vue.extend({
       }
 
       try {
-        const res = await Axios.post('http://localhost:25561/login', this.user, {
+        const res = await Axios.post(`${process.env.VUE_APP_API_URL}/login`, this.user, {
           withCredentials: true
         })
 

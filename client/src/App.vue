@@ -38,17 +38,32 @@
       v-if="loggedIn"
       app
       dark
-      color="blue">
+      color="primary">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ routeName }}</v-toolbar-title>
     </v-app-bar>
 
     <!-- Router -->
     <v-content>
-      <v-container fluid fill-height>
+      <v-container fluid>
         <router-view />
       </v-container>
     </v-content>
+
+    <v-snackbar
+      v-model="snackbar.show"
+      :bottom="true"
+      :timeout="snackbar.timeout"
+    >
+      {{ snackbar.text }}
+      <v-btn
+        dark
+        text
+        @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -56,7 +71,9 @@
 import Vue from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import Axios from 'axios'
-import { USER_LOGIN, USER_LOGOUT, SET_USERDATA, STOP_LOADING } from './store/constants'
+import { USER_LOGIN, USER_LOGOUT, SET_USERDATA, STOP_LOADING, CLOSE_SNACKBAR } from './store/constants'
+
+import { User } from '../../shared/interfaces/User'
 
 export default Vue.extend({
   name: 'App',
@@ -78,6 +95,10 @@ export default Vue.extend({
 
     loading () {
       return this.$store.state.loading
+    },
+
+    snackbar () {
+      return this.$store.state.snackbar
     }
   },
 
@@ -95,18 +116,23 @@ export default Vue.extend({
         console.log(err.response.status)
         // TODO snackbar popup
       }
+    },
+
+    closeSnackbar () {
+      this.$store.commit(CLOSE_SNACKBAR)
     }
   },
 
   async created () {
     console.warn('Created app.vue!')
     try {
-      const res = await Axios.get('http://localhost:25561/user', {
+      const res = await Axios.get(`${process.env.VUE_APP_API_URL}/user`, {
         withCredentials: true
       })
 
       if (res.status === 200) {
-        await this.$store.dispatch(SET_USERDATA, res.data)
+        console.log(res.data)
+        await this.$store.dispatch(SET_USERDATA, res.data as User)
       }
     } catch (err) {
       if (this.$route.path !== '/login') this.$router.push('/login')
@@ -115,3 +141,15 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang="scss">
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+</style>

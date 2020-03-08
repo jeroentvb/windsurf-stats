@@ -1,8 +1,10 @@
 import { Request, Response } from "express"
 import * as db from './db'
+import * as auth from './auth'
 
 import { Session } from '../interfaces/session'
 import { User } from '../interfaces/user'
+import { Gear } from '../../../shared/interfaces/Gear'
 
 // export async function sessions (req: Request, res: Response) {
 //   try {
@@ -23,16 +25,38 @@ import { User } from '../interfaces/user'
 export async function user (req: Request, res: Response) {
   if (!req.session!.user) {
     res.status(401).send()
+    return
   }
 
   try {
     const userData: User[] = await db.get(req.session!.user.id)
     const user = userData[0]
 
+    if (!user) {
+      auth.logout(req, res)
+      return
+    }
+
     delete user._id
     delete user.password
 
     res.json(user)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
+export async function updateGear (req: Request, res: Response) {
+  const gear: Gear = req.body
+  const user = req.session!.user
+
+  try {
+    await db.update({name: user.name }, { $set: {
+      gear
+    }})
+    
+    res.send('OK')
   } catch (err) {
     console.error(err)
     res.status(500).send()

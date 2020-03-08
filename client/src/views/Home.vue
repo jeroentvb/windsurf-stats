@@ -9,8 +9,6 @@
 import Vue from 'vue'
 import Axios from 'axios'
 
-import { Session } from '../interfaces/session'
-
 export default Vue.extend({
   name: 'home',
 

@@ -1,5 +1,6 @@
 import MongoClient, { Db, InsertOneWriteOpResult } from 'mongodb'
 import chalk from 'chalk'
+import { user } from './data'
 
 export let db: Db
 export let client: MongoClient.MongoClient
@@ -22,7 +23,7 @@ export function init (database: string) {
   })
 }
 
-export function get (query?: any): Promise<any[]> {
+export function get (query?: object): Promise<any[]> {
   return new Promise((resolve, reject) => {
     db.collection('users').find(query).toArray((err, result) => {
       if (err) reject(err)
@@ -33,4 +34,8 @@ export function get (query?: any): Promise<any[]> {
 
 export function insert (data: any) {
   return db.collection('users').insertOne(data)
+}
+
+export function update (query: object, data: any): Promise<any> {
+  return db.collection('users').updateOne(query, data)
 }

@@ -7,8 +7,15 @@ import {
   USER_LOGOUT,
   USER_REGISTER,
   SET_USERDATA,
-  STOP_LOADING
+  STOP_LOADING,
+  UPDATE_GEAR,
+  SHOW_SNACKBAR,
+  CLOSE_SNACKBAR
 } from './constants'
+
+import { User } from '../../../shared/interfaces/User'
+import { Gear } from '../../../shared/interfaces/Gear'
+import { Snackbar } from '../interfaces'
 
 Vue.use(Vuex)
 
@@ -17,7 +24,12 @@ export default new Vuex.Store({
     loggedIn: false,
     newAccount: true,
     loading: true,
-    user: {}
+    user: {} as User,
+    snackbar: {
+      text: '',
+      timeout: 3000,
+      show: false
+    }
   },
 
   mutations: {
@@ -41,6 +53,21 @@ export default new Vuex.Store({
 
     [STOP_LOADING] (state) {
       state.loading = false
+    },
+
+    [UPDATE_GEAR] (state, payload: Gear) {
+      state.user.gear = payload
+    },
+
+    [SHOW_SNACKBAR] (state, payload: Snackbar) {
+      state.snackbar = {
+        ...Object.assign(state.snackbar, payload),
+        show: true
+      }
+    },
+
+    [CLOSE_SNACKBAR] (state) {
+      state.snackbar = Object.assign(state.snackbar, { show: false })
     }
   },
 

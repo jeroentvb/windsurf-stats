@@ -45,6 +45,8 @@ function start () {
   
   .use(auth.checkLogin)
 
+  .post('/gear', data.updateGear)
+
   // .get('/', (req, res) => {
   //   // console.log(req.session!.user)
   //   res.send('OK')

@@ -39,7 +39,13 @@ export async function register (req: Request, res: Response) {
     const { insertedId } = await db.insert({
       name: user.name,
       email: user.email,
-      password: hash
+      password: hash,
+      gear: {
+        boards: [],
+        sails: []
+      },
+      spots: [],
+      sessions: []
     })
 
     req.session!.user = {
@@ -95,7 +101,11 @@ export async function login (req: Request, res: Response) {
 
 export async function logout (req: Request, res: Response) {
   req.session!.destroy(err => {
-    if (err) return console.error(err)
+    if (err) {
+      console.error(err)
+      res.status(500).send()
+      return
+    }
     
     res.send()
   })

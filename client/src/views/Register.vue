@@ -1,8 +1,7 @@
 <template>
   <v-layout
     align-center
-    justify-center
-    class="mt-n12">
+    justify-center>
     <v-flex
       xs12
       sm8
@@ -124,7 +123,7 @@ export default Vue.extend({
       }
 
       try {
-        const res = await Axios.post('http://localhost:25561/register', {
+        const res = await Axios.post(`${process.env.VUE_APP_API_URL}/register`, {
           name: user.username,
           email: user.email,
           password: user.password
@@ -141,11 +140,9 @@ export default Vue.extend({
         if (status === 409) {
           this.setError('E-mail or username is already used')
         }
-
         if (status === 422) {
           this.setError('Field missing')
         }
-
         if (status === 500) {
           window.alert('Something went wrong. Try again later.')
         }
