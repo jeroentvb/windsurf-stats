@@ -8,6 +8,7 @@
       <v-progress-circular indeterminate size="64"></v-progress-circular>
     </v-overlay>
 
+    <!-- Navigation -->
     <v-navigation-drawer
       v-if="loggedIn"
       v-model="drawer"
@@ -18,12 +19,13 @@
             <!-- <v-list-item-icon>
               <v-icon v-text="item.icon"></v-icon>
             </v-list-item-icon> -->
-
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title>Test</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
+          <div v-for="route in routes" :key="route.name">
+            <v-list-item  v-if="!route.meta" :to="route.path">
+              <v-list-item-content >
+                <v-list-item-title>{{ route.name }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </div>
 
           <v-list-item>
             <v-list-item-content>
@@ -34,6 +36,7 @@
       </v-list>
     </v-navigation-drawer>
 
+    <!-- App/top bar -->
     <v-app-bar
       v-if="loggedIn"
       app
@@ -43,13 +46,14 @@
       <v-toolbar-title>{{ routeName }}</v-toolbar-title>
     </v-app-bar>
 
-    <!-- Router -->
+    <!-- App outlet -->
     <v-content>
       <v-container fluid>
         <router-view />
       </v-container>
     </v-content>
 
+    <!-- Snackbar -->
     <v-snackbar
       v-model="snackbar.show"
       :bottom="true"
@@ -69,9 +73,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
 import Axios from 'axios'
+
 import { USER_LOGIN, USER_LOGOUT, SET_USERDATA, STOP_LOADING, CLOSE_SNACKBAR } from './store/constants'
+import { routes } from './router/index'
 
 import { User } from '../../shared/interfaces/User'
 
@@ -80,7 +85,8 @@ export default Vue.extend({
 
   data () {
     return {
-      drawer: ''
+      drawer: '',
+      routes
     }
   },
 
@@ -105,7 +111,7 @@ export default Vue.extend({
   methods: {
     async logout () {
       try {
-        const res = await Axios.post('http://localhost:25561/logout', {}, {
+        const res = await Axios.post(`${process.env.VUE_APP_API_URL}/logout`, {}, {
           withCredentials: true
         })
 
@@ -131,7 +137,6 @@ export default Vue.extend({
       })
 
       if (res.status === 200) {
-        console.log(res.data)
         await this.$store.dispatch(SET_USERDATA, res.data as User)
       }
     } catch (err) {

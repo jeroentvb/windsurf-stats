@@ -10,7 +10,7 @@ import Gear from '../views/Gear.vue'
 
 Vue.use(VueRouter)
 
-const routes: RouteConfig[] = [
+export const routes: RouteConfig[] = [
   {
     path: '/login',
     name: 'Login',

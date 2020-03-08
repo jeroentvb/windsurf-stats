@@ -44,10 +44,6 @@ export default Vue.extend({
     }
   },
 
-  created () {
-    console.log(`New account: ${this.$store.state.newAccount}`)
-  },
-
   methods: {
     async updateGear (sails: Sail[] | null, boards: Board[] | null) {
       const gear: Gear = {
