@@ -11,21 +11,25 @@
           :key="board.id"
           row>
           <v-flex md4 px-4>
-            <v-text-field
-              label="Brand"
+            <v-combobox
               v-model="boardsForm[i].brand"
+              :items="brands"
+              label="Brand"
+              single
               required
               :rules="required"
-            ></v-text-field>
+            ></v-combobox>
           </v-flex>
 
           <v-flex md4 px-4>
-            <v-text-field
-              label="Model"
+            <v-combobox
               v-model="boardsForm[i].model"
+              :items="models"
+              label="Model"
+              single
               required
               :rules="required"
-            ></v-text-field>
+            ></v-combobox>
           </v-flex>
 
           <v-flex md3 px-4>
@@ -87,6 +91,18 @@ export default Vue.extend({
       required: [
         (v: string) => !!v || 'All fields are required'
       ]
+    }
+  },
+
+  computed: {
+    brands (): string[] {
+      const items = this.boards.map((boardItem: Board) => boardItem.brand)
+      return items.filter((boardItem, i) => boardItem && items.indexOf(boardItem) === i)
+    },
+
+    models (): string[] {
+      const items = this.boards.map((boardItem: Board) => boardItem.model)
+      return items.filter((boardItem, i) => boardItem && items.indexOf(boardItem) === i)
     }
   },
 

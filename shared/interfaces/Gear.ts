@@ -1,5 +1,4 @@
 export interface Sail {
-  id?: string
   brand: string
   model: string
   size: string

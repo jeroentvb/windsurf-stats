@@ -11,21 +11,25 @@
           :key="sail.id"
           row>
           <v-flex md4 px-4>
-            <v-text-field
-              label="Brand"
+            <v-combobox
               v-model="sailsForm[i].brand"
+              :items="brands"
+              label="Brand"
+              single
               required
               :rules="required"
-            ></v-text-field>
+            ></v-combobox>
           </v-flex>
 
           <v-flex md4 px-4>
-            <v-text-field
-              label="Model"
+            <v-combobox
               v-model="sailsForm[i].model"
+              :items="models"
+              label="Model"
+              single
               required
               :rules="required"
-            ></v-text-field>
+            ></v-combobox>
           </v-flex>
 
           <v-flex md3 px-4>
@@ -40,9 +44,9 @@
             ></v-text-field>
           </v-flex>
 
-          <v-flex md-1 align-self-center
-          v-if="i !== 0">
+          <v-flex md-1 align-self-center>
             <v-btn icon color="grey"
+            v-if="i !== 0"
             @click="deleteSail(i)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
@@ -87,6 +91,20 @@ export default Vue.extend({
       required: [
         (v: string) => !!v || 'All fields are required'
       ]
+    }
+  },
+
+  computed: {
+    // Put this function in a helper, it's also used in the boardForm
+
+    brands (): string[] {
+      const items = this.sails.map((sailItem: Sail) => sailItem.brand)
+      return items.filter((sailItem, i) => sailItem && items.indexOf(sailItem) === i)
+    },
+
+    models (): string[] {
+      const items = this.sails.map((sailItem: Sail) => sailItem.model)
+      return items.filter((sailItem, i) => sailItem && items.indexOf(sailItem) === i)
     }
   },
 

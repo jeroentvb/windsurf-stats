@@ -7,6 +7,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Gear from '../views/Gear.vue'
+import AddSession from '../views/AddSession.vue'
 
 Vue.use(VueRouter)
 
@@ -22,7 +23,7 @@ export const routes: RouteConfig[] = [
   {
     path: '/register',
     name: 'Register',
-    component: Register,
+    component: () => import(/* webpackChunkName: "register" */ '../views/Register.vue'),
     meta: {
       public: true
     }
@@ -33,17 +34,17 @@ export const routes: RouteConfig[] = [
     component: Home
   },
   {
-    path: '/gear',
-    name: 'Gear',
-    component: Gear
+    path: '/add-session',
+    name: 'Add Session',
+    component: AddSession
   },
   {
-    path: '/about',
-    name: 'about',
+    path: '/gear',
+    name: 'Gear',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    component: () => import(/* webpackChunkName: "gear" */ '../views/Gear.vue')
   }
 ]
 
