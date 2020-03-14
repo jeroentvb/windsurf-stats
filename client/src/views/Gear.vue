@@ -2,13 +2,13 @@
   <v-container>
     <v-layout column>
       <v-layout row wrap>
-        <v-flex md6 class="pa-4">
+        <v-flex md6 pa-4>
           <SailForm
           :sails="gear.sails"
           @updateSails="updateGear"/>
         </v-flex>
 
-        <v-flex md6 class="pa-4">
+        <v-flex md6 pa-4>
           <BoardForm
           :boards="gear.boards"
           @updateBoards="updateGear" />

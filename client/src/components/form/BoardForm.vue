@@ -7,40 +7,40 @@
         id="board-form"
         @submit.prevent="submit">
         <v-layout
-          v-for="(board, i) in boards"
-          :key="board.id"
-          row>
+        v-for="(board, i) in boards"
+        :key="board.id"
+        row>
           <v-flex md4 px-4>
             <v-combobox
-              v-model="boardsForm[i].brand"
-              :items="brands"
-              label="Brand"
-              single
-              required
-              :rules="required"
+            v-model="boardsForm[i].brand"
+            :items="brands"
+            label="Brand"
+            single
+            required
+            :rules="required"
             ></v-combobox>
           </v-flex>
 
           <v-flex md4 px-4>
             <v-combobox
-              v-model="boardsForm[i].model"
-              :items="models"
-              label="Model"
-              single
-              required
-              :rules="required"
+            v-model="boardsForm[i].model"
+            :items="models"
+            label="Model"
+            single
+            required
+            :rules="required"
             ></v-combobox>
           </v-flex>
 
           <v-flex md3 px-4>
             <v-text-field
-              label="Volume"
-              type="number"
-              v-model="boardsForm[i].volume"
-              min="1"
-              step="0.1"
-              required
-              :rules="required"
+            label="Volume"
+            type="number"
+            v-model="boardsForm[i].volume"
+            min="1"
+            step="0.1"
+            required
+            :rules="required"
             ></v-text-field>
           </v-flex>
 
@@ -57,16 +57,16 @@
 
     <v-card-actions class="justify-end">
       <v-btn
-        text
-        large
-        @click="addBoard()"
+      text
+      large
+      @click="addBoard()"
       >Add board</v-btn>
       <v-btn
-        color="secondary"
-        text
-        large
-        type="submit"
-        form="board-form"
+      color="secondary"
+      text
+      large
+      type="submit"
+      form="board-form"
       >Save</v-btn>
     </v-card-actions>
   </v-card>
