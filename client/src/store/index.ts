@@ -14,7 +14,8 @@ import {
   CLOSE_SNACKBAR
 } from './constants'
 
-import { User, Spot } from '../../../shared/interfaces/User'
+import { User } from '../../../shared/interfaces/User'
+import { Spot } from '../../../shared/interfaces/Spot'
 import { Gear } from '../../../shared/interfaces/Gear'
 import { Snackbar } from '../interfaces'
 

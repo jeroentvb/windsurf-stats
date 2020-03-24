@@ -1,4 +1,6 @@
-import { Gear } from "./Gear";
+import { Gear } from './Gear';
+import { Session } from './Session';
+import { Spot } from './Spot'
 
 export interface User {
   _id?: string
@@ -7,10 +9,5 @@ export interface User {
   password?: string
   gear?: Gear
   spots?: Spot[]
-  sessions?: any
-}
-
-export interface Spot {
-  id: string
-  name?: string
+  sessions?: Session[]
 }

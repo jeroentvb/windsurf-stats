@@ -20,7 +20,7 @@ import SpotForm from '../components/form/SpotForm.vue'
 
 import helper from '../services/helper'
 
-import { Spot } from '../../../shared/interfaces/User'
+import { Spot } from '../../../shared/interfaces/Spot'
 import { UPDATE_SPOTS, SHOW_SNACKBAR } from '../store/constants'
 import { Snackbar } from '../interfaces'
 
