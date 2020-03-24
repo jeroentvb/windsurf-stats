@@ -36,7 +36,8 @@
     "jeroentvb-helper": "github:jeroentvb/jeroentvb-helper",
     "json2csv": "^4.5.4",
     "mongodb": "^3.5.2",
-    "mysql": "^2.17.1"
+    "mysql": "^2.17.1",
+    "wind-scrape": "github:jeroentvb/wind-scrape#dist"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

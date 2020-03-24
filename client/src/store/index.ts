@@ -9,11 +9,12 @@ import {
   SET_USERDATA,
   STOP_LOADING,
   UPDATE_GEAR,
+  UPDATE_SPOTS,
   SHOW_SNACKBAR,
   CLOSE_SNACKBAR
 } from './constants'
 
-import { User } from '../../../shared/interfaces/User'
+import { User, Spot } from '../../../shared/interfaces/User'
 import { Gear } from '../../../shared/interfaces/Gear'
 import { Snackbar } from '../interfaces'
 
@@ -28,7 +29,8 @@ export default new Vuex.Store({
     snackbar: {
       text: '',
       timeout: 3000,
-      show: false
+      show: false,
+      type: ''
     }
   },
 
@@ -57,6 +59,10 @@ export default new Vuex.Store({
 
     [UPDATE_GEAR] (state, payload: Gear) {
       state.user.gear = payload
+    },
+
+    [UPDATE_SPOTS] (state, payload: Spot[]) {
+      state.user.spots = payload
     },
 
     [SHOW_SNACKBAR] (state, payload: Snackbar) {

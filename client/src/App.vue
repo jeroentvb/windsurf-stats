@@ -58,6 +58,7 @@
       v-model="snackbar.show"
       :bottom="true"
       :timeout="snackbar.timeout"
+      :color="snackbar.type"
     >
       {{ snackbar.text }}
       <v-btn

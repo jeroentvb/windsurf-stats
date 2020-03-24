@@ -46,6 +46,7 @@ function start () {
   .use(auth.checkLogin)
 
   .post('/gear', data.updateGear)
+  .post('/spots', data.updateSpots)
 
   // .get('/', (req, res) => {
   //   // console.log(req.session!.user)

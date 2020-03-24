@@ -10,6 +10,8 @@ export const STOP_LOADING = '[Loading] stop'
 
 export const UPDATE_GEAR = '[Gear] update'
 
+export const UPDATE_SPOTS = '[Spots] update'
+
 export const SHOW_SNACKBAR = '[Snackbar] show'
 
 export const CLOSE_SNACKBAR = '[Snackbar] close'

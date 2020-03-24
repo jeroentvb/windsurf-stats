@@ -83,6 +83,7 @@
 import Vue from 'vue'
 
 import { Sail, Board } from '../../../shared/interfaces/Gear'
+import { Spot } from '../../../shared/interfaces/User'
 
 export default Vue.extend({
   name: 'AddSession',
@@ -106,7 +107,7 @@ export default Vue.extend({
 
   computed: {
     spots () {
-      return this.$store.state.user.spots
+      return this.$store.state.user.spots.map((spot: Spot) => spot.name)
     },
 
     sails () {
@@ -128,7 +129,7 @@ export default Vue.extend({
     },
 
     submit () {
-      console.log(this.session)
+      this.$router.push('/confirm-session')
     }
   }
 })

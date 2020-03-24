@@ -3,7 +3,7 @@ import * as db from './db'
 import * as auth from './auth'
 
 import { Session } from '../interfaces/session'
-import { User } from '../interfaces/user'
+import { User, Spot } from '../../../shared/interfaces/User'
 import { Gear } from '../../../shared/interfaces/Gear'
 
 // export async function sessions (req: Request, res: Response) {
@@ -54,6 +54,22 @@ export async function updateGear (req: Request, res: Response) {
   try {
     await db.update({name: user.name }, { $set: {
       gear
+    }})
+    
+    res.send('OK')
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
+export async function updateSpots (req: Request, res: Response) {
+  const spots: Spot[] = req.body
+  const user = req.session!.user
+
+  try {
+    await db.update({name: user.name }, { $set: {
+      spots
     }})
     
     res.send('OK')

@@ -27,6 +27,7 @@ import BoardForm from '../components/form/BoardForm.vue'
 
 import { Gear, Sail, Board } from '../../../shared/interfaces/Gear'
 import { UPDATE_GEAR, SHOW_SNACKBAR } from '../store/constants'
+import { Snackbar } from '../interfaces'
 
 export default Vue.extend({
   components: {
@@ -59,12 +60,16 @@ export default Vue.extend({
         if (res.status === 200) {
           this.$store.commit(UPDATE_GEAR, gear)
           this.$store.commit(SHOW_SNACKBAR, {
-            text: 'Saved succesfully'
-          })
-          // this.showSnackbar = true
+            text: 'Saved succesfully',
+            type: 'succes'
+          } as Snackbar)
         }
       } catch (err) {
-        // Show snackbar error!
+        this.$store.commit(SHOW_SNACKBAR, {
+          text: 'Something went wrong!',
+          timeout: 5000,
+          type: 'error'
+        } as Snackbar)
         console.error(err)
       }
     }
