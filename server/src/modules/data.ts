@@ -1,0 +1,80 @@
+import { Request, Response } from "express"
+import * as db from './db'
+import * as auth from './auth'
+
+import { Session } from '../interfaces/session'
+import { User, Spot } from '../../../shared/interfaces/User'
+import { Gear } from '../../../shared/interfaces/Gear'
+
+// export async function sessions (req: Request, res: Response) {
+//   try {
+//     const result: Session[] = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session!.user.id)
+//     const data = result.map((session: Session) => {
+//       delete session.statisticId
+//       delete session.userId
+
+//       return session
+//     })
+
+//     res.json(data)
+//   } catch (err) {
+//     res.status(500).send(err)
+//   }
+// }
+
+export async function user (req: Request, res: Response) {
+  if (!req.session!.user) {
+    res.status(401).send()
+    return
+  }
+
+  try {
+    const userData: User[] = await db.get(req.session!.user.id)
+    const user = userData[0]
+
+    if (!user) {
+      auth.logout(req, res)
+      return
+    }
+
+    delete user._id
+    delete user.password
+
+    res.json(user)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
+export async function updateGear (req: Request, res: Response) {
+  const gear: Gear = req.body
+  const user = req.session!.user
+
+  try {
+    await db.update({name: user.name }, { $set: {
+      gear
+    }})
+    
+    res.send('OK')
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
+export async function updateSpots (req: Request, res: Response) {
+  const spots: Spot[] = req.body
+  const user = req.session!.user
+
+  try {
+    await db.update({name: user.name }, { $set: {
+      spots
+    }})
+    
+    res.send('OK')
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}

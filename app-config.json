@@ -1,7 +1,0 @@
-{
-  "saltRounds": 10,
-  "cookieMaxAge": 2592000000,
-  "allowRegister": true,
-  "allowChangeEmail": false,
-  "allowDeleteAccount": false
-}
