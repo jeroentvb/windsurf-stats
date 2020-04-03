@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Axios from 'axios'
+import Api from '../services/api'
 
 import SailForm from '../components/form/SailForm.vue'
 import BoardForm from '../components/form/BoardForm.vue'
@@ -46,16 +46,14 @@ export default Vue.extend({
   },
 
   methods: {
-    async updateGear (sails: Sail[] | null, boards: Board[] | null) {
+    async updateGear (sails: Sail[] | null, boards: Board[] | null): Promise<void> {
       const gear: Gear = {
         sails: sails || this.gear.sails,
         boards: boards || this.gear.boards
       }
 
       try {
-        const res = await Axios.post(`${process.env.VUE_APP_API_URL}/gear`, gear, {
-          withCredentials: true
-        })
+        const res = await Api.post('gear', gear)
 
         if (res.status === 200) {
           this.$store.commit(UPDATE_GEAR, gear)

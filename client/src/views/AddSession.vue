@@ -8,11 +8,12 @@
             <v-card-text>
               <v-layout column>
                 <v-select
-                v-model="session.hour"
+                v-model.number="session.hour"
                 :items="getNumberArray(7, 21, 1)"
                 label="At which hour did you sail?"
                 required
                 :rules="required"
+                @change="setConditions(session.hour)"
                 ></v-select>
 
                 <v-select
@@ -21,10 +22,65 @@
                 label="Spot"
                 required
                 :rules="required"
+                @change="getConditions(session.spot)"
                 ></v-select>
 
+                <div v-if="showConditions" class="mt-8">
+                  <!-- <h3 v-if="!showConditions">Conditions at the hour you sailed</h3> -->
+                  <!-- <v-row class="mt-4">
+                    <v-progress-circular
+                    indeterminate
+                    color="primary"
+                    class="ml-4"
+                    ></v-progress-circular>
+                    <p class="ml-4">Loading</p>
+                  </v-row> -->
+
+                  <v-text-field
+                  v-model.number="session.conditions.windspeed"
+                  label="Windspeed"
+                  type="number"
+                  required
+                  :rules="required"
+                  ></v-text-field>
+
+                  <v-text-field
+                  v-model.number="session.conditions.windgust"
+                  label="Windgust"
+                  type="number"
+                  required
+                  :rules="required"
+                  ></v-text-field>
+
+                  <v-text-field
+                  v-model.number="session.conditions.winddirection"
+                  label="Winddirection"
+                  type="number"
+                  required
+                  :rules="required"
+                  ></v-text-field>
+
+                  <v-text-field
+                  v-model.number="session.conditions.temperature"
+                  label="Temperature"
+                  type="number"
+                  required
+                  :rules="required"
+                  ></v-text-field>
+                </div>
+
+                <!-- Add fields for wave spot info -->
+              </v-layout>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs12 md6 pa-4>
+          <v-card>
+            <v-card-text>
+              <v-layout column>
                 <v-select
-                v-model="session.sail"
+                v-model="session.gear.sail"
                 :items="sails"
                 label="Sail"
                 required
@@ -32,7 +88,7 @@
                 ></v-select>
 
                 <v-select
-                v-model="session.board"
+                v-model="session.gear.board"
                 :items="boards"
                 label="Board"
                 required
@@ -51,7 +107,7 @@
           </v-card>
         </v-flex>
 
-        <v-flex xs12 md6 pa-4>
+        <v-flex xs12 pa-4>
           <v-card>
             <v-card-text>
               <v-layout column>
@@ -81,9 +137,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Api from '../services/api'
 
 import { Sail, Board } from '../../../shared/interfaces/Gear'
-import { Spot } from '../../../shared/interfaces/User'
+import { Spot } from '../../../shared/interfaces/Spot'
+import { Session, Conditions } from '../../../shared/interfaces/Session'
+import { Snackbar } from '../interfaces'
+
+import { SHOW_SNACKBAR } from '../store/constants'
 
 export default Vue.extend({
   name: 'AddSession',
@@ -93,11 +154,21 @@ export default Vue.extend({
       session: {
         hour: '',
         spot: '',
-        sail: '',
-        board: '',
+        gear: {
+          sail: '',
+          board: ''
+        },
+        conditions: {
+          windspeed: 0,
+          windgust: 0,
+          winddirection: 0,
+          temperature: 0
+        },
         rating: '',
         note: ''
       },
+      conditions: [] as Conditions[],
+      showConditions: false,
       required: [
         (v: string) => !!v || 'All fields are required'
       ],
@@ -106,15 +177,15 @@ export default Vue.extend({
   },
 
   computed: {
-    spots () {
+    spots (): string[] {
       return this.$store.state.user.spots.map((spot: Spot) => spot.name)
     },
 
-    sails () {
+    sails (): string[] {
       return this.$store.state.user.gear.sails.map((sail: Sail) => `${sail.brand} ${sail.model} ${sail.size}`)
     },
 
-    boards () {
+    boards (): string[] {
       return this.$store.state.user.gear.boards.map((board: Board) => `${board.brand} ${board.model} ${board.volume}`)
     }
   },
@@ -128,8 +199,45 @@ export default Vue.extend({
       return numbers
     },
 
+    async getConditions (spot: string, hour: number): Promise<void> {
+      const spotId = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).id
+
+      try {
+        const res = await Api.get(`conditions/${spotId}`)
+        this.conditions = res.data as Conditions[]
+
+        if (this.session.hour) {
+          this.setConditions(this.session.hour)
+        }
+      } catch (err) {
+        this.$store.commit(SHOW_SNACKBAR, {
+          text: 'Couldn\'t get spot conditions',
+          timeout: 5000,
+          type: 'error'
+        } as Snackbar)
+        console.error(err)
+      }
+    },
+
+    setConditions (hour: string): void {
+      if (this.conditions.length === 0) return
+
+      const conditionsHour: Conditions = this.conditions.find((condition: Conditions) => condition.hour === parseInt(hour)) as Conditions
+      const { windspeed, windgust, winddirection, temperature } = conditionsHour
+
+      this.session.conditions = {
+        windspeed,
+        windgust,
+        winddirection,
+        temperature
+      }
+
+      this.showConditions = true
+    },
+
     submit () {
-      this.$router.push('/confirm-session')
+      console.log(this.session)
+      // this.$router.push('/confirm-session')
     }
   }
 })

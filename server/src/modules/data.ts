@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { Request, Response } from 'express'
 import * as db from './db'
 import * as auth from './auth'
 
@@ -22,7 +22,7 @@ import { Gear } from '../../../shared/interfaces/Gear'
 //   }
 // }
 
-export async function user (req: Request, res: Response) {
+async function user (req: Request, res: Response) {
   if (!req.session!.user) {
     res.status(401).send()
     return
@@ -47,7 +47,7 @@ export async function user (req: Request, res: Response) {
   }
 }
 
-export async function updateGear (req: Request, res: Response) {
+async function updateGear (req: Request, res: Response) {
   const gear: Gear = req.body
   const user = req.session!.user
 
@@ -63,7 +63,7 @@ export async function updateGear (req: Request, res: Response) {
   }
 }
 
-export async function updateSpots (req: Request, res: Response) {
+async function updateSpots (req: Request, res: Response) {
   const spots: Spot[] = req.body
   const user = req.session!.user
 
@@ -77,4 +77,10 @@ export async function updateSpots (req: Request, res: Response) {
     console.error(err)
     res.status(500).send()
   }
+}
+
+export default {
+  user,
+  updateGear,
+  updateSpots
 }

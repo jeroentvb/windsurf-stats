@@ -56,7 +56,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Axios from 'axios'
+import Api from '../services/api'
 
 import FormError from '../components/FormError.vue'
 
@@ -92,9 +92,7 @@ export default Vue.extend({
       }
 
       try {
-        const res = await Axios.post(`${process.env.VUE_APP_API_URL}/login`, this.user, {
-          withCredentials: true
-        })
+        const res = await Api.post('login', this.user)
 
         if (res.status === 200) {
           this.$store.dispatch(USER_LOGIN)

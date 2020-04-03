@@ -1,20 +1,21 @@
-import { Sail, Board } from './Gear';
+import { Sail, Board } from './Gear'
 
 export interface Session {
-  hour: number,
-  spot: string,
+  hour: number
+  spot: string
   gear: {
-    sail: Sail,
+    sail: Sail
     board: Board
-  },
-  conditions: Conditions,
-  rating: number,
+  }
+  conditions: Conditions
+  rating: number
   note: string
 }
 
 export interface Conditions {
-  windspeed: number,
-  windgust: number,
-  winddirection: number,
+  hour?: number
+  windspeed: number
+  windgust: number
+  winddirection: number
   temperature: number
 }

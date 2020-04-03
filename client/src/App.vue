@@ -74,12 +74,13 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Axios from 'axios'
+import Api from './services/api'
 
-import { USER_LOGIN, USER_LOGOUT, SET_USERDATA, STOP_LOADING, CLOSE_SNACKBAR } from './store/constants'
+import { USER_LOGIN, USER_LOGOUT, SET_USERDATA, STOP_LOADING, CLOSE_SNACKBAR, SHOW_SNACKBAR } from './store/constants'
 import { routes } from './router/index'
 
 import { User } from '../../shared/interfaces/User'
+import { Snackbar } from './interfaces'
 
 export default Vue.extend({
   name: 'App',
@@ -112,16 +113,17 @@ export default Vue.extend({
   methods: {
     async logout () {
       try {
-        const res = await Axios.post(`${process.env.VUE_APP_API_URL}/logout`, {}, {
-          withCredentials: true
-        })
+        const res = await Api.post('logout', {})
 
         if (res.status === 200) {
           this.$store.dispatch(USER_LOGOUT)
         }
       } catch (err) {
-        console.log(err.response.status)
-        // TODO snackbar popup
+        this.$store.commit(SHOW_SNACKBAR, {
+          text: 'Something went wrong!',
+          timeout: 5000,
+          type: 'error'
+        } as Snackbar)
       }
     },
 
@@ -133,9 +135,7 @@ export default Vue.extend({
   async created () {
     console.warn('Created app.vue!')
     try {
-      const res = await Axios.get(`${process.env.VUE_APP_API_URL}/user`, {
-        withCredentials: true
-      })
+      const res = await Api.get('user')
 
       if (res.status === 200) {
         await this.$store.dispatch(SET_USERDATA, res.data as User)

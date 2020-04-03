@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Axios, { AxiosRequestConfig } from 'axios'
+import Api from '../services/api'
 
 import FormError from '../components/FormError.vue'
 
@@ -123,13 +123,11 @@ export default Vue.extend({
       }
 
       try {
-        const res = await Axios.post(`${process.env.VUE_APP_API_URL}/register`, {
+        const res = await Api.post('register', {
           name: user.username,
           email: user.email,
           password: user.password
-        }, {
-          withCredentials: true
-        } as AxiosRequestConfig)
+        })
 
         if (res.status === 200) {
           await this.$store.dispatch(USER_REGISTER)

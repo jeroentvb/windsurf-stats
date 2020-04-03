@@ -10,7 +10,8 @@ const MongoStore = require('connect-mongo')(session);
 
 import * as auth from './modules/auth'
 import * as db from './modules/db'
-import * as data from './modules/data'
+import data from './modules/data'
+import spotData from './modules/spot-data'
 
 require('dotenv').config()
 
@@ -47,6 +48,9 @@ function start () {
 
   .post('/gear', data.updateGear)
   .post('/spots', data.updateSpots)
+
+  .post('/check-spot/:spot', spotData.check)
+  .get('/conditions/:spot', spotData.get)
 
   // .get('/', (req, res) => {
   //   // console.log(req.session!.user)
