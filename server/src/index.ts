@@ -49,8 +49,10 @@ function start () {
   .post('/gear', data.updateGear)
   .post('/spots', data.updateSpots)
 
+  .post('/session', data.session)
+
   .post('/check-spot/:spot', spotData.check)
-  .get('/conditions/:spot', spotData.get)
+  .get('/conditions', spotData.get)
 
   // .get('/', (req, res) => {
   //   // console.log(req.session!.user)

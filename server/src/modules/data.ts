@@ -2,9 +2,10 @@ import { Request, Response } from 'express'
 import * as db from './db'
 import * as auth from './auth'
 
-import { Session } from '../interfaces/session'
-import { User, Spot } from '../../../shared/interfaces/User'
+import { User } from '../../../shared/interfaces/User'
 import { Gear } from '../../../shared/interfaces/Gear'
+import { Spot } from '../../../shared/interfaces/Spot'
+import { Session } from '../../../shared/interfaces/Session'
 
 // export async function sessions (req: Request, res: Response) {
 //   try {
@@ -63,6 +64,7 @@ async function updateGear (req: Request, res: Response) {
   }
 }
 
+// Update user spot data
 async function updateSpots (req: Request, res: Response) {
   const spots: Spot[] = req.body
   const user = req.session!.user
@@ -79,8 +81,23 @@ async function updateSpots (req: Request, res: Response) {
   }
 }
 
+async function session (req: Request, res: Response) {
+  const user = req.session!.user
+  const session: Session = req.body
+
+  try {
+    await db.update({ name: user.name }, { $push: { sessions: session } })
+
+    res.send('OK')
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
 export default {
   user,
   updateGear,
-  updateSpots
+  updateSpots,
+  session
 }

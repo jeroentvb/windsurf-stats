@@ -1,18 +1,21 @@
-import { Sail, Board } from './Gear'
-
 export interface Session {
-  hour: number
+  date: Date
+  time: {
+    start: number
+    end: number
+  }
   spot: string
   gear: {
-    sail: Sail
-    board: Board
+    sail: string
+    board: string
   }
   conditions: Conditions
-  rating: number
+  rating: string
   note: string
 }
 
 export interface Conditions {
+  // Hour is only included because wind-scrape provides it. It's not sent to the server & stored in the db
   hour?: number
   windspeed: number
   windgust: number

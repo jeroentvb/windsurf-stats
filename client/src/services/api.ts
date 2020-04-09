@@ -8,7 +8,7 @@ async function get (endpoint: string): Promise<AxiosResponse<any>> {
 
     return res
   } catch (err) {
-    return err
+    throw err
   }
 }
 
@@ -20,7 +20,7 @@ async function post (endpoint: string, payload: any): Promise<AxiosResponse<any>
 
     return res
   } catch (err) {
-    return err
+    throw err
   }
 }
 
