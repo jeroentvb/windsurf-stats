@@ -1,0 +1,144 @@
+<v-container>
+  <v-form>
+    <v-layout row wrap>
+      <v-flex xs12 md6 pa-4>
+        <v-card>
+          <v-card-title>Session details</v-card-title>
+          <v-card-text>
+            <v-layout column>
+              <v-select
+              v-model="session.spot"
+              :items="spots"
+              label="Spot"
+              required
+              :rules="required"
+              @change="getConditions(session.spot)"
+              ></v-select>
+
+              <h3 class="mt-4">When did you sail?</h3>
+              <v-select
+              v-model.number="session.time.start"
+              :items="session.time.end ? getNumberArray(7, session.time.end, 1) : getNumberArray(7, 21, 1)"
+              label="Starting hour"
+              required
+              :rules="required"
+              @change="setConditions(session.time.start, session.time.start)"
+              ></v-select>
+
+              <v-select
+              v-model.number="session.time.end"
+              :items="session.time.start ? getNumberArray(session.time.start, 21, 1) : getNumberArray(7, 21, 1)"
+              label="End hour"
+              required
+              :rules="required"
+              @change="setConditions(session.time.start, session.time.end)"
+              ></v-select>
+
+              <div v-if="showConditions" class="mt-8">
+                <!-- <h3 v-if="!showConditions">Conditions at the hour you sailed</h3> -->
+                <!-- <v-row class="mt-4">
+                  <v-progress-circular
+                  indeterminate
+                  color="primary"
+                  class="ml-4"
+                  ></v-progress-circular>
+                  <p class="ml-4">Loading</p>
+                </v-row> -->
+
+                <v-text-field
+                v-model.number="session.conditions.windspeed"
+                label="Windspeed"
+                type="number"
+                required
+                :rules="required"
+                ></v-text-field>
+
+                <v-text-field
+                v-model.number="session.conditions.windgust"
+                label="Windgust"
+                type="number"
+                required
+                :rules="required"
+                ></v-text-field>
+
+                <v-text-field
+                v-model.number="session.conditions.winddirection"
+                label="Winddirection"
+                type="number"
+                required
+                :rules="required"
+                ></v-text-field>
+
+                <v-text-field
+                v-model.number="session.conditions.temperature"
+                label="Temperature"
+                type="number"
+                required
+                :rules="required"
+                ></v-text-field>
+              </div>
+
+              <!-- Add fields for wave spot info -->
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12 md6 pa-4>
+        <v-card>
+          <v-card-title>What gear did you use?</v-card-title>
+          <v-card-text>
+            <v-layout column>
+              <v-select
+              v-model="session.gear.sail"
+              :items="sails"
+              label="Sail"
+              required
+              :rules="required"
+              ></v-select>
+
+              <v-select
+              v-model="session.gear.board"
+              :items="boards"
+              label="Board"
+              required
+              :rules="required"
+              ></v-select>
+
+              <v-select
+              v-model="session.rating"
+              label="Rating"
+              :items="getNumberArray(1, 10, 0.5)"
+              required
+              :rules="required"
+              ></v-select>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12 pa-4>
+        <v-card>
+          <v-card-text>
+            <v-layout column>
+              <v-textarea
+                v-model="session.note"
+                label="How was your session?"
+              ></v-textarea>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+
+    <v-layout>
+      <v-btn
+      :block="true"
+      color="primary"
+      x-large
+      type="submit"
+      @click.prevent="submit()"
+      >Submit</v-btn>
+    </v-layout>
+  </v-form>
+</v-container>

@@ -7,7 +7,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Gear from '../views/Gear.vue'
-import AddSession from '../views/AddSession.vue'
+import AddSession from '../views/add-session/AddSession.vue'
 
 Vue.use(VueRouter)
 
