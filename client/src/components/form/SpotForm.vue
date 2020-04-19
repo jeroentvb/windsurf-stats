@@ -80,7 +80,9 @@ export default Vue.extend({
   methods: {
     addSpot () {
       this.spotForm.push({
-        id: ''
+        id: '',
+        name: '',
+        windfinder: null
       })
     },
 
@@ -89,6 +91,7 @@ export default Vue.extend({
     },
 
     submit () {
+      // TODO:  State is not updated in this component for some weird reason...
       this.$emit('updateSpots', this.spotForm)
     }
   }

@@ -23,7 +23,7 @@ export function init (database: string) {
   })
 }
 
-export function get (query?: object): Promise<any[]> {
+export function get (query: object): Promise<any[]> {
   return new Promise((resolve, reject) => {
     db.collection('users').find(query).toArray((err, result) => {
       if (err) reject(err)

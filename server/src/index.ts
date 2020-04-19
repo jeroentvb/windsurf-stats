@@ -51,7 +51,7 @@ function start () {
 
   .post('/session', data.session)
 
-  .post('/check-spot/:spot', spotData.check)
+  .post('/check-spot', spotData.check)
   .get('/conditions', spotData.get)
 
   // .get('/', (req, res) => {

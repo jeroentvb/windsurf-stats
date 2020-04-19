@@ -225,6 +225,10 @@ export default Vue.extend({
           this.setConditions(this.session.time.start, this.session.time.end)
         }
       } catch (err) {
+        /**
+         * TODO
+         * This can be removed if non windfinder spots are added properly.
+         */
         if (err.response.status === 404) {
           this.$store.commit(SHOW_SNACKBAR, {
             text: 'The selected spot doesn\'t have a windfinder superforecast',

@@ -39,20 +39,20 @@ export default Vue.extend({
 
   methods: {
     async updateSpots (spots: Spot[]) {
-      spots = spots.map(spot => {
-        return {
-          id: spot.id,
+      const parsedSpots: Spot[] = spots.map(spot => {
+        return Object.assign(spot, {
           name: helper.formatSpotName(spot.id)
-        }
+        })
       })
 
       try {
-        const res = await Api.post('spots', spots)
+        const res = await Api.post('spots', parsedSpots)
 
         if (res.status === 200) {
-          this.$store.commit(UPDATE_SPOTS, spots)
+          this.$store.commit(UPDATE_SPOTS, res.data)
           this.$store.commit(SHOW_SNACKBAR, {
-            text: 'Saved succesfully'
+            text: 'Saved succesfully',
+            type: 'succes'
           } as Snackbar)
         }
       } catch (err) {

@@ -22,11 +22,21 @@ import { Snackbar } from '../interfaces'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  strict: process.env.NODE_ENV === 'development',
   state: {
     loggedIn: false,
     newAccount: true,
     loading: true,
-    user: {} as User,
+    user: {
+      name: '',
+      email: '',
+      gear: {
+        sails: [],
+        boards: []
+      } as Gear,
+      spots: [],
+      sessions: []
+    } as User,
     snackbar: {
       text: '',
       timeout: 3000,

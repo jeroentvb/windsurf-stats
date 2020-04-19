@@ -1,9 +1,16 @@
 import * as scrape from 'wind-scrape'
 import { WindfinderDataHour } from 'wind-scrape/dist/interfaces/windfinder'
 import { Request, Response } from 'express'
+import { Spot } from '../../../shared/interfaces/Spot'
 
-async function check (req: Request, res: Response): Promise<void> {
-
+async function check (spot: Spot): Promise<Spot> {
+  try {
+    console.log('Fetching!')
+    await scrape.windfinder(spot.id)
+    return Object.assign(spot, { windfinder: true })
+  } catch (err) {
+    return Object.assign(spot, { windfinder: false })
+  }
 }
 
 async function get (req: Request, res: Response): Promise<void> {
@@ -15,7 +22,6 @@ async function get (req: Request, res: Response): Promise<void> {
   }
 
   try {
-    // bug with wind-scrape
     const windfinderData = await scrape.windfinder(spot)
     const data = windfinderData.days[0].hours
 

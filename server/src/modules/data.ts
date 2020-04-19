@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import * as db from './db'
 import * as auth from './auth'
+import spotData from './spot-data'
 
 import { User } from '../../../shared/interfaces/User'
 import { Gear } from '../../../shared/interfaces/Gear'
@@ -66,15 +67,23 @@ async function updateGear (req: Request, res: Response) {
 
 // Update user spot data
 async function updateSpots (req: Request, res: Response) {
-  const spots: Spot[] = req.body
+  const newSpots: Spot[] = req.body
   const user = req.session!.user
 
   try {
-    await db.update({name: user.name }, { $set: {
+    const spots: Spot[] = await Promise.all(newSpots.map(async spot => {
+      if (spot.windfinder === null) {
+        return await spotData.check(spot)
+      }
+
+      return spot
+    }))
+
+    await db.update({ name: user.name }, { $set: {
       spots
     }})
     
-    res.send('OK')
+    res.json(spots)
   } catch (err) {
     console.error(err)
     res.status(500).send()
