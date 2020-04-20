@@ -68,7 +68,18 @@ export default Vue.extend({
       return numbers
     },
 
-    async getConditions (spot: string, time: Session['time']): Promise<void> {
+    changeSpot (spot: string) {
+      const windfinder = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).windfinder
+
+      if (!windfinder) {
+        this.showConditions = true
+        return
+      }
+
+      this.getConditions(spot)
+    },
+
+    async getConditions (spot: string): Promise<void> {
       const spotId = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).id
 
       try {
@@ -80,10 +91,6 @@ export default Vue.extend({
           this.setConditions(this.session.time.start, this.session.time.end)
         }
       } catch (err) {
-        /**
-         * TODO
-         * This can be removed if non windfinder spots are added properly.
-         */
         if (err.response.status === 404) {
           this.$store.commit(SHOW_SNACKBAR, {
             text: 'The selected spot doesn\'t have a windfinder superforecast',
