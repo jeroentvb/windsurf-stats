@@ -8,21 +8,19 @@ import { Gear } from '../../../shared/interfaces/Gear'
 import { Spot } from '../../../shared/interfaces/Spot'
 import { Session } from '../../../shared/interfaces/Session'
 
-// export async function sessions (req: Request, res: Response) {
-//   try {
-//     const result: Session[] = await db.query('SELECT * FROM windsurfStatistics.statistics WHERE userId = ?', req.session!.user.id)
-//     const data = result.map((session: Session) => {
-//       delete session.statisticId
-//       delete session.userId
+async function getUserData (name: string): Promise<User> {
+  try {
+    const userData: User[] = await db.get({ name })
+    const user = userData[0]
 
-//       return session
-//     })
+    delete user._id
+    delete user.password
 
-//     res.json(data)
-//   } catch (err) {
-//     res.status(500).send(err)
-//   }
-// }
+    return user
+  } catch (err) {
+    throw err
+  }
+}
 
 async function user (req: Request, res: Response) {
   if (!req.session!.user) {
@@ -31,16 +29,12 @@ async function user (req: Request, res: Response) {
   }
 
   try {
-    const userData: User[] = await db.get(req.session!.user.id)
-    const user = userData[0]
+    const user: User = await getUserData(req.session!.user.name)
 
     if (!user) {
       auth.logout(req, res)
       return
     }
-
-    delete user._id
-    delete user.password
 
     res.json(user)
   } catch (err) {
@@ -104,9 +98,26 @@ async function session (req: Request, res: Response) {
   }
 }
 
+async function sessions (req: Request, res: Response) {
+  if (!req.session!.user) {
+    res.status(401).send()
+    return
+  }
+
+  try {
+    const userData: User = await getUserData(req.session!.user.name)
+
+    res.json(userData.sessions)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
 export default {
   user,
   updateGear,
   updateSpots,
-  session
+  session,
+  sessions
 }

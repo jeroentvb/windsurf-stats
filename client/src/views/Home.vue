@@ -1,13 +1,17 @@
 <template>
   <div class="home">
     <h1>Sessions</h1>
-    <p>{{ sessions }}</p>
+    <pre>{{ sessions }}</pre>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Axios from 'axios'
+import Api from '../services/api'
+
+import { SHOW_SNACKBAR } from '../store/constants'
+import { Snackbar } from '../interfaces'
 
 export default Vue.extend({
   name: 'home',
@@ -19,16 +23,22 @@ export default Vue.extend({
   },
 
   created () {
-    // this.getData()
+    this.getData()
   },
 
   methods: {
     async getData () {
-      const res = await Axios.get('http://localhost:25561/sessions', {
-        withCredentials: true
-      })
+      try {
+        const res = await Api.get('sessions')
 
-      this.sessions = res.data
+        this.sessions = res.data
+      } catch (err) {
+        this.$store.commit(SHOW_SNACKBAR, {
+          text: 'Something went wrong!',
+          timeout: 5000,
+          type: 'error'
+        } as Snackbar)
+      }
     }
   }
 })

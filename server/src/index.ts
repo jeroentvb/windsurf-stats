@@ -50,6 +50,7 @@ function start () {
   .post('/spots', data.updateSpots)
 
   .post('/session', data.session)
+  .get('/sessions', data.sessions)
 
   .post('/check-spot', spotData.check)
   .get('/conditions', spotData.get)

@@ -50,8 +50,7 @@ export async function register (req: Request, res: Response) {
 
     req.session!.user = {
       name: user.name,
-      email: user.email,
-      id: insertedId
+      email: user.email
     }
 
     res.send()
@@ -78,7 +77,7 @@ export async function login (req: Request, res: Response) {
       return
     }
 
-    const { password, _id } = userData[0]
+    const { password } = userData[0]
     const match = await compareHash(user.password, password)
 
     if (!match) {
@@ -88,7 +87,6 @@ export async function login (req: Request, res: Response) {
 
     req.session!.user = {
       name: user.name,
-      id: _id,
       email: user.email
     }
 
@@ -99,7 +97,7 @@ export async function login (req: Request, res: Response) {
   }
 }
 
-export async function logout (req: Request, res: Response) {
+export function logout (req: Request, res: Response) {
   req.session!.destroy(err => {
     if (err) {
       console.error(err)
