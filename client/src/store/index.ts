@@ -11,13 +11,15 @@ import {
   UPDATE_GEAR,
   UPDATE_SPOTS,
   SHOW_SNACKBAR,
-  CLOSE_SNACKBAR
+  CLOSE_SNACKBAR,
+  ADD_SESSION
 } from './constants'
 
 import { User } from '../../../shared/interfaces/User'
 import { Spot } from '../../../shared/interfaces/Spot'
 import { Gear } from '../../../shared/interfaces/Gear'
 import { Snackbar } from '../interfaces'
+import { Session } from '../../../shared/interfaces/Session'
 
 Vue.use(Vuex)
 
@@ -33,7 +35,7 @@ export default new Vuex.Store({
       gear: {
         sails: [],
         boards: []
-      } as Gear,
+      },
       spots: [],
       sessions: []
     } as User,
@@ -53,7 +55,6 @@ export default new Vuex.Store({
 
     [USER_LOGIN] (state) {
       state.loggedIn = true
-      // router.push('/')
     },
 
     [USER_LOGOUT] (state) {
@@ -74,6 +75,10 @@ export default new Vuex.Store({
 
     [UPDATE_SPOTS] (state, payload: Spot[]) {
       state.user.spots = payload
+    },
+
+    [ADD_SESSION] (state, payload) {
+      (state.user.sessions as Session[]).push(payload)
     },
 
     [SHOW_SNACKBAR] (state, payload: Snackbar) {
@@ -113,6 +118,11 @@ export default new Vuex.Store({
       commit(SET_USERDATA, payload)
       commit(STOP_LOADING)
       dispatch(USER_LOGIN)
+    },
+
+    [ADD_SESSION] ({ commit }, payload) {
+      commit(ADD_SESSION, payload)
+      router.push('/')
     }
   },
   modules: {

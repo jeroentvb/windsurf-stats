@@ -16,29 +16,9 @@ import { Snackbar } from '../interfaces'
 export default Vue.extend({
   name: 'home',
 
-  data () {
-    return {
-      sessions: []
-    }
-  },
-
-  created () {
-    this.getData()
-  },
-
-  methods: {
-    async getData () {
-      try {
-        const res = await Api.get('sessions')
-
-        this.sessions = res.data
-      } catch (err) {
-        this.$store.commit(SHOW_SNACKBAR, {
-          text: 'Something went wrong!',
-          timeout: 5000,
-          type: 'error'
-        } as Snackbar)
-      }
+  computed: {
+    sessions () {
+      return this.$store.state.user.sessions
     }
   }
 })

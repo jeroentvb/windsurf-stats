@@ -10,7 +10,7 @@ import { Spot } from '../../../../shared/interfaces/Spot'
 import { Session, Conditions } from '../../../../shared/interfaces/Session'
 import { Snackbar } from '../../interfaces'
 
-import { SHOW_SNACKBAR } from '../../store/constants'
+import { SHOW_SNACKBAR, ADD_SESSION } from '../../store/constants'
 
 export default Vue.extend({
   name: 'AddSession',
@@ -168,7 +168,7 @@ export default Vue.extend({
         const res = await Api.post('session', session)
 
         if (res.status === 200) {
-          this.$router.push('/')
+          this.$store.dispatch(ADD_SESSION, session)
         }
       } catch (err) {
         this.$store.commit(SHOW_SNACKBAR, {
