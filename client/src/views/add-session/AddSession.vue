@@ -36,7 +36,7 @@ export default Vue.extend({
           winddirection: 0,
           temperature: 0
         },
-        rating: '',
+        rating: 7,
         note: ''
       } as Session,
       conditions: [] as Conditions[],
@@ -67,6 +67,11 @@ export default Vue.extend({
     date () {
       this.visibleDate = new Date(this.date).toLocaleDateString()
     }
+  },
+
+  created () {
+    this.session.gear.sail = this.sails[0]
+    this.session.gear.board = this.boards[0]
   },
 
   methods: {

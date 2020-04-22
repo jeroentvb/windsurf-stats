@@ -10,7 +10,7 @@ export interface Session {
     board: string
   }
   conditions: Conditions
-  rating: string
+  rating: number
   note: string
 }
 

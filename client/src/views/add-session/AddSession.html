@@ -130,7 +130,7 @@
               ></v-select>
 
               <v-select
-              v-model="session.rating"
+              v-model.number="session.rating"
               label="Rating"
               :items="getNumberArray(1, 10, 0.5)"
               required
