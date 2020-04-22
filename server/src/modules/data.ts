@@ -12,6 +12,7 @@ async function getUserData (name: string): Promise<User> {
   try {
     const userData: User[] = await db.get({ name })
     const user = userData[0]
+    user.sessions = sortSessions(user.sessions as Session[])
 
     delete user._id
     delete user.password
@@ -20,6 +21,12 @@ async function getUserData (name: string): Promise<User> {
   } catch (err) {
     throw err
   }
+}
+
+function sortSessions (sessions: Session[]) {
+  return sessions.sort((a, b) => {
+    return (new Date(a.date) as any) - (new Date(b.date) as any)
+  })
 }
 
 async function user (req: Request, res: Response) {
@@ -98,26 +105,9 @@ async function session (req: Request, res: Response) {
   }
 }
 
-async function sessions (req: Request, res: Response) {
-  if (!req.session!.user) {
-    res.status(401).send()
-    return
-  }
-
-  try {
-    const userData: User = await getUserData(req.session!.user.name)
-
-    res.json(userData.sessions)
-  } catch (err) {
-    console.error(err)
-    res.status(500).send()
-  }
-}
-
 export default {
   user,
   updateGear,
   updateSpots,
-  session,
-  sessions
+  session
 }
