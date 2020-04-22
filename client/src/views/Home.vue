@@ -24,28 +24,14 @@ export default Vue.extend({
 
   data () {
     return {
-      sessions: [],
       testData: [{ x: '2016-12-25', y: 20 }, { x: '2016-12-26', y: 10 }]
     }
   },
 
-  created () {
-    this.getData()
-  },
+  computed: {
+    sessions () {
+      return this.$store.state.user.sessions
 
-  methods: {
-    async getData () {
-      try {
-        const res = await Api.get('sessions')
-
-        this.sessions = res.data
-      } catch (err) {
-        this.$store.commit(SHOW_SNACKBAR, {
-          text: 'Something went wrong!',
-          timeout: 5000,
-          type: 'error'
-        } as Snackbar)
-      }
     }
   }
 })
