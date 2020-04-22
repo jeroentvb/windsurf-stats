@@ -3,6 +3,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import Api from '../../services/api'
+import helper from '../../services/helper'
 
 import { Sail, Board } from '../../../../shared/interfaces/Gear'
 import { Spot } from '../../../../shared/interfaces/Spot'
@@ -16,6 +17,8 @@ export default Vue.extend({
 
   data () {
     return {
+      date: new Date().toISOString().substr(0, 10),
+      visibleDate: 'Today',
       session: {
         date: new Date(),
         time: {
@@ -38,6 +41,7 @@ export default Vue.extend({
       } as Session,
       conditions: [] as Conditions[],
       showConditions: false,
+      showDatePicker: false,
       required: [
         (v: string) => !!v || 'All fields are required'
       ],
@@ -59,6 +63,12 @@ export default Vue.extend({
     }
   },
 
+  watch: {
+    date () {
+      this.visibleDate = new Date(this.date).toLocaleDateString()
+    }
+  },
+
   methods: {
     getNumberArray (start: number, end: number, step: number): number[] {
       const numbers: number[] = []
@@ -70,8 +80,9 @@ export default Vue.extend({
 
     changeSpot (spot: string) {
       const windfinder = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).windfinder
+      const today = new Date().toISOString().substr(0, 10)
 
-      if (!windfinder) {
+      if (!windfinder || this.date !== today) {
         this.showConditions = true
         return
       }
@@ -146,8 +157,10 @@ export default Vue.extend({
     },
 
     async submit () {
+      const session = Object.assign(this.session, { date: new Date(this.date) })
+
       try {
-        const res = await Api.post(`session`, this.session)
+        const res = await Api.post('session', session)
 
         if (res.status === 200) {
           this.$router.push('/')
