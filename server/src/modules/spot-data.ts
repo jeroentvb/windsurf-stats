@@ -28,7 +28,6 @@ async function get (req: Request, res: Response): Promise<void> {
     res.json(data)
   } catch (err) {
     if (err.message === 'The provided windfinder spot doesn\'t exist..') {
-      console.log('OK')
       res.status(404).send(err.message)
       return
     }
