@@ -1,5 +1,5 @@
 export interface Session {
-  date: Date
+  date: Date | string
   time: {
     start: number
     end: number
