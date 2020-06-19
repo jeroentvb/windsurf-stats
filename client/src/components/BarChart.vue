@@ -1,32 +1,15 @@
 <script>
 import Vue from 'vue'
-import { Bar } from 'vue-chartjs'
+import { Bar, mixins } from 'vue-chartjs'
 
 export default {
   name: 'BarChart',
   extends: Bar,
+  mixins: [mixins.reactiveProp],
 
-  props: {
-    data: Object
-  },
-
-  watch: {
-    data () {
-      // this._chart.destroy()
-      // this.renderBarChart()
-
-      this.$data._chart.data.datasets = this.data.datasets
-      this.$data._chart.update()
-    }
-  },
-
-  mounted () {
-    this.renderBarChart()
-  },
-
-  methods: {
-    renderBarChart () {
-      this.renderChart(this.data, {
+  data () {
+    return {
+      options: {
         maintainAspectRatio: false,
         legend: {
           display: false
@@ -42,9 +25,7 @@ export default {
 
               return `Date: ${new Date(session.date).toLocaleDateString()} Sail: ${session.gear.sail}`
             },
-            title: (tooltipItem, data) => {
-
-            }
+            title: (tooltipItem, data) => {}
           }
         },
         scales: {
@@ -59,8 +40,12 @@ export default {
             stacked: true
           }]
         }
-      })
+      }
     }
+  },
+
+  mounted () {
+    this.renderChart(this.chartData, this.options)
   }
 }
 </script>

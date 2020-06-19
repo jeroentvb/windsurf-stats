@@ -1,14 +1,6 @@
 import { Session } from '../../../shared/interfaces/Session'
 import { User } from '../../../shared/interfaces/User'
-
-interface Data {
-  labels: string[]
-  datasets: {
-    data: number[],
-    backgroundColor: any[]
-    sessions: Session[]
-  }[]
-}
+import { ChartData } from '@/interfaces'
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec']
 const colors = [
@@ -24,9 +16,9 @@ const colors = [
   '#7C5547' // brown
 ]
 
-function parse (sessions: Session[], user: User): Data {
+function parse (sessions: Session[], user: User): ChartData {
   const sails: string[] = user.gear!.sails.map(sail => `${sail.brand} ${sail.model} ${sail.size}`)
-  const datasets: Data['datasets'] = []
+  const datasets: ChartData['datasets'] = []
   const sessionPerMonth: Session[][] = []
 
   /**
@@ -65,6 +57,7 @@ function parse (sessions: Session[], user: User): Data {
   })
 
   return {
+    year: new Date(sessions[0].date).getFullYear(),
     labels: months,
     datasets
   }

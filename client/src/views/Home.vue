@@ -12,7 +12,7 @@
 
     <div id="chart-container">
       <BarChart
-      :data="parsedSessions"
+      :chart-data="chart.data"
       :styles="{height: '75vh'}"
       />
     </div>
@@ -29,7 +29,7 @@ import Data from '../services/data'
 import BarChart from '../components/BarChart.vue'
 
 import { SHOW_SNACKBAR } from '../store/constants'
-import { Snackbar } from '../interfaces'
+import { Snackbar, ChartData } from '../interfaces'
 import { Session } from '../../../shared/interfaces/Session'
 
 export default Vue.extend({
@@ -40,28 +40,10 @@ export default Vue.extend({
 
   data () {
     return {
-      testData: {
-        labels: ['Risk Level', 'test'],
-        datasets: [
-          {
-            label: 'Low',
-            data: [67.8, 2],
-            backgroundColor: '#D6E9C6' // green
-          },
-          {
-            label: 'Moderate',
-            data: [20.7],
-            backgroundColor: '#FAEBCC' // yellow
-          },
-          {
-            label: 'High',
-            data: [11.4],
-            backgroundColor: '#EBCCD1' // red
-          }
-        ]
-      },
       chart: {
-        selectedYear: '' // This is set in the created () function
+        selectedYear: '', // This is set in the created () function
+        data: {},
+        datasets: [] as ChartData[]
       }
     }
   },
@@ -69,15 +51,6 @@ export default Vue.extend({
   computed: {
     sessions (): Session[] {
       return this.$store.state.user.sessions
-    },
-
-    parsedSessions () {
-      // Filter the sessions for the selected year
-      const sessions: Session[] = this.$store.state.user.sessions.filter((session: Session) => {
-        return (session.date as string).split('-')[0] === this.chart.selectedYear
-      })
-
-      return Data.parse(sessions, this.$store.state.user)
     },
 
     years (): string[] {
@@ -101,14 +74,44 @@ export default Vue.extend({
   },
 
   methods: {
-    updateYear (year: string) {
-      console.log(year)
+    parseSessions (): ChartData[] {
+      const yearDatasets: ChartData[] = []
+
+      this.years.forEach(year => {
+        if (year === 'All') return
+        const sessions = this.$store.state.user.sessions.filter((session: Session) => {
+          return (session.date as string).split('-')[0] === year
+        })
+
+        yearDatasets.push(Data.parse(sessions, this.$store.state.user))
+      })
+
+      return yearDatasets.reverse()
+    },
+
+    updateYear (selectedYear: string) {
+      if (selectedYear === 'All') {
+        console.log('All')
+
+        return
+      }
+
+      const dataset = this.chart.datasets.filter((dataset: ChartData) => {
+        return dataset.year === parseInt(selectedYear)
+      })[0]
+
+      this.chart.data = dataset
     }
   },
 
   created () {
-    console.log(this.years)
-    this.chart.selectedYear = this.years[1]
+    const parsedSessions = this.parseSessions()
+
+    this.chart = {
+      selectedYear: this.years[1],
+      data: parsedSessions[parsedSessions.length - 1],
+      datasets: parsedSessions
+    }
   }
 })
 </script>
