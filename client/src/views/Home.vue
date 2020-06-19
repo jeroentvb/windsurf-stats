@@ -12,7 +12,7 @@
 
     <div id="chart-container">
       <BarChart
-      :data="testData"
+      :data="parsedSessions"
       :styles="{height: '75vh'}"
       />
     </div>
@@ -61,7 +61,7 @@ export default Vue.extend({
         ]
       },
       chart: {
-        selectedYear: ''
+        selectedYear: '' // This is set in the created () function
       }
     }
   },
@@ -72,7 +72,11 @@ export default Vue.extend({
     },
 
     parsedSessions () {
-      return Data.parse(this.$store.state.user.sessions)
+      const sessions: Session[] = this.$store.state.user.sessions.filter((session: Session) => {
+        return (session.date as string).split('-')[0] === this.chart.selectedYear
+      })
+
+      return Data.parse(sessions, this.$store.state.user)
     },
 
     years (): string[] {
@@ -92,7 +96,8 @@ export default Vue.extend({
   },
 
   methods: {
-    updateYear (year: number) {
+    updateYear (year: string) {
+      console.log(year)
     }
   },
 

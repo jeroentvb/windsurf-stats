@@ -1,8 +1,8 @@
-<script lang="ts">
+<script>
 import Vue from 'vue'
 import { Bar } from 'vue-chartjs'
 
-export default Vue.extend({
+export default {
   name: 'BarChart',
   extends: Bar,
 
@@ -13,6 +13,25 @@ export default Vue.extend({
   mounted () {
     this.renderChart(this.data, {
       maintainAspectRatio: false,
+      legend: {
+        display: false
+      },
+      tooltips: {
+        custom: tooltip => {
+          if (!tooltip) return
+          tooltip.displayColors = false
+        },
+        callbacks: {
+          label: (tooltipItem, data) => {
+            const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
+
+            return `Date: ${new Date(session.date).toLocaleDateString()} Sail: ${session.gear.sail}`
+          },
+          title: (tooltipItem, data) => {
+
+          }
+        }
+      },
       scales: {
         xAxes: [{
           stacked: true
@@ -27,7 +46,7 @@ export default Vue.extend({
       }
     })
   }
-})
+}
 </script>
 
 <!--
