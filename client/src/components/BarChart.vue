@@ -10,41 +10,57 @@ export default {
     data: Object
   },
 
+  watch: {
+    data () {
+      // this._chart.destroy()
+      // this.renderBarChart()
+
+      this.$data._chart.data.datasets = this.data.datasets
+      this.$data._chart.update()
+    }
+  },
+
   mounted () {
-    this.renderChart(this.data, {
-      maintainAspectRatio: false,
-      legend: {
-        display: false
-      },
-      tooltips: {
-        custom: tooltip => {
-          if (!tooltip) return
-          tooltip.displayColors = false
+    this.renderBarChart()
+  },
+
+  methods: {
+    renderBarChart () {
+      this.renderChart(this.data, {
+        maintainAspectRatio: false,
+        legend: {
+          display: false
         },
-        callbacks: {
-          label: (tooltipItem, data) => {
-            const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
-
-            return `Date: ${new Date(session.date).toLocaleDateString()} Sail: ${session.gear.sail}`
+        tooltips: {
+          custom: tooltip => {
+            if (!tooltip) return
+            tooltip.displayColors = false
           },
-          title: (tooltipItem, data) => {
+          callbacks: {
+            label: (tooltipItem, data) => {
+              const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
 
+              return `Date: ${new Date(session.date).toLocaleDateString()} Sail: ${session.gear.sail}`
+            },
+            title: (tooltipItem, data) => {
+
+            }
           }
+        },
+        scales: {
+          xAxes: [{
+            stacked: true
+          }],
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+              precision: 0
+            },
+            stacked: true
+          }]
         }
-      },
-      scales: {
-        xAxes: [{
-          stacked: true
-        }],
-        yAxes: [{
-          ticks: {
-            beginAtZero: true,
-            precision: 0
-          },
-          stacked: true
-        }]
-      }
-    })
+      })
+    }
   }
 }
 </script>

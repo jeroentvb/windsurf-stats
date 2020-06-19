@@ -72,6 +72,7 @@ export default Vue.extend({
     },
 
     parsedSessions () {
+      // Filter the sessions for the selected year
       const sessions: Session[] = this.$store.state.user.sessions.filter((session: Session) => {
         return (session.date as string).split('-')[0] === this.chart.selectedYear
       })
@@ -80,7 +81,7 @@ export default Vue.extend({
     },
 
     years (): string[] {
-      const years: string[] = ['All']
+      const years: string[] = []
       this.sessions.forEach((session: Session, i) => {
         const year = (session.date as string).split('-')[0]
 
@@ -90,6 +91,10 @@ export default Vue.extend({
           years.push(year)
         }
       })
+
+      years
+        .reverse()
+        .unshift('All')
 
       return years
     }
@@ -102,8 +107,8 @@ export default Vue.extend({
   },
 
   created () {
+    console.log(this.years)
     this.chart.selectedYear = this.years[1]
-    console.log(this.parsedSessions)
   }
 })
 </script>

@@ -45,7 +45,7 @@ function parse (sessions: Session[], user: User): Data {
   })
 
   /**
-   *
+   * Put the sessions in the correct object and array
    */
   months.forEach((month: string, i: number) => {
     sessionPerMonth[i].forEach((session, j) => {
@@ -63,8 +63,6 @@ function parse (sessions: Session[], user: User): Data {
       datasets[j].sessions[i] = session
     })
   })
-
-  console.log(sessionPerMonth)
 
   return {
     labels: months,
