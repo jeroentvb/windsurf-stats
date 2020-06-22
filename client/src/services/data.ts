@@ -16,7 +16,7 @@ const colors = [
   '#7C5547' // brown
 ]
 
-function parse (sessions: Session[], user: User): ChartData {
+function parseSessions (sessions: Session[], user: User): ChartData {
   const sails: string[] = user.gear!.sails.map(sail => `${sail.brand} ${sail.model} ${sail.size}`)
   const datasets: ChartData['datasets'] = []
   const sessionPerMonth: Session[][] = []
@@ -85,5 +85,5 @@ function parse (sessions: Session[], user: User): ChartData {
 // }
 
 export default {
-  parse
+  parseSessions
 }

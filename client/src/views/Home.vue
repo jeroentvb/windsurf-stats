@@ -79,11 +79,12 @@ export default Vue.extend({
 
       this.years.forEach(year => {
         if (year === 'All') return
+
         const sessions = this.$store.state.user.sessions.filter((session: Session) => {
           return (session.date as string).split('-')[0] === year
         })
 
-        yearDatasets.push(Data.parse(sessions, this.$store.state.user))
+        yearDatasets.push(Data.parseSessions(sessions, this.$store.state.user))
       })
 
       return yearDatasets.reverse()
@@ -91,7 +92,11 @@ export default Vue.extend({
 
     updateYear (selectedYear: string) {
       if (selectedYear === 'All') {
-        console.log('All')
+        this.$store.commit(SHOW_SNACKBAR, {
+          text: 'Showing all years hasn\'t been implemented yet',
+          timeout: 5000,
+          type: 'info'
+        } as Snackbar)
 
         return
       }
