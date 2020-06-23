@@ -18,6 +18,12 @@ const colors = [
   '#7C5547' // brown
 ]
 
+/**
+ * Get session data for all years in chartjs usable format
+ * @param sessions 
+ * @param years 
+ * @param user 
+ */
 function sessions (sessions: Session[], years: string[], user: User): ChartData[] {
   const yearDatasets: ChartData[] = []
 
@@ -34,12 +40,18 @@ function sessions (sessions: Session[], years: string[], user: User): ChartData[
   return yearDatasets.reverse()
 }
 
-function gear (sessions: Session[], years: string[], type: 'sail' | 'board'): ChartData[] {
+/**
+ * Get sail, board or spot data for all years in chartjs usable format
+ * @param sessions 
+ * @param years 
+ * @param type 
+ */
+function amount (sessions: Session[], years: string[], type: 'sail' | 'board' | 'spot'): ChartData[] {
   const yearDatasets: ChartData[] = []
 
   years.forEach(year => {
     if (year === 'All') {
-      const dataset = parseGear(sessions, 'sail')
+      const dataset = parseAmount(sessions, type)
       dataset.year = 0
       return yearDatasets.push(dataset)
     }
@@ -48,12 +60,17 @@ function gear (sessions: Session[], years: string[], type: 'sail' | 'board'): Ch
       return (session.date as string).split('-')[0] === year
     })
 
-    yearDatasets.push(parseGear(filteredSessions, type))
+    yearDatasets.push(parseAmount(filteredSessions, type))
   })
 
   return yearDatasets.reverse()
 }
 
+/**
+ * Parse the session data to a chartjs usable format
+ * @param sessions 
+ * @param user 
+ */
 function parseSessions (sessions: Session[], user: User): ChartData {
   const sails: string[] = user.gear!.sails.map(sail => `${sail.brand} ${sail.model} ${sail.size}`)
   const datasets: ChartData['datasets'] = []
@@ -102,14 +119,21 @@ function parseSessions (sessions: Session[], user: User): ChartData {
   }
 }
 
-function parseGear (sessions: Session[], type: 'sail' | 'board'): ChartData {
+/**
+ * Parse the amount of times a sail or board has been used or how many times a spot has been visited
+ * @param sessions 
+ * @param type 
+ */
+function parseAmount (sessions: Session[], type: 'sail' | 'board' | 'spot'): ChartData {
   const dataset: { name: string, count: number}[] = []
 
   sessions.forEach((session, i) => {
-    var exists = false
+    const name = type === 'spot' ? session.spot : session.gear[type]
+    let exists = false
+
     if (i === 0) {
       dataset.push({
-        name: session.gear[type],
+        name,
         count: 1
       })
       return
@@ -119,7 +143,7 @@ function parseGear (sessions: Session[], type: 'sail' | 'board'): ChartData {
       /**
        * Check if the gear item is already added to the dataaset
        */
-      if (item.name === session.gear[type]) {
+      if (item.name === name) {
         item.count++
         exists = true
       }
@@ -130,7 +154,7 @@ function parseGear (sessions: Session[], type: 'sail' | 'board'): ChartData {
      */
     if (exists === false) {
       dataset.push({
-        name: session.gear[type],
+        name,
         count: 1
       })
     }
@@ -143,9 +167,7 @@ function parseGear (sessions: Session[], type: 'sail' | 'board'): ChartData {
     dataset.sort((a, b) => {
       return helper.getSailSize(a.name) - helper.getSailSize(b.name)
     })
-  }
-
-  if (type === 'board') {
+  } else {
     dataset.sort((a, b) => {
       return b.count - a.count
     })
@@ -188,6 +210,6 @@ function parseGear (sessions: Session[], type: 'sail' | 'board'): ChartData {
 export default {
   get: {
     sessions,
-    gear
+    amount
   }
 }

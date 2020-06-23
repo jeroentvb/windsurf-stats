@@ -7,12 +7,6 @@ export default {
   extends: Bar,
   mixins: [mixins.reactiveProp],
 
-  // watch: {
-  //   chartData () {
-  //     console.log(this.chartData)
-  //   }
-  // },
-
   data () {
     return {
       options: {

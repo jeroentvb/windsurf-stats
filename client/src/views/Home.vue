@@ -72,7 +72,8 @@ export default Vue.extend({
         datasets: {
           [SESSION_AMOUNT]: [] as ChartData[],
           [SAIL_USAGE]: [] as ChartData[],
-          [BOARD_USAGE]: [] as ChartData[]
+          [BOARD_USAGE]: [] as ChartData[],
+          [SPOT_VISITS]: [] as ChartData[]
         }
       },
       DATASETS
@@ -125,8 +126,9 @@ export default Vue.extend({
           data: sessionAmount[sessionAmount.length - 1],
           datasets: {
             [SESSION_AMOUNT]: sessionAmount,
-            [SAIL_USAGE]: Data.get.gear(this.sessions, this.years, 'sail'),
-            [BOARD_USAGE]: Data.get.gear(this.sessions, this.years, 'board')
+            [SAIL_USAGE]: Data.get.amount(this.sessions, this.years, 'sail'),
+            [BOARD_USAGE]: Data.get.amount(this.sessions, this.years, 'board'),
+            [SPOT_VISITS]: Data.get.amount(this.sessions, this.years, 'spot')
           }
         }
       }
