@@ -20,9 +20,9 @@ const colors = [
 
 /**
  * Get session data for all years in chartjs usable format
- * @param sessions 
- * @param years 
- * @param user 
+ * @param sessions
+ * @param years
+ * @param user
  */
 function sessions (sessions: Session[], years: string[], user: User): ChartData[] {
   const yearDatasets: ChartData[] = []
@@ -42,9 +42,9 @@ function sessions (sessions: Session[], years: string[], user: User): ChartData[
 
 /**
  * Get sail, board or spot data for all years in chartjs usable format
- * @param sessions 
- * @param years 
- * @param type 
+ * @param sessions
+ * @param years
+ * @param type
  */
 function amount (sessions: Session[], years: string[], type: 'sail' | 'board' | 'spot'): ChartData[] {
   const yearDatasets: ChartData[] = []
@@ -68,8 +68,8 @@ function amount (sessions: Session[], years: string[], type: 'sail' | 'board' | 
 
 /**
  * Parse the session data to a chartjs usable format
- * @param sessions 
- * @param user 
+ * @param sessions
+ * @param user
  */
 function parseSessions (sessions: Session[], user: User): ChartData {
   const sails: string[] = user.gear!.sails.map(sail => `${sail.brand} ${sail.model} ${sail.size}`)
@@ -121,8 +121,8 @@ function parseSessions (sessions: Session[], user: User): ChartData {
 
 /**
  * Parse the amount of times a sail or board has been used or how many times a spot has been visited
- * @param sessions 
- * @param type 
+ * @param sessions
+ * @param type
  */
 function parseAmount (sessions: Session[], type: 'sail' | 'board' | 'spot'): ChartData {
   const dataset: { name: string, count: number}[] = []
