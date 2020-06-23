@@ -2,21 +2,42 @@
   <div class="home">
     <h1>Sessions</h1>
 
-    <v-select
-    v-model="chart.selectedYear"
-    :items="years"
-    label="Year"
-    required
-    @change="updateYear(chart.selectedYear)"
-    ></v-select>
+    <div v-if="sessions.length > 0">
+      <div class="d-flex">
+        <v-select
+        v-model="chart.selected.dataset"
+        :items="DATASETS"
+        label="Dataset"
+        required
+        @change="changeDataset(chart.selected.dataset)"
+        class="pr-2"
+        ></v-select>
 
-    <div id="chart-container">
-      <BarChart
-      :chart-data="chart.data"
-      :styles="{height: '75vh'}"
-      />
+        <v-select
+        v-model="chart.selected.year"
+        :items="years"
+        label="Year"
+        required
+        @change="updateYear(chart.selected.year)"
+        class="pl-2"
+        ></v-select>
+      </div>
+
+      <p>
+        Total amount of sessions: {{ chart.data.amount }}
+      </p>
+
+      <div id="chart-container">
+        <BarChart
+        :chart-data="chart.data"
+        :styles="{height: '75vh'}"
+        />
+      </div>
     </div>
-    <pre>{{ sessions }}</pre>
+
+    <div v-if="sessions.length === 0">
+      <p>You don't have any sessions yet :(</p>
+    </div>
   </div>
 </template>
 
@@ -28,9 +49,11 @@ import Data from '../services/data'
 
 import BarChart from '../components/BarChart.vue'
 
+import { DATASETS, SESSION_AMOUNT, SAIL_USAGE, BOARD_USAGE, SPOT_VISITS } from '../constants'
 import { SHOW_SNACKBAR } from '../store/constants'
 import { Snackbar, ChartData } from '../interfaces'
 import { Session } from '../../../shared/interfaces/Session'
+import { User } from '../../../shared/interfaces/User'
 
 export default Vue.extend({
   name: 'home',
@@ -41,16 +64,28 @@ export default Vue.extend({
   data () {
     return {
       chart: {
-        selectedYear: '', // This is set in the created () function
+        selected: {
+          year: '', // This is set in the created () function
+          dataset: '' as DATASETS
+        },
         data: {},
-        datasets: [] as ChartData[]
-      }
+        datasets: {
+          [SESSION_AMOUNT]: [] as ChartData[],
+          [SAIL_USAGE]: [] as ChartData[],
+          [BOARD_USAGE]: [] as ChartData[]
+        }
+      },
+      DATASETS
     }
   },
 
   computed: {
     sessions (): Session[] {
       return this.$store.state.user.sessions
+    },
+
+    user (): User {
+      return this.$store.state.user
     },
 
     years (): string[] {
@@ -74,20 +109,27 @@ export default Vue.extend({
   },
 
   methods: {
-    parseSessions (): ChartData[] {
-      const yearDatasets: ChartData[] = []
+    init () {
+      if (this.sessions.length > 0) {
+        const sessionAmount = Data.get.sessions(
+          this.sessions,
+          this.years,
+          this.user
+        )
 
-      this.years.forEach(year => {
-        if (year === 'All') return
-
-        const sessions = this.$store.state.user.sessions.filter((session: Session) => {
-          return (session.date as string).split('-')[0] === year
-        })
-
-        yearDatasets.push(Data.parseSessions(sessions, this.$store.state.user))
-      })
-
-      return yearDatasets.reverse()
+        this.chart = {
+          selected: {
+            year: this.years[1],
+            dataset: SESSION_AMOUNT
+          },
+          data: sessionAmount[sessionAmount.length - 1],
+          datasets: {
+            [SESSION_AMOUNT]: sessionAmount,
+            [SAIL_USAGE]: Data.get.gear(this.sessions, this.years, 'sail'),
+            [BOARD_USAGE]: Data.get.gear(this.sessions, this.years, 'board')
+          }
+        }
+      }
     },
 
     updateYear (selectedYear: string) {
@@ -101,22 +143,25 @@ export default Vue.extend({
         return
       }
 
-      const dataset = this.chart.datasets.filter((dataset: ChartData) => {
+      const dataset: ChartData = this.chart.datasets[this.chart.selected.dataset].filter((dataset: ChartData) => {
         return dataset.year === parseInt(selectedYear)
       })[0]
 
       this.chart.data = dataset
+    },
+
+    changeDataset (selectedDataset: DATASETS) {
+      const dataset: ChartData = this.chart.datasets[selectedDataset][this.chart.datasets[selectedDataset].length - 2]
+      this.chart.data = dataset
+      this.chart.selected = {
+        year: dataset.year.toString(),
+        dataset: selectedDataset
+      }
     }
   },
 
   created () {
-    const parsedSessions = this.parseSessions()
-
-    this.chart = {
-      selectedYear: this.years[1],
-      data: parsedSessions[parsedSessions.length - 1],
-      datasets: parsedSessions
-    }
+    this.init()
   }
 })
 </script>

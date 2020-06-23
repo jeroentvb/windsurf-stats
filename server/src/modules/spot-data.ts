@@ -5,7 +5,6 @@ import { Spot } from '../../../shared/interfaces/Spot'
 
 async function check (spot: Spot): Promise<Spot> {
   try {
-    console.log('Fetching!')
     await scrape.windfinder(spot.id)
     return Object.assign(spot, { windfinder: true })
   } catch (err) {

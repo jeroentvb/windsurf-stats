@@ -6,6 +6,13 @@ function formatSpotName (id: string): string {
     .join(' ')
 }
 
+function getSailSize (sail: string): number {
+  const splitSail = sail.split(' ')
+
+  return parseFloat(splitSail[splitSail.length - 1])
+}
+
 export default {
-  formatSpotName
+  formatSpotName,
+  getSailSize
 }

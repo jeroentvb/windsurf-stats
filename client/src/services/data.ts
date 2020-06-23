@@ -1,3 +1,5 @@
+import helper from '@/services/helper'
+
 import { Session } from '../../../shared/interfaces/Session'
 import { User } from '../../../shared/interfaces/User'
 import { ChartData } from '@/interfaces'
@@ -15,6 +17,42 @@ const colors = [
   '#9400D3', // purple
   '#7C5547' // brown
 ]
+
+function sessions (sessions: Session[], years: string[], user: User): ChartData[] {
+  const yearDatasets: ChartData[] = []
+
+  years.forEach(year => {
+    if (year === 'All') return
+
+    const filteredSessions = sessions.filter((session: Session) => {
+      return (session.date as string).split('-')[0] === year
+    })
+
+    yearDatasets.push(parseSessions(filteredSessions, user))
+  })
+
+  return yearDatasets.reverse()
+}
+
+function gear (sessions: Session[], years: string[], type: 'sail' | 'board'): ChartData[] {
+  const yearDatasets: ChartData[] = []
+
+  years.forEach(year => {
+    if (year === 'All') {
+      const dataset = parseGear(sessions, 'sail')
+      dataset.year = 0
+      return yearDatasets.push(dataset)
+    }
+
+    const filteredSessions = sessions.filter((session: Session) => {
+      return (session.date as string).split('-')[0] === year
+    })
+
+    yearDatasets.push(parseGear(filteredSessions, type))
+  })
+
+  return yearDatasets.reverse()
+}
 
 function parseSessions (sessions: Session[], user: User): ChartData {
   const sails: string[] = user.gear!.sails.map(sail => `${sail.brand} ${sail.model} ${sail.size}`)
@@ -52,14 +90,77 @@ function parseSessions (sessions: Session[], user: User): ChartData {
 
       datasets[j].data[i] = 1
       datasets[j].backgroundColor[i] = color
-      datasets[j].sessions[i] = session
+      datasets[j].sessions![i] = session
     })
   })
 
   return {
     year: new Date(sessions[0].date).getFullYear(),
+    amount: sessions.length,
     labels: months,
     datasets
+  }
+}
+
+function parseGear (sessions: Session[], type: 'sail' | 'board'): ChartData {
+  const dataset: { name: string, count: number}[] = []
+
+  sessions.forEach((session, i) => {
+    var exists = false
+    if (i === 0) {
+      dataset.push({
+        name: session.gear[type],
+        count: 1
+      })
+      return
+    }
+
+    dataset.forEach(item => {
+      /**
+       * Check if the gear item is already added to the dataaset
+       */
+      if (item.name === session.gear[type]) {
+        item.count++
+        exists = true
+      }
+    })
+
+    /**
+     * If not, push a new object with the new gear item
+     */
+    if (exists === false) {
+      dataset.push({
+        name: session.gear[type],
+        count: 1
+      })
+    }
+  })
+
+  /**
+   * Sort the gear in the right order
+   */
+  if (type === 'sail') {
+    dataset.sort((a, b) => {
+      return helper.getSailSize(a.name) - helper.getSailSize(b.name)
+    })
+  }
+
+  if (type === 'board') {
+    dataset.sort((a, b) => {
+      return b.count - a.count
+    })
+  }
+
+  return {
+    year: new Date(sessions[0].date).getFullYear(),
+    amount: sessions.length,
+    labels: dataset.map(gear => gear.name),
+    datasets: [
+      {
+        data: dataset.map(gear => gear.count),
+        backgroundColor: dataset.map((x, i) => colors[i])
+      }
+    ]
   }
 }
 
@@ -85,5 +186,8 @@ function parseSessions (sessions: Session[], user: User): ChartData {
 // }
 
 export default {
-  parseSessions
+  get: {
+    sessions,
+    gear
+  }
 }

@@ -8,10 +8,11 @@ export interface Snackbar {
 
 export interface ChartData {
   year: number
+  amount: number
   labels: string[]
   datasets: {
     data: number[],
     backgroundColor: any[]
-    sessions: Session[]
+    sessions?: Session[]
   }[]
 }

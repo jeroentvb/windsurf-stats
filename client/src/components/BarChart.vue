@@ -7,6 +7,12 @@ export default {
   extends: Bar,
   mixins: [mixins.reactiveProp],
 
+  // watch: {
+  //   chartData () {
+  //     console.log(this.chartData)
+  //   }
+  // },
+
   data () {
     return {
       options: {
@@ -21,9 +27,13 @@ export default {
           },
           callbacks: {
             label: (tooltipItem, data) => {
-              const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
+              if (data.datasets[tooltipItem.datasetIndex].sessions) {
+                const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
 
-              return `Date: ${new Date(session.date).toLocaleDateString()} Sail: ${session.gear.sail}`
+                return `Date: ${new Date(session.date).toLocaleDateString()} Sail: ${session.gear.sail}`
+              } else {
+                return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
+              }
             },
             title: (tooltipItem, data) => {}
           }
