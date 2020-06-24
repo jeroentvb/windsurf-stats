@@ -112,11 +112,8 @@ export default Vue.extend({
   methods: {
     init () {
       if (this.sessions.length > 0) {
-        const sessionAmount = Data.get.sessions(
-          this.sessions,
-          this.years,
-          this.user
-        )
+        const data = new Data(this.sessions, this.years, this.user)
+        const sessionAmount = data.parseSessions()
 
         this.chart = {
           selected: {
@@ -126,9 +123,9 @@ export default Vue.extend({
           data: sessionAmount[sessionAmount.length - 1],
           datasets: {
             [SESSION_AMOUNT]: sessionAmount,
-            [SAIL_USAGE]: Data.get.amount(this.sessions, this.years, 'sail'),
-            [BOARD_USAGE]: Data.get.amount(this.sessions, this.years, 'board'),
-            [SPOT_VISITS]: Data.get.amount(this.sessions, this.years, 'spot')
+            [SAIL_USAGE]: data.parseAmount('sail'),
+            [BOARD_USAGE]: data.parseAmount('board'),
+            [SPOT_VISITS]: data.parseAmount('spot')
           }
         }
       }

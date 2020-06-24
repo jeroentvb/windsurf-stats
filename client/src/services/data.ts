@@ -18,52 +18,59 @@ const colors = [
   '#7C5547' // brown
 ]
 
-/**
- * Get session data for all years in chartjs usable format
- * @param sessions
- * @param years
- * @param user
- */
-function sessions (sessions: Session[], years: string[], user: User): ChartData[] {
-  const yearDatasets: ChartData[] = []
+export default class Data {
+  sessions: Session[]
+  years: string[]
+  user: User
 
-  years.forEach(year => {
-    if (year === 'All') return
+  constructor (sessions: Session[], years: string[], user: User) {
+    this.sessions = sessions
+    this.years = years
+    this.user = user
+  }
 
-    const filteredSessions = sessions.filter((session: Session) => {
-      return (session.date as string).split('-')[0] === year
+  /**
+   * Get session data for all years in chartjs usable format
+   */
+  parseSessions (): ChartData[] {
+    const yearDatasets: ChartData[] = []
+
+    this.years.forEach(year => {
+      if (year === 'All') return
+
+      const filteredSessions = this.sessions.filter((session: Session) => {
+        return (session.date as string).split('-')[0] === year
+      })
+
+      yearDatasets.push(parseSessions(filteredSessions, this.user))
     })
 
-    yearDatasets.push(parseSessions(filteredSessions, user))
-  })
+    return yearDatasets.reverse()
+  }
 
-  return yearDatasets.reverse()
-}
+  /**
+   * Get sail, board or spot data for all years in chartjs usable format
+   * @param type
+   */
+  parseAmount (type: 'sail' | 'board' | 'spot'): ChartData[] {
+    const yearDatasets: ChartData[] = []
 
-/**
- * Get sail, board or spot data for all years in chartjs usable format
- * @param sessions
- * @param years
- * @param type
- */
-function amount (sessions: Session[], years: string[], type: 'sail' | 'board' | 'spot'): ChartData[] {
-  const yearDatasets: ChartData[] = []
+    this.years.forEach(year => {
+      if (year === 'All') {
+        const dataset = parseAmount(this.sessions, type)
+        dataset.year = 0
+        return yearDatasets.push(dataset)
+      }
 
-  years.forEach(year => {
-    if (year === 'All') {
-      const dataset = parseAmount(sessions, type)
-      dataset.year = 0
-      return yearDatasets.push(dataset)
-    }
+      const filteredSessions = this.sessions.filter((session: Session) => {
+        return (session.date as string).split('-')[0] === year
+      })
 
-    const filteredSessions = sessions.filter((session: Session) => {
-      return (session.date as string).split('-')[0] === year
+      yearDatasets.push(parseAmount(filteredSessions, type))
     })
 
-    yearDatasets.push(parseAmount(filteredSessions, type))
-  })
-
-  return yearDatasets.reverse()
+    return yearDatasets.reverse()
+  }
 }
 
 /**
@@ -206,10 +213,3 @@ function parseAmount (sessions: Session[], type: 'sail' | 'board' | 'spot'): Cha
 //     }
 //   ]
 // }
-
-export default {
-  get: {
-    sessions,
-    amount
-  }
-}
