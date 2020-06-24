@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import * as db from './db'
 
 import { Request, Response, NextFunction } from 'express';
-import { User } from '../interfaces/user';
+import { User } from '../../../shared/interfaces/User';
 
 require('dotenv').config()
 

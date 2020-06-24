@@ -162,7 +162,7 @@ export default Vue.extend({
     },
 
     async submit () {
-      const session = Object.assign(this.session, { date: new Date(this.date) })
+      const session = Object.assign(this.session, { date: new Date(this.date).toISOString() })
 
       try {
         const res = await Api.post('session', session)

@@ -47,11 +47,11 @@
     </v-app-bar>
 
     <!-- App outlet -->
-    <v-content>
+    <v-main>
       <v-container fluid>
         <router-view />
       </v-container>
-    </v-content>
+    </v-main>
 
     <!-- Snackbar -->
     <v-snackbar
@@ -133,7 +133,6 @@ export default Vue.extend({
   },
 
   async created () {
-    console.warn('Created app.vue!')
     try {
       const res = await Api.get('user')
 

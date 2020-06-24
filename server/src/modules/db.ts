@@ -1,6 +1,5 @@
-import MongoClient, { Db, InsertOneWriteOpResult } from 'mongodb'
+import MongoClient, { Db } from 'mongodb'
 import chalk from 'chalk'
-import { user } from './data'
 
 export let db: Db
 export let client: MongoClient.MongoClient

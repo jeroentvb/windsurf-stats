@@ -65,8 +65,6 @@ router.beforeEach(async (to, from, next) => {
   const onlyWhenLoggedOut = to.matched.some(record => record.meta.onlyWhenLoggedOut)
   const loggedIn = store.state.loggedIn
 
-  console.log('logged in', loggedIn)
-
   if (!isPublic && !loggedIn) {
     return next({
       path: '/login',

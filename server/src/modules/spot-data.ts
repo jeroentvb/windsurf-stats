@@ -5,7 +5,6 @@ import { Spot } from '../../../shared/interfaces/Spot'
 
 async function check (spot: Spot): Promise<Spot> {
   try {
-    console.log('Fetching!')
     await scrape.windfinder(spot.id)
     return Object.assign(spot, { windfinder: true })
   } catch (err) {
@@ -28,7 +27,6 @@ async function get (req: Request, res: Response): Promise<void> {
     res.json(data)
   } catch (err) {
     if (err.message === 'The provided windfinder spot doesn\'t exist..') {
-      console.log('OK')
       res.status(404).send(err.message)
       return
     }
