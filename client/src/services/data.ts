@@ -36,7 +36,10 @@ export default class Data {
     const yearDatasets: ChartData[] = []
 
     this.years.forEach(year => {
-      if (year === 'All') return
+      if (year === 'All') {
+        yearDatasets.push(parseSessionsYear(this.sessions, this.user))
+        return
+      }
 
       const filteredSessions = this.sessions.filter((session: Session) => {
         return (session.date as string).split('-')[0] === year
@@ -122,6 +125,79 @@ function parseSessions (sessions: Session[], user: User): ChartData {
     year: new Date(sessions[0].date).getFullYear(),
     amount: sessions.length,
     labels: months,
+    datasets
+  }
+}
+
+function parseSessionsYear (sessions: Session[], user: User): ChartData {
+  const datasets: ChartData['datasets'] = []
+  const sessionPerMonth: Session[][] = []
+
+  const monthsInBetween: number = helper.monthDiff(<string>sessions[0].date, <string>sessions[sessions.length - 1].date)
+
+  /**
+   * Fill the sessionPerMonth with the amount of months arrays
+   */
+  for (let i = 0; i < monthsInBetween; i++) {
+    sessionPerMonth[i] = []
+  }
+
+  /**
+   * Put the session in the array corresponding to the month it was recorded in
+   */
+  let currentYear: number = new Date(sessions[0].date).getFullYear()
+  let currentIndex: number = 0
+
+  sessions.forEach(session => {
+    const month = new Date(session.date).getMonth() - new Date(sessions[0].date).getMonth()
+    const year = new Date(session.date).getFullYear()
+
+    if (year !== currentYear) {
+      currentYear++
+      currentIndex += 12
+    }
+
+    sessionPerMonth[month + currentIndex].push(session)
+  })
+
+  /**
+   * Put the sessions in the correct object and array
+   */
+  const sails: string[] = user.gear!.sails.map(sail => `${sail.brand} ${sail.model} ${sail.size}`)
+
+  for (let i = 0; i < monthsInBetween; i++) {
+    sessionPerMonth[i].forEach((session, j) => {
+      const color: string = colors[sails.indexOf(session.gear.sail)] ? colors[sails.indexOf(session.gear.sail)] : ''
+      if (!datasets[j]) {
+        datasets[j] = {
+          data: [],
+          backgroundColor: [],
+          sessions: []
+        }
+      }
+
+      datasets[j].data[i] = 1
+      datasets[j].backgroundColor[i] = color
+      datasets[j].sessions![i] = session
+    })
+  }
+
+  /**
+   * Create an array of labels
+   */
+  const labels: string[] = []
+  const dateRange: string[] = helper.dateRange(<string>sessions[0].date, <string>sessions[sessions.length - 1].date)
+
+  dateRange.forEach(date => {
+    const monthIndex = new Date(date).getMonth()
+
+    labels.push(months[monthIndex])
+  })
+
+  return {
+    year: 0,
+    amount: sessions.length,
+    labels,
     datasets
   }
 }

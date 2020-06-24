@@ -120,7 +120,7 @@ export default Vue.extend({
             year: this.years[1],
             dataset: SESSION_AMOUNT
           },
-          data: sessionAmount[sessionAmount.length - 1],
+          data: sessionAmount[sessionAmount.length - 2],
           datasets: {
             [SESSION_AMOUNT]: sessionAmount,
             [SAIL_USAGE]: data.parseAmount('sail'),
@@ -132,18 +132,10 @@ export default Vue.extend({
     },
 
     updateYear (selectedYear: string) {
-      if (selectedYear === 'All') {
-        this.$store.commit(SHOW_SNACKBAR, {
-          text: 'Showing all years hasn\'t been implemented yet',
-          timeout: 5000,
-          type: 'info'
-        } as Snackbar)
-
-        return
-      }
-
       const dataset: ChartData = this.chart.datasets[this.chart.selected.dataset].filter((dataset: ChartData) => {
-        return dataset.year === parseInt(selectedYear)
+        return dataset.year === (
+          selectedYear === 'All' ? 0 : parseInt(selectedYear)
+        )
       })[0]
 
       this.chart.data = dataset
