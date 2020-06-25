@@ -101,7 +101,7 @@ export default Vue.extend({
           this.$store.dispatch(SET_USERDATA, response.data as User)
         }
       } catch (err) {
-        const status = err.response.status
+        const status = err.response ? err.response.status : err.message
 
         if (status === 422 || status === 401) {
           this.setError('Invalid credentials')

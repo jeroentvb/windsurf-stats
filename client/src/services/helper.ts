@@ -6,6 +6,14 @@ function formatSpotName (id: string): string {
     .join(' ')
 }
 
+function getNumberArray (start: number, end: number, step: number): number[] {
+  const numbers: number[] = []
+  for (let i = start; i < (end + step); i += step) {
+    numbers.push(i)
+  }
+  return numbers
+}
+
 function getSailSize (sail: string): number {
   const splitSail = sail.split(' ')
 
@@ -53,6 +61,7 @@ function dateRange (startDate: string, endDate: string): string[] {
 
 export default {
   formatSpotName,
+  getNumberArray,
   getSailSize,
   monthDiff,
   dateRange

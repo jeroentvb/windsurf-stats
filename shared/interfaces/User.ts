@@ -10,4 +10,5 @@ export interface User {
   gear?: Gear
   spots?: Spot[]
   sessions?: Session[]
+  threshold?: number
 }

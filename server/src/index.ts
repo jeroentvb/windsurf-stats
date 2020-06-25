@@ -54,6 +54,8 @@ function start () {
   .post('/check-spot', spotData.check)
   .get('/conditions', spotData.get)
 
+  .post('/threshold', data.updateThreshold)
+
   // .get('/', (req, res) => {
   //   // console.log(req.session!.user)
   //   res.send('OK')

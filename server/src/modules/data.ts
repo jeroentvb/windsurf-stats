@@ -105,9 +105,26 @@ async function session (req: Request, res: Response) {
   }
 }
 
+async function updateThreshold (req: Request, res: Response) {
+  const threshold: number = req.body.threshold
+  const user = req.session!.user
+
+  try {
+    await db.update({name: user.name }, { $set: {
+      threshold
+    }})
+
+    res.send('OK')
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
 export default {
   user,
   updateGear,
   updateSpots,
-  session
+  session,
+  updateThreshold
 }

@@ -60,6 +60,10 @@ export default Vue.extend({
 
     boards (): string[] {
       return this.$store.state.user.gear.boards.map((board: Board) => `${board.brand} ${board.model} ${board.volume}`)
+    },
+
+    getNumberArray () {
+      return helper.getNumberArray
     }
   },
 
@@ -75,14 +79,6 @@ export default Vue.extend({
   },
 
   methods: {
-    getNumberArray (start: number, end: number, step: number): number[] {
-      const numbers: number[] = []
-      for (let i = start; i < (end + step); i += step) {
-        numbers.push(i)
-      }
-      return numbers
-    },
-
     changeSpot (spot: string) {
       const windfinder = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).windfinder
       const today = new Date().toISOString().substr(0, 10)

@@ -17,3 +17,5 @@ export const ADD_SESSION = '[Session] add'
 export const SHOW_SNACKBAR = '[Snackbar] show'
 
 export const CLOSE_SNACKBAR = '[Snackbar] close'
+
+export const UPDATE_THRESHOLD = '[Threshold] update'

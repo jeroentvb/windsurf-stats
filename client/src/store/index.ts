@@ -12,7 +12,8 @@ import {
   UPDATE_SPOTS,
   SHOW_SNACKBAR,
   CLOSE_SNACKBAR,
-  ADD_SESSION
+  ADD_SESSION,
+  UPDATE_THRESHOLD
 } from './constants'
 
 import { User } from '../../../shared/interfaces/User'
@@ -37,7 +38,8 @@ export default new Vuex.Store({
         boards: []
       },
       spots: [],
-      sessions: []
+      sessions: [],
+      threshold: 5
     } as User,
     snackbar: {
       text: '',
@@ -90,6 +92,10 @@ export default new Vuex.Store({
 
     [CLOSE_SNACKBAR] (state) {
       state.snackbar = Object.assign(state.snackbar, { show: false })
+    },
+
+    [UPDATE_THRESHOLD] (state, payload: number) {
+      state.user.threshold = payload
     }
   },
 

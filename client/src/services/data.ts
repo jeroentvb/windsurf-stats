@@ -24,7 +24,7 @@ export default class Data {
   user: User
 
   constructor (sessions: Session[], years: string[], user: User) {
-    this.sessions = sessions
+    this.sessions = sessions.filter(session => session.rating >= <number>user.threshold)
     this.years = years
     this.user = user
   }
