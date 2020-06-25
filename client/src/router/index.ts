@@ -34,6 +34,11 @@ export const routes: RouteConfig[] = [
     component: Home
   },
   {
+    path: '/all-statistics',
+    name: 'All statistics',
+    component: () => import(/* webpackChunkName: "all-statistics" */ '../views/AllStatistics.vue')
+  },
+  {
     path: '/add-session',
     name: 'Add Session',
     component: AddSession
