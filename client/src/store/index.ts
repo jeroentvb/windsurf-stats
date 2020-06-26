@@ -63,7 +63,7 @@ export default new Vuex.Store({
       state.loggedIn = false
     },
 
-    [SET_USERDATA] (state, payload) {
+    [SET_USERDATA] (state, payload: User) {
       state.user = payload
     },
 
@@ -115,12 +115,11 @@ export default new Vuex.Store({
     },
 
     [USER_LOGOUT] (context) {
-      console.warn('logging out')
       context.commit(USER_LOGOUT)
       router.push('login')
     },
 
-    [SET_USERDATA] ({ dispatch, commit }, payload) {
+    [SET_USERDATA] ({ dispatch, commit }, payload: User) {
       commit(SET_USERDATA, payload)
       commit(STOP_LOADING)
       dispatch(USER_LOGIN)

@@ -106,7 +106,7 @@ function parseSessions (sessions: Session[], user: User): ChartData {
    */
   months.forEach((month: string, i: number) => {
     sessionPerMonth[i].forEach((session, j) => {
-      const color: string = colors[sails.indexOf(session.gear.sail)] ? colors[sails.indexOf(session.gear.sail)] : ''
+      const color: string = colors[sails.indexOf(session.gear.sail)] ? colors[sails.indexOf(session.gear.sail)] : '#808080'
       if (!datasets[j]) {
         datasets[j] = {
           data: [],
@@ -167,7 +167,7 @@ function parseSessionsYear (sessions: Session[], user: User): ChartData {
 
   for (let i = 0; i < monthsInBetween; i++) {
     sessionPerMonth[i].forEach((session, j) => {
-      const color: string = colors[sails.indexOf(session.gear.sail)] ? colors[sails.indexOf(session.gear.sail)] : ''
+      const color: string = colors[sails.indexOf(session.gear.sail)] ? colors[sails.indexOf(session.gear.sail)] : '#808080'
       if (!datasets[j]) {
         datasets[j] = {
           data: [],

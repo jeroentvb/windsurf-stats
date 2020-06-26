@@ -43,6 +43,25 @@
 
     <div v-if="sessions.length === 0">
       <p>You don't have any sessions yet :(</p>
+
+      <v-btn
+      v-if="!showOldSessionsForm"
+      color="primary"
+      class="my-4"
+      medium
+      @click="showOldSessionsForm = true">
+      Upload old sessions
+      </v-btn>
+
+      <v-container fluid v-if="showOldSessionsForm">
+        <v-layout column>
+          <v-layout row wrap>
+            <v-flex md6 pa-4>
+              <OldSessions @uploadOldSessions="uploadOldSessions" />
+            </v-flex>
+          </v-layout>
+        </v-layout>
+      </v-container>
     </div>
   </div>
 </template>
@@ -54,6 +73,7 @@ import Api from '../services/api'
 import Data from '../services/data'
 
 import BarChart from '../components/BarChart.vue'
+import OldSessions from '../components/form/OldSessions.vue'
 
 import { DATASETS, SESSION_AMOUNT, SAIL_USAGE, BOARD_USAGE, SPOT_VISITS } from '../constants'
 import { SHOW_SNACKBAR } from '../store/constants'
@@ -64,11 +84,13 @@ import { User } from '../../../shared/interfaces/User'
 export default Vue.extend({
   name: 'home',
   components: {
-    BarChart
+    BarChart,
+    OldSessions
   },
 
   data () {
     return {
+      showOldSessionsForm: false,
       chart: {
         selected: {
           year: '', // This is set in the created () function
@@ -153,6 +175,22 @@ export default Vue.extend({
       this.chart.selected = {
         year: dataset.year.toString(),
         dataset: selectedDataset
+      }
+    },
+
+    async uploadOldSessions (oldSessions: object) {
+      try {
+        const res = await Api.post('old-sessions', oldSessions)
+
+        if (res.status === 200) {
+          this.$router.go(0)
+        }
+      } catch (err) {
+        this.$store.commit(SHOW_SNACKBAR, {
+          text: 'Something went wrong!',
+          timeout: 5000,
+          type: 'error'
+        } as Snackbar)
       }
     }
   },

@@ -8,6 +8,8 @@
         @submit.prevent="submit">
         <v-layout row>
           <v-flex md11 px-4>
+            <p>Sessionss rated with a number below this threshold won't be show in the chart data.</p>
+
             <v-select
               v-model.number="threshold"
               :items="getNumberArray(1, 10, 1)"
@@ -15,7 +17,6 @@
               required
               :rules="required"
             ></v-select>
-            <p>Sessionss rated with a number below this threshold won't be show in the chart data.</p>
           </v-flex>
         </v-layout>
       </v-form>

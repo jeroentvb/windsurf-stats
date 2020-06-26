@@ -45,7 +45,8 @@ export async function register (req: Request, res: Response) {
         sails: []
       },
       spots: [],
-      sessions: []
+      sessions: [],
+      threshold: 5
     })
 
     req.session!.user = {
