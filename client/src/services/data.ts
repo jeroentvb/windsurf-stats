@@ -85,6 +85,12 @@ function parseSessions (sessions: Session[], user: User): ChartData {
   const sails: string[] = user.gear!.sails.map(sail => `${sail.brand} ${sail.model} ${sail.size}`)
   const datasets: ChartData['datasets'] = []
   const sessionPerMonth: Session[][] = []
+  const legend: ChartData['legend'] = sails.map(sail => {
+    return {
+      item: sail,
+      color: colors[sails.indexOf(sail)] ? colors[sails.indexOf(sail)] : '#808080'
+    }
+  })
 
   /**
    * Fill the sessionPerMonth with 12 arrays
@@ -125,7 +131,8 @@ function parseSessions (sessions: Session[], user: User): ChartData {
     year: new Date(sessions[0].date).getFullYear(),
     amount: sessions.length,
     labels: months,
-    datasets
+    datasets,
+    legend
   }
 }
 
@@ -194,11 +201,22 @@ function parseSessionsYear (sessions: Session[], user: User): ChartData {
     labels.push(months[monthIndex])
   })
 
+  /**
+   * Create legend object
+   */
+  const legend: ChartData['legend'] = sails.map(sail => {
+    return {
+      item: sail,
+      color: colors[sails.indexOf(sail)] ? colors[sails.indexOf(sail)] : '#808080'
+    }
+  })
+
   return {
     year: 0,
     amount: sessions.length,
     labels,
-    datasets
+    datasets,
+    legend
   }
 }
 
@@ -256,16 +274,25 @@ function parseAmount (sessions: Session[], type: 'sail' | 'board' | 'spot'): Cha
     })
   }
 
+  const gear: string[] = dataset.map(gear => gear.name)
+  const backgroundColors: string[] = dataset.map((x, i) => colors[i])
+
   return {
     year: new Date(sessions[0].date).getFullYear(),
     amount: sessions.length,
-    labels: dataset.map(gear => gear.name),
+    labels: gear,
     datasets: [
       {
         data: dataset.map(gear => gear.count),
-        backgroundColor: dataset.map((x, i) => colors[i])
+        backgroundColor: colors
       }
-    ]
+    ],
+    legend: gear.map((item, i) => {
+      return {
+        item,
+        color: backgroundColors[i]
+      }
+    })
   }
 }
 

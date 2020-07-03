@@ -27,6 +27,18 @@
         Total amount of sessions: {{ chart.data.amount }}
       </p>
 
+      <div id="legend" class="d-flex pb-4">
+        <div
+        v-for="legend in chart.data.legend"
+        :key="legend.item"
+        class="legend-item pr-8">
+          <div
+          :style="{ backgroundColor: legend.color }"
+          class="legend-color mr-2"></div>
+          {{ legend.item }}
+        </div>
+      </div>
+
       <div id="chart-container">
         <BarChart
         :chart-data="chart.data"
@@ -143,6 +155,8 @@ export default Vue.extend({
         const data = new Data(this.sessions, this.years, this.user)
         const sessionAmount = data.parseSessions()
 
+        console.log(data.parseSessions()[0].legend)
+
         this.chart = {
           selected: {
             year: this.years[1],
@@ -200,3 +214,16 @@ export default Vue.extend({
   }
 })
 </script>
+
+<style lang="scss" scoped>
+.legend-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.legend-color {
+  width: 2em;
+  height: 2em;
+}
+</style>

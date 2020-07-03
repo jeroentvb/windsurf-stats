@@ -15,4 +15,8 @@ export interface ChartData {
     backgroundColor: any[]
     sessions?: Session[]
   }[]
+  legend: {
+    item: string
+    color: string
+  }[]
 }
