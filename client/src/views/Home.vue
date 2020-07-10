@@ -155,8 +155,6 @@ export default Vue.extend({
         const data = new Data(this.sessions, this.years, this.user)
         const sessionAmount = data.parseSessions()
 
-        console.log(data.parseSessions()[0].legend)
-
         this.chart = {
           selected: {
             year: this.years[1],
