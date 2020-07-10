@@ -6,7 +6,8 @@
   "scripts": {
     "setupdb": "node modules/setupDb.js",
     "build-server": "tsc",
-    "build": "npm run build-server",
+    "build-shared-interfaces": "cd ../shared && tsc",
+    "build": "npm run build-shared-interfaces && npm run build-server",
     "start": "node ./dist/index.js",
     "lint": "tslint -p . -c tslint.json \"**/*.ts\"",
     "watch": "ts-node-dev --respawn --transpileOnly ./src/index.ts"
