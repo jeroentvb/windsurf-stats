@@ -117,7 +117,6 @@ export default Vue.extend({
           timeout: 5000,
           type: 'error'
         } as Snackbar)
-        console.error(err)
       }
     },
 
@@ -172,7 +171,6 @@ export default Vue.extend({
           timeout: 5000,
           type: 'error'
         } as Snackbar)
-        console.error(err)
       }
     }
   }
