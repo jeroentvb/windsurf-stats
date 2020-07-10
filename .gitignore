@@ -68,3 +68,6 @@ dist/
 *.old
 *.sql
 .idea
+shared/**/*.js
+shared/**/*.d.ts
+shared/tsconfig.tsbuildinfo
