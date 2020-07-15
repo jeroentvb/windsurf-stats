@@ -5,13 +5,15 @@
         <v-flex md6 pa-4>
           <SailForm
           :sails="gear.sails"
-          @updateSails="updateGear"/>
+          @updateSails="submittingSails = true; updateGear()"
+          :submitting="submittingSails" />
         </v-flex>
 
         <v-flex md6 pa-4>
           <BoardForm
           :boards="gear.boards"
-          @updateBoards="updateGear" />
+          @updateBoards="submittingBoards = true; updateGear()"
+          :submitting="submittingBoards" />
         </v-flex>
       </v-layout>
     </v-layout>
@@ -45,6 +47,13 @@ export default Vue.extend({
     }
   },
 
+  data () {
+    return {
+      submittingSails: false,
+      submittingBoards: false
+    }
+  },
+
   methods: {
     async updateGear (sails: Sail[] | null, boards: Board[] | null): Promise<void> {
       const gear: Gear = {
@@ -61,6 +70,8 @@ export default Vue.extend({
             text: 'Saved succesfully',
             type: 'succes'
           } as Snackbar)
+
+          this.stopSubmitting()
         }
       } catch (err) {
         this.$store.commit(SHOW_SNACKBAR, {
@@ -68,7 +79,14 @@ export default Vue.extend({
           timeout: 5000,
           type: 'error'
         } as Snackbar)
+
+        this.stopSubmitting()
       }
+    },
+
+    stopSubmitting () {
+      this.submittingSails = false
+      this.submittingBoards = false
     }
   }
 })

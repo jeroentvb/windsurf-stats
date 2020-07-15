@@ -5,7 +5,8 @@
     <v-card-text class="flex-grow-1">
       <v-form
         id="spot-form"
-        @submit.prevent="submit">
+        @submit.prevent="submit"
+        :disabled="submitting">
         <v-layout
           v-for="(spot, i) in spots"
           :key="spot.identifier"
@@ -36,7 +37,7 @@
       <v-btn
         text
         large
-        @click="addSpot()"
+        @click="addSpot"
       >Add Spot</v-btn>
       <v-btn
         color="secondary"
@@ -46,6 +47,12 @@
         form="spot-form"
       >Save</v-btn>
     </v-card-actions>
+
+    <v-progress-linear
+      v-if="submitting"
+      indeterminate
+      color="primary"
+    ></v-progress-linear>
   </v-card>
 </template>
 
@@ -59,7 +66,8 @@ export default Vue.extend({
 
   props: {
     spots: Array as () => Spot[],
-    minHeight: String
+    minHeight: String,
+    submitting: Boolean
   },
 
   data () {

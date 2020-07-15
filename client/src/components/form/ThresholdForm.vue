@@ -5,7 +5,8 @@
     <v-card-text class="flex-grow-1">
       <v-form
         id="threshold-form"
-        @submit.prevent="submit">
+        @submit.prevent="submit"
+        :disabled="submitting">
         <v-layout row>
           <v-flex md11 px-4>
             <p>Sessionss rated with a number below this threshold won't be show in the chart data.</p>
@@ -31,6 +32,12 @@
         form="threshold-form"
       >Save</v-btn>
     </v-card-actions>
+
+    <v-progress-linear
+      v-if="submitting"
+      indeterminate
+      color="primary"
+    ></v-progress-linear>
   </v-card>
 </template>
 
@@ -43,7 +50,8 @@ export default Vue.extend({
 
   props: {
     oldThreshold: Number,
-    minHeight: String
+    minHeight: String,
+    submitting: Boolean
   },
 
   computed: {

@@ -5,7 +5,8 @@
         <v-flex md6 pa-4>
           <SpotForm
           :spots="spots"
-          @updateSpots="updateSpots"/>
+          @updateSpots="updateSpots"
+          :submitting="submitting" />
         </v-flex>
       </v-layout>
     </v-layout>
@@ -27,14 +28,20 @@ import { Snackbar } from '../interfaces'
 export default Vue.extend({
   name: 'Spot',
 
+  components: {
+    SpotForm
+  },
+
   computed: {
     spots (): Spot[] {
       return this.$store.state.user.spots
     }
   },
 
-  components: {
-    SpotForm
+  data () {
+    return {
+      submitting: false
+    }
   },
 
   methods: {
@@ -44,6 +51,7 @@ export default Vue.extend({
           name: helper.formatSpotName(spot.id)
         })
       })
+      this.submitting = true
 
       try {
         const res = await Api.post('spots', parsedSpots)
@@ -54,6 +62,8 @@ export default Vue.extend({
             text: 'Saved succesfully',
             type: 'succes'
           } as Snackbar)
+
+          this.submitting = false
         }
       } catch (err) {
         this.$store.commit(SHOW_SNACKBAR, {
@@ -61,6 +71,8 @@ export default Vue.extend({
           timeout: 5000,
           type: 'error'
         } as Snackbar)
+
+        this.submitting = false
       }
     }
   }

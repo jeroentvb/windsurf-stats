@@ -1,5 +1,6 @@
 <v-container>
-  <v-form>
+  <v-form
+    :disabled="submitting">
     <v-layout row wrap>
       <v-flex xs12 md6 pa-4>
         <v-card>
@@ -56,6 +57,7 @@
               required
               :rules="required"
               @change="changeSpot(session.spot)"
+              :disabled="loadingSpotData"
               ></v-select>
 
               <div v-if="showConditions" class="mt-8">
@@ -105,6 +107,12 @@
               <!-- Add fields for wave spot info -->
             </v-layout>
           </v-card-text>
+
+          <v-progress-linear
+            v-if="loadingSpotData"
+            indeterminate
+            color="primary"
+          ></v-progress-linear>
         </v-card>
       </v-flex>
 
@@ -161,6 +169,7 @@
       color="primary"
       x-large
       type="submit"
+      :loading="submitting"
       @click.prevent="submit()"
       >Submit</v-btn>
     </v-layout>

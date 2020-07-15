@@ -45,7 +45,8 @@ export default Vue.extend({
       required: [
         (v: string) => !!v || 'All fields are required'
       ],
-      submitting: false
+      submitting: false,
+      loadingSpotData: false
     }
   },
 
@@ -93,6 +94,7 @@ export default Vue.extend({
 
     async getConditions (spot: string): Promise<void> {
       const spotId = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).id
+      this.loadingSpotData = true
 
       try {
         const res = await Api.get(`conditions?spot=${spotId}`)
@@ -102,7 +104,11 @@ export default Vue.extend({
         if (this.session.time.start && this.session.time.end) {
           this.setConditions(this.session.time.start, this.session.time.end)
         }
+
+        this.loadingSpotData = false
       } catch (err) {
+        this.loadingSpotData = false
+
         if (err.response.status === 404) {
           this.$store.commit(SHOW_SNACKBAR, {
             text: 'The selected spot doesn\'t have a windfinder superforecast',
@@ -158,12 +164,15 @@ export default Vue.extend({
 
     async submit () {
       const session = Object.assign(this.session, { date: new Date(this.date).toISOString() })
+      this.submitting = true
 
       try {
         const res = await Api.post('session', session)
 
         if (res.status === 200) {
           this.$store.dispatch(ADD_SESSION, session)
+
+          this.submitting = false
         }
       } catch (err) {
         this.$store.commit(SHOW_SNACKBAR, {
@@ -171,6 +180,8 @@ export default Vue.extend({
           timeout: 5000,
           type: 'error'
         } as Snackbar)
+
+        this.submitting = false
       }
     }
   }

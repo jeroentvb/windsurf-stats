@@ -5,7 +5,8 @@
     <v-card-text class="flex-grow-1">
       <v-form
         id="sail-form"
-        @submit.prevent="submit">
+        @submit.prevent="submit"
+        :disabled="submitting">
         <v-layout
           v-for="(sail, i) in sails"
           :key="sail.id"
@@ -69,6 +70,12 @@
         form="sail-form"
       >Save</v-btn>
     </v-card-actions>
+
+    <v-progress-linear
+      v-if="submitting"
+      indeterminate
+      color="primary"
+    ></v-progress-linear>
   </v-card>
 </template>
 
@@ -82,7 +89,8 @@ export default Vue.extend({
 
   props: {
     sails: Array as () => Sail[],
-    minHeight: String
+    minHeight: String,
+    submitting: Boolean
   },
 
   data () {

@@ -5,7 +5,8 @@
     <v-card-text>
       <v-form
         id="board-form"
-        @submit.prevent="submit">
+        @submit.prevent="submit"
+        :disabled="submitting">
         <v-layout
         v-for="(board, i) in boards"
         :key="board.id"
@@ -69,6 +70,12 @@
       form="board-form"
       >Save</v-btn>
     </v-card-actions>
+
+    <v-progress-linear
+      v-if="submitting"
+      indeterminate
+      color="primary"
+    ></v-progress-linear>
   </v-card>
 </template>
 
@@ -82,7 +89,8 @@ export default Vue.extend({
 
   props: {
     boards: Array as () => Board[],
-    minHeight: String
+    minHeight: String,
+    submitting: Boolean
   },
 
   data () {

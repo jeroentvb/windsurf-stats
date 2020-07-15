@@ -5,7 +5,8 @@
         <v-flex md6 pa-4>
           <ThresholdForm
           :oldThreshold="threshold"
-          @updateThreshold="updateThreshold"/>
+          @updateThreshold="updateThreshold"
+          :submitting="submitting" />
         </v-flex>
       </v-layout>
     </v-layout>
@@ -27,18 +28,26 @@ import { Snackbar } from '../interfaces'
 export default Vue.extend({
   name: 'Preferences',
 
+  components: {
+    ThresholdForm
+  },
+
   computed: {
     threshold (): number {
       return this.$store.state.user.threshold
     }
   },
 
-  components: {
-    ThresholdForm
+  data () {
+    return {
+      submitting: false
+    }
   },
 
   methods: {
     async updateThreshold (threshold: number) {
+      this.submitting = true
+
       try {
         const res = await Api.post('threshold', { threshold })
 
@@ -48,6 +57,8 @@ export default Vue.extend({
             text: 'Saved succesfully',
             type: 'succes'
           } as Snackbar)
+
+          this.submitting = false
         }
       } catch (err) {
         this.$store.commit(SHOW_SNACKBAR, {
@@ -55,6 +66,8 @@ export default Vue.extend({
           timeout: 5000,
           type: 'error'
         } as Snackbar)
+
+        this.submitting = false
       }
     }
   }
