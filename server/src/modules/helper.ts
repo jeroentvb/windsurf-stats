@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import { Session } from '../../../shared/interfaces/Session'
 require('dotenv').config()
 
 export function hashPassword (password: string): Promise<string> {
@@ -60,4 +61,23 @@ export function getWindDirection (deg: number): string {
 
   const val = Math.floor((deg / 22.5) + 0.5)
   return windDirections[(val % 16)]
+}
+
+export function validateSessionData (session: Session): boolean {
+  let valid: boolean = true
+
+  for (const [key, value] of Object.entries(session)) {
+    if (!value) valid = false
+  }
+  for (const [key, value] of Object.entries(session.time)) {
+    if (!value) valid = false
+  }
+  for (const [key, value] of Object.entries(session.gear)) {
+    if (!value) valid = false
+  }
+  for (const [key, value] of Object.entries(session.conditions)) {
+    if (!value && value !== 0) valid = false
+  }
+  
+  return valid
 }

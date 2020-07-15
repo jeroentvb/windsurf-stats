@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import * as db from './db'
 import * as auth from './auth'
 import spotData from './spot-data'
+import { validateSessionData } from './helper'
 
 import { User } from '../../../shared/interfaces/User'
 import { Gear } from '../../../shared/interfaces/Gear'
@@ -94,6 +95,11 @@ async function updateSpots (req: Request, res: Response) {
 async function session (req: Request, res: Response) {
   const user = req.session!.user
   const session: Session = req.body
+
+  if (!validateSessionData(session)) {
+    res.status(422).send('Missing fields')
+    return
+  }
 
   try {
     await db.update({ name: user.name }, { $push: { sessions: session } })

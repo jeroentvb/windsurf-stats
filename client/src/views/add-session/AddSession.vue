@@ -5,6 +5,8 @@ import Vue from 'vue'
 import Api from '../../services/api'
 import helper from '../../services/helper'
 
+import FormError from '../../components/FormError.vue'
+
 import { Sail, Board } from '../../../../shared/interfaces/Gear'
 import { Spot } from '../../../../shared/interfaces/Spot'
 import { Session, Conditions } from '../../../../shared/interfaces/Session'
@@ -14,6 +16,10 @@ import { SHOW_SNACKBAR, ADD_SESSION } from '../../store/constants'
 
 export default Vue.extend({
   name: 'AddSession',
+
+  components: {
+    FormError
+  },
 
   data () {
     return {
@@ -46,7 +52,8 @@ export default Vue.extend({
         (v: string) => !!v || 'All fields are required'
       ],
       submitting: false,
-      loadingSpotData: false
+      loadingSpotData: false,
+      formErrorMsg: ''
     }
   },
 
@@ -162,7 +169,29 @@ export default Vue.extend({
       })
     },
 
+    validateForm () {
+      let valid: boolean = true
+      const form: Session = this.session
+
+      for (const [key, value] of Object.entries(form.time)) {
+        if (!value) valid = false
+      }
+
+      for (const [key, value] of Object.entries(form.conditions)) {
+        if (!value) valid = false
+      }
+
+      if (!form.spot) valid = false
+
+      return valid
+    },
+
     async submit () {
+      if (!this.validateForm()) {
+        this.formErrorMsg = 'Please fill in the required fields'
+        return
+      }
+
       const session = Object.assign(this.session, { date: new Date(this.date).toISOString() })
       this.submitting = true
 
@@ -175,13 +204,18 @@ export default Vue.extend({
           this.submitting = false
         }
       } catch (err) {
+        this.submitting = false
+
+        if (err.response.status === 422) {
+          this.formErrorMsg = 'Please fill in the required fields'
+          return
+        }
+
         this.$store.commit(SHOW_SNACKBAR, {
           text: 'Something went wrong',
           timeout: 5000,
           type: 'error'
         } as Snackbar)
-
-        this.submitting = false
       }
     }
   }

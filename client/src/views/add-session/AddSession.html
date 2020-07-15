@@ -163,6 +163,11 @@
       </v-flex>
     </v-layout>
 
+    <FormError 
+      v-if="formErrorMsg" 
+      :msg="formErrorMsg"
+    />
+
     <v-layout>
       <v-btn
       :block="true"
