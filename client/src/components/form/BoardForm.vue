@@ -10,8 +10,9 @@
         <v-layout
         v-for="(board, i) in boards"
         :key="board.id"
-        row>
-          <v-flex md4 px-4>
+        row
+        class="gear-item">
+          <v-flex xs12 sm4 px-4>
             <v-combobox
             v-model="boardsForm[i].brand"
             :items="brands"
@@ -22,7 +23,7 @@
             ></v-combobox>
           </v-flex>
 
-          <v-flex md4 px-4>
+          <v-flex xs12 sm4 px-4>
             <v-combobox
             v-model="boardsForm[i].model"
             :items="models"
@@ -33,7 +34,7 @@
             ></v-combobox>
           </v-flex>
 
-          <v-flex md3 px-4>
+          <v-flex xs10 sm3 px-4>
             <v-text-field
             label="Volume"
             type="number"
@@ -45,7 +46,7 @@
             ></v-text-field>
           </v-flex>
 
-          <v-flex md-1 align-self-center
+          <v-flex xs2 sm1 align-self-center
           v-if="i !== 0">
             <v-btn icon color="grey"
             @click="deleteBoard(i)">

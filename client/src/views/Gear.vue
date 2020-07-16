@@ -92,6 +92,10 @@ export default Vue.extend({
 })
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
+.gear-item {
+  @media (max-width: 599px) {
+    margin-bottom: 2em;
+  }
+}
 </style>

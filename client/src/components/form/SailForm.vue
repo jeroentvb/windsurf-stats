@@ -10,8 +10,9 @@
         <v-layout
           v-for="(sail, i) in sails"
           :key="sail.id"
-          row>
-          <v-flex md4 px-4>
+          row
+          class="gear-item">
+          <v-flex xs12 sm4 px-4>
             <v-combobox
               v-model="sailsForm[i].brand"
               :items="brands"
@@ -22,7 +23,7 @@
             ></v-combobox>
           </v-flex>
 
-          <v-flex md4 px-4>
+          <v-flex xs12 sm4 px-4>
             <v-combobox
               v-model="sailsForm[i].model"
               :items="models"
@@ -33,7 +34,7 @@
             ></v-combobox>
           </v-flex>
 
-          <v-flex md3 px-4>
+          <v-flex xs10 sm3 px-4>
             <v-text-field
               label="Size"
               type="number"
@@ -45,7 +46,7 @@
             ></v-text-field>
           </v-flex>
 
-          <v-flex md-1 align-self-center>
+          <v-flex xs2 sm1 align-self-center>
             <v-btn icon color="grey"
             v-if="i !== 0"
             @click="deleteSail(i)">

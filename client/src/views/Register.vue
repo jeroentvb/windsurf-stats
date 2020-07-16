@@ -1,7 +1,8 @@
 <template>
   <v-layout
     align-center
-    justify-center>
+    justify-center
+    mt-8>
     <v-flex
       xs12
       sm8
@@ -21,8 +22,6 @@
               name="username"
               type="text"
               required>
-              <!-- :rules="usernameRules" -->
-              <!-- prepend-icon="person" -->
             </v-text-field>
 
             <v-text-field
@@ -32,7 +31,6 @@
               name="email"
               type="email"
               required>
-              <!-- prepend-icon="lock" -->
             </v-text-field>
 
             <v-text-field
@@ -42,7 +40,6 @@
               name="password"
               type="password"
               required>
-              <!-- prepend-icon="lock" -->
             </v-text-field>
 
             <v-text-field
@@ -52,7 +49,6 @@
               name="repeat-password"
               type="password"
               required>
-              <!-- prepend-icon="lock" -->
             </v-text-field>
           </v-form>
 
@@ -67,6 +63,7 @@
           color="primary"
           class="mb-2"
           large
+          block
           type="submit"
           form="register-form">Register</v-btn>
         </v-card-actions>

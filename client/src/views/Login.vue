@@ -1,7 +1,8 @@
 <template>
   <v-layout
     align-center
-    justify-center>
+    justify-center
+    mt-8>
     <v-flex
       xs12
       sm8
@@ -22,7 +23,6 @@
               name="username"
               type="text"
               required>
-              <!-- prepend-icon="person" -->
             </v-text-field>
 
             <v-text-field
@@ -31,7 +31,6 @@
               name="password"
               type="password"
               required>
-              <!-- prepend-icon="lock" -->
             </v-text-field>
           </v-form>
 
@@ -46,6 +45,7 @@
           color="primary"
           class="mb-2"
           large
+          block
           type="submit"
           form="login-form">Login</v-btn>
         </v-card-actions>
@@ -122,9 +122,3 @@ export default Vue.extend({
   }
 })
 </script>
-
-<style lang="scss" scoped>
-.v-btn {
-  width: 100%;
-}
-</style>
