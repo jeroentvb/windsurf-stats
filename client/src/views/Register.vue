@@ -56,6 +56,10 @@
             v-if="formError"
             :msg="formErrorMsg"
           />
+
+          <p>
+            Already have an account? Login <router-link to="/login">here</router-link>
+          </p>
         </v-card-text>
 
         <v-card-actions>
