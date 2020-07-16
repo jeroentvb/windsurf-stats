@@ -9,7 +9,7 @@
         :disabled="submitting">
         <v-layout row>
           <v-flex md11 px-4>
-            <p>Sessionss rated with a number below this threshold won't be show in the chart data.</p>
+            <p>Sessionss rated with a number below this threshold won't be shown in the chart data.</p>
 
             <v-select
               v-model.number="threshold"
