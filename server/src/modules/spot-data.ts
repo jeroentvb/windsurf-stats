@@ -21,7 +21,7 @@ async function get (req: Request, res: Response): Promise<void> {
   }
 
   try {
-    const windfinderData = await scrape.windfinder(spot)
+    const windfinderData = await scrape.windfinder(spot as string)
     const data = windfinderData.days[0].hours
 
     res.json(data)
