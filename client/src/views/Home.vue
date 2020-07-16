@@ -27,11 +27,11 @@
         Total amount of sessions: {{ chart.data.amount }}
       </p>
 
-      <div id="legend" class="d-flex pb-4">
+      <div id="legend" class="d-flex flex-wrap row pb-4">
         <div
         v-for="legend in chart.data.legend"
         :key="legend.item"
-        class="legend-item pr-8">
+        class="legend-item pr-8 pt-0 col">
           <div
           :style="{ backgroundColor: legend.color }"
           class="legend-color mr-2"></div>
@@ -218,6 +218,7 @@ export default Vue.extend({
   display: flex;
   flex-direction: row;
   align-items: center;
+  min-width: 14em;
 }
 
 .legend-color {
