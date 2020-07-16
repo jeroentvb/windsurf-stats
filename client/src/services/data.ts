@@ -18,6 +18,10 @@ const colors = [
   '#7C5547' // brown
 ]
 
+for (let i = 0; i < 30; i++) {
+  colors.push('#' + ((1 << 24) * Math.random() | 0).toString(16))
+}
+
 export default class Data {
   sessions: Session[]
   years: string[]
