@@ -17,53 +17,52 @@ require('dotenv').config()
 
 function start () {
   express()
-// Add middleware for checking login status
-  .use(helmet())
-  .use(bodyParser.urlencoded({
-    extended: true
-  }))
-  .use(session({
-    store: new MongoStore({
-      client: db.client
-    }),
-    resave: false,
-    saveUninitialized: false,
-    rolling: true,
-    secret: process.env.SESSION_SECRET,
-    cookie: {
-      maxAge: parseInt(<string>process.env.COOKIE_MAX_AGE)
-    }
-  } as SessionOptions))
-  .use(cors({
-    origin: 'http://localhost:8080',
-    credentials: true
-  }))
-  .use(express.json())
+    .use(helmet())
+    .use(bodyParser.urlencoded({
+      extended: true
+    }))
+    .use(session({
+      store: new MongoStore({
+        client: db.client
+      }),
+      resave: false,
+      saveUninitialized: false,
+      rolling: true,
+      secret: process.env.SESSION_SECRET,
+      cookie: {
+        maxAge: parseInt(<string>process.env.COOKIE_MAX_AGE)
+      }
+    } as SessionOptions))
+    .use(cors({
+      origin: 'http://localhost:8080',
+      credentials: true
+    }))
+    .use(express.json())
 
-  .post('/register', auth.register)
-  .post('/login', auth.login)
-  .post('/logout', auth.logout)
-  
-  .use(auth.checkLogin)
+    .post('/register', auth.register)
+    .post('/login', auth.login)
+    .post('/logout', auth.logout)
+    
+    .use(auth.checkLogin)
 
-  .post('/gear', data.updateGear)
-  .post('/spots', data.updateSpots)
+    .post('/gear', data.updateGear)
+    .post('/spots', data.updateSpots)
 
-  .post('/session', data.session)
-  .post('/old-sessions', data.oldSessions)
+    .post('/session', data.session)
+    .post('/old-sessions', data.oldSessions)
 
-  .post('/check-spot', spotData.check)
-  .get('/conditions', spotData.get)
+    .post('/check-spot', spotData.check)
+    .get('/conditions', spotData.get)
 
-  .post('/threshold', data.updateThreshold)
+    .post('/threshold', data.updateThreshold)
 
-  // .get('/', (req, res) => {
-  //   // console.log(req.session!.user)
-  //   res.send('OK')
-  // })
-  // .get('/sessions', data.sessions)
-  .get('/user', data.user)
-  .listen(process.env.PORT, () => chalk.green(`[server] listening on port ${process.env.PORT}`))
+    // .get('/', (req, res) => {
+    //   // console.log(req.session!.user)
+    //   res.send('OK')
+    // })
+    // .get('/sessions', data.sessions)
+    .get('/user', data.user)
+    .listen(process.env.PORT, () => chalk.green(`[server] listening on port ${process.env.PORT}`))
 }
 
 (async function () {
