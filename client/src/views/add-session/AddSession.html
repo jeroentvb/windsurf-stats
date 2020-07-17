@@ -1,0 +1,182 @@
+<v-container>
+  <v-form
+    :disabled="submitting">
+    <v-layout row wrap>
+      <v-flex xs12 md6 pa-4>
+        <v-card>
+          <v-card-title>Session details</v-card-title>
+          <v-card-text>
+            <v-layout column>
+              <h3 class="mt-4">When did you sail?</h3>
+              <v-menu
+              v-model="showDatePicker"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+              >
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                  v-model="visibleDate"
+                  label="Date"
+                  readonly
+                  v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-date-picker
+                v-model="date"
+                :max="new Date().toISOString().substr(0, 10)"
+                @input="showDatePicker = false"
+                ></v-date-picker>
+              </v-menu>
+
+              <v-select
+              v-model.number="session.time.start"
+              :items="session.time.end ? getNumberArray(7, session.time.end, 1) : getNumberArray(7, 21, 1)"
+              label="Starting hour"
+              required
+              :rules="required"
+              @change="setConditions(session.time.start, session.time.start)"
+              ></v-select>
+
+              <v-select
+              v-model.number="session.time.end"
+              :items="session.time.start ? getNumberArray(session.time.start, 21, 1) : getNumberArray(7, 21, 1)"
+              label="End hour"
+              required
+              :rules="required"
+              @change="setConditions(session.time.start, session.time.end)"
+              ></v-select>
+              
+              <h3 class="mt-4">Where did you sail?</h3>
+              <v-select
+              v-model="session.spot"
+              :items="spots"
+              label="Spot"
+              required
+              :rules="required"
+              @change="changeSpot(session.spot)"
+              :disabled="loadingSpotData"
+              ></v-select>
+
+              <div v-if="showConditions" class="mt-8">
+                <!-- <h3 v-if="!showConditions">Conditions at the hour you sailed</h3> -->
+                <!-- <v-row class="mt-4">
+                  <v-progress-circular
+                  indeterminate
+                  color="primary"
+                  class="ml-4"
+                  ></v-progress-circular>
+                  <p class="ml-4">Loading</p>
+                </v-row> -->
+
+                <v-text-field
+                v-model.number="session.conditions.windspeed"
+                label="Windspeed"
+                type="number"
+                required
+                :rules="required"
+                ></v-text-field>
+
+                <v-text-field
+                v-model.number="session.conditions.windgust"
+                label="Windgust"
+                type="number"
+                required
+                :rules="required"
+                ></v-text-field>
+
+                <v-text-field
+                v-model.number="session.conditions.winddirection"
+                label="Winddirection"
+                type="number"
+                required
+                :rules="required"
+                ></v-text-field>
+
+                <v-text-field
+                v-model.number="session.conditions.temperature"
+                label="Temperature"
+                type="number"
+                required
+                :rules="required"
+                ></v-text-field>
+              </div>
+
+              <!-- Add fields for wave spot info -->
+            </v-layout>
+          </v-card-text>
+
+          <v-progress-linear
+            v-if="loadingSpotData"
+            indeterminate
+            color="primary"
+          ></v-progress-linear>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12 md6 pa-4>
+        <v-card>
+          <v-card-title>What gear did you use?</v-card-title>
+          <v-card-text>
+            <v-layout column>
+              <v-select
+              v-model="session.gear.sail"
+              :items="sails"
+              label="Sail"
+              required
+              :rules="required"
+              ></v-select>
+
+              <v-select
+              v-model="session.gear.board"
+              :items="boards"
+              label="Board"
+              required
+              :rules="required"
+              ></v-select>
+
+              <v-select
+              v-model.number="session.rating"
+              label="Rating"
+              :items="getNumberArray(1, 10, 1)"
+              required
+              :rules="required"
+              ></v-select>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12 pa-4>
+        <v-card>
+          <v-card-text>
+            <v-layout column>
+              <v-textarea
+                v-model="session.note"
+                label="How was your session?"
+              ></v-textarea>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-layout>
+
+    <FormError 
+      v-if="formErrorMsg" 
+      :msg="formErrorMsg"
+    />
+
+    <v-layout>
+      <v-btn
+      :block="true"
+      color="primary"
+      x-large
+      type="submit"
+      :loading="submitting"
+      @click.prevent="submit()"
+      >Submit</v-btn>
+    </v-layout>
+  </v-form>
+</v-container>
