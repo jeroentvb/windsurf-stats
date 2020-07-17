@@ -1,89 +1,100 @@
 # Windsurf statistics tracking
+![Windsurf stats](./.github/img/windsurf-stats.png?raw=true)
 This project is a web interface to easily save windsurf session data.
-It was originally built to suit my own needs, but it should be usable for any windsurfer.  
-
-If you'd like to click through the app before installing, you can check the demo [here](https://jeroenvanberkum.nl/windsurf-stats/) (This demo is outdated but still demoes the concept of the application).
+It was originally built to suit my own needs, using node.js, express, mysql and ejs. But it has evolved into a full stack web app using node.js, express, mongodb and vue.js combined with vuetify for the front-end.
 
 If you find a bug or have a feature request, please [create an issue](https://github.com/jeroentvb/windsurf-stats/issues)!  
-
-### Backstory
-I started this project because I used to save my windsurf session data in an excel file, but I figured it would be easier to use a web interface and visualize the statistics in a nice way. And so this project was born.
 
 ## Table of contents
 * [What it does](#what-it-does)
 * [Usage](#usage)
-* [Configuration](#configuration)
+  + [Prerequisites](#prerequisites)
+  + [Installation (development)](#installation--development-)
+    - [Server](#server)
+    - [Client](#client)
+  + [Installation (production)](#installation--production-)
+    - [Server](#server-1)
+    - [Client](#client-1)
 
 ## What it does
 It currently stores the following values in a databse on a per user basis:
-1. Date of the session
-2. Spot you sailed on
-3. Highest windspeed
-4. Highest gust
-5. Wind direction
-6. Sail size
-7. Board
-8. Rating of the session
-9. A (small) note
+* Date
+* Spot
+* Gear used (sail & board)
+* Conditions (windspeed, gust, direction and temperature)
+* Rating
+* Note
 
-Using the spot name, it also scrapes the windspeed, gust and wind direction from winfinder (only works if input is on same day as the windsurf session).
+Using the spot name, it scrapes the windspeed, gust, direction and temperature from winfinder, so you don't have to fill those in yourself. (only works if input is on same day as the windsurf session, and the selected spot is a windfinder superforecast enabled spot. If not you need to fill in those variables yourself).
 
 ## Usage
 All the things you need to run this app.
 
 ### Prerequisites
 * [node.js & npm](https://nodejs.org/en/)
-* MySql server
+* [MongoDb server](https://www.mongodb.com)
+* A webserver with reverse proxy capability
 
-Optional
-* [Sass](https://sass-lang.com/) (if you want to customize the css)
-
-### Installation
+### Installation (development)
 Download or clone this repository using:
-```
+```sh
 git clone https://github.com/jeroentvb/windsurf-stats.git
+cd windsurf-stats
 ```
-`cd windsurf-stats` into the folder.
-Install the required node.js packages using
-```
+
+#### Server
+Rename `.env.example` in the [server folder](./server) to `.env` and set the correct password. You can change the port it will run on if you want as well.  
+Install the required dependencies and run the server in developement mode
+```sh
+cd server
 npm install
+npm run watch
 ```
 
-Rename the `.env.example` file to `.env` and fill in your database credentials.
-
-To set up the database and its tables use
-```
-npm run setupdb
-```
-
-Run the application using
-```
-npm start
+#### Client
+Rename `.env.example` in the [client folder](./client) to `.env`. Make sure to change the port of `VUE_APP_API_URL` if you changed it for the server.  
+Install the required dependencies and run the client in development mode.
+```sh
+cd ../client
+npm install
+npm run serve
 ```
 
-Everything is now set up succesfully and ready for use! 🎉
+The application should now be set up, and ready for use in development. Accessible on [localhost:8080](localhost:8080)
 
-The only thing left to do is go out and shred! 🤙
+### Installation (production)
+Download or clone this repository using:
+```sh
+git clone https://github.com/jeroentvb/windsurf-stats.git
+cd windsurf-stats
+```
 
-## Configuration
-The app has a few configurable options located in [app-config.json](app-config.json).
+#### Server
+Rename `.env.example` in the [server folder](./server) to `.env` and set the correct password. You can change the port it will run on if you want as well.  
+Install the required dependencies and build the server
+```sh
+cd server
+npm install
+npm run build
+```
+Copy the contents of the `dist` folder to your server and run the following commands:
+```sh
+npm install
 
-### saltRounds
-The amount of saltrounds you want to add to the pasword hashes.  
-Default: `10`
+# Set the node enviroment to production and run the server using:
+node index.js
+```
 
-### Language
-The language you want the application to use for the front-end. For more information see [localization](#localization).  
-Default: `"en"`
+Set up a reverse proxy, so `domain.extension/api` directs traffic to back end server. The client should be hosted on `domain.extension`. This prevents cors errors.
 
-### cookieMaxAge
-The time a user should stay logged in. Set to a month by default.  
-Default: `2592000000`
+#### Client
+Rename `.env.example` in the [client folder](./client) to `.env` and set the `VUE_APP_API_URL` to url of your backend server for which you just set up a reverse proxy (in this case `domain.extension/api`).  
+Install the required dependencies and build the front-end
+```sh
+cd ../client
+npm install
+npm run build
+```
+Copy the contents of the `dist` folder to the root of your web server, so it can be serverd on `domain.extension`.
 
-### allowRegister
-When enabled, anyone can create an account. If you don't want this set this value to `false`  
-Default: `true`
-
-### allowChangeEmail
-Allow users to change their e-mail adress associated with their account. This is disabled by default due to security concerns because there's no additional information required to change the e-mail adress. One only needs to be logged in.  
-Default: `false`
+The application should now be set up, and ready for use in production.
