@@ -9,10 +9,10 @@ If you find a bug or have a feature request, please [create an issue](https://gi
 * [What it does](#what-it-does)
 * [Usage](#usage)
   + [Prerequisites](#prerequisites)
-  + [Installation (development)](#installation--development-)
+  + [Installation (development)](#installation-development)
     - [Server](#server)
     - [Client](#client)
-  + [Installation (production)](#installation--production-)
+  + [Installation (production)](#installation-production)
     - [Server](#server-1)
     - [Client](#client-1)
 
@@ -35,7 +35,7 @@ All the things you need to run this app.
 * [MongoDb server](https://www.mongodb.com)
 * A webserver with reverse proxy capability
 
-### Installation (development)
+### Installation development
 Download or clone this repository using:
 ```sh
 git clone https://github.com/jeroentvb/windsurf-stats.git
@@ -62,7 +62,7 @@ npm run serve
 
 The application should now be set up, and ready for use in development. Accessible on [localhost:8080](localhost:8080)
 
-### Installation (production)
+### Installation production
 Download or clone this repository using:
 ```sh
 git clone https://github.com/jeroentvb/windsurf-stats.git
