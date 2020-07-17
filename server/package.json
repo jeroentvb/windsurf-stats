@@ -1,7 +1,7 @@
 {
   "name": "windsurf-stats",
   "version": "2.0.0",
-  "description": "A web interface to keep track of windsurf session statistics",
+  "description": "A web app to keep track of windsurf session statistics",
   "main": "index.js",
   "scripts": {
     "setupdb": "node modules/setupDb.js",
@@ -24,7 +24,6 @@
     "url": "https://github.com/jeroentvb/windsurf-stats.git"
   },
   "dependencies": {
-    "@types/cors": "^2.8.6",
     "bcrypt": "^3.0.8",
     "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
@@ -32,24 +31,22 @@
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "express": "^4.17.1",
-    "express-mysql-session": "^2.1.4",
     "express-session": "^1.17.1",
     "helmet": "^3.23.3",
     "jeroentvb-helper": "github:jeroentvb/jeroentvb-helper",
     "json2csv": "^4.5.4",
     "mongodb": "^3.5.9",
-    "mysql": "^2.18.1",
     "wind-scrape": "github:jeroentvb/wind-scrape#dist"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",
     "@types/body-parser": "^1.19.0",
+    "@types/cors": "^2.8.6",
     "@types/express": "^4.17.7",
     "@types/express-session": "^1.17.0",
     "@types/helmet": "0.0.45",
     "@types/json2csv": "^4.5.1",
     "@types/mongodb": "^3.5.25",
-    "@types/mysql": "^2.15.15",
     "@types/node": "^12.12.50",
     "ts-node-dev": "^1.0.0-pre.52",
     "tslint": "^5.20.1",
