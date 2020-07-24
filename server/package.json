@@ -4,7 +4,6 @@
   "description": "A web app to keep track of windsurf session statistics",
   "main": "index.js",
   "scripts": {
-    "setupdb": "node modules/setupDb.js",
     "build-server": "tsc",
     "build-shared-interfaces": "cd ../shared && tsc",
     "copy-files": "cp .env ./dist && cp package.json ./dist && cp package-lock.json ./dist",
