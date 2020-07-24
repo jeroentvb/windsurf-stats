@@ -158,10 +158,10 @@ export default Vue.extend({
 
         if (i === conditions.length - 1) {
           return {
-            windspeed: Math.round(c.windspeed / i),
-            windgust: Math.round(c.windgust / i),
-            winddirection: Math.round(c.winddirection / i),
-            temperature: Math.round(c.temperature / i)
+            windspeed: Math.round(c.windspeed / conditions.length),
+            windgust: Math.round(c.windgust / conditions.length),
+            winddirection: Math.round(c.winddirection / conditions.length),
+            temperature: Math.round(c.temperature / conditions.length)
           }
         }
 

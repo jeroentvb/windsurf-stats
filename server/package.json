@@ -4,11 +4,10 @@
   "description": "A web app to keep track of windsurf session statistics",
   "main": "index.js",
   "scripts": {
-    "setupdb": "node modules/setupDb.js",
     "build-server": "tsc",
     "build-shared-interfaces": "cd ../shared && tsc",
     "copy-files": "cp .env ./dist && cp package.json ./dist && cp package-lock.json ./dist",
-    "build": "rm -r ./dist && npm run build-shared-interfaces && npm run build-server && npm run copy-files",
+    "build": "rm -rf ./dist && npm run build-shared-interfaces && npm run build-server && npm run copy-files",
     "start": "node ./dist/index.js",
     "lint": "tslint -p . -c tslint.json \"**/*.ts\"",
     "watch": "ts-node-dev --respawn --transpile-only ./src/index.ts"
