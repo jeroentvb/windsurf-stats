@@ -46,11 +46,7 @@
         />
       </div>
 
-      <v-btn
-      color="primary"
-      class="my-4"
-      medium
-      to="/all-statistics">All statistics</v-btn>
+      <ExportData />
     </div>
 
     <div v-if="sessions.length === 0">
@@ -85,6 +81,7 @@ import Api from '../services/api'
 import Data from '../services/data'
 
 import BarChart from '../components/BarChart.vue'
+import ExportData from '../components/ExportData.vue'
 import OldSessions from '../components/form/OldSessions.vue'
 
 import { DATASETS, SESSION_AMOUNT, SAIL_USAGE, BOARD_USAGE, SPOT_VISITS } from '../constants'
@@ -97,6 +94,7 @@ export default Vue.extend({
   name: 'home',
   components: {
     BarChart,
+    ExportData,
     OldSessions
   },
 
