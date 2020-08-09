@@ -14,35 +14,45 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+import { Session } from '../../../shared/interfaces/Session'
+
+import helper from '../services/helper'
+
+export default Vue.extend({
   name: 'ExportData',
 
   computed: {
-    sessions () {
+    sessions (): Session[] {
       return this.$store.state.user.sessions
     },
 
-    username () {
+    username (): string {
       return this.$store.state.user.name
     },
 
-    date () {
+    date (): string {
       return new Date().toLocaleDateString()
     }
   },
 
   methods: {
     exportCsv () {
-      //
+      const csv = helper.createCsv(this.sessions, ';')
+      const blob = new Blob([ csv ], { type: 'text/csv' })
+
+      this.download(blob)
     },
 
     exportJson () {
       const blob = new Blob([ JSON.stringify(this.sessions, null, 2) ], { type: 'application/json' })
+
       this.download(blob)
     },
 
-    download (blob) {
+    download (blob: Blob) {
       const link = document.createElement('a')
 
       link.href = URL.createObjectURL(blob)
@@ -53,5 +63,5 @@ export default {
       link.remove()
     }
   }
-}
+})
 </script>
