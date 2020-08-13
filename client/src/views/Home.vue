@@ -41,8 +41,10 @@
 
       <div id="chart-container">
         <BarChart
-        :chart-data="chart.data"
-        :styles="{height: '75vh'}"
+          :chart-data="chart.data"
+          :styles="{height: '75vh'}"
+          :datasetId="chart.selected.dataset"
+          @openSession="openSessionCard"
         />
       </div>
 
@@ -75,6 +77,13 @@
         </v-layout>
       </v-container>
     </div>
+
+    <dialog-component v-model="sessionCard.show">
+      <SessionCard
+        :session="sessionCard.selectedSession"
+        @close="sessionCard.show = false"
+      />
+    </dialog-component>
   </div>
 </template>
 
@@ -85,6 +94,8 @@ import Api from '../services/api'
 import Data from '../services/data'
 
 import BarChart from '../components/BarChart.vue'
+import DialogComponent from '../components/DialogComponent.vue'
+import SessionCard from '../components/SessionCard.vue'
 import OldSessions from '../components/form/OldSessions.vue'
 
 import { DATASETS, SESSION_AMOUNT, SAIL_USAGE, BOARD_USAGE, SPOT_VISITS } from '../constants'
@@ -97,6 +108,8 @@ export default Vue.extend({
   name: 'home',
   components: {
     BarChart,
+    SessionCard,
+    DialogComponent,
     OldSessions
   },
 
@@ -116,7 +129,11 @@ export default Vue.extend({
           [SPOT_VISITS]: [] as ChartData[]
         }
       },
-      DATASETS
+      DATASETS,
+      sessionCard: {
+        show: false,
+        selectedSession: {}
+      }
     }
   },
 
@@ -204,6 +221,11 @@ export default Vue.extend({
           type: 'error'
         } as Snackbar)
       }
+    },
+
+    openSessionCard (session: Session) {
+      this.sessionCard.selectedSession = session
+      this.sessionCard.show = true
     }
   },
 
