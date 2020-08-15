@@ -18,7 +18,7 @@ import Vue from 'vue'
 import api from '../services/api'
 import snackbar from '../services/snackbar'
 
-import SpotForm from '../components/form/SpotForm.vue'
+import SpotForm from '../components/ui/form/SpotForm.vue'
 
 import helper from '../services/helper'
 

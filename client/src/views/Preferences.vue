@@ -19,7 +19,7 @@ import api from '../services/api'
 import snackbar from '../services/snackbar'
 import helper from '../services/helper'
 
-import ThresholdForm from '../components/form/ThresholdForm.vue'
+import ThresholdForm from '../components/ui/form/ThresholdForm.vue'
 
 import { Spot } from '../../../shared/interfaces/Spot'
 import { UPDATE_THRESHOLD } from '../store/constants'
