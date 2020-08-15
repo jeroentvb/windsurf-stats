@@ -1,34 +1,9 @@
 <template>
   <v-container fluid>
-    <v-card-title>
-      All statistics
-      <v-spacer></v-spacer>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-    </v-card-title>
-    <v-data-table
+    <DataTableComponent
+      :data="sessions"
       :headers="headers"
-      :items="sessions"
-      :search="search"
-      item-key="index"
-      :single-expand="true"
-      :expanded.sync="expanded"
-      :items-per-page="sessions.length"
-      mobile-breakpoint="1000"
-      show-expand
-    >
-      <template v-slot:expanded-item="{ headers, item }" class="note">
-        <div :colspan="headers.length" class="pa-4">
-          <h5>Note</h5>
-          <p>{{ item.note }}</p>
-        </div>
-      </template>
-    </v-data-table>
+    />
 
     <ExportData />
   </v-container>
@@ -37,6 +12,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
+import DataTableComponent from '../components/ui/DataTableComponent.vue'
 import ExportData from '../components/feature/ExportData.vue'
 
 import { Session } from '../../../shared/interfaces/Session'
@@ -45,6 +21,7 @@ export default Vue.extend({
   name: 'AllStatistics',
 
   components: {
+    DataTableComponent,
     ExportData
   },
 
@@ -62,8 +39,6 @@ export default Vue.extend({
 
   data () {
     return {
-      search: '',
-      expanded: [],
       headers: [
         {
           text: 'Date',

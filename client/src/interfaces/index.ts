@@ -20,3 +20,10 @@ export interface ChartData {
     color: string
   }[]
 }
+
+export interface DataTableHeader {
+  text: string
+  value: string
+  sortable?: boolean
+  align?: string
+}

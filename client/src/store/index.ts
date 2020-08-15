@@ -43,8 +43,8 @@ export default new Vuex.Store({
     } as User,
     snackbar: {
       text: '',
-      timeout: 3000,
-      show: true,
+      timeout: 4000,
+      show: false,
       type: ''
     }
   },
