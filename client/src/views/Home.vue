@@ -45,12 +45,6 @@
         :styles="{height: '75vh'}"
         />
       </div>
-
-      <v-btn
-      color="primary"
-      class="my-4"
-      medium
-      to="/all-statistics">All statistics</v-btn>
     </div>
 
     <div v-if="sessions.length === 0">
@@ -95,6 +89,7 @@ import { User } from '../../../shared/interfaces/User'
 
 export default Vue.extend({
   name: 'home',
+
   components: {
     BarChart,
     OldSessions

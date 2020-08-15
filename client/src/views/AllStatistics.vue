@@ -29,16 +29,24 @@
         </div>
       </template>
     </v-data-table>
+
+    <ExportData />
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
+import ExportData from '../components/ExportData.vue'
+
 import { Session } from '../../../shared/interfaces/Session'
 
 export default Vue.extend({
   name: 'AllStatistics',
+
+  components: {
+    ExportData
+  },
 
   computed: {
     sessions () {
