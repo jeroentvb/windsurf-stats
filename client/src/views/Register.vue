@@ -78,7 +78,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Api from '../services/api'
+import api from '../services/api'
+import snackbar from '../services/snackbar'
 
 import FormError from '../components/ui/FormError.vue'
 
@@ -124,7 +125,7 @@ export default Vue.extend({
       }
 
       try {
-        const res = await Api.post('register', {
+        const res = await api.post('register', {
           name: user.username,
           email: user.email,
           password: user.password
@@ -143,7 +144,7 @@ export default Vue.extend({
           this.setError('Field missing')
         }
         if (status === 500) {
-          window.alert('Something went wrong. Try again later.')
+          snackbar.error('Something went wrong. Try again later.')
         }
       }
     },

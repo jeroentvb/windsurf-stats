@@ -83,9 +83,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Axios from 'axios'
-import Api from '../services/api'
+import api from '../services/api'
 import Data from '../services/data'
+import snackbar from '../services/snackbar'
 
 import BarChart from '../components/feature/BarChart.vue'
 import DialogComponent from '../components/ui/DialogComponent.vue'
@@ -93,8 +93,7 @@ import SessionCard from '../components/ui/SessionCard.vue'
 import OldSessions from '../components/ui/form/OldSessions.vue'
 
 import { DATASETS, SESSION_AMOUNT, SAIL_USAGE, BOARD_USAGE, SPOT_VISITS } from '../constants'
-import { SHOW_SNACKBAR } from '../store/constants'
-import { Snackbar, ChartData } from '../interfaces'
+import { ChartData } from '../interfaces'
 import { Session } from '../../../shared/interfaces/Session'
 import { User } from '../../../shared/interfaces/User'
 
@@ -204,17 +203,13 @@ export default Vue.extend({
 
     async uploadOldSessions (oldSessions: object) {
       try {
-        const res = await Api.post('old-sessions', oldSessions)
+        const res = await api.post('old-sessions', oldSessions)
 
         if (res.status === 200) {
           this.$router.go(0)
         }
       } catch (err) {
-        this.$store.commit(SHOW_SNACKBAR, {
-          text: 'Something went wrong!',
-          timeout: 5000,
-          type: 'error'
-        } as Snackbar)
+        snackbar.error()
       }
     },
 

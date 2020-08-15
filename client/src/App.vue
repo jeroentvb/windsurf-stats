@@ -60,27 +60,30 @@
       :timeout="snackbar.timeout"
       :color="snackbar.type"
     >
+    <div class="d-flex align-center">
       {{ snackbar.text }}
       <v-btn
         dark
         text
         @click="closeSnackbar"
+        class="ml-auto"
       >
         Close
       </v-btn>
+    </div>
     </v-snackbar>
   </v-app>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import Api from './services/api'
+import api from './services/api'
+import snackbar from './services/snackbar'
 
-import { USER_LOGIN, USER_LOGOUT, SET_USERDATA, STOP_LOADING, CLOSE_SNACKBAR, SHOW_SNACKBAR } from './store/constants'
+import { USER_LOGIN, USER_LOGOUT, SET_USERDATA, STOP_LOADING } from './store/constants'
 import { routes } from './router/index'
 
 import { User } from '../../shared/interfaces/User'
-import { Snackbar } from './interfaces'
 
 export default Vue.extend({
   name: 'App',
@@ -113,28 +116,24 @@ export default Vue.extend({
   methods: {
     async logout () {
       try {
-        const res = await Api.post('logout', {})
+        const res = await api.post('logout', {})
 
         if (res.status === 200) {
           this.$store.dispatch(USER_LOGOUT)
         }
       } catch (err) {
-        this.$store.commit(SHOW_SNACKBAR, {
-          text: 'Something went wrong!',
-          timeout: 5000,
-          type: 'error'
-        } as Snackbar)
+        snackbar.error()
       }
     },
 
     closeSnackbar () {
-      this.$store.commit(CLOSE_SNACKBAR)
+      snackbar.close()
     }
   },
 
   async created () {
     try {
-      const res = await Api.get('user')
+      const res = await api.get('user')
 
       if (res.status === 200) {
         await this.$store.dispatch(SET_USERDATA, res.data as User)

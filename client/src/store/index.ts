@@ -44,7 +44,7 @@ export default new Vuex.Store({
     snackbar: {
       text: '',
       timeout: 3000,
-      show: false,
+      show: true,
       type: ''
     }
   },

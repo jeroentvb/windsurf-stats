@@ -4,15 +4,15 @@
 import Vue from 'vue'
 import Api from '../../services/api'
 import helper from '../../services/helper'
+import snackbar from '../../services/snackbar'
 
 import FormError from '../../components/ui/FormError.vue'
 
 import { Sail, Board } from '../../../../shared/interfaces/Gear'
 import { Spot } from '../../../../shared/interfaces/Spot'
 import { Session, Conditions } from '../../../../shared/interfaces/Session'
-import { Snackbar } from '../../interfaces'
 
-import { SHOW_SNACKBAR, ADD_SESSION } from '../../store/constants'
+import { ADD_SESSION } from '../../store/constants'
 
 export default Vue.extend({
   name: 'AddSession',
@@ -117,19 +117,11 @@ export default Vue.extend({
         this.loadingSpotData = false
 
         if (err.response.status === 404) {
-          this.$store.commit(SHOW_SNACKBAR, {
-            text: 'The selected spot doesn\'t have a windfinder superforecast',
-            timeout: 6000,
-            type: 'error'
-          } as Snackbar)
+          snackbar.error('The selected spot doesn\'t have a windfinder superforecast', 6000)
           return
         }
 
-        this.$store.commit(SHOW_SNACKBAR, {
-          text: 'Couldn\'t get spot conditions',
-          timeout: 5000,
-          type: 'error'
-        } as Snackbar)
+        snackbar.error('Couldn\'t get spot conditions')
       }
     },
 
@@ -211,11 +203,7 @@ export default Vue.extend({
           return
         }
 
-        this.$store.commit(SHOW_SNACKBAR, {
-          text: 'Something went wrong',
-          timeout: 5000,
-          type: 'error'
-        } as Snackbar)
+        snackbar.error()
       }
     }
   }
