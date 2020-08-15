@@ -32,9 +32,9 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import AddSession from '../views/add-session/AddSession.vue'
+import AddSession from '../../views/add-session/AddSession.vue'
 
-import { Session } from '../../../shared/interfaces/Session'
+import { Session } from '../../../../shared/interfaces/Session'
 
 export default Vue.extend({
   name: 'SessionCard',

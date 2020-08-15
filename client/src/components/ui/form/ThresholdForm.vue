@@ -43,7 +43,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import helper from '../../services/helper'
+import helper from '@/services/helper'
 
 export default Vue.extend({
   name: 'ThresholdForm',

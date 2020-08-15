@@ -41,7 +41,7 @@ import Vue from 'vue'
 import DialogComponent from './DialogComponent.vue'
 import EditSessionCard from './EditSessionCard.vue'
 
-import { Session } from '../../../shared/interfaces/Session'
+import { Session } from '../../../../shared/interfaces/Session'
 
 export default Vue.extend({
   name: 'SessionCard',

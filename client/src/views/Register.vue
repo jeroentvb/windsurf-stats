@@ -80,7 +80,7 @@
 import Vue from 'vue'
 import Api from '../services/api'
 
-import FormError from '../components/FormError.vue'
+import FormError from '../components/ui/FormError.vue'
 
 import { USER_REGISTER } from '../store/constants'
 

@@ -1,7 +1,7 @@
 <script>
 import Vue from 'vue'
 import { Bar, mixins } from 'vue-chartjs'
-import { SESSION_AMOUNT } from '../constants'
+import { SESSION_AMOUNT } from '../../constants'
 
 export default {
   name: 'BarChart',

@@ -37,7 +37,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import ExportData from '../components/ExportData.vue'
+import ExportData from '../components/feature/ExportData.vue'
 
 import { Session } from '../../../shared/interfaces/Session'
 

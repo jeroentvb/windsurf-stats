@@ -62,7 +62,7 @@
 import Vue from 'vue'
 import Api from '../services/api'
 
-import FormError from '../components/FormError.vue'
+import FormError from '../components/ui/FormError.vue'
 
 import { USER_LOGIN, SET_USERDATA, SHOW_SNACKBAR } from '../store/constants'
 import { Snackbar } from '../interfaces'

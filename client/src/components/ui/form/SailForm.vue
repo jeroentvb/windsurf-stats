@@ -83,7 +83,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Sail } from '../../../../shared/interfaces/Gear'
+import { Sail } from '../../../../../shared/interfaces/Gear'
 
 export default Vue.extend({
   name: 'SailForm',

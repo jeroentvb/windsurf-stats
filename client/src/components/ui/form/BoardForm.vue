@@ -83,7 +83,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Board } from '../../../../shared/interfaces/Gear'
+import { Board } from '../../../../../shared/interfaces/Gear'
 
 export default Vue.extend({
   name: 'BoardForm',

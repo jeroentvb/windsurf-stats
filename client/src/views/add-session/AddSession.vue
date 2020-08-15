@@ -5,7 +5,7 @@ import Vue from 'vue'
 import Api from '../../services/api'
 import helper from '../../services/helper'
 
-import FormError from '../../components/FormError.vue'
+import FormError from '../../components/ui/FormError.vue'
 
 import { Sail, Board } from '../../../../shared/interfaces/Gear'
 import { Spot } from '../../../../shared/interfaces/Spot'
