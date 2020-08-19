@@ -6,7 +6,8 @@ import Api from '../../services/api'
 import helper from '../../services/helper'
 import snackbar from '../../services/snackbar'
 
-import FormError from '../../components/ui/FormError.vue'
+import SessionDetailsForm from '@/components/ui/form/SessionDetailsForm.vue'
+import FormError from '@/components/ui/FormError.vue'
 
 import { Sail, Board } from '../../../../shared/interfaces/Gear'
 import { Spot } from '../../../../shared/interfaces/Spot'
@@ -18,15 +19,14 @@ export default Vue.extend({
   name: 'AddSession',
 
   components: {
+    SessionDetailsForm,
     FormError
   },
 
   data () {
     return {
-      date: new Date().toISOString().substr(0, 10),
-      visibleDate: 'Today',
       session: {
-        date: new Date(),
+        date: new Date().toISOString().substr(0, 10),
         time: {
           start: 0,
           end: 0
@@ -45,23 +45,18 @@ export default Vue.extend({
         rating: 7,
         note: ''
       } as Session,
-      conditions: [] as Conditions[],
-      showConditions: false,
-      showDatePicker: false,
       required: [
         (v: string) => !!v || 'All fields are required'
       ],
-      submitting: false,
-      loadingSpotData: false,
-      formErrorMsg: ''
+      localState: {
+        loadingSpotData: false,
+        submitting: false,
+        formErrorMsg: ''
+      }
     }
   },
 
   computed: {
-    spots (): string[] {
-      return this.$store.state.user.spots.map((spot: Spot) => spot.name)
-    },
-
     sails (): string[] {
       return this.$store.state.user.gear.sails.map((sail: Sail) => `${sail.brand} ${sail.model} ${sail.size}`)
     },
@@ -75,92 +70,12 @@ export default Vue.extend({
     }
   },
 
-  watch: {
-    date () {
-      this.visibleDate = new Date(this.date).toLocaleDateString()
-    }
-  },
-
   created () {
     this.session.gear.sail = this.sails[0]
     this.session.gear.board = this.boards[0]
   },
 
   methods: {
-    changeSpot (spot: string) {
-      const windfinder = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).windfinder
-      const today = new Date().toISOString().substr(0, 10)
-
-      if (!windfinder || this.date !== today) {
-        this.showConditions = true
-        return
-      }
-
-      this.getConditions(spot)
-    },
-
-    async getConditions (spot: string): Promise<void> {
-      const spotId = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).id
-      this.loadingSpotData = true
-
-      try {
-        const res = await Api.get(`conditions?spot=${spotId}`)
-        this.conditions = res.data as Conditions[]
-
-        // If the session time is set, update the conditions in the form
-        if (this.session.time.start && this.session.time.end) {
-          this.setConditions(this.session.time.start, this.session.time.end)
-        }
-
-        this.loadingSpotData = false
-      } catch (err) {
-        this.loadingSpotData = false
-
-        if (err.response.status === 404) {
-          snackbar.error('The selected spot doesn\'t have a windfinder superforecast', 6000)
-          return
-        }
-
-        snackbar.error('Couldn\'t get spot conditions')
-      }
-    },
-
-    setConditions (start: number, end: number): void {
-      if (this.conditions.length === 0) return
-      if (!this.session.time.start || !this.session.time.end) return
-
-      const conditions: Conditions[] = this.conditions.filter((condition: Conditions) => {
-        return condition.hour as number >= start && condition.hour as number <= end
-      })
-
-      const averageConditions: Conditions = this.calcAverageConditions(conditions)
-      this.session.conditions = averageConditions
-
-      this.showConditions = true
-    },
-
-    calcAverageConditions (conditions: Conditions[]): Conditions {
-      return conditions.reduce((prev, condition, i) => {
-        const c: Conditions = {
-          windspeed: prev.windspeed + condition.windspeed,
-          windgust: prev.windgust + condition.windgust,
-          winddirection: prev.winddirection + condition.winddirection,
-          temperature: prev.temperature + condition.temperature
-        }
-
-        if (i === conditions.length - 1) {
-          return {
-            windspeed: Math.round(c.windspeed / conditions.length),
-            windgust: Math.round(c.windgust / conditions.length),
-            winddirection: Math.round(c.winddirection / conditions.length),
-            temperature: Math.round(c.temperature / conditions.length)
-          }
-        }
-
-        return c
-      })
-    },
-
     validateForm () {
       let valid: boolean = true
       const form: Session = this.session
@@ -180,12 +95,12 @@ export default Vue.extend({
 
     async submit () {
       if (!this.validateForm()) {
-        this.formErrorMsg = 'Please fill in the required fields'
+        this.localState.formErrorMsg = 'Please fill in the required fields'
         return
       }
 
-      const session = Object.assign(this.session, { date: new Date(this.date).toISOString() })
-      this.submitting = true
+      const session = Object.assign({}, this.session, { date: new Date(this.session.date).toISOString() })
+      this.submittingForm(true)
 
       try {
         const res = await Api.post('session', session)
@@ -193,18 +108,22 @@ export default Vue.extend({
         if (res.status === 200) {
           this.$store.dispatch(ADD_SESSION, session)
 
-          this.submitting = false
+          this.submittingForm(false)
         }
       } catch (err) {
-        this.submitting = false
+        this.submittingForm(false)
 
         if (err.response.status === 422) {
-          this.formErrorMsg = 'Please fill in the required fields'
+          this.localState.formErrorMsg = 'Please fill in the required fields'
           return
         }
 
         snackbar.error()
       }
+    },
+
+    submittingForm (bool: boolean) {
+      this.localState.submitting = bool
     }
   }
 })
