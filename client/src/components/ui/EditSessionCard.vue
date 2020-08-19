@@ -32,7 +32,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import AddSession from '../../views/add-session/AddSession.vue'
+import AddSession from '../../views/AddSession.vue'
 
 import { Session } from '../../../../shared/interfaces/Session'
 
