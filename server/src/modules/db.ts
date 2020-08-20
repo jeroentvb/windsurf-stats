@@ -4,7 +4,7 @@ import chalk from 'chalk'
 export let db: Db
 export let client: MongoClient.MongoClient
 
-export function init (database: string) {
+export function init (database: string): Promise<void> {
   return new Promise((resolve, reject) => {
     MongoClient.connect(`mongodb://localhost:27017/${database}`, {
       useNewUrlParser: true,
@@ -31,7 +31,7 @@ export function get (query: object): Promise<any[]> {
   })
 }
 
-export function insert (data: any) {
+export function insert (data: any): Promise<any> {
   return db.collection('users').insertOne(data)
 }
 

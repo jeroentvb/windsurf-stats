@@ -10,7 +10,8 @@
     "build": "rm -rf ./dist && npm run build-shared-interfaces && npm run build-server && npm run copy-files",
     "start": "node ./dist/index.js",
     "lint": "tslint -p . -c tslint.json \"**/*.ts\"",
-    "watch": "ts-node-dev --respawn --transpile-only ./src/index.ts"
+    "watch": "ts-node-dev --respawn --transpile-only ./src/index.ts",
+    "upgradeDb": "node upgradeDb.js"
   },
   "keywords": [
     "windsurf",

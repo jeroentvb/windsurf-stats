@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { ObjectId } from 'mongodb'
 import * as db from './db'
 import * as auth from './auth'
 import spotData from './spot-data'
@@ -24,7 +25,7 @@ async function getUserData (name: string): Promise<User> {
   }
 }
 
-function sortSessions (sessions: Session[]) {
+function sortSessions (sessions: Session[]): Session[] {
   return sessions.sort((a, b) => {
     return (new Date(a.date) as any) - (new Date(b.date) as any)
   })
@@ -94,7 +95,7 @@ async function updateSpots (req: Request, res: Response) {
 
 async function session (req: Request, res: Response) {
   const user = req.session!.user
-  const session: Session = req.body
+  const session: Session = Object.assign(req.body, { _id: new ObjectId() })
 
   if (!validateSessionData(session)) {
     res.status(422).send('Missing fields')

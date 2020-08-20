@@ -1,4 +1,5 @@
 export interface Session {
+  _id?: any
   date: Date | string
   time: {
     start: number
