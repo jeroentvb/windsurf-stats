@@ -14,7 +14,7 @@ async function getUserData (name: string): Promise<User> {
   try {
     const userData: User[] = await db.get({ name })
     const user = userData[0]
-    user.sessions = sortSessions(user.sessions as Session[])
+    user.sessions = sortSessions(user.sessions!)
 
     delete user._id
     delete user.password

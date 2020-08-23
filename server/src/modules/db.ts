@@ -1,5 +1,6 @@
 import MongoClient, { Db } from 'mongodb'
 import chalk from 'chalk'
+import { User } from '../../../shared/interfaces/User'
 
 export let db: Db
 export let client: MongoClient.MongoClient
@@ -22,7 +23,7 @@ export function init (database: string): Promise<void> {
   })
 }
 
-export function get (query: object): Promise<any[]> {
+export function get (query: object): Promise<User[]> {
   return new Promise((resolve, reject) => {
     db.collection('users').find(query).toArray((err, result) => {
       if (err) reject(err)
