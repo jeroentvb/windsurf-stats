@@ -25,31 +25,11 @@
           <v-card>
             <v-card-title>What gear did you use?</v-card-title>
             <v-card-text>
-              <v-layout column>
-                <v-select
-                v-model="session.gear.sail"
-                :items="sails"
-                label="Sail"
-                required
-                :rules="required"
-                ></v-select>
-
-                <v-select
-                v-model="session.gear.board"
-                :items="boards"
-                label="Board"
-                required
-                :rules="required"
-                ></v-select>
-
-                <v-select
-                v-model.number="session.rating"
-                label="Rating"
-                :items="getNumberArray(1, 10, 1)"
-                required
-                :rules="required"
-                ></v-select>
-              </v-layout>
+              <SessionGearForm
+                v-model="session"
+                :sails="sails"
+                :boards="boards"
+              />
             </v-card-text>
           </v-card>
         </v-flex>
@@ -94,6 +74,7 @@ import helper from '../services/helper'
 import snackbar from '../services/snackbar'
 
 import SessionDetailsForm from '@/components/ui/form/SessionDetailsForm.vue'
+import SessionGearForm from '@/components/ui/form/SessionGearForm.vue'
 import FormError from '@/components/ui/FormError.vue'
 
 import { Sail, Board } from '../../../shared/interfaces/Gear'
@@ -107,6 +88,7 @@ export default Vue.extend({
 
   components: {
     SessionDetailsForm,
+    SessionGearForm,
     FormError
   },
 
@@ -150,10 +132,6 @@ export default Vue.extend({
 
     boards (): string[] {
       return this.$store.state.user.gear.boards.map((board: Board) => `${board.brand} ${board.model} ${board.volume}`)
-    },
-
-    getNumberArray () {
-      return helper.getNumberArray
     }
   },
 
