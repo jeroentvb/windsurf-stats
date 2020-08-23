@@ -129,10 +129,10 @@ export default Vue.extend({
 
   async created () {
     try {
-      const res = await api.get('user')
+      const res = await api.get<User>('user')
 
       if (res.status === 200) {
-        await this.$store.dispatch(SET_USERDATA, res.data as User)
+        await this.$store.dispatch(SET_USERDATA, res.data)
       }
     } catch (err) {
       if (this.$route.path !== '/login') this.$router.push('/login')
