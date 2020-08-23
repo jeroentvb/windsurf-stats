@@ -15,10 +15,6 @@
       app>
       <v-list>
         <v-list-item-group color="primary">
-
-            <!-- <v-list-item-icon>
-              <v-icon v-text="item.icon"></v-icon>
-            </v-list-item-icon> -->
           <div v-for="route in routes" :key="route.name">
             <v-list-item  v-if="!route.meta" :to="route.path">
               <v-list-item-content >
