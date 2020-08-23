@@ -17,9 +17,9 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Session } from '../../../shared/interfaces/Session'
+import { Session } from '../../../../shared/interfaces/Session'
 
-import helper from '../services/helper'
+import helper from '@/services/helper'
 
 export default Vue.extend({
   name: 'ExportData',

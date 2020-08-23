@@ -24,8 +24,8 @@
 import Vue from 'vue'
 import Api from '../services/api'
 
-import SailForm from '../components/form/SailForm.vue'
-import BoardForm from '../components/form/BoardForm.vue'
+import SailForm from '../components/ui/form/SailForm.vue'
+import BoardForm from '../components/ui/form/BoardForm.vue'
 
 import { Gear, Sail, Board } from '../../../shared/interfaces/Gear'
 import { UPDATE_GEAR, SHOW_SNACKBAR } from '../store/constants'

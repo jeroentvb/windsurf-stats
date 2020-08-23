@@ -60,12 +60,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Api from '../services/api'
+import api from '../services/api'
+import snackbar from '../services/snackbar'
 
-import FormError from '../components/FormError.vue'
+import FormError from '../components/ui/FormError.vue'
 
-import { USER_LOGIN, SET_USERDATA, SHOW_SNACKBAR } from '../store/constants'
-import { Snackbar } from '../interfaces'
+import { SET_USERDATA } from '../store/constants'
 import { User } from '../../../shared/interfaces/User'
 
 export default Vue.extend({
@@ -98,8 +98,8 @@ export default Vue.extend({
       }
 
       try {
-        const res = await Api.post('login', this.user)
-        const response = await Api.get('user')
+        const res = await api.post('login', this.user)
+        const response = await api.get('user')
 
         if (res.status === 200 && response.status === 200) {
           this.$store.dispatch(SET_USERDATA, response.data as User)
@@ -110,11 +110,7 @@ export default Vue.extend({
         if (status === 422 || status === 401) {
           this.setError('Invalid credentials')
         } else {
-          this.$store.commit(SHOW_SNACKBAR, {
-            text: 'Something went wrong!',
-            timeout: 5000,
-            type: 'error'
-          } as Snackbar)
+          snackbar.error()
         }
       }
     },
