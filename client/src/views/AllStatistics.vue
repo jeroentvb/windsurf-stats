@@ -3,36 +3,53 @@
     <DataTableComponent
       :data="sessions"
       :headers="headers"
+      @editItem="editSession"
     />
 
     <ExportData />
+
+    <dialog-component v-model="showEditSessionCard">
+      <EditSessionCard
+        :initialSession="selectedSession"
+        @close="showEditSessionCard = false, selectedSession = {}"
+        @updateSession="updateSession"
+      />
+    </dialog-component>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import transform from '../services/transformer'
 
 import DataTableComponent from '../components/ui/DataTableComponent.vue'
 import ExportData from '../components/feature/ExportData.vue'
+import DialogComponent from '@/components/ui/DialogComponent.vue'
+import EditSessionCard from '@/components/ui/EditSessionCard.vue'
 
 import { Session } from '../../../shared/interfaces/Session'
+import { UPDATE_SESSION } from '../store/constants'
+import snackbar from '../services/snackbar'
 
 export default Vue.extend({
   name: 'AllStatistics',
 
   components: {
     DataTableComponent,
-    ExportData
+    ExportData,
+    DialogComponent,
+    EditSessionCard
   },
 
   computed: {
     sessions () {
       return JSON.parse(JSON.stringify(this.$store.state.user.sessions))
         .map((session: Session, i: number) => {
-          const newSession: any = session
-          newSession.date = new Date(session.date).toLocaleDateString()
-          newSession.index = i
-          return newSession
+          return {
+            ...session,
+            displayDate: new Date(session.date).toLocaleDateString(),
+            index: i
+          }
         })
     }
   },
@@ -44,7 +61,7 @@ export default Vue.extend({
           text: 'Date',
           align: 'start',
           sortable: false,
-          value: 'date'
+          value: 'displayDate'
         },
         { text: 'Rating', value: 'rating' },
         { text: 'Spot', value: 'spot' },
@@ -55,8 +72,30 @@ export default Vue.extend({
         { text: 'Winddirection (degrees)', value: 'conditions.winddirection' },
         { text: 'Temperature (degrees)', value: 'conditions.temperature' },
         { text: 'Temperature', value: 'conditions.windgust' },
-        { text: '', value: 'data-table-expand' }
-      ]
+        { text: '', value: 'data-table-expand' },
+        { text: '', value: 'actions' }
+      ],
+      showEditSessionCard: false,
+      selectedSession: {} as Session
+    }
+  },
+
+  methods: {
+    editSession (session: Session) {
+      this.selectedSession = session
+      this.showEditSessionCard = true
+    },
+
+    async updateSession (session: Session) {
+      try {
+        await this.$store.dispatch(UPDATE_SESSION, transform.session(session))
+
+        snackbar.succes('Session updated succesfully!')
+        this.showEditSessionCard = false
+        this.selectedSession = {}
+      } catch (err) {
+        snackbar.error()
+      }
     }
   }
 })

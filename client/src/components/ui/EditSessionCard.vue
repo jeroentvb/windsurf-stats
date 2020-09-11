@@ -1,38 +1,30 @@
 <template>
   <v-card>
-    <v-card-title>Edit session</v-card-title>
+    <v-card-title>
+      <span class="flex-grow-1">Edit session</span>
+        <v-btn
+          icon
+          color="grey"
+          @click="closeModal"
+        >
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+    </v-card-title>
 
     <v-card-text>
-      <pre>{{ session }}</pre>
-      <AddSession />
+      <SessionForm
+        v-model="sessionFormState"
+        :sessionData="initialSession"
+        @submitSession="updateSession"
+      />
     </v-card-text>
-
-    <v-card-actions>
-      <v-spacer></v-spacer>
-
-      <v-btn
-        color="grey"
-        text
-        @click="closeModal"
-      >
-        Cancel
-      </v-btn>
-
-      <v-btn
-        color="secondary"
-        text
-        @click="show = false"
-      >
-        Save
-      </v-btn>
-    </v-card-actions>
   </v-card>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
-import AddSession from '../../views/AddSession.vue'
+import SessionForm from '@/components/ui/form/SessionForm.vue'
 
 import { Session } from '../../../../shared/interfaces/Session'
 
@@ -40,7 +32,7 @@ export default Vue.extend({
   name: 'SessionCard',
 
   components: {
-    AddSession
+    SessionForm
   },
 
   props: {
@@ -49,7 +41,11 @@ export default Vue.extend({
 
   data () {
     return {
-      session: this.initialSession
+      session: this.initialSession,
+      sessionFormState: {
+        submitting: false,
+        formErrorMsg: ''
+      }
     }
   },
 
@@ -58,8 +54,9 @@ export default Vue.extend({
       this.$emit('close')
     },
 
-    updateSession () {
-      console.log(this.session)
+    updateSession (session: Session) {
+      this.sessionFormState.submitting = true
+      this.$emit('updateSession', session)
     }
   }
 })

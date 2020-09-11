@@ -4,7 +4,6 @@
       <v-card-title class="d-flex">
         <span class="flex-grow-1">{{ session.spot }} {{ date }}</span>
         <v-btn
-          disabled
           class="mr-2"
           icon
           color="grey"

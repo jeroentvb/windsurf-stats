@@ -150,6 +150,17 @@ export default Vue.extend({
     }
   },
 
+  created () {
+    const today = new Date().toISOString().substr(0, 10)
+    if (this.date !== today) {
+      this.visibleDate = new Date(this.date).toLocaleDateString()
+    }
+
+    if (this.session.conditions.windspeed !== 0) {
+      this.showConditions = true
+    }
+  },
+
   methods: {
     changeSpot (spot: string) {
       const windfinder = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).windfinder

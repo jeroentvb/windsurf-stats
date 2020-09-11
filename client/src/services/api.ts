@@ -24,7 +24,20 @@ async function post (endpoint: string, payload: any): Promise<AxiosResponse<any>
   }
 }
 
+async function patch (endpoint: string, payload: any): Promise<AxiosResponse<any>> {
+  try {
+    const res = await Axios.patch(`${process.env.VUE_APP_API_URL}/${endpoint}`, payload, {
+      withCredentials: true
+    })
+
+    return res
+  } catch (err) {
+    throw err
+  }
+}
+
 export default {
   get,
-  post
+  post,
+  patch
 }

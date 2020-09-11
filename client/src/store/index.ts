@@ -13,7 +13,8 @@ import {
   SHOW_SNACKBAR,
   CLOSE_SNACKBAR,
   ADD_SESSION,
-  UPDATE_THRESHOLD
+  UPDATE_THRESHOLD,
+  UPDATE_SESSION
 } from './constants'
 
 import { User } from '../../../shared/interfaces/User'
@@ -21,6 +22,8 @@ import { Spot } from '../../../shared/interfaces/Spot'
 import { Gear } from '../../../shared/interfaces/Gear'
 import { Snackbar } from '../interfaces'
 import { Session } from '../../../shared/interfaces/Session'
+import snackbar from '@/services/snackbar'
+import api from '@/services/api'
 
 Vue.use(Vuex)
 
@@ -83,6 +86,12 @@ export default new Vuex.Store({
       (state.user.sessions as Session[]).push(payload)
     },
 
+    [UPDATE_SESSION] (state, payload: Session) {
+      state.user.sessions = state.user.sessions!.map((session: Session) => {
+        return session._id === payload._id ? payload : session
+      })
+    },
+
     [SHOW_SNACKBAR] (state, payload: Snackbar) {
       state.snackbar = {
         ...Object.assign(state.snackbar, payload),
@@ -128,6 +137,18 @@ export default new Vuex.Store({
     [ADD_SESSION] ({ commit }, payload) {
       commit(ADD_SESSION, payload)
       router.push('/')
+    },
+
+    async [UPDATE_SESSION] ({ commit }, payload: Session) {
+      try {
+        const res = await api.patch('session', payload)
+
+        if (res.status === 200) {
+          commit(UPDATE_SESSION, payload)
+        }
+      } catch (err) {
+        throw err
+      }
     }
   },
   modules: {

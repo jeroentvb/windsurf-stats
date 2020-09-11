@@ -28,6 +28,16 @@
           <p>{{ item.note }}</p>
         </div>
       </template>
+
+      <template v-slot:[`item.actions`]="{ item }">
+        <v-icon
+          small
+          class="mr-2"
+          @click="editItem(item)"
+        >
+          mdi-pencil
+        </v-icon>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -49,6 +59,12 @@ export default Vue.extend({
     return {
       search: '',
       expanded: []
+    }
+  },
+
+  methods: {
+    editItem (item: any) {
+      this.$emit('editItem', item)
     }
   }
 })

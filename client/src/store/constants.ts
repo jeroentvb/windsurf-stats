@@ -14,6 +14,8 @@ export const UPDATE_SPOTS = '[Spots] update'
 
 export const ADD_SESSION = '[Session] add'
 
+export const UPDATE_SESSION = '[Session] update'
+
 export const SHOW_SNACKBAR = '[Snackbar] show'
 
 export const CLOSE_SNACKBAR = '[Snackbar] close'

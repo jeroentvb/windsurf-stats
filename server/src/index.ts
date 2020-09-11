@@ -5,7 +5,6 @@ import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import chalk from 'chalk'
 
-// const MySQLStore = require('express-mysql-session')(session)
 const MongoStore = require('connect-mongo')(session);
 
 import * as auth from './modules/auth'
@@ -49,6 +48,7 @@ function start () {
     .post('/spots', data.updateSpots)
 
     .post('/session', data.session)
+    .patch('/session', data.updateSession)
     .post('/old-sessions', data.oldSessions)
 
     .post('/check-spot', spotData.check)

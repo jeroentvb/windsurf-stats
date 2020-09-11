@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { ObjectId } from 'mongodb'
 import * as db from './db'
 import * as auth from './auth'
 import spotData from './spot-data'
@@ -95,7 +94,7 @@ async function updateSpots (req: Request, res: Response) {
 
 async function session (req: Request, res: Response) {
   const user = req.session!.user
-  const session: Session = Object.assign(req.body, { _id: new ObjectId() })
+  const session: Session = Object.assign(req.body, { _id: db.parseId() })
 
   if (!validateSessionData(session)) {
     res.status(422).send('Missing fields')
@@ -104,6 +103,33 @@ async function session (req: Request, res: Response) {
 
   try {
     await db.update({ name: user.name }, { $push: { sessions: session } })
+
+    res.send('OK')
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
+async function updateSession (req: Request, res: Response) {
+  const user: User = req.session?.user
+  const session: Session = req.body
+
+  if (!validateSessionData(session)) {
+    res.status(422).send('Missing fields')
+    return
+  }
+
+  try {
+    await db.update({
+      name: user.name,
+      'sessions._id': db.parseId(session._id)
+    },
+    {
+      $set: {
+        'sessions.$': session
+      }
+    })
 
     res.send('OK')
   } catch (err) {
@@ -232,6 +258,7 @@ export default {
   updateGear,
   updateSpots,
   session,
+  updateSession,
   updateThreshold,
   oldSessions
 }
