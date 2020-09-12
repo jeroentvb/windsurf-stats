@@ -8,6 +8,7 @@ import { User } from '../../../shared/interfaces/User'
 import { Gear } from '../../../shared/interfaces/Gear'
 import { Spot } from '../../../shared/interfaces/Spot'
 import { Session } from '../../../shared/interfaces/Session'
+import { ObjectId } from 'mongodb'
 
 async function getUserData (name: string): Promise<User> {
   try {
@@ -123,7 +124,7 @@ async function updateSession (req: Request, res: Response) {
   try {
     await db.update({
       name: user.name,
-      'sessions._id': db.parseId(session._id)
+      'sessions._id': session._id
     },
     {
       $set: {

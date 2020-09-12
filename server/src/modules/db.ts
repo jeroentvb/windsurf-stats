@@ -1,12 +1,12 @@
-import MongoClient, { Db, ObjectId } from 'mongodb'
+import MongoClient from 'mongodb'
 import chalk from 'chalk'
 import { User } from '../../../shared/interfaces/User'
 
-export let db: Db
+export let db: MongoClient.Db
 export let client: MongoClient.MongoClient
 
-export function parseId (id?: string): ObjectId {
-  return new ObjectId(id)
+export function parseId (id?: string): MongoClient.ObjectId {
+  return new MongoClient.ObjectId(id)
 }
 
 export function init (database: string): Promise<void> {

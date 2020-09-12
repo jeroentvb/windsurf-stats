@@ -20,7 +20,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import transform from '../services/transformer'
 
 import DataTableComponent from '../components/ui/DataTableComponent.vue'
 import ExportData from '../components/feature/ExportData.vue'
@@ -88,7 +87,7 @@ export default Vue.extend({
 
     async updateSession (session: Session) {
       try {
-        await this.$store.dispatch(UPDATE_SESSION, transform.session(session))
+        await this.$store.dispatch(UPDATE_SESSION, session)
 
         snackbar.succes('Session updated succesfully!')
         this.showEditSessionCard = false

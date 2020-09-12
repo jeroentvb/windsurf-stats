@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex, { Store } from 'vuex'
 import router from '@/router'
 
+import transform from '../services/transformer'
+
 import {
   USER_LOGIN,
   USER_LOGOUT,
@@ -140,10 +142,12 @@ export default new Vuex.Store({
     },
 
     async [UPDATE_SESSION] ({ commit }, payload: Session) {
-      try {
-        const res = await api.patch('session', payload)
+      const session = transform.session(payload)
 
-        if (res.status === 200) {
+      try {
+        const { status } = await api.patch('session', session)
+
+        if (status === 200) {
           commit(UPDATE_SESSION, payload)
         }
       } catch (err) {
