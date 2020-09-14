@@ -70,7 +70,6 @@ export default Vue.extend({
         { text: 'Windgust (knots)', value: 'conditions.windgust' },
         { text: 'Winddirection (degrees)', value: 'conditions.winddirection' },
         { text: 'Temperature (degrees)', value: 'conditions.temperature' },
-        { text: 'Temperature', value: 'conditions.windgust' },
         { text: '', value: 'data-table-expand' },
         { text: '', value: 'actions' }
       ],
@@ -91,7 +90,7 @@ export default Vue.extend({
 
         snackbar.succes('Session updated succesfully!')
         this.showEditSessionCard = false
-        this.selectedSession = {}
+        this.selectedSession = {} as Session
       } catch (err) {
         snackbar.error()
       }

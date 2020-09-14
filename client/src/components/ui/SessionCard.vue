@@ -77,7 +77,6 @@ export default Vue.extend({
 
         snackbar.succes('Session updated succesfully!')
         this.showEditSessionCard = false
-        this.selectedSession = {}
       } catch (err) {
         snackbar.error()
       }
