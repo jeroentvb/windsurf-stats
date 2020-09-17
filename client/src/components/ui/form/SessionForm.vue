@@ -166,6 +166,10 @@ export default Vue.extend({
         if (!value) valid = false
       }
 
+      for (const [key, value] of Object.entries(form.gear)) {
+        if (!value) valid = false
+      }
+
       if (!form.spot) valid = false
 
       return valid
