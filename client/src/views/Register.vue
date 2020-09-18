@@ -17,7 +17,7 @@
             @submit.prevent="submit"
             id="register-form">
             <v-text-field
-              v-model="user.username"
+              v-model="user.name"
               label="Username"
               name="username"
               type="text"
@@ -53,7 +53,7 @@
           </v-form>
 
           <FormError
-            v-if="formError"
+            v-if="!!formErrorMsg"
             :msg="formErrorMsg"
           />
 
@@ -78,12 +78,19 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import api from '../services/api'
 import snackbar from '../services/snackbar'
 
 import FormError from '../components/ui/FormError.vue'
 
 import { USER_REGISTER } from '../store/constants'
+import { User } from '../../../shared/interfaces/User'
+
+type registerUser = {
+  name: string
+  email: string
+  password: string
+  repeatPassword: string
+}
 
 export default Vue.extend({
   name: 'Register',
@@ -95,12 +102,11 @@ export default Vue.extend({
   data () {
     return {
       user: {
-        username: '',
+        name: '',
         email: '',
         password: '',
         repeatPassword: ''
-      },
-      formError: false,
+      } as registerUser,
       formErrorMsg: '',
       usernameRules: [
         (v: string) => !!v || 'Username is required'
@@ -115,44 +121,23 @@ export default Vue.extend({
   },
 
   methods: {
-    async submit () {
-      const user = this.user
-      const formError = this.validateForm()
+    submit () {
+      const user: registerUser = this.user
+      const formError: string | void = this.validateForm(user)
 
       if (formError) {
         this.setError(formError)
         return
       }
 
-      try {
-        const res = await api.post('register', {
-          name: user.username,
-          email: user.email,
-          password: user.password
+      this.$store.dispatch(USER_REGISTER, user)
+        .catch((err: Error) => {
+          this.setError(err.message)
         })
-
-        if (res.status === 200) {
-          await this.$store.dispatch(USER_REGISTER)
-        }
-      } catch (err) {
-        const status = err.response.status
-
-        if (status === 409) {
-          this.setError('E-mail or username is already used')
-        }
-        if (status === 422) {
-          this.setError('Field missing')
-        }
-        if (status === 500) {
-          snackbar.error('Something went wrong. Try again later.')
-        }
-      }
     },
 
-    validateForm (): string | void {
-      const user = this.user
-
-      if (!user.username || !user.email || !user.password || !user.repeatPassword) {
+    validateForm (user: registerUser): string | void {
+      if (!user.name || !user.email || !user.password || !user.repeatPassword) {
         return 'Field missing'
       }
 
@@ -163,7 +148,6 @@ export default Vue.extend({
 
     setError (msg: string): void {
       this.formErrorMsg = msg
-      this.formError = true
     }
   }
 })

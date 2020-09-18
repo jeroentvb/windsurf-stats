@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Api from '../services/api'
+import snackbar from '../services/snackbar'
 
 import SailForm from '../components/ui/form/SailForm.vue'
 import BoardForm from '../components/ui/form/BoardForm.vue'
@@ -62,23 +62,12 @@ export default Vue.extend({
       }
 
       try {
-        const res = await Api.post('gear', gear)
+        await this.$store.dispatch(UPDATE_GEAR, gear)
 
-        if (res.status === 200) {
-          this.$store.commit(UPDATE_GEAR, gear)
-          this.$store.commit(SHOW_SNACKBAR, {
-            text: 'Saved succesfully',
-            type: 'succes'
-          } as Snackbar)
-
-          this.stopSubmitting()
-        }
+        snackbar.succes('Saved succesfully!')
+        this.stopSubmitting()
       } catch (err) {
-        this.$store.commit(SHOW_SNACKBAR, {
-          text: 'Something went wrong!',
-          timeout: 5000,
-          type: 'error'
-        } as Snackbar)
+        snackbar.error()
 
         this.stopSubmitting()
       }

@@ -15,7 +15,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import api from '../services/api'
 import snackbar from '../services/snackbar'
 import helper from '../services/helper'
 
@@ -48,14 +47,10 @@ export default Vue.extend({
       this.submitting = true
 
       try {
-        const res = await api.post('threshold', { threshold })
+        await this.$store.dispatch(UPDATE_THRESHOLD, threshold)
 
-        if (res.status === 200) {
-          this.$store.commit(UPDATE_THRESHOLD, threshold)
-          snackbar.succes('Saved succesfully')
-
-          this.submitting = false
-        }
+        snackbar.succes('Saved succesfully')
+        this.submitting = false
       } catch (err) {
         snackbar.error()
 

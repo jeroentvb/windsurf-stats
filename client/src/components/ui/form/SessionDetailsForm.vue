@@ -190,6 +190,7 @@ export default Vue.extend({
         this.loadingSpotData(false)
       } catch (err) {
         this.loadingSpotData(false)
+        this.showConditions = true
 
         if (err.response.status === 404) {
           snackbar.error('The selected spot doesn\'t have a windfinder superforecast', 6000)

@@ -9,7 +9,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Api from '../services/api'
 import helper from '../services/helper'
 import snackbar from '../services/snackbar'
 
@@ -42,17 +41,14 @@ export default Vue.extend({
       this.submittingForm(true)
 
       try {
-        const res = await Api.post('session', session)
+        await this.$store.dispatch(ADD_SESSION, session)
+        this.submittingForm(false)
 
-        if (res.status === 200) {
-          this.$store.dispatch(ADD_SESSION, session)
-
-          this.submittingForm(false)
-        }
+        snackbar.succes('Succesfully added session!')
       } catch (err) {
         this.submittingForm(false)
 
-        if (err.response.status === 422) {
+        if (err.message === '422') {
           this.sessionFormState.formErrorMsg = 'Please fill in the required fields'
           return
         }
