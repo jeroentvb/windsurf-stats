@@ -4,14 +4,14 @@
       <v-layout row wrap>
         <v-flex md6 pa-4>
           <SailForm
-          :sails="gear.sails"
+          :sails="sails"
           @updateSails="submittingSails = true; updateGear()"
           :submitting="submittingSails" />
         </v-flex>
 
         <v-flex md6 pa-4>
           <BoardForm
-          :boards="gear.boards"
+          :boards="boards"
           @updateBoards="submittingBoards = true; updateGear()"
           :submitting="submittingBoards" />
         </v-flex>
@@ -22,10 +22,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Api from '../services/api'
+import snackbar from '../services/snackbar'
 
-import SailForm from '../components/form/SailForm.vue'
-import BoardForm from '../components/form/BoardForm.vue'
+import SailForm from '../components/ui/form/SailForm.vue'
+import BoardForm from '../components/ui/form/BoardForm.vue'
 
 import { Gear, Sail, Board } from '../../../shared/interfaces/Gear'
 import { UPDATE_GEAR, SHOW_SNACKBAR } from '../store/constants'
@@ -38,12 +38,12 @@ export default Vue.extend({
   },
 
   computed: {
-    newAccount (): boolean {
-      return this.$store.state.newAccount
+    sails (): Sail[] {
+      return this.$store.state.user.gear.sails.slice()
     },
 
-    gear (): Gear {
-      return this.$store.state.user.gear
+    boards (): Board[] {
+      return this.$store.state.user.gear.boards.slice()
     }
   },
 
@@ -57,28 +57,17 @@ export default Vue.extend({
   methods: {
     async updateGear (sails: Sail[] | null, boards: Board[] | null): Promise<void> {
       const gear: Gear = {
-        sails: sails || this.gear.sails,
-        boards: boards || this.gear.boards
+        sails: sails || this.sails,
+        boards: boards || this.boards
       }
 
       try {
-        const res = await Api.post('gear', gear)
+        await this.$store.dispatch(UPDATE_GEAR, gear)
 
-        if (res.status === 200) {
-          this.$store.commit(UPDATE_GEAR, gear)
-          this.$store.commit(SHOW_SNACKBAR, {
-            text: 'Saved succesfully',
-            type: 'succes'
-          } as Snackbar)
-
-          this.stopSubmitting()
-        }
+        snackbar.succes('Saved succesfully!')
+        this.stopSubmitting()
       } catch (err) {
-        this.$store.commit(SHOW_SNACKBAR, {
-          text: 'Something went wrong!',
-          timeout: 5000,
-          type: 'error'
-        } as Snackbar)
+        snackbar.error()
 
         this.stopSubmitting()
       }

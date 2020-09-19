@@ -15,15 +15,14 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Api from '../services/api'
+import snackbar from '../services/snackbar'
 
-import SpotForm from '../components/form/SpotForm.vue'
+import SpotForm from '../components/ui/form/SpotForm.vue'
 
 import helper from '../services/helper'
 
 import { Spot } from '../../../shared/interfaces/Spot'
-import { UPDATE_SPOTS, SHOW_SNACKBAR } from '../store/constants'
-import { Snackbar } from '../interfaces'
+import { UPDATE_SPOTS } from '../store/constants'
 
 export default Vue.extend({
   name: 'Spot',
@@ -34,7 +33,7 @@ export default Vue.extend({
 
   computed: {
     spots (): Spot[] {
-      return this.$store.state.user.spots
+      return this.$store.state.user.spots.slice()
     }
   },
 
@@ -54,24 +53,12 @@ export default Vue.extend({
       this.submitting = true
 
       try {
-        const res = await Api.post('spots', parsedSpots)
+        await this.$store.dispatch(UPDATE_SPOTS, parsedSpots)
 
-        if (res.status === 200) {
-          this.$store.commit(UPDATE_SPOTS, res.data)
-          this.$store.commit(SHOW_SNACKBAR, {
-            text: 'Saved succesfully',
-            type: 'succes'
-          } as Snackbar)
-
-          this.submitting = false
-        }
+        snackbar.succes('Saved succesfully')
+        this.submitting = false
       } catch (err) {
-        this.$store.commit(SHOW_SNACKBAR, {
-          text: 'Something went wrong!',
-          timeout: 5000,
-          type: 'error'
-        } as Snackbar)
-
+        snackbar.error()
         this.submitting = false
       }
     }

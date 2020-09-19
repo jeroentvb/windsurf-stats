@@ -59,7 +59,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Spot } from '../../../../shared/interfaces/Spot'
+import { Spot } from '../../../../../shared/interfaces/Spot'
 
 export default Vue.extend({
   name: 'SpotForm',
@@ -100,6 +100,7 @@ export default Vue.extend({
 
     submit () {
       // TODO:  State is not updated in this component for some weird reason...
+      // v-model into this
       this.$emit('updateSpots', this.spotForm)
     }
   }

@@ -1,3 +1,5 @@
+import { Session } from '../../../shared/interfaces/Session'
+
 function formatSpotName (id: string): string {
   return id.split('-').join(' ')
     .split('_').join(' ')
@@ -59,10 +61,36 @@ function dateRange (startDate: string, endDate: string): string[] {
   return dates
 }
 
+function createCsv (sessions: Session[], delimiter: string) {
+  const data = sessions.map(session => {
+    return {
+      date: new Date(session.date).toLocaleDateString(),
+      start: session.time.start,
+      end: session.time.end,
+      spot: session.spot,
+      sail: session.gear.sail,
+      board: session.gear.board,
+      windspeed: session.conditions.windspeed,
+      windgust: session.conditions.windgust,
+      winddirection: session.conditions.winddirection,
+      temperature: session.conditions.temperature,
+      rating: session.rating,
+      note: session.note
+    }
+  })
+  const replacer = (key: string, value: any) => value === null ? '' : value
+  const header = Object.keys(data[0])
+  let csv = data.map((row: any) => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(delimiter))
+  csv.unshift(header.join(delimiter))
+
+  return csv.join('\r\n')
+}
+
 export default {
   formatSpotName,
   getNumberArray,
   getSailSize,
   monthDiff,
-  dateRange
+  dateRange,
+  createCsv
 }

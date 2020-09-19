@@ -60,12 +60,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Api from '../services/api'
+import snackbar from '../services/snackbar'
 
-import FormError from '../components/FormError.vue'
+import FormError from '../components/ui/FormError.vue'
 
-import { USER_LOGIN, SET_USERDATA, SHOW_SNACKBAR } from '../store/constants'
-import { Snackbar } from '../interfaces'
+import { SET_USERDATA, USER_LOGIN } from '../store/constants'
 import { User } from '../../../shared/interfaces/User'
 
 export default Vue.extend({
@@ -91,32 +90,20 @@ export default Vue.extend({
   },
 
   methods: {
-    async submit () {
+    submit () {
       if (!this.user.name || !this.user.password) {
         this.setError('Username or password missing!')
         return
       }
 
-      try {
-        const res = await Api.post('login', this.user)
-        const response = await Api.get('user')
-
-        if (res.status === 200 && response.status === 200) {
-          this.$store.dispatch(SET_USERDATA, response.data as User)
-        }
-      } catch (err) {
-        const status = err.response ? err.response.status : err.message
-
-        if (status === 422 || status === 401) {
-          this.setError('Invalid credentials')
-        } else {
-          this.$store.commit(SHOW_SNACKBAR, {
-            text: 'Something went wrong!',
-            timeout: 5000,
-            type: 'error'
-          } as Snackbar)
-        }
-      }
+      this.$store.dispatch(USER_LOGIN, this.user)
+        .catch(err => {
+          if (err === 422 || err === 401) {
+            this.setError('Invalid credentials')
+          } else {
+            snackbar.error()
+          }
+        })
     },
 
     setError (msg: string): void {

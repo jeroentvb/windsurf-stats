@@ -8,12 +8,13 @@ import { User } from '../../../shared/interfaces/User'
 import { Gear } from '../../../shared/interfaces/Gear'
 import { Spot } from '../../../shared/interfaces/Spot'
 import { Session } from '../../../shared/interfaces/Session'
+import { ObjectId } from 'mongodb'
 
 async function getUserData (name: string): Promise<User> {
   try {
     const userData: User[] = await db.get({ name })
     const user = userData[0]
-    user.sessions = sortSessions(user.sessions as Session[])
+    user.sessions = sortSessions(user.sessions!)
 
     delete user._id
     delete user.password
@@ -24,7 +25,7 @@ async function getUserData (name: string): Promise<User> {
   }
 }
 
-function sortSessions (sessions: Session[]) {
+function sortSessions (sessions: Session[]): Session[] {
   return sessions.sort((a, b) => {
     return (new Date(a.date) as any) - (new Date(b.date) as any)
   })
@@ -94,7 +95,7 @@ async function updateSpots (req: Request, res: Response) {
 
 async function session (req: Request, res: Response) {
   const user = req.session!.user
-  const session: Session = req.body
+  const session: Session = Object.assign(req.body, { _id: db.parseId() })
 
   if (!validateSessionData(session)) {
     res.status(422).send('Missing fields')
@@ -103,6 +104,33 @@ async function session (req: Request, res: Response) {
 
   try {
     await db.update({ name: user.name }, { $push: { sessions: session } })
+
+    res.send('OK')
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
+async function updateSession (req: Request, res: Response) {
+  const user: User = req.session?.user
+  const session: Session = req.body
+
+  if (!validateSessionData(session)) {
+    res.status(422).send('Missing fields')
+    return
+  }
+
+  try {
+    await db.update({
+      name: user.name,
+      'sessions._id': session._id
+    },
+    {
+      $set: {
+        'sessions.$': session
+      }
+    })
 
     res.send('OK')
   } catch (err) {
@@ -231,6 +259,7 @@ export default {
   updateGear,
   updateSpots,
   session,
+  updateSession,
   updateThreshold,
   oldSessions
 }

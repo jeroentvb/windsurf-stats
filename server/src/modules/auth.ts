@@ -79,7 +79,7 @@ export async function login (req: Request, res: Response) {
     }
 
     const { password } = userData[0]
-    const match = await compareHash(user.password, password)
+    const match = await compareHash(user.password, password!)
 
     if (!match) {
       res.status(401).send('Incorrect username or password')
