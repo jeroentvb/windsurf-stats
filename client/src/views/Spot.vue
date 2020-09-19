@@ -15,7 +15,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import api from '../services/api'
 import snackbar from '../services/snackbar'
 
 import SpotForm from '../components/ui/form/SpotForm.vue'
@@ -54,14 +53,10 @@ export default Vue.extend({
       this.submitting = true
 
       try {
-        const res = await api.post('spots', parsedSpots)
+        await this.$store.dispatch(UPDATE_SPOTS, parsedSpots)
 
-        if (res.status === 200) {
-          this.$store.commit(UPDATE_SPOTS, res.data)
-          snackbar.succes('Saved succesfully')
-
-          this.submitting = false
-        }
+        snackbar.succes('Saved succesfully')
+        this.submitting = false
       } catch (err) {
         snackbar.error()
         this.submitting = false

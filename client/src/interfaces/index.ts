@@ -1,9 +1,19 @@
 import { Session } from '../../../shared/interfaces/Session';
+import { User } from '../../../shared/interfaces/User';
+
+export interface State {
+  loggedIn: boolean
+  newAccount: boolean
+  loading: boolean
+  user: User
+  snackbar: Snackbar
+}
 
 export interface Snackbar {
   text: string
   timeout?: number
   type?: 'succes' | 'info' | 'error'
+  show?: boolean
 }
 
 export interface ChartData {
