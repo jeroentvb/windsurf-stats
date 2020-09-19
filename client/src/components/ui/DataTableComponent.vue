@@ -18,7 +18,7 @@
       item-key="index"
       :single-expand="true"
       :expanded.sync="expanded"
-      :items-per-page="data.length"
+      :items-per-page="itemsPerPage"
       mobile-breakpoint="1000"
       show-expand
     >
@@ -52,7 +52,11 @@ export default Vue.extend({
 
   props: {
     data: Array,
-    headers: Array as () => DataTableHeader[]
+    headers: Array as () => DataTableHeader[],
+    itemsPerPage: {
+      type: Number,
+      default: 10
+    }
   },
 
   data () {

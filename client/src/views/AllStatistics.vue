@@ -50,6 +50,7 @@ export default Vue.extend({
             index: i
           }
         })
+        .reverse()
     }
   },
 
