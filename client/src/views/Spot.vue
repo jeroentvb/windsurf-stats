@@ -33,7 +33,7 @@ export default Vue.extend({
 
   computed: {
     spots (): Spot[] {
-      return this.$store.state.user.spots
+      return this.$store.state.user.spots.slice()
     }
   },
 

@@ -4,14 +4,14 @@
       <v-layout row wrap>
         <v-flex md6 pa-4>
           <SailForm
-          :sails="gear.sails"
+          :sails="sails"
           @updateSails="submittingSails = true; updateGear()"
           :submitting="submittingSails" />
         </v-flex>
 
         <v-flex md6 pa-4>
           <BoardForm
-          :boards="gear.boards"
+          :boards="boards"
           @updateBoards="submittingBoards = true; updateGear()"
           :submitting="submittingBoards" />
         </v-flex>
@@ -38,12 +38,12 @@ export default Vue.extend({
   },
 
   computed: {
-    newAccount (): boolean {
-      return this.$store.state.newAccount
+    sails (): Sail[] {
+      return this.$store.state.user.gear.sails.slice()
     },
 
-    gear (): Gear {
-      return this.$store.state.user.gear
+    boards (): Board[] {
+      return this.$store.state.user.gear.boards.slice()
     }
   },
 
@@ -57,8 +57,8 @@ export default Vue.extend({
   methods: {
     async updateGear (sails: Sail[] | null, boards: Board[] | null): Promise<void> {
       const gear: Gear = {
-        sails: sails || this.gear.sails,
-        boards: boards || this.gear.boards
+        sails: sails || this.sails,
+        boards: boards || this.boards
       }
 
       try {
