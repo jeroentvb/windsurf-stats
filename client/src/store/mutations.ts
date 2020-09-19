@@ -52,7 +52,10 @@ const mutations: MutationTree<State> = {
   },
 
   [ADD_SESSION] (state, payload) {
-    (state.user.sessions as Session[]).push(payload)
+    state.user.sessions = [
+      ...(state.user.sessions as Session[]),
+      payload
+    ]
   },
 
   [UPDATE_SESSION] (state, payload: Session) {
