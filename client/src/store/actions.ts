@@ -44,6 +44,8 @@ const storeActions: ActionTree<State, State> = {
         throw new Error('E-mail or username is already used')
       } else if (status === 422) {
         throw new Error('Field missing')
+      } else if (status === 403) {
+        throw new Error('Registering is not allowed at this time')
       }
 
       throw new Error('Something went wrong. Try again later.')

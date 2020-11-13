@@ -39,7 +39,7 @@
             :msg="formErrorMsg"
           />
 
-          <p>
+          <p v-if="allowRegister">
             Don't have an account? Register <router-link to="/register">here</router-link>
           </p>
         </v-card-text>
@@ -85,7 +85,8 @@ export default Vue.extend({
         (v: string) => !!v || 'Password is required'
       ],
       formError: false,
-      formErrorMsg: ''
+      formErrorMsg: '',
+      allowRegister: process.env.VUE_APP_ALLOW_REGISTER === 'true'
     }
   },
 

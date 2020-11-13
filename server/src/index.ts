@@ -71,6 +71,7 @@ function start () {
     
     start()
   } catch (err) {
+    console.error(chalk.red('Could not initialize the database connection'))
     throw err
   }
 })()

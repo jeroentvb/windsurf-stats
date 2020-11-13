@@ -16,6 +16,11 @@ export function checkLogin (req: Request, res: Response, next: NextFunction) {
 }
 
 export async function register (req: Request, res: Response) {
+  if (process.env.ALLOW_REGISTER === 'false') {
+    res.status(403).send()
+    return
+  }
+
   const user: User = req.body
 
   if (!user.email || !user.password || !user.name) {

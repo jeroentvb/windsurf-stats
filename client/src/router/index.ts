@@ -19,14 +19,6 @@ export const routes: RouteConfig[] = [
     }
   },
   {
-    path: '/register',
-    name: 'Register',
-    component: () => import(/* webpackChunkName: "register" */ '../views/Register.vue'),
-    meta: {
-      public: true
-    }
-  },
-  {
     path: '/',
     name: 'Statistics',
     component: Home
@@ -60,6 +52,17 @@ export const routes: RouteConfig[] = [
     component: () => import(/* webpackChunkName: "preferences" */ '../views/Preferences.vue')
   }
 ]
+
+if (process.env.VUE_APP_ALLOW_REGISTER === 'true') {
+  routes.push({
+    path: '/register',
+    name: 'Register',
+    component: () => import(/* webpackChunkName: "register" */ '../views/Register.vue'),
+    meta: {
+      public: true
+    }
+  })
+}
 
 const router = new VueRouter({
   routes
