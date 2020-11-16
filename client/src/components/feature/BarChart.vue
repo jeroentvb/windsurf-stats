@@ -40,7 +40,12 @@ export default {
               if (data.datasets[tooltipItem.datasetIndex].sessions) {
                 const session = data.datasets[tooltipItem.datasetIndex].sessions[tooltipItem.index]
 
-                return `Date: ${new Date(session.date).toLocaleDateString()} Sail: ${session.gear.sail}`
+                return [
+                  `Date: ${new Date(session.date).toLocaleDateString()}`,
+                  `Sail: ${session.gear.sail}`,
+                  `Board: ${session.gear.board}`,
+                  `Spot: ${session.spot}`
+                ]
               } else {
                 return data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
               }
