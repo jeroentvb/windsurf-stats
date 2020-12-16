@@ -21,7 +21,7 @@
       </v-card-title>
 
       <v-card-text>
-        <pre>{{ session }}</pre>
+        <SessionView :session="session" />
       </v-card-text>
     </v-card>
 
@@ -42,6 +42,7 @@ import snackbar from '../../services/snackbar'
 
 import DialogComponent from './DialogComponent.vue'
 import EditSessionCard from './EditSessionCard.vue'
+import SessionView from './SessionView.vue'
 
 import { Session } from '../../../../shared/interfaces/Session'
 import { UPDATE_SESSION } from '../../store/constants'
@@ -51,7 +52,8 @@ export default Vue.extend({
 
   components: {
     DialogComponent,
-    EditSessionCard
+    EditSessionCard,
+    SessionView
   },
 
   props: {

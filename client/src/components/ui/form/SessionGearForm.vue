@@ -1,27 +1,27 @@
 <template>
   <v-layout column>
     <v-select
-    v-model="session.gear.sail"
-    :items="sails"
-    label="Sail"
-    required
-    :rules="required"
+      v-model="session.gear.sail"
+      :items="sails"
+      label="Sail"
+      required
+      :rules="required"
     ></v-select>
 
     <v-select
-    v-model="session.gear.board"
-    :items="boards"
-    label="Board"
-    required
-    :rules="required"
+      v-model="session.gear.board"
+      :items="boards"
+      label="Board"
+      required
+      :rules="required"
     ></v-select>
 
     <v-select
-    v-model.number="session.rating"
-    label="Rating"
-    :items="getNumberArray(1, 10, 1)"
-    required
-    :rules="required"
+      v-model.number="session.rating"
+      label="Rating"
+      :items="getNumberArray(1, 10, 1)"
+      required
+      :rules="required"
     ></v-select>
   </v-layout>
 </template>

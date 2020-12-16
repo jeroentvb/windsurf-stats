@@ -214,8 +214,8 @@ export default Vue.extend({
     },
 
     openSessionCard (session: Session) {
-      // this.sessionCard.selectedSession = session
-      // this.sessionCard.show = true
+      this.sessionCard.selectedSession = session
+      this.sessionCard.show = true
     }
   },
 
