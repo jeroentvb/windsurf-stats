@@ -59,7 +59,7 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Spot } from '../../../../../shared/interfaces/Spot'
+import { Spot } from '../../../../../../shared/interfaces'
 
 export default Vue.extend({
   name: 'SpotForm',

@@ -18,9 +18,9 @@ import Vue from 'vue'
 import snackbar from '../services/snackbar'
 import helper from '../services/helper'
 
-import ThresholdForm from '../components/ui/form/ThresholdForm.vue'
+import ThresholdForm from '../components/ui/form/preferences/ThresholdForm.vue'
 
-import { Spot } from '../../../shared/interfaces/Spot'
+import { Spot } from '../../../shared/interfaces'
 import { UPDATE_THRESHOLD } from '../store/constants'
 
 export default Vue.extend({

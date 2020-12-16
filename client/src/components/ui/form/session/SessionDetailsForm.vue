@@ -94,12 +94,11 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import api from '../../../services/api'
-import helper from '../../../services/helper'
-import snackbar from '../../../services/snackbar'
+import api from '@/services/api'
+import helper from '@/services/helper'
+import snackbar from '@/services/snackbar'
 
-import { Session, Conditions } from '../../../../../shared/interfaces/Session'
-import { Spot } from '../../../../../shared/interfaces/Spot'
+import { Spot, Session, Conditions } from '../../../../../../shared/interfaces'
 
 export default Vue.extend({
   name: 'SessionDetailsForm',

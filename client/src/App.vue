@@ -79,7 +79,7 @@ import snackbar from './services/snackbar'
 import { USER_LOGIN, USER_LOGOUT, SET_USERDATA, STOP_LOADING } from './store/constants'
 import { routes } from './router/index'
 
-import { User } from '../../shared/interfaces/User'
+import { User } from '../../shared/interfaces'
 
 export default Vue.extend({
   name: 'App',

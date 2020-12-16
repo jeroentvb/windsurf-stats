@@ -23,10 +23,10 @@ import Vue from 'vue'
 
 import DataTableComponent from '../components/ui/DataTableComponent.vue'
 import ExportData from '../components/feature/ExportData.vue'
-import DialogComponent from '@/components/ui/DialogComponent.vue'
-import EditSessionCard from '@/components/ui/EditSessionCard.vue'
+import DialogComponent from '../components/ui/DialogComponent.vue'
+import EditSessionCard from '../components/ui/EditSessionCard.vue'
 
-import { Session } from '../../../shared/interfaces/Session'
+import { Session } from '../../../shared/interfaces'
 import { UPDATE_SESSION } from '../store/constants'
 import snackbar from '../services/snackbar'
 

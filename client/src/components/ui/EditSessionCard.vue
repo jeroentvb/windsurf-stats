@@ -24,9 +24,9 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import SessionForm from '@/components/ui/form/SessionForm.vue'
+import SessionForm from '@/components/ui/form/session/SessionForm.vue'
 
-import { Session } from '../../../../shared/interfaces/Session'
+import { Session } from '../../../../shared/interfaces'
 
 export default Vue.extend({
   name: 'SessionCard',
