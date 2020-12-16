@@ -123,7 +123,7 @@ async function updateSession (req: Request, res: Response) {
   try {
     await db.update({
       name: user.name,
-      'sessions._id': db.parseId(session._id)
+      'sessions._id': session._id
     },
     {
       $set: {
