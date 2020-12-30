@@ -11,7 +11,8 @@ import {
   CLOSE_SNACKBAR,
   ADD_SESSION,
   UPDATE_THRESHOLD,
-  UPDATE_SESSION
+  UPDATE_SESSION,
+  UPDATE_EMAIL
 } from './constants'
 
 import { User } from '../../../shared/interfaces/User'
@@ -77,6 +78,10 @@ const mutations: MutationTree<State> = {
 
   [UPDATE_THRESHOLD] (state, payload: number) {
     state.user.threshold = payload
+  },
+
+  [UPDATE_EMAIL] (state, payload: string) {
+    state.user.email = payload
   }
 }
 

@@ -70,7 +70,7 @@ import Vue from 'vue'
 
 import SessionDetailsForm from '@/components/ui/form/session/SessionDetailsForm.vue'
 import SessionGearForm from '@/components/ui/form/session/SessionGearForm.vue'
-import FormError from '@/components/ui/FormError.vue'
+import FormError from '@/components/ui/form/FormError.vue'
 
 import { Sail, Board, Session } from '../../../../../../shared/interfaces'
 

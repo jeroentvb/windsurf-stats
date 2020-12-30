@@ -21,3 +21,5 @@ export const SHOW_SNACKBAR = '[Snackbar] show'
 export const CLOSE_SNACKBAR = '[Snackbar] close'
 
 export const UPDATE_THRESHOLD = '[Threshold] update'
+
+export const UPDATE_EMAIL = '[Email] update'

@@ -115,7 +115,21 @@ export function logout (req: Request, res: Response) {
   })
 }
 
-function createHash (string: string): Promise<string | Error> {
+export async function userIsAuthenticated (username: string, password: string): Promise<boolean> {
+  try {
+    const userData = await db.get({ name: username })
+
+    if (!userData[0]) {
+      throw new Error('User not found')
+    }
+
+    return await compareHash(password, userData[0].password as string)
+  } catch (err) {
+    throw err
+  }
+}
+
+function createHash (string: string): Promise<string> {
   return new Promise((resolve, reject) => {
     bcrypt.hash(string, parseInt(process.env.SALT_ROUNDS as string), (err, hash) => {
       if (err) reject(err)
@@ -124,7 +138,7 @@ function createHash (string: string): Promise<string | Error> {
   })
 }
 
-function compareHash (password: string, hash: string): Promise<boolean | Error> {
+function compareHash (password: string, hash: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, hash, (err, res) => {
       if (err) reject(err)

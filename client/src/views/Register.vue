@@ -80,7 +80,7 @@
 import Vue from 'vue'
 import snackbar from '../services/snackbar'
 
-import FormError from '../components/ui/FormError.vue'
+import FormError from '../components/ui/form/FormError.vue'
 
 import { USER_REGISTER } from '../store/constants'
 import { User } from '../../../shared/interfaces/User'

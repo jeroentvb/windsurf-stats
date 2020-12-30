@@ -139,13 +139,49 @@ async function updateSession (req: Request, res: Response) {
 }
 
 async function updateThreshold (req: Request, res: Response) {
-  const threshold: number = req.body.threshold
+  const threshold: number = req.body.payload
   const user = req.session!.user
 
   try {
     await db.update({name: user.name }, { $set: {
       threshold
     }})
+
+    res.send('OK')
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
+async function updateEmail (req: Request, res: Response) {
+  const { email, password }: { email: string, password: string } = req.body
+  const user: User = req.session!.user
+  const validEmail = new RegExp(/\S+@\S+\.\S+/).test(email)
+
+  if (!validEmail) {
+    res.status(409).send('E-mail address is not in the correct format')
+    return
+  }
+  
+  try {
+    if (! await auth.userIsAuthenticated(user.name, password)) {
+      res.status(401).send('Incorrect password')
+      return
+    }
+
+    const users = await db.get({ email })
+
+    if (users.length > 0) {
+      res.status(409).send('Already taken')
+      return
+    }
+
+    await db.update({name: user.name }, { $set: {
+      email
+    }})
+
+    req.session!.user.email = email
 
     res.send('OK')
   } catch (err) {
@@ -260,5 +296,6 @@ export default {
   session,
   updateSession,
   updateThreshold,
+  updateEmail,
   oldSessions
 }
