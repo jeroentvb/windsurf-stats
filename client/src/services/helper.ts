@@ -1,12 +1,12 @@
 import { Session } from '../../../shared/interfaces/Session'
 
-function formatSpotName (id: string): string {
-  return id.split('-').join(' ')
-    .split('_').join(' ')
-    .split(' ')
-    .map(s => s.charAt(0).toUpperCase() + s.substring(1))
-    .join(' ')
-}
+// function formatSpotName (id: string): string {
+//   return id.split('-').join(' ')
+//     .split('_').join(' ')
+//     .split(' ')
+//     .map(s => s.charAt(0).toUpperCase() + s.substring(1))
+//     .join(' ')
+// }
 
 function getNumberArray (start: number, end: number, step: number): number[] {
   const numbers: number[] = []
@@ -87,7 +87,7 @@ function createCsv (sessions: Session[], delimiter: string) {
 }
 
 export default {
-  formatSpotName,
+  // formatSpotName,
   getNumberArray,
   getSailSize,
   monthDiff,

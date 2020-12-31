@@ -10,9 +10,9 @@
         <v-layout
           v-for="(spot, i) in spots"
           :key="spot.identifier"
+          mb-4
           row>
-
-          <v-flex sm11 px-4>
+          <v-flex xs12 px-4>
             <v-text-field
               v-model="spotForm[i].id"
               label="Spot identifier"
@@ -22,7 +22,17 @@
             ></v-text-field>
           </v-flex>
 
-          <v-flex sm1 align-self-center>
+          <v-flex xs11 px-4>
+            <v-text-field
+              v-model="spotForm[i].name"
+              label="Spot name"
+              required
+              :rules="required"
+              hint="This can be custom"
+            ></v-text-field>
+          </v-flex>
+
+          <v-flex xs1 align-self-center>
             <v-btn icon color="grey"
             v-if="spotForm.length > 1"
             @click="deleteSpot(i)">
