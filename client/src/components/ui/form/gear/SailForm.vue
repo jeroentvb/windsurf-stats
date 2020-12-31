@@ -48,7 +48,7 @@
 
           <v-flex xs2 sm1 align-self-center>
             <v-btn icon color="grey"
-            v-if="i !== 0"
+            v-if="sailsForm.length > 1"
             @click="deleteSail(i)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>

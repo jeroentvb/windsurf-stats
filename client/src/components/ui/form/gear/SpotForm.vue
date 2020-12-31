@@ -24,7 +24,7 @@
 
           <v-flex sm1 align-self-center>
             <v-btn icon color="grey"
-            v-if="i !== 0"
+            v-if="spotForm.length > 1"
             @click="deleteSpot(i)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
