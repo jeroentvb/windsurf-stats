@@ -12,7 +12,7 @@
           :key="spot.identifier"
           row>
 
-          <v-flex md11 px-4>
+          <v-flex sm11 px-4>
             <v-text-field
               v-model="spotForm[i].id"
               label="Spot identifier"
@@ -22,7 +22,7 @@
             ></v-text-field>
           </v-flex>
 
-          <v-flex md1 align-self-center>
+          <v-flex sm1 align-self-center>
             <v-btn icon color="grey"
             v-if="i !== 0"
             @click="deleteSpot(i)">
