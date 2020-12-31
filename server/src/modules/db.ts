@@ -1,4 +1,4 @@
-import MongoClient from 'mongodb'
+import MongoClient, { InsertOneWriteOpResult, UpdateWriteOpResult } from 'mongodb'
 import chalk from 'chalk'
 import { User } from '../../../shared/interfaces/User'
 
@@ -36,10 +36,10 @@ export function get (query: object): Promise<User[]> {
   })
 }
 
-export function insert (data: any): Promise<any> {
+export function insert (data: any): Promise<InsertOneWriteOpResult<any>> {
   return db.collection('users').insertOne(data)
 }
 
-export function update (query: object, data: any): Promise<any> {
+export function update (query: object, data: any): Promise<UpdateWriteOpResult> {
   return db.collection('users').updateOne(query, data)
 }

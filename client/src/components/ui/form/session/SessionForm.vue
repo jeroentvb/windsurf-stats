@@ -68,12 +68,11 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import SessionDetailsForm from '@/components/ui/form/SessionDetailsForm.vue'
-import SessionGearForm from '@/components/ui/form/SessionGearForm.vue'
-import FormError from '@/components/ui/FormError.vue'
+import SessionDetailsForm from '@/components/ui/form/session/SessionDetailsForm.vue'
+import SessionGearForm from '@/components/ui/form/session/SessionGearForm.vue'
+import FormError from '@/components/ui/form/FormError.vue'
 
-import { Session } from '../../../../../shared/interfaces/Session'
-import { Sail, Board } from '../../../../../shared/interfaces/Gear'
+import { Sail, Board, Session } from '../../../../../../shared/interfaces'
 
 interface LocalState {
   submitting: boolean

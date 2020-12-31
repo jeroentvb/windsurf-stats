@@ -24,10 +24,10 @@
 import Vue from 'vue'
 import snackbar from '../services/snackbar'
 
-import SailForm from '../components/ui/form/SailForm.vue'
-import BoardForm from '../components/ui/form/BoardForm.vue'
+import SailForm from '../components/ui/form/gear/SailForm.vue'
+import BoardForm from '../components/ui/form/gear/BoardForm.vue'
 
-import { Gear, Sail, Board } from '../../../shared/interfaces/Gear'
+import { Gear, Sail, Board } from '../../../shared/interfaces'
 import { UPDATE_GEAR, SHOW_SNACKBAR } from '../store/constants'
 import { Snackbar } from '../interfaces'
 

@@ -90,12 +90,11 @@ import snackbar from '../services/snackbar'
 import BarChart from '../components/feature/BarChart.vue'
 import DialogComponent from '../components/ui/DialogComponent.vue'
 import SessionCard from '../components/ui/SessionCard.vue'
-import OldSessions from '../components/ui/form/OldSessions.vue'
+import OldSessions from '../components/ui/form/session/OldSessions.vue'
 
 import { DATASETS, SESSION_AMOUNT, SAIL_USAGE, BOARD_USAGE, SPOT_VISITS } from '../constants'
 import { ChartData } from '../interfaces'
-import { Session } from '../../../shared/interfaces/Session'
-import { User } from '../../../shared/interfaces/User'
+import { User, Session } from '../../../shared/interfaces'
 
 export default Vue.extend({
   name: 'home',
@@ -133,7 +132,7 @@ export default Vue.extend({
 
   computed: {
     sessions (): Session[] {
-      return this.$store.state.user.sessions
+      return JSON.parse(JSON.stringify(this.$store.state.user.sessions))
     },
 
     user (): User {
@@ -214,8 +213,8 @@ export default Vue.extend({
     },
 
     openSessionCard (session: Session) {
-      // this.sessionCard.selectedSession = session
-      // this.sessionCard.show = true
+      this.sessionCard.selectedSession = session
+      this.sessionCard.show = true
     }
   },
 

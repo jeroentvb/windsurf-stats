@@ -17,11 +17,11 @@
 import Vue from 'vue'
 import snackbar from '../services/snackbar'
 
-import SpotForm from '../components/ui/form/SpotForm.vue'
+import SpotForm from '../components/ui/form/gear/SpotForm.vue'
 
 import helper from '../services/helper'
 
-import { Spot } from '../../../shared/interfaces/Spot'
+import { Spot } from '../../../shared/interfaces'
 import { UPDATE_SPOTS } from '../store/constants'
 
 export default Vue.extend({

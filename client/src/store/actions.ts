@@ -13,7 +13,8 @@ import {
   UPDATE_SPOTS,
   ADD_SESSION,
   UPDATE_THRESHOLD,
-  UPDATE_SESSION
+  UPDATE_SESSION,
+  UPDATE_EMAIL
 } from './constants'
 
 import { User } from '../../../shared/interfaces/User'
@@ -44,6 +45,8 @@ const storeActions: ActionTree<State, State> = {
         throw new Error('E-mail or username is already used')
       } else if (status === 422) {
         throw new Error('Field missing')
+      } else if (status === 403) {
+        throw new Error('Registering is not allowed at this time')
       }
 
       throw new Error('Something went wrong. Try again later.')
@@ -146,13 +149,25 @@ const storeActions: ActionTree<State, State> = {
 
   async [UPDATE_GEAR] ({ commit }, payload: Gear) {
     try {
-      const res = await api.post('gear', payload)
+      const res = await api.post('gear', { payload })
 
       if (res.status === 200) {
         commit(UPDATE_GEAR, payload)
       }
     } catch (err) {
       throw err
+    }
+  },
+
+  async [UPDATE_EMAIL] ({ commit }, payload: Partial<User>) {
+    try {
+      const res = await api.post('email', payload)
+
+      if (res.status === 200) {
+        commit(UPDATE_EMAIL, payload.email)
+      }
+    } catch (err) {
+      throw (err)
     }
   }
 }

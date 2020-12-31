@@ -12,11 +12,9 @@ import Vue from 'vue'
 import helper from '../services/helper'
 import snackbar from '../services/snackbar'
 
-import SessionForm from '@/components/ui/form/SessionForm.vue'
+import SessionForm from '@/components/ui/form/session/SessionForm.vue'
 
-import { Sail, Board } from '../../../shared/interfaces/Gear'
-import { Spot } from '../../../shared/interfaces/Spot'
-import { Session, Conditions } from '../../../shared/interfaces/Session'
+import { Sail, Board, Spot, Session, Conditions } from '../../../shared/interfaces'
 
 import { ADD_SESSION } from '../store/constants'
 

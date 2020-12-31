@@ -39,7 +39,7 @@
             :msg="formErrorMsg"
           />
 
-          <p>
+          <p v-if="allowRegister">
             Don't have an account? Register <router-link to="/register">here</router-link>
           </p>
         </v-card-text>
@@ -62,7 +62,7 @@
 import Vue from 'vue'
 import snackbar from '../services/snackbar'
 
-import FormError from '../components/ui/FormError.vue'
+import FormError from '../components/ui/form/FormError.vue'
 
 import { SET_USERDATA, USER_LOGIN } from '../store/constants'
 import { User } from '../../../shared/interfaces/User'
@@ -85,7 +85,8 @@ export default Vue.extend({
         (v: string) => !!v || 'Password is required'
       ],
       formError: false,
-      formErrorMsg: ''
+      formErrorMsg: '',
+      allowRegister: process.env.VUE_APP_ALLOW_REGISTER === 'true'
     }
   },
 

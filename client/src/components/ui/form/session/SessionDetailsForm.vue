@@ -2,88 +2,88 @@
   <v-layout column>
     <h3 class="mt-4">When did you sail?</h3>
     <v-menu
-    v-model="showDatePicker"
-    :close-on-content-click="false"
-    transition="scale-transition"
-    offset-y
-    max-width="290px"
-    min-width="290px"
+      v-model="showDatePicker"
+      :close-on-content-click="false"
+      transition="scale-transition"
+      offset-y
+      max-width="290px"
+      min-width="290px"
     >
       <template v-slot:activator="{ on }">
         <v-text-field
-        v-model="visibleDate"
-        label="Date"
-        readonly
-        v-on="on"
+          v-model="visibleDate"
+          label="Date"
+          readonly
+          v-on="on"
         ></v-text-field>
       </template>
       <v-date-picker
-      v-model="session.date"
-      :max="new Date().toISOString().substr(0, 10)"
-      @input="showDatePicker = false"
+        v-model="session.date"
+        :max="new Date().toISOString().substr(0, 10)"
+        @input="showDatePicker = false"
       ></v-date-picker>
     </v-menu>
 
     <v-select
-    v-model.number="session.time.start"
-    :items="session.time.end ? getNumberArray(7, session.time.end, 1) : getNumberArray(7, 21, 1)"
-    label="Starting hour"
-    required
-    :rules="required"
-    @change="setConditions(session.time.start, session.time.start)"
+      v-model.number="session.time.start"
+      :items="session.time.end ? getNumberArray(7, session.time.end, 1) : getNumberArray(7, 21, 1)"
+      label="Starting hour"
+      required
+      :rules="required"
+      @change="setConditions(session.time.start, session.time.start)"
     ></v-select>
 
     <v-select
-    v-model.number="session.time.end"
-    :items="session.time.start ? getNumberArray(session.time.start, 21, 1) : getNumberArray(7, 21, 1)"
-    label="End hour"
-    required
-    :rules="required"
-    @change="setConditions(session.time.start, session.time.end)"
+      v-model.number="session.time.end"
+      :items="session.time.start ? getNumberArray(session.time.start, 21, 1) : getNumberArray(7, 21, 1)"
+      label="End hour"
+      required
+      :rules="required"
+      @change="setConditions(session.time.start, session.time.end)"
     ></v-select>
 
     <h3 class="mt-4">Where did you sail?</h3>
     <v-select
-    v-model="session.spot"
-    :items="spots"
-    label="Spot"
-    required
-    :rules="required"
-    @change="changeSpot(session.spot)"
-    :disabled="loadingData"
+      v-model="session.spot"
+      :items="spots"
+      label="Spot"
+      required
+      :rules="required"
+      @change="changeSpot(session.spot)"
+      :disabled="loadingData"
     ></v-select>
 
     <div v-if="showConditions" class="mt-8">
       <v-text-field
-      v-model.number="session.conditions.windspeed"
-      label="Windspeed"
-      type="number"
-      required
-      :rules="required"
+        v-model.number="session.conditions.windspeed"
+        label="Windspeed"
+        type="number"
+        required
+        :rules="required"
       ></v-text-field>
 
       <v-text-field
-      v-model.number="session.conditions.windgust"
-      label="Windgust"
-      type="number"
-      required
-      :rules="required"
+        v-model.number="session.conditions.windgust"
+        label="Windgust"
+        type="number"
+        required
+        :rules="required"
       ></v-text-field>
 
       <v-text-field
-      v-model.number="session.conditions.winddirection"
-      label="Winddirection"
-      type="number"
-      required
-      :rules="required"
+        v-model.number="session.conditions.winddirection"
+        label="Winddirection"
+        type="number"
+        required
+        :rules="required"
       ></v-text-field>
 
       <v-text-field
-      v-model.number="session.conditions.temperature"
-      label="Temperature"
-      type="number"
-      required
-      :rules="required"
+        v-model.number="session.conditions.temperature"
+        label="Temperature"
+        type="number"
+        required
+        :rules="required"
       ></v-text-field>
     </div>
 
@@ -94,12 +94,11 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import api from '../../../services/api'
-import helper from '../../../services/helper'
-import snackbar from '../../../services/snackbar'
+import api from '@/services/api'
+import helper from '@/services/helper'
+import snackbar from '@/services/snackbar'
 
-import { Session, Conditions } from '../../../../../shared/interfaces/Session'
-import { Spot } from '../../../../../shared/interfaces/Spot'
+import { Spot, Session, Conditions } from '../../../../../../shared/interfaces'
 
 export default Vue.extend({
   name: 'SessionDetailsForm',
