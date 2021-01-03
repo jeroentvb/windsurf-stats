@@ -98,7 +98,7 @@ import api from '@/services/api'
 import helper from '@/services/helper'
 import snackbar from '@/services/snackbar'
 
-import { Spot, Session, Conditions } from '../../../../../../shared/interfaces'
+import { Spot, Session, Conditions, WindfinderDataHour } from '../../../../../../shared/interfaces'
 
 export default Vue.extend({
   name: 'SessionDetailsForm',
@@ -179,7 +179,12 @@ export default Vue.extend({
 
       try {
         const res = await api.get(`conditions?spot=${spotId}`)
-        this.conditions = res.data as Conditions[]
+        this.conditions = res.data.map((condition: WindfinderDataHour) => ({
+          windspeed: condition.windspeed,
+          windgust: condition.windgust,
+          winddirection: condition.winddirectionDegrees,
+          temperature: condition.temperature
+        })) as Conditions[]
 
         // If the session time is set, update the conditions in the form
         if (this.session.time.start && this.session.time.end) {
@@ -216,7 +221,7 @@ export default Vue.extend({
 
     calcAverageConditions (conditions: Conditions[]): Conditions {
       return conditions.reduce((prev, condition, i) => {
-        const c: Conditions = {
+        const c = {
           windspeed: prev.windspeed + condition.windspeed,
           windgust: prev.windgust + condition.windgust,
           winddirection: prev.winddirection + condition.winddirection,

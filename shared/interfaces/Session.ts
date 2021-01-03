@@ -23,3 +23,5 @@ export interface Conditions {
   winddirection: number
   temperature: number
 }
+
+export { WindfinderDataHour } from '../../server/node_modules/wind-scrape/dist/interfaces/windfinder'
