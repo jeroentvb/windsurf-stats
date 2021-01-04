@@ -4,25 +4,28 @@ import cors from 'cors'
 import helmet from 'helmet'
 import bodyParser from 'body-parser'
 import chalk from 'chalk'
+import compression from 'compression'
+import mongo from 'connect-mongo'
 
-const MongoStore = require('connect-mongo')(session);
-
-import * as auth from './modules/auth'
-import * as db from './modules/db'
-import data from './modules/data'
-import spotData from './modules/spot-data'
+import auth from './routes/auth/auth.controller'
+import db, { client } from './services/db'
+import data from './routes/data'
+import spotData from './services/spot-data'
 
 require('dotenv').config()
 
+const app = express()
+const MongoStore = mongo(session)
+
 function start () {
-  express()
+  app
     .use(helmet())
     .use(bodyParser.urlencoded({
       extended: true
     }))
     .use(session({
       store: new MongoStore({
-        client: db.client
+        client: client
       }),
       resave: false,
       saveUninitialized: false,
@@ -36,11 +39,8 @@ function start () {
       origin: 'http://localhost:8080',
       credentials: true
     }))
+    .use(compression())
     .use(express.json())
-
-    .post('/register', auth.register)
-    .post('/login', auth.login)
-    .post('/logout', auth.logout)
     
     .use(auth.checkLogin)
 
@@ -57,11 +57,6 @@ function start () {
     .post('/threshold', data.updateThreshold)
     .post('/email', data.updateEmail)
 
-    // .get('/', (req, res) => {
-    //   // console.log(req.session!.user)
-    //   res.send('OK')
-    // })
-    // .get('/sessions', data.sessions)
     .get('/user', data.user)
     .listen(process.env.PORT, () => chalk.green(`[server] listening on port ${process.env.PORT}`))
 }
@@ -76,3 +71,5 @@ function start () {
     throw err
   }
 })()
+
+export default app

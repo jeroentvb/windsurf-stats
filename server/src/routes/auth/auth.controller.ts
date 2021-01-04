@@ -1,13 +1,10 @@
-import bcrypt from 'bcrypt'
+import auth from '../../services/auth'
+import db from '../../services/db'
 
-import * as db from './db'
+import { Request, Response, NextFunction } from 'express'
+import { User } from '../../../../shared/interfaces/User'
 
-import { Request, Response, NextFunction } from 'express';
-import { User } from '../../../shared/interfaces/User';
-
-require('dotenv').config()
-
-export function checkLogin (req: Request, res: Response, next: NextFunction) {
+function checkLogin (req: Request, res: Response, next: NextFunction) {
   if (!req.session!.user) {
     res.status(401).send()
   } else {
@@ -15,7 +12,7 @@ export function checkLogin (req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export async function register (req: Request, res: Response) {
+async function register (req: Request, res: Response) {
   if (process.env.ALLOW_REGISTER === 'false') {
     res.status(403).send()
     return
@@ -39,7 +36,7 @@ export async function register (req: Request, res: Response) {
       return
     }
 
-    const hash = await createHash(user.password)
+    const hash = await auth.createHash(user.password)
 
     const { insertedId } = await db.insert({
       name: user.name,
@@ -67,7 +64,7 @@ export async function register (req: Request, res: Response) {
   }
 }
 
-export async function login (req: Request, res: Response) {
+async function login (req: Request, res: Response) {
   const user: User = req.body
 
   if (!user.name || !user.password) {
@@ -84,7 +81,7 @@ export async function login (req: Request, res: Response) {
     }
 
     const { password } = userData[0]
-    const match = await compareHash(user.password, password!)
+    const match = await auth.compareHash(user.password, password!)
 
     if (!match) {
       res.status(401).send('Incorrect username or password')
@@ -103,7 +100,7 @@ export async function login (req: Request, res: Response) {
   }
 }
 
-export function logout (req: Request, res: Response) {
+function logout (req: Request, res: Response) {
   req.session!.destroy(err => {
     if (err) {
       console.error(err)
@@ -115,34 +112,9 @@ export function logout (req: Request, res: Response) {
   })
 }
 
-export async function userIsAuthenticated (username: string, password: string): Promise<boolean> {
-  try {
-    const userData = await db.get({ name: username })
-
-    if (!userData[0]) {
-      throw new Error('User not found')
-    }
-
-    return await compareHash(password, userData[0].password as string)
-  } catch (err) {
-    throw err
-  }
-}
-
-function createHash (string: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    bcrypt.hash(string, parseInt(process.env.SALT_ROUNDS as string), (err, hash) => {
-      if (err) reject(err)
-      resolve(hash)
-    })
-  })
-}
-
-function compareHash (password: string, hash: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, hash, (err, res) => {
-      if (err) reject(err)
-      resolve(res)
-    })
-  })
+export default {
+  checkLogin,
+  register,
+  login,
+  logout
 }

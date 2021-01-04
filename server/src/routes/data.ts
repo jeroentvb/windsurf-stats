@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
-import * as db from './db'
-import * as auth from './auth'
-import spotData from './spot-data'
-import { validateSessionData } from './helper'
+import db from '../services/db'
+import auth from '../routes/auth/auth.controller'
+import spotData from '../services/spot-data'
+import { validateSessionData } from '../services/helper'
 
 import { User } from '../../../shared/interfaces/User'
 import { Gear } from '../../../shared/interfaces/Gear'
