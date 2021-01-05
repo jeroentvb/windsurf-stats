@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import db from '../services/db'
-import auth from '../routes/auth/auth.controller'
+import auth from './auth/user.controller'
 import spotData from '../services/spot-data'
 import { validateSessionData } from '../services/helper'
 

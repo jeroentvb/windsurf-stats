@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import { User } from '../../../shared/interfaces/User'
 
 import db from './db'
 
@@ -13,6 +14,18 @@ async function userIsAuthenticated (username: string, password: string): Promise
     }
 
     return await compareHash(password, userData[0].password as string)
+  } catch (err) {
+    throw err
+  }
+}
+
+async function verifyPassword (user: User): Promise<boolean> {
+  try {
+    const userData = await db.get({ name: user.name })
+
+    if (!userData[0]) throw 422
+
+    return compareHash(user.password!, userData[0].password!)
   } catch (err) {
     throw err
   }
@@ -38,6 +51,7 @@ function compareHash (password: string, hash: string): Promise<boolean> {
 
 export default {
   userIsAuthenticated,
+  verifyPassword,
   createHash,
   compareHash
 }

@@ -3,14 +3,16 @@ import chalk from 'chalk'
 
 import { User } from '../../../shared/interfaces/User'
 
-export let db: MongoClient.Db
-export let client: MongoClient.MongoClient
+require('dotenv').config()
+
+let db: MongoClient.Db
+let client: MongoClient.MongoClient
 
 function parseId (id?: string): MongoClient.ObjectId {
   return new MongoClient.ObjectId(id)
 }
 
-function init (database: string): Promise<void> {
+function init (database: string): Promise<any> {
   return new Promise((resolve, reject) => {
     MongoClient.connect(`mongodb://localhost:27017/${database}`, {
       useNewUrlParser: true,
@@ -23,7 +25,7 @@ function init (database: string): Promise<void> {
       client = mongoClient
       db = mongoClient.db(database)
 
-      resolve()
+      resolve(mongoClient)
     })
   })
 }

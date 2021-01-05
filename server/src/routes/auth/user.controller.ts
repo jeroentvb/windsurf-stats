@@ -1,16 +1,10 @@
-import auth from '../../services/auth'
+import authService from '../../services/auth'
 import db from '../../services/db'
 
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response } from 'express'
 import { User } from '../../../../shared/interfaces/User'
-
-function checkLogin (req: Request, res: Response, next: NextFunction) {
-  if (!req.session!.user) {
-    res.status(401).send()
-  } else {
-    next()
-  }
-}
+import userService from './user.service'
+import auth from '../../services/auth'
 
 async function register (req: Request, res: Response) {
   if (process.env.ALLOW_REGISTER === 'false') {
@@ -26,30 +20,7 @@ async function register (req: Request, res: Response) {
   }
 
   try {
-    const userData = await db.get({$or: [
-      { name: user.name },
-      { email: user.email }
-    ]})
-
-    if (userData.length > 0) {
-      res.status(409).send('Username or email is already used')
-      return
-    }
-
-    const hash = await auth.createHash(user.password)
-
-    const { insertedId } = await db.insert({
-      name: user.name,
-      email: user.email,
-      password: hash,
-      gear: {
-        boards: [],
-        sails: []
-      },
-      spots: [],
-      sessions: [],
-      threshold: 5
-    })
+    await userService.addUser(user)
 
     req.session!.user = {
       name: user.name,
@@ -57,8 +28,12 @@ async function register (req: Request, res: Response) {
     }
 
     res.send()
-
   } catch (err) {
+    if (err === 409) {
+      res.status(409).send('Username or email is already used')
+      return
+    }
+
     console.error(err)
     res.status(500).send()
   }
@@ -73,17 +48,9 @@ async function login (req: Request, res: Response) {
   }
 
   try {
-    const userData = await db.get({ name: user.name })
+    const correctPassword = await auth.verifyPassword(user)
 
-    if (!userData[0]) {
-      res.status(422).send('Missing username or password')
-      return
-    }
-
-    const { password } = userData[0]
-    const match = await auth.compareHash(user.password, password!)
-
-    if (!match) {
+    if (!correctPassword) {
       res.status(401).send('Incorrect username or password')
       return
     }
@@ -95,6 +62,11 @@ async function login (req: Request, res: Response) {
 
     res.status(200).send()
   } catch (err) {
+    if (err === 422) {
+      res.status(422).send('Missing username or password')
+      return
+    }
+
     console.error(err)
     res.status(500).send()
   }
@@ -113,7 +85,6 @@ function logout (req: Request, res: Response) {
 }
 
 export default {
-  checkLogin,
   register,
   login,
   logout
