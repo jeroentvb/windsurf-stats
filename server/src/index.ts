@@ -13,13 +13,14 @@ import sessionStore from './middleware/express-session'
 import corsHandler from './middleware/cors'
 
 import routes from './routes'
+import { NOTFOUND } from 'dns'
+import { notFound } from './middleware/not-found'
 
 require('dotenv').config()
 
-const app = express()
 const mongoClient = db.init(process.env.DB_NAME as string)
 
-app
+express()
   .use(helmet())
   .use(bodyParser.urlencoded({ extended: true }))
   .use(sessionStore(mongoClient))
@@ -31,11 +32,6 @@ app
   
   .use(checkLogin)
 
-  .post('/gear', data.updateGear)
-  .post('/spots', data.updateSpots)
-
-  .post('/session', data.session)
-  .patch('/session', data.updateSession)
   .post('/old-sessions', data.oldSessions)
 
   .post('/check-spot', spotData.check)
@@ -45,6 +41,7 @@ app
   .post('/email', data.updateEmail)
 
   .get('/user', data.user)
-  .listen(process.env.PORT, () => chalk.green(`[server] listening on port ${process.env.PORT}`))
 
-export default express.Router()
+  .use(notFound)
+
+  .listen(process.env.PORT, () => chalk.green(`[server] listening on port ${process.env.PORT}`))

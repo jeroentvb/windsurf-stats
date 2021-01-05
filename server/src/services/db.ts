@@ -2,11 +2,11 @@ import MongoClient, { InsertOneWriteOpResult, UpdateWriteOpResult } from 'mongod
 import chalk from 'chalk'
 
 import { User } from '../../../shared/interfaces/User'
+import { DB_COLLECTION_NAME, MONGO_CONFIG, MONGO_URL } from '../constants/db'
 
 require('dotenv').config()
 
 let db: MongoClient.Db
-let client: MongoClient.MongoClient
 
 function parseId (id?: string): MongoClient.ObjectId {
   return new MongoClient.ObjectId(id)
@@ -14,15 +14,11 @@ function parseId (id?: string): MongoClient.ObjectId {
 
 function init (database: string): Promise<any> {
   return new Promise((resolve, reject) => {
-    MongoClient.connect(`mongodb://localhost:27017/${database}`, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    }, (err, mongoClient) => {
+    MongoClient.connect(`${MONGO_URL}${database}`, MONGO_CONFIG, (err, mongoClient) => {
       if (err) reject(err)
 
       console.log(chalk.green('[MongoDB] connection created'))
 
-      client = mongoClient
       db = mongoClient.db(database)
 
       resolve(mongoClient)
@@ -32,7 +28,7 @@ function init (database: string): Promise<any> {
 
 function get (query: object): Promise<User[]> {
   return new Promise((resolve, reject) => {
-    db.collection('users').find(query).toArray((err, result) => {
+    db.collection(DB_COLLECTION_NAME).find(query).toArray((err, result) => {
       if (err) reject(err)
       resolve(result)
     })
@@ -40,11 +36,11 @@ function get (query: object): Promise<User[]> {
 }
 
 function insert (data: any): Promise<InsertOneWriteOpResult<any>> {
-  return db.collection('users').insertOne(data)
+  return db.collection(DB_COLLECTION_NAME).insertOne(data)
 }
 
 function update (query: object, data: any): Promise<UpdateWriteOpResult> {
-  return db.collection('users').updateOne(query, data)
+  return db.collection(DB_COLLECTION_NAME).updateOne(query, data)
 }
 
 export default {
