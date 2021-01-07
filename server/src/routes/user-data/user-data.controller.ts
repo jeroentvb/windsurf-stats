@@ -4,10 +4,10 @@ import { Spot } from '../../../../shared/interfaces/Spot'
 import userDataService from './user-data.service'
 
 async function updateGear (req: Request, res: Response) {
-  const gear: Gear = req.body
-  const { name } = req.session!.user
-
   try {
+    const gear: Gear = req.body
+    const { name } = req.session!.user
+
     await userDataService.setGear(name, gear)
     
     res.send('OK')
@@ -18,10 +18,10 @@ async function updateGear (req: Request, res: Response) {
 }
 
 async function updateSpots (req: Request, res: Response) {
-  const newSpots: Spot[] = req.body
-  const { name } = req.session!.user
-
   try {
+    const newSpots: Spot[] = req.body
+    const { name } = req.session!.user
+
     const spots = await userDataService.setSpots(name, newSpots)
     
     res.json(spots)

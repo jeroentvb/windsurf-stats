@@ -6,15 +6,15 @@ import { User } from '../../../../shared/interfaces/User'
 import sessionDataService from './session-data.service'
 
 async function session (req: Request, res: Response) {
-  const { name } = req.session!.user
-  const session: Session = Object.assign(req.body, { _id: db.parseId() })
-
-  if (!sessionDataService.validateSessionData(session)) {
-    res.status(422).send('Missing fields')
-    return
-  }
-
   try {
+    const { name } = req.session!.user
+    const session: Session = Object.assign(req.body, { _id: db.parseId() })
+
+    if (!sessionDataService.validateSessionData(session)) {
+      res.status(422).send('Missing fields')
+      return
+    }
+
     await sessionDataService.addSession(name, session)
 
     res.send('OK')
@@ -25,15 +25,15 @@ async function session (req: Request, res: Response) {
 }
 
 async function updateSession (req: Request, res: Response) {
-  const { name }: User = req.session?.user
-  const session: Session = req.body
-
-  if (!sessionDataService.validateSessionData(session)) {
-    res.status(422).send('Missing fields')
-    return
-  }
-
   try {
+    const { name }: User = req.session?.user
+    const session: Session = req.body
+
+    if (!sessionDataService.validateSessionData(session)) {
+      res.status(422).send('Missing fields')
+      return
+    }
+
     await sessionDataService.updateSession(name, session)
 
     res.send('OK')

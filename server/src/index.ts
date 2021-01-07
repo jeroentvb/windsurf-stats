@@ -27,9 +27,11 @@ express()
   .use(compression())
   .use(express.json())
 
+  .use(checkLogin)
+
   .use(routes)
   
-  .use(checkLogin)
+  
 
   .post('/old-sessions', data.oldSessions)
 

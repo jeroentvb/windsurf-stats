@@ -1,25 +1,22 @@
-import authService from '../../services/auth'
-import db from '../../services/db'
-
 import { Request, Response } from 'express'
 import { User } from '../../../../shared/interfaces/User'
 import userService from './user.service'
 import auth from '../../services/auth'
 
 async function register (req: Request, res: Response) {
-  if (process.env.ALLOW_REGISTER === 'false') {
-    res.status(403).send()
-    return
-  }
-
-  const user: User = req.body
-
-  if (!user.email || !user.password || !user.name) {
-    res.status(422).send('Missing username, email or password')
-    return
-  }
-
   try {
+    const user: User = req.body
+
+    if (process.env.ALLOW_REGISTER === 'false') {
+      res.status(403).send()
+      return
+    }
+  
+    if (!user.email || !user.password || !user.name) {
+      res.status(422).send('Missing username, email or password')
+      return
+    }
+
     await userService.addUser(user)
 
     req.session!.user = {
@@ -40,14 +37,14 @@ async function register (req: Request, res: Response) {
 }
 
 async function login (req: Request, res: Response) {
-  const user: User = req.body
-
-  if (!user.name || !user.password) {
-    res.status(422).send('Missing username or password')
-    return
-  }
-
   try {
+    const user: User = req.body
+
+    if (!user.name || !user.password) {
+      res.status(422).send('Missing username or password')
+      return
+    }
+
     const correctPassword = await auth.verifyPassword(user)
 
     if (!correctPassword) {

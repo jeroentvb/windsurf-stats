@@ -2,14 +2,14 @@ import { Request, Response } from 'express'
 import conditionsService from './conditions.service'
 
 async function get (req: Request, res: Response) {  
-  const spotName: string = req.query.spot as string
-
-  if (!spotName) {
-    res.status(422).send('Incomplete query')
-    return
-  }
-
   try {
+    const spotName: string = req.query.spot as string
+
+    if (!spotName) {
+      res.status(422).send('Incomplete query')
+      return
+    }
+
     const conditions = await conditionsService.getConditions(spotName)
 
     res.json(conditions)
