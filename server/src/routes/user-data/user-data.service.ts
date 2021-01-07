@@ -1,5 +1,5 @@
 import db from '../../services/db'
-import spotData from '../../services/spot-data'
+import spotData from '../../services/spot'
 
 import { Gear } from '../../../../shared/interfaces/Gear'
 import { Spot } from '../../../../shared/interfaces/Spot'

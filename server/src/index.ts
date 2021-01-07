@@ -7,7 +7,6 @@ import compression from 'compression'
 
 import db from './services/db'
 import data from './routes/data'
-import spotData from './services/spot-data'
 import checkLogin from './middleware/check-login'
 import sessionStore from './middleware/express-session'
 import corsHandler from './middleware/cors'
@@ -33,9 +32,6 @@ express()
   .use(checkLogin)
 
   .post('/old-sessions', data.oldSessions)
-
-  .post('/check-spot', spotData.check)
-  .get('/conditions', spotData.get)
 
   .post('/threshold', data.updateThreshold)
   .post('/email', data.updateEmail)
