@@ -1,52 +1,11 @@
 import { Request, Response } from 'express'
 import db from '../services/db'
-import auth from './user/user.controller'
 
-import { User } from '../../../shared/interfaces/User'
 import { Session } from '../../../shared/interfaces/Session'
 
-async function getUserData (name: string): Promise<User> {
-  try {
-    const userData: User[] = await db.get({ name })
-    const user = userData[0]
-    user.sessions = sortSessions(user.sessions!)
-
-    delete user._id
-    delete user.password
-
-    return user
-  } catch (err) {
-    throw err
-  }
-}
-
-function sortSessions (sessions: Session[]): Session[] {
-  return sessions.sort((a, b) => {
-    return (new Date(a.date) as any) - (new Date(b.date) as any)
-  })
-}
-
-async function user (req: Request, res: Response) {
-  if (!req.session!.user) {
-    res.status(401).send()
-    return
-  }
-
-  try {
-    const user: User = await getUserData(req.session!.user.name)
-
-    if (!user) {
-      auth.logout(req, res)
-      return
-    }
-
-    res.json(user)
-  } catch (err) {
-    console.error(err)
-    res.status(500).send()
-  }
-}
-
+/**
+ * @deprecated
+ */
 interface oldSession {
   date: string
   spot: string
@@ -62,7 +21,7 @@ interface oldSession {
 /**
  * @deprecated
  */
-async function oldSessions (req: Request, res: Response) {
+async function submit (req: Request, res: Response) {
   try {
     const sessions: Session[] = req.body.map((session: oldSession) => parseToNewSessionFormat(session))
     const user = req.session!.user
@@ -76,9 +35,6 @@ async function oldSessions (req: Request, res: Response) {
   }
 }
 
-/**
- * @deprecated
- */
 function parseToNewSessionFormat (session: oldSession): Session {
   return {
     date: new Date(session.date.split('-').reverse().join('-')).toISOString(),
@@ -153,6 +109,5 @@ function windToDegrees (direction: string): number {
 }
 
 export default {
-  user,
-  oldSessions
+  submit
 }

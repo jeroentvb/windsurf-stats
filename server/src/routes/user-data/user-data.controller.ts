@@ -2,12 +2,13 @@ import { Request, Response } from 'express'
 import { Gear } from '../../../../shared/interfaces/Gear'
 import { Spot } from '../../../../shared/interfaces/Spot'
 import { User } from '../../../../shared/interfaces/User'
+import userController from '../user/user.controller'
 import userDataService from './user-data.service'
 
 async function updateGear (req: Request, res: Response) {
   try {
     const gear: Gear = req.body
-    const { name } = req.session!.user
+    const name: string = req.session!.user.name
 
     await userDataService.setGear(name, gear)
     
@@ -21,7 +22,7 @@ async function updateGear (req: Request, res: Response) {
 async function updateSpots (req: Request, res: Response) {
   try {
     const newSpots: Spot[] = req.body
-    const { name } = req.session!.user
+    const name: string = req.session!.user.name
 
     const spots = await userDataService.setSpots(name, newSpots)
     
@@ -35,7 +36,7 @@ async function updateSpots (req: Request, res: Response) {
 async function updateThreshold (req: Request, res: Response) {
   try {
     const threshold: number = req.body.payload
-    const { name }: User = req.session!.user
+    const name: string = req.session!.user.name
 
     await userDataService.setThreshold(name, threshold)
 
@@ -46,8 +47,21 @@ async function updateThreshold (req: Request, res: Response) {
   }
 }
 
+async function getUser (req: Request, res: Response) {
+  try {
+    const name: string = req.session!.user.name
+    const user = await userDataService.getUser(name)
+
+    res.json(user)
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
 export default {
   updateGear,
   updateSpots,
-  updateThreshold
+  updateThreshold,
+  getUser
 }

@@ -14,7 +14,7 @@ async function get (req: Request, res: Response) {
 
     res.json(conditions)
   } catch (err) {
-    if (err.message === 'The provided windfinder spot doesn\'t exist..') {
+    if (err.message === 'the provided windfinder spot doesn\'t exist..') {
       res.status(404).send(err.message)
       return
     }
