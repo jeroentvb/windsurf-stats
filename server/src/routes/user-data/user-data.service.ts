@@ -34,7 +34,18 @@ async function setSpots (username: string, newSpots: Spot[]): Promise<Spot[]> {
   }
 }
 
+async function setThreshold (username: string, threshold: number): Promise<void> {
+  try {
+    await db.update({name: username }, { $set: {
+      threshold
+    }})
+  } catch (err) {
+    throw err
+  }
+}
+
 export default {
   setGear,
-  setSpots
+  setSpots,
+  setThreshold
 }

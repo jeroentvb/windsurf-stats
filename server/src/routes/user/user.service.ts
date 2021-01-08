@@ -30,6 +30,27 @@ async function addUser (user: User) {
   }
 }
 
+async function setEmail (username: string, email: string, password: string) {
+  try {
+    const validEmail = new RegExp(/\S+@\S+\.\S+/).test(email)
+
+    if (!validEmail) throw 409
+
+    if (! await auth.userIsAuthenticated(username, password)) throw 401
+
+    const users = await db.get({ email })
+
+    if (users.length > 0) throw 409
+
+    await db.update({name: username }, { $set: {
+      email
+    }})
+  } catch (err) {
+    throw err
+  }
+}
+
 export default {
-  addUser
+  addUser,
+  setEmail
 }

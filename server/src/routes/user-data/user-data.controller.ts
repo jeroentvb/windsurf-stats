@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { Gear } from '../../../../shared/interfaces/Gear'
 import { Spot } from '../../../../shared/interfaces/Spot'
+import { User } from '../../../../shared/interfaces/User'
 import userDataService from './user-data.service'
 
 async function updateGear (req: Request, res: Response) {
@@ -31,7 +32,22 @@ async function updateSpots (req: Request, res: Response) {
   }
 }
 
+async function updateThreshold (req: Request, res: Response) {
+  try {
+    const threshold: number = req.body.payload
+    const { name }: User = req.session!.user
+
+    await userDataService.setThreshold(name, threshold)
+
+    res.send('OK')
+  } catch (err) {
+    console.error(err)
+    res.status(500).send()
+  }
+}
+
 export default {
   updateGear,
-  updateSpots
+  updateSpots,
+  updateThreshold
 }

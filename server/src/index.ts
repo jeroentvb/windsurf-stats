@@ -7,13 +7,9 @@ import compression from 'compression'
 
 import db from './services/db'
 import data from './routes/data'
-import checkLogin from './middleware/check-login'
-import sessionStore from './middleware/express-session'
-import corsHandler from './middleware/cors'
+import { checkLogin, sessionStore, corsHandler, notFound } from './middleware'
 
 import routes from './routes'
-import { NOTFOUND } from 'dns'
-import { notFound } from './middleware/not-found'
 
 require('dotenv').config()
 
@@ -30,13 +26,8 @@ express()
   .use(checkLogin)
 
   .use(routes)
-  
-  
 
   .post('/old-sessions', data.oldSessions)
-
-  .post('/threshold', data.updateThreshold)
-  .post('/email', data.updateEmail)
 
   .get('/user', data.user)
 

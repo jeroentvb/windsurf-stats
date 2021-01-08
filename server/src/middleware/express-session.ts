@@ -7,7 +7,7 @@ const MongoStore = mongo(session)
 
 require('dotenv').config()
 
-export default function sessionStore (client: Promise<MongoClient>) {
+export function sessionStore (client: Promise<MongoClient>) {
   return session({
     store: new MongoStore({
       clientPromise: client

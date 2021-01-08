@@ -47,58 +47,6 @@ async function user (req: Request, res: Response) {
   }
 }
 
-async function updateThreshold (req: Request, res: Response) {
-  const threshold: number = req.body.payload
-  const user = req.session!.user
-
-  try {
-    await db.update({name: user.name }, { $set: {
-      threshold
-    }})
-
-    res.send('OK')
-  } catch (err) {
-    console.error(err)
-    res.status(500).send()
-  }
-}
-
-async function updateEmail (req: Request, res: Response) {
-  const { email, password }: { email: string, password: string } = req.body
-  const user: User = req.session!.user
-  const validEmail = new RegExp(/\S+@\S+\.\S+/).test(email)
-
-  if (!validEmail) {
-    res.status(409).send('E-mail address is not in the correct format')
-    return
-  }
-  
-  try {
-    if (! await auth.userIsAuthenticated(user.name, password)) {
-      res.status(401).send('Incorrect password')
-      return
-    }
-
-    const users = await db.get({ email })
-
-    if (users.length > 0) {
-      res.status(409).send('Already taken')
-      return
-    }
-
-    await db.update({name: user.name }, { $set: {
-      email
-    }})
-
-    req.session!.user.email = email
-
-    res.send('OK')
-  } catch (err) {
-    console.error(err)
-    res.status(500).send()
-  }
-}
-
 interface oldSession {
   date: string
   spot: string
@@ -111,6 +59,9 @@ interface oldSession {
   note: string
 }
 
+/**
+ * @deprecated
+ */
 async function oldSessions (req: Request, res: Response) {
   try {
     const sessions: Session[] = req.body.map((session: oldSession) => parseToNewSessionFormat(session))
@@ -125,6 +76,9 @@ async function oldSessions (req: Request, res: Response) {
   }
 }
 
+/**
+ * @deprecated
+ */
 function parseToNewSessionFormat (session: oldSession): Session {
   return {
     date: new Date(session.date.split('-').reverse().join('-')).toISOString(),
@@ -200,7 +154,5 @@ function windToDegrees (direction: string): number {
 
 export default {
   user,
-  updateThreshold,
-  updateEmail,
   oldSessions
 }
