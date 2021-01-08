@@ -10,11 +10,6 @@ import { checkLogin, sessionStore, corsHandler, notFound } from './middleware'
 
 import routes from './routes'
 
-/**
- * @deprecated
- */
-import oldSessions from './routes/old-sessions'
-
 require('dotenv').config()
 
 const mongoClient = db.init(process.env.DB_NAME as string)
@@ -30,13 +25,15 @@ express()
   .use(compression())
   .use(express.json())
 
+  /**
+   * Check if the user is and needs to be logged in
+   */
   .use(checkLogin)
 
   /**
    * Routes
    */
   .use(routes)
-  .post('/old-sessions', oldSessions.submit)
 
   /**
    * Route not found middleware

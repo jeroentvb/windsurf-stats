@@ -61,7 +61,10 @@ async function getUserData (name: string): Promise<User> {
     const user = userData[0]
 
     user.sessions = user.sessions!.sort((a, b) => {
-      return (new Date(a.date) as any) - (new Date(b.date) as any)
+      const dateA = new Date(a.date).getTime()
+      const dateB = new Date(b.date).getTime()
+
+      return dateA - dateB
     })
 
     delete user._id
