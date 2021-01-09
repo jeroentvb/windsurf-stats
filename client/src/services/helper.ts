@@ -1,4 +1,4 @@
-import { Session } from '../../../shared/interfaces/Session'
+import { Conditions, Session } from '../../../shared/interfaces/Session'
 
 // function formatSpotName (id: string): string {
 //   return id.split('-').join(' ')
@@ -86,11 +86,52 @@ function createCsv (sessions: Session[], delimiter: string) {
   return csv.join('\r\n')
 }
 
+/**
+ * Get the highest resolution model name
+ * @param models
+ */
+function getHighestResolutionModel (models: string[]): string {
+  return models.reduce((prev, next) => {
+    const a = parseFloat(prev.replace(/^\D+/g, ''))
+    const b = parseFloat(next.replace(/^\D+/g, ''))
+
+    return a > b ? next : prev
+  })
+}
+
+/**
+ * Calculate average conditions based on an array of conditions
+ * @param conditions
+ */
+function calcAverageConditions (conditions: Conditions[]): Conditions {
+  return conditions.reduce((prev, condition, i) => {
+    const c = {
+      windspeed: prev.windspeed + condition.windspeed,
+      windgust: prev.windgust + condition.windgust,
+      winddirection: prev.winddirection + condition.winddirection,
+      temperature: prev.temperature + condition.temperature
+    }
+
+    if (i === conditions.length - 1) {
+      return {
+        windspeed: Math.round(c.windspeed / conditions.length),
+        windgust: Math.round(c.windgust / conditions.length),
+        winddirection: Math.round(c.winddirection / conditions.length),
+        temperature: Math.round(c.temperature / conditions.length)
+      }
+    }
+
+    return c
+  })
+}
+
 export default {
   // formatSpotName,
   getNumberArray,
   getSailSize,
   monthDiff,
   dateRange,
-  createCsv
+  createCsv,
+  getHighestResolutionModel,
+  calcAverageConditions
 }

@@ -53,6 +53,17 @@
       :disabled="loadingData"
     ></v-select>
 
+    <v-select
+      v-if="models.length > 0"
+      v-model="forecastModel"
+      :items="modelNames"
+      label="Forecast model name"
+      required
+      :rules="required"
+      @change="setConditions(session.time.start, session.time.end)"
+      :disabled="loadingData"
+    ></v-select>
+
     <div v-if="showConditions" class="mt-8">
       <v-text-field
         v-model.number="session.conditions.windspeed"
@@ -98,7 +109,7 @@ import api from '@/services/api'
 import helper from '@/services/helper'
 import snackbar from '@/services/snackbar'
 
-import { Spot, Session, Conditions, WindfinderDataHour } from '../../../../../../shared/interfaces'
+import { Spot, Session, Conditions, WindfinderDataHour, WindguruConditions, WindguruModelHour } from '../../../../../../shared/interfaces'
 
 export default Vue.extend({
   name: 'SessionDetailsForm',
@@ -127,6 +138,10 @@ export default Vue.extend({
 
     getNumberArray () {
       return helper.getNumberArray
+    },
+
+    modelNames (): string[] {
+      return this.models.map(model => model.name)
     }
   },
 
@@ -137,6 +152,8 @@ export default Vue.extend({
       showDatePicker: false,
       loadingData: false,
       conditions: [] as Conditions[],
+      forecastModel: '',
+      models: [] as WindguruConditions[],
       required: [
         (v: string) => !!v || 'All fields are required'
       ]
@@ -162,10 +179,10 @@ export default Vue.extend({
 
   methods: {
     changeSpot (spot: string) {
-      const windfinder = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).windfinder
+      const windguru = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).windfinder
       const today = new Date().toISOString().substr(0, 10)
 
-      if (!windfinder || this.date !== today) {
+      if (!windguru || this.date !== today) {
         this.showConditions = true
         return
       }
@@ -179,12 +196,9 @@ export default Vue.extend({
 
       try {
         const res = await api.get(`conditions?spot=${spotId}`)
-        this.conditions = res.data.map((condition: WindfinderDataHour) => ({
-          windspeed: condition.windspeed,
-          windgust: condition.windgust,
-          winddirection: condition.winddirectionDegrees,
-          temperature: condition.temperature
-        })) as Conditions[]
+        const models: WindguruConditions[] = res.data
+        this.models = models
+        this.forecastModel = helper.getHighestResolutionModel(this.modelNames)
 
         // If the session time is set, update the conditions in the form
         if (this.session.time.start && this.session.time.end) {
@@ -197,7 +211,7 @@ export default Vue.extend({
         this.showConditions = true
 
         if (err.response.status === 404) {
-          snackbar.error('The selected spot doesn\'t have a windfinder superforecast', 6000)
+          snackbar.error('The selected spot doesn\'t isn\'t a windguru spot', 6000)
           return
         }
 
@@ -206,39 +220,27 @@ export default Vue.extend({
     },
 
     setConditions (start: number, end: number): void {
-      if (this.conditions.length === 0) return
+      if (this.models.length === 0) return
       if (!this.session.time.start || !this.session.time.end) return
 
-      const conditions: Conditions[] = this.conditions.filter((condition: Conditions) => {
-        return condition.hour as number >= start && condition.hour as number <= end
-      })
+      const conditions: Conditions[] = this.models
+        .filter((model: WindguruConditions) => model.name === this.forecastModel)[0].hours
+        .filter((hour: WindguruModelHour) => {
+          const hourNumber = parseInt(hour.hour)
+          return hourNumber >= start && hourNumber <= end
+        })
+        .map((hour: WindguruModelHour) => ({
+          hour: parseInt(hour.hour),
+          windspeed: parseInt(hour.wspd),
+          windgust: parseInt(hour.gust),
+          winddirection: parseInt(hour.wdeg),
+          temperature: parseInt(hour.tmp)
+        }))
 
-      const averageConditions: Conditions = this.calcAverageConditions(conditions)
+      const averageConditions: Conditions = helper.calcAverageConditions(conditions)
+
       this.session.conditions = averageConditions
-
       this.showConditions = true
-    },
-
-    calcAverageConditions (conditions: Conditions[]): Conditions {
-      return conditions.reduce((prev, condition, i) => {
-        const c = {
-          windspeed: prev.windspeed + condition.windspeed,
-          windgust: prev.windgust + condition.windgust,
-          winddirection: prev.winddirection + condition.winddirection,
-          temperature: prev.temperature + condition.temperature
-        }
-
-        if (i === conditions.length - 1) {
-          return {
-            windspeed: Math.round(c.windspeed / conditions.length),
-            windgust: Math.round(c.windgust / conditions.length),
-            winddirection: Math.round(c.winddirection / conditions.length),
-            temperature: Math.round(c.temperature / conditions.length)
-          }
-        }
-
-        return c
-      })
     },
 
     loadingSpotData (bool: boolean) {
