@@ -16,7 +16,7 @@ async function setGear (username: string, gear: Gear): Promise<void> {
 async function setSpots (username: string, newSpots: Spot[]): Promise<Spot[]> {
   try {
     const spots: Spot[] = await Promise.all(newSpots.map(async spot => {
-      if (spot.windfinder === null) {
+      if (spot.windguru === null) {
         return await spotData.check(spot)
       }
 

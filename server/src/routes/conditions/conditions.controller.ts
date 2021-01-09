@@ -3,16 +3,16 @@ import conditionsService from './conditions.service'
 
 async function get (req: Request, res: Response) {  
   try {
-    const spotName: string = req.query.spot as string
+    const spotId: string = req.query.spot as string
 
-    if (!spotName) {
+    if (!spotId) {
       res.status(422).send('Incomplete query')
       return
     }
 
-    const conditions = await conditionsService.getConditions(spotName)
+    const models = await conditionsService.getConditions(spotId)
 
-    res.json(conditions)
+    res.json(models)
   } catch (err) {
     if (err.message === 'the provided windfinder spot doesn\'t exist..') {
       res.status(404).send(err.message)
