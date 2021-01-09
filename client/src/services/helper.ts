@@ -125,6 +125,10 @@ function calcAverageConditions (conditions: Conditions[]): Conditions {
   })
 }
 
+function parseNumber (item: any): number {
+  return isNaN(item) ? 0 : parseInt(item)
+}
+
 export default {
   // formatSpotName,
   getNumberArray,
@@ -133,5 +137,6 @@ export default {
   dateRange,
   createCsv,
   getHighestResolutionModel,
-  calcAverageConditions
+  calcAverageConditions,
+  parseNumber
 }

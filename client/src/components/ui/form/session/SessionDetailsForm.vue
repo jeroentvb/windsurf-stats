@@ -210,7 +210,7 @@ export default Vue.extend({
         this.loadingSpotData(false)
         this.showConditions = true
 
-        if (err.response.status === 404) {
+        if (err.response && err.response.status === 404) {
           snackbar.error('The selected spot doesn\'t isn\'t a windguru spot', 6000)
           return
         }
@@ -230,12 +230,18 @@ export default Vue.extend({
           return hourNumber >= start && hourNumber <= end
         })
         .map((hour: WindguruModelHour) => ({
-          hour: parseInt(hour.hour),
-          windspeed: parseInt(hour.wspd),
-          windgust: parseInt(hour.gust),
-          winddirection: parseInt(hour.wdeg),
-          temperature: parseInt(hour.tmp)
+          hour: hour.hour === '-' ? 0 : parseInt(hour.hour),
+          windspeed: helper.parseNumber(hour.wspd),
+          windgust: helper.parseNumber(hour.gust),
+          winddirection: helper.parseNumber(hour.wdeg),
+          temperature: helper.parseNumber(hour.tmp)
         }))
+
+      if (conditions.length < 1) {
+        this.showConditions = true
+        snackbar.error('Couldn\'t get wind data for the selected session time and model')
+        return
+      }
 
       const averageConditions: Conditions = helper.calcAverageConditions(conditions)
 
