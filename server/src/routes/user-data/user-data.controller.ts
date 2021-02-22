@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
+
+import userDataService from './user-data.service'
+
 import { Gear } from '../../../../shared/interfaces/Gear'
 import { Spot } from '../../../../shared/interfaces/Spot'
-import { User } from '../../../../shared/interfaces/User'
-import userController from '../user/user.controller'
-import userDataService from './user-data.service'
 
 async function updateGear (req: Request, res: Response) {
   try {
