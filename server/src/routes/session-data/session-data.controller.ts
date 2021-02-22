@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import db from '../../services/db'
+import sessionDataService from './session-data.service'
 
 import { Session } from '../../../../shared/interfaces/Session'
 import { User } from '../../../../shared/interfaces/User'
-import sessionDataService from './session-data.service'
 
 async function session (req: Request, res: Response) {
   try {
