@@ -1,7 +1,7 @@
 <script>
 import Vue from 'vue'
 import { Bar, mixins } from 'vue-chartjs'
-import { SESSION_AMOUNT } from '../../constants'
+import { SESSION_AMOUNT, SESSION_RATING } from '../../constants'
 
 export default {
   name: 'BarChart',
@@ -20,7 +20,7 @@ export default {
         },
         hover: {
           onHover: element => {
-            if (this.datasetId !== SESSION_AMOUNT) return
+            if (this.datasetId !== SESSION_AMOUNT && this.datasetId !== SESSION_RATING) return
 
             const point = this.$data._chart.getElementAtEvent(element)
             if (point.length) {
@@ -79,7 +79,7 @@ export default {
 
   methods: {
     clickSession (evt) {
-      if (this.datasetId !== SESSION_AMOUNT) return
+      if (this.datasetId !== SESSION_AMOUNT && this.datasetId !== SESSION_RATING) return
 
       const clickedPoint = this.$data._chart.getElementAtEvent(evt)[0]
 
