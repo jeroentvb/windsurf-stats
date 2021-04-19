@@ -96,6 +96,8 @@
         required
         :rules="required"
       ></v-text-field>
+
+      <p>Forecast from <a :href="'https://www.windguru.cz/' + selectedSpot" target="_blank">windguru</a></p>
     </div>
 
     <!-- Add fields for wave spot info -->
@@ -109,7 +111,7 @@ import api from '@/services/api'
 import helper from '@/services/helper'
 import snackbar from '@/services/snackbar'
 
-import { Spot, Session, Conditions, WindfinderDataHour, WindguruConditions, WindguruModelHour } from '../../../../../../shared/interfaces'
+import { Spot, Session, Conditions, WindguruConditions, WindguruModelHour } from '../../../../../../shared/interfaces'
 
 export default Vue.extend({
   name: 'SessionDetailsForm',
@@ -154,6 +156,7 @@ export default Vue.extend({
       conditions: [] as Conditions[],
       forecastModel: '',
       models: [] as WindguruConditions[],
+      selectedSpot: null,
       required: [
         (v: string) => !!v || 'All fields are required'
       ]
@@ -193,6 +196,8 @@ export default Vue.extend({
     async getConditions (spot: string): Promise<void> {
       const spotId = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).id
       this.loadingSpotData(true)
+
+      this.selectedSpot = spotId
 
       try {
         const res = await api.get(`conditions?spot=${spotId}`)
