@@ -18,7 +18,7 @@
               label="Spot identifier"
               required
               :rules="required"
-              hint="This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay."
+              hint="This is the spot id as it appears in the windguru url. For Ho'okipa it would be: 208798."
             ></v-text-field>
           </v-flex>
 
@@ -100,7 +100,7 @@ export default Vue.extend({
       this.spotForm.push({
         id: '',
         name: '',
-        windfinder: null
+        windguru: null
       })
     },
 

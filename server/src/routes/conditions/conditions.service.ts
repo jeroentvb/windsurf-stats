@@ -1,10 +1,16 @@
 import * as scrape from 'wind-scrape'
-import { WindfinderDataHour } from 'wind-scrape/dist/interfaces/windfinder'
+import { WindguruConditions } from '../../../../shared/interfaces'
 
-async function getConditions (spotName: string): Promise<WindfinderDataHour[]> {
+async function getConditions (spotId: string): Promise<WindguruConditions[]> {
   try {
-    const windfinderData = await scrape.windfinder(spotName as string)
-    return windfinderData.days[0].hours
+    const windguruData = await scrape.windguru(spotId as string)
+
+    return windguruData.models.map(({ name, days }) => {
+      return {
+        name,
+        hours: days[0].hours
+      }
+    })
   } catch (err) {
     throw err
   }
