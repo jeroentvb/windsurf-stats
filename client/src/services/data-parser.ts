@@ -277,7 +277,7 @@ export default class DataParser {
      * Put the session in the array corresponding to the rating it has
      */
     sessions.forEach(session => {
-      sessionPerRating[session.rating - 1].push(session)
+      sessionPerRating[Math.round(session.rating - 1)].push(session)
     })
 
     /**
