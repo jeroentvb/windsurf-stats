@@ -47,7 +47,7 @@
           </v-flex>
 
           <v-flex xs2 sm1 align-self-center
-          v-if="i !== 0">
+          v-if="boardsForm.length > 1">
             <v-btn icon color="grey"
             @click="deleteBoard(i)">
               <v-icon>mdi-delete</v-icon>

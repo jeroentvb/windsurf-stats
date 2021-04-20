@@ -4,9 +4,10 @@
       <v-layout row wrap>
         <v-flex md6 pa-4>
           <SpotForm
-          :spots="spots"
-          @updateSpots="updateSpots"
-          :submitting="submitting" />
+            :spots="spots"
+            @updateSpots="updateSpots"
+            :submitting="submitting"
+          />
         </v-flex>
       </v-layout>
     </v-layout>
@@ -33,7 +34,7 @@ export default Vue.extend({
 
   computed: {
     spots (): Spot[] {
-      return this.$store.state.user.spots.slice()
+      return JSON.parse(JSON.stringify(this.$store.state.user.spots))
     }
   },
 
@@ -45,15 +46,10 @@ export default Vue.extend({
 
   methods: {
     async updateSpots (spots: Spot[]) {
-      const parsedSpots: Spot[] = spots.map(spot => {
-        return Object.assign(spot, {
-          name: helper.formatSpotName(spot.id)
-        })
-      })
       this.submitting = true
 
       try {
-        await this.$store.dispatch(UPDATE_SPOTS, parsedSpots)
+        await this.$store.dispatch(UPDATE_SPOTS, spots)
 
         snackbar.succes('Saved succesfully')
         this.submitting = false

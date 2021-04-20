@@ -10,21 +10,31 @@
         <v-layout
           v-for="(spot, i) in spots"
           :key="spot.identifier"
+          mb-4
           row>
-
-          <v-flex md11 px-4>
+          <v-flex xs12 px-4>
             <v-text-field
               v-model="spotForm[i].id"
               label="Spot identifier"
               required
               :rules="required"
-              hint="This is the spotname as it appears in the windfinder url. For Maui Honolua Bay it would be: maui_honolua_bay."
+              hint="This is the spot id as it appears in the windguru url. For Ho'okipa it would be: 208798."
             ></v-text-field>
           </v-flex>
 
-          <v-flex md1 align-self-center>
+          <v-flex xs11 px-4>
+            <v-text-field
+              v-model="spotForm[i].name"
+              label="Spot name"
+              required
+              :rules="required"
+              hint="This can be custom"
+            ></v-text-field>
+          </v-flex>
+
+          <v-flex xs1 align-self-center>
             <v-btn icon color="grey"
-            v-if="i !== 0"
+            v-if="spotForm.length > 1"
             @click="deleteSpot(i)">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
@@ -90,7 +100,7 @@ export default Vue.extend({
       this.spotForm.push({
         id: '',
         name: '',
-        windfinder: null
+        windguru: null
       })
     },
 

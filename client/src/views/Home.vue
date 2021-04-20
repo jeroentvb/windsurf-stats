@@ -92,7 +92,7 @@ import DialogComponent from '../components/ui/DialogComponent.vue'
 import SessionCard from '../components/ui/SessionCard.vue'
 import OldSessions from '../components/ui/form/session/OldSessions.vue'
 
-import { DATASETS, SESSION_AMOUNT, SAIL_USAGE, BOARD_USAGE, SPOT_VISITS } from '../constants'
+import { DATASETS, SESSION_AMOUNT, SAIL_USAGE, BOARD_USAGE, SPOT_VISITS, SESSION_RATING, ALL } from '../constants'
 import { ChartData } from '../interfaces'
 import { User, Session } from '../../../shared/interfaces'
 
@@ -117,6 +117,7 @@ export default Vue.extend({
         data: {},
         datasets: {
           [SESSION_AMOUNT]: [] as ChartData[],
+          [SESSION_RATING]: [] as ChartData[],
           [SAIL_USAGE]: [] as ChartData[],
           [BOARD_USAGE]: [] as ChartData[],
           [SPOT_VISITS]: [] as ChartData[]
@@ -163,7 +164,7 @@ export default Vue.extend({
     init () {
       if (this.sessions.length > 0) {
         const data = new Data(this.sessions, this.years, this.user)
-        const sessionAmount = data.parseSessions()
+        const sessionAmount = data.getSessionAmountDataset()
 
         this.chart = {
           selected: {
@@ -173,9 +174,10 @@ export default Vue.extend({
           data: sessionAmount[sessionAmount.length - 2],
           datasets: {
             [SESSION_AMOUNT]: sessionAmount,
-            [SAIL_USAGE]: data.parseAmount('sail'),
-            [BOARD_USAGE]: data.parseAmount('board'),
-            [SPOT_VISITS]: data.parseAmount('spot')
+            [SESSION_RATING]: data.getRatingDataset(),
+            [SAIL_USAGE]: data.getAmountDataset('sail'),
+            [BOARD_USAGE]: data.getAmountDataset('board'),
+            [SPOT_VISITS]: data.getAmountDataset('spot')
           }
         }
       }
@@ -184,7 +186,7 @@ export default Vue.extend({
     updateYear (selectedYear: string) {
       const dataset: ChartData = this.chart.datasets[this.chart.selected.dataset].filter((dataset: ChartData) => {
         return dataset.year === (
-          selectedYear === 'All' ? 0 : parseInt(selectedYear)
+          selectedYear === ALL ? 0 : parseInt(selectedYear)
         )
       })[0]
 

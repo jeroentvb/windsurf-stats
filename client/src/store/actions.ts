@@ -149,7 +149,7 @@ const storeActions: ActionTree<State, State> = {
 
   async [UPDATE_GEAR] ({ commit }, payload: Gear) {
     try {
-      const res = await api.post('gear', { payload })
+      const res = await api.post('gear', payload)
 
       if (res.status === 200) {
         commit(UPDATE_GEAR, payload)
