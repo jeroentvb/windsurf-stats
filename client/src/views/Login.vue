@@ -46,6 +46,7 @@
 
         <v-card-actions>
           <v-btn
+          :loading="submitting"
           color="primary"
           class="mb-2"
           large
@@ -86,7 +87,8 @@ export default Vue.extend({
       ],
       formError: false,
       formErrorMsg: '',
-      allowRegister: process.env.VUE_APP_ALLOW_REGISTER === 'true'
+      allowRegister: process.env.VUE_APP_ALLOW_REGISTER === 'true',
+      submitting: false
     }
   },
 
@@ -97,8 +99,11 @@ export default Vue.extend({
         return
       }
 
+      this.submitting = true
+
       this.$store.dispatch(USER_LOGIN, this.user)
         .catch(err => {
+          this.submitting = false
           if (err === 422 || err === 401) {
             this.setError('Invalid credentials')
           } else {

@@ -64,6 +64,7 @@
 
         <v-card-actions>
           <v-btn
+          :loading="submitting"
           color="primary"
           class="mb-2"
           large
@@ -108,6 +109,7 @@ export default Vue.extend({
         repeatPassword: ''
       } as registerUser,
       formErrorMsg: '',
+      submitting: false,
       usernameRules: [
         (v: string) => !!v || 'Username is required'
       ],
@@ -130,8 +132,11 @@ export default Vue.extend({
         return
       }
 
+      this.submitting = true
+
       this.$store.dispatch(USER_REGISTER, user)
         .catch((err: Error) => {
+          this.submitting = false
           this.setError(err.message)
         })
     },
