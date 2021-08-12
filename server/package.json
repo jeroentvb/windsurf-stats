@@ -35,7 +35,7 @@
     "helmet": "^4.4.1",
     "jeroentvb-helper": "github:jeroentvb/jeroentvb-helper",
     "mongodb": "^3.6.4",
-    "wind-scrape": "https://github.com/jeroentvb/wind-scrape/releases/download/v4.0.1/dist.tgz"
+    "wind-scrape": "https://github.com/jeroentvb/wind-scrape/releases/download/v4.1.1/dist.tgz"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",

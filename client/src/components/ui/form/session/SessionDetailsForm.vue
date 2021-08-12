@@ -182,7 +182,7 @@ export default Vue.extend({
 
   methods: {
     changeSpot (spot: string) {
-      const windguru = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).windfinder
+      const windguru = this.$store.state.user.spots.find((spotObj: Spot) => spotObj.name === spot).windguru
       const today = new Date().toISOString().substr(0, 10)
 
       if (!windguru || this.date !== today) {
