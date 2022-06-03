@@ -13,7 +13,7 @@ async function get (req: Request, res: Response) {
     const models = await conditionsService.getConditions(spotId)
 
     res.json(models)
-  } catch (err) {
+  } catch (err: any) { // TODO
     if (err.message === 'the provided windfinder spot doesn\'t exist..') {
       res.status(404).send(err.message)
       return
